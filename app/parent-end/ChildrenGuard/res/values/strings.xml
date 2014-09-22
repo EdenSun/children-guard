@@ -12,5 +12,11 @@
     <string name="title_activity_children_list_add">ChildrenListAddActivity</string>
     <string name="title_activity_children_manage">Child Manage</string>
     <string name="title_activity_main">MainActivity</string>
+    
+    
+    <string name="childBasicInfoFragment.basicInfoTitleHeader">Child Basic Info</string>
+    <string name="childAppManageFragment.basicInfoTitleHeader">APP Manage</string>
+    <string name="childManageMoreFragment.moreTitleHeader">More</string>
 
+    
 </resources>

@@ -12,6 +12,12 @@
 	    android:layout_weight="0"
 	    layout="@layout/child_basic_info_common"/>
 	
+	<TextView 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/childBasicInfoFragment.basicInfoTitleHeader"
+			style="@style/titleHeader">
+	</TextView>
 	<ScrollView 
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
@@ -20,14 +26,18 @@
 	    <LinearLayout 
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
+	        android:orientation="vertical">
+	        <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
 	        android:orientation="horizontal"
 	        style="@style/childBasicInfoItemStyle">
 	        <TextView 
-	            android:layout_width="wrap_content"
+	            android:layout_width="100dp"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="0"
 	            android:text="Mobile:"
-	            android:textColor="@color/text_black"/>
+	            style="@style/label"/>
 	        <TextView 
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
@@ -35,5 +45,84 @@
 	            android:text="14799288827"
 	            android:textColor="@color/text_gray"/>
 	    </LinearLayout>
+	    
+	    <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal"
+	        style="@style/childBasicInfoItemStyle">
+	        <TextView 
+	            android:layout_width="100dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="0"
+	            android:text="Email:"
+	            style="@style/label"/>
+	        <TextView 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:text="edensun@gmail.com"
+	            android:textColor="@color/text_gray"/>
+	    </LinearLayout>
+	    
+	    <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal"
+	        style="@style/childBasicInfoItemStyle">
+	        <TextView 
+	            android:layout_width="100dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="0"
+	            android:text="Network Traffic:"
+	            style="@style/label"/>
+	        <TextView 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:text="303MB Used"
+	            android:textColor="@color/text_gray"/>
+	    </LinearLayout>
+	    
+	    <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal"
+	        style="@style/childBasicInfoItemStyle">
+	        <TextView 
+	            android:layout_width="100dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="0"
+	            android:text="Location:"
+	            style="@style/label"/>
+	        <TextView 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:text="xxx ,xxx road ,New York (updated at 2014-9-17 18:32)"
+	            android:textColor="@color/text_gray"/>
+	    </LinearLayout>
+	    
+	     <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal"
+	        style="@style/childBasicInfoItemStyle">
+	        <TextView 
+	            android:layout_width="100dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="0"
+	            android:text="Speed:"
+	            style="@style/label"/>
+	        <TextView 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:text="30km/s (updated at 2014-9-17 18:32)"
+	            android:textColor="@color/text_gray"/>
+	    </LinearLayout>
+	    </LinearLayout>
+	    
+	    
 	</ScrollView>
 </LinearLayout>

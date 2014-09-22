@@ -8,6 +8,12 @@
 	    android:layout_height="wrap_content"
 	    android:layout_weight="0"
 	    layout="@layout/child_basic_info_common"/>
+	<TextView 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/childAppManageFragment.basicInfoTitleHeader"
+			style="@style/titleHeader">
+	</TextView>
 	<ListView 
 	    android:id="@+id/list"
 	    android:layout_width="match_parent"

@@ -12,7 +12,7 @@
         android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="Google Map"
+        android:text="Text"
         android:gravity="center_vertical"
         />
     
@@ -20,8 +20,8 @@
         android:layout_weight="0"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:textOn="Lock"
-        android:textOff="Unlock"
+        android:textOn="On"
+        android:textOff="Off"
         /> -->
  	<include layout="@layout/cmp_switch" />
 </LinearLayout>
