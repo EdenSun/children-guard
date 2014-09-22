@@ -1,0 +1,158 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/android"
+    tools:context="eden.sun.childrenguard.activity.RegisterActivity" >
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:text="Register to Children Guard"
+        android:textColor="#fff"
+        android:textSize="20sp" 
+        android:paddingTop="30dp"
+        android:paddingBottom="30dp"/>
+
+    <TextView
+        android:id="@+id/childIpTextView"
+        android:layout_width="125dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/titleTextView"
+        android:text="First Name"
+        android:textColor="#fff"
+        android:textSize="15dp" 
+        android:gravity="center_vertical"/>
+
+    <EditText
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:id="@+id/childPhoneEditText"
+            android:hint="First Name"
+            android:textColor="#fff"
+            android:layout_alignTop="@+id/childIpTextView"
+            android:layout_alignParentRight="true"
+            android:textSize="15dp"/>
+
+    <TextView
+        android:id="@+id/childNameTextView"
+        android:layout_width="125dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/childIpTextView"
+        android:layout_toLeftOf="@+id/childNameEditText"
+        android:text="Last Name"
+        android:textColor="#fff"
+        android:textSize="15dp" 
+        android:gravity="center_vertical"/>
+
+    <EditText
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:textColor="#000000"
+            android:id="@+id/childNameEditText"
+            android:hint="Last Name"
+            android:layout_alignTop="@+id/childNameTextView"
+            android:layout_alignParentRight="true"
+            android:textSize="15dp"/>
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="125dp"
+        android:layout_height="40dp"
+        android:layout_alignRight="@+id/childNameTextView"
+        android:layout_below="@+id/childNameTextView"
+        android:text="Email"
+        android:textColor="#fff"
+        android:textSize="15dp" 
+        android:gravity="center_vertical"/>
+
+    <EditText
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:textColor="#000000"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/email"
+            android:hint="E-mail"
+            android:layout_below="@+id/childNameEditText"
+            android:layout_alignParentRight="true"
+            android:textSize="15dp"/>
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="125dp"
+        android:layout_height="40dp"
+        android:layout_alignRight="@+id/textView4"
+        android:layout_below="@+id/textView4"
+        android:text="Password"
+        android:textColor="#fff"
+        android:textSize="15dp" 
+        android:gravity="center_vertical"/>
+
+    <EditText
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:inputType="textPassword"
+            android:textColor="#000000"
+            android:id="@+id/uname"
+            android:hint="Password"
+            android:layout_alignTop="@+id/textView5"
+            android:layout_alignParentRight="true"
+            android:textSize="15dp"/>
+    <EditText
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:textColor="#000000"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/pword"
+            android:hint="Confirm Password"
+            android:layout_alignLeft="@+id/uname"
+            android:layout_below="@+id/textView5"
+            android:textSize="15dp"/>
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="125dp"
+        android:layout_height="40dp"
+        android:layout_alignRight="@+id/textView5"
+        android:layout_alignTop="@+id/pword"
+        android:text="Confirm Password"
+        android:textColor="#fff"
+        android:textSize="15dp" 
+        android:gravity="center_vertical"/>
+
+    <Button
+        android:id="@+id/registerBtn"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/textView6"
+        android:layout_toLeftOf="@+id/backBtn"
+        android:text="Register"
+        android:textColor="#000000"
+        android:textSize="13dp" />
+
+    <Button
+            android:layout_width="175dp"
+            android:layout_height="40dp"
+            android:textColor="#000000"
+            android:text="Back To Login"
+            android:id="@+id/backBtn"
+            android:layout_below="@+id/pword"
+            android:layout_alignParentRight="true"
+            android:textSize="13dp"/>
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="56dp"
+            android:textColor="#000000"
+            android:id="@+id/register_error"
+            android:layout_below="@+id/registerBtn"
+            android:layout_alignParentRight="true"/>
+
+</RelativeLayout>

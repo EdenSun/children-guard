@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="eden.sun.childrenguard.MainActivity" >
+
+    <item
+        android:id="@+id/action_children_list_add"
+        android:orderInCategory="100"
+        android:title="@string/action_children_list_add"
+        app:showAsAction="never"/>
+
+</menu>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:orientation="horizontal" 
+    android:background="@drawable/bg_child_basic_info_common"
+   >
+   <!--  android:background="@drawable/bg_child_basic_info_common" -->
+    <ImageView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:src="@drawable/ic_launcher"
+        android:padding="5dp"
+        android:background="@drawable/bg_border_image_view"
+        />
+	<LinearLayout 
+	    android:layout_width="wrap_content"
+	    android:layout_height="match_parent"
+	    android:layout_weight="1"
+	    android:orientation="vertical"
+	    android:paddingLeft="10dp"
+	    android:paddingRight="0dp"
+	    >
+	    <TextView 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:text="Eden Sun"
+	        android:textSize="18dip"
+	        android:textColor="#040404"
+	        android:textStyle="bold"
+	        />
+	    <TextView 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:text="Online"
+	        android:textSize="12dip"
+	        android:textColor="#00931f"
+	        android:textStyle="bold"
+	        />
+	</LinearLayout>
+</LinearLayout>
