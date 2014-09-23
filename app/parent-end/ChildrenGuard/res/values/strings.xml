@@ -12,6 +12,8 @@
     <string name="title_activity_children_list_add">ChildrenListAddActivity</string>
     <string name="title_activity_children_manage">Child Manage</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_notify_mail_manage">Notify Mail Manage</string>
+    <string name="title_activity_notify_mail_add">Add Notify Mail</string>
     
     
     <string name="childBasicInfoFragment.basicInfoTitleHeader">Child Basic Info</string>

@@ -1,0 +1,85 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/android"
+    tools:context="eden.sun.childrenguard.activity.ChildrenListAddActivity" >
+
+    <TextView
+ 	    android:id="@+id/titleTextView"
+ 	    android:layout_width="wrap_content"
+ 	    android:layout_height="wrap_content"
+ 	    android:layout_alignParentTop="true"
+ 	    android:layout_centerHorizontal="true"
+ 	    android:layout_gravity="center"
+ 	    android:text="Add Child"
+ 	    android:textColor="#fff"
+ 	    android:textSize="20sp"
+ 	    android:paddingTop="30dp"
+ 	    android:paddingBottom="30dp" 
+ 	    />
+
+    <TextView
+        android:id="@+id/childIpTextView"
+        android:layout_width="125dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/titleTextView"
+        android:text="Child Mobile"
+        android:textColor="#fff"
+        android:textSize="15dp" 
+        android:gravity="center_vertical"/>
+
+    <EditText
+        android:id="@+id/childPhoneEditText"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@+id/titleTextView"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/childIpTextView"
+        android:hint="Child Mobile"
+        android:textColor="#000000"
+        android:textSize="15dp" />
+
+    <TextView
+        android:id="@+id/childNameTextView"
+        android:layout_width="125dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/childIpTextView"
+        android:layout_toLeftOf="@+id/childNameEditText"
+        android:text="Child Name"
+        android:textColor="#fff"
+        android:textSize="15dp" 
+        android:gravity="center_vertical"/>
+
+    <EditText
+        android:id="@+id/childNameEditText"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@+id/childPhoneEditText"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/childNameTextView"
+        android:hint="Child Name"
+        android:textColor="#000000"
+        android:textSize="15dp" />
+
+    <Button
+        android:id="@+id/addChildBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/childNameTextView"
+        android:layout_marginTop="21dp"
+        android:text="Add Child" />
+
+    <Button
+        android:id="@+id/cancelBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/addChildBtn"
+        android:text="Cancel" />
+
+</RelativeLayout>

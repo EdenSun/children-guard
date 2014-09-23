@@ -57,6 +57,16 @@
             android:name="eden.sun.childrenguard.activity.ChildrenManageActivity"
             android:label="@string/title_activity_children_manage">
         </activity>
+        
+        <activity
+            android:name="eden.sun.childrenguard.activity.NotifyMailManageActivity"
+            android:label="@string/title_activity_children_manage">
+        </activity>
+        
+        <activity
+            android:name="eden.sun.childrenguard.activity.NotifyMailAddActivity"
+            android:label="@string/title_activity_children_manage">
+        </activity>
     </application>
 
 </manifest>

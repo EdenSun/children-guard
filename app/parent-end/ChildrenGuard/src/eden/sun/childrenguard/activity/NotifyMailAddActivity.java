@@ -4,25 +4,21 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 import eden.sun.childrenguard.R;
-import eden.sun.childrenguard.adapter.NotifyMailListAdapter;
 
-public class NotifyMailManageActivity extends Activity {
-	private ListView notifyMailList;
-	private NotifyMailListAdapter notifyMailListAdapter;
+public class NotifyMailAddActivity extends Activity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_notify_mail_manage);
+		setContentView(R.layout.activity_notify_mail_add);
 		
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		//getMenuInflater().inflate(R.menu.children_list_add, menu);
+		//getMenuInflater().inflate(R.menu.change_password, menu);
 		return true;
 	}
 
