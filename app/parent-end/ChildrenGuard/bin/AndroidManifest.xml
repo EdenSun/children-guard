@@ -55,7 +55,7 @@
         </activity>
         <activity
             android:name="eden.sun.childrenguard.activity.ChildrenManageActivity"
-            android:label="@string/title_activity_children_manage" >
+            android:label="@string/title_activity_children_manage">
         </activity>
     </application>
 

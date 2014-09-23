@@ -2,12 +2,15 @@ package eden.sun.childrenguard.adapter;
 
 import java.util.ArrayList;
 
+import org.jraf.android.backport.switchwidget.Switch;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.dto.MoreListItemView;
 
@@ -36,22 +39,62 @@ public class MoreListAdapter extends BaseAdapter {
         return position;
     }
     
+    @Override
+    public int getItemViewType(int position) {
+    	MoreListItemView child = data.get(position);
+    	return child.getType();
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 2; 
+    }
+    
     public View getView(int position, View convertView, ViewGroup parent) {
+    	MoreListItemView child = data.get(position);
+    	int type = getItemViewType(position);
         View vi = convertView;
-        if(convertView==null){
-        	vi = inflater.inflate(R.layout.list_row_arrow_child_manage_more_list, null);
+        ArrowViewHolder arrowHolder = new ArrowViewHolder();
+        SwitchViewHolder switchViewHolder = new SwitchViewHolder();
+        if( convertView == null ){
+        	if( type == MoreListItemView.TYPE_ARROW_ITEM ){
+        		vi = inflater.inflate(R.layout.list_row_arrow_child_manage_more_list, null);
+        		arrowHolder.titleTextView = (TextView)vi.findViewById(R.id.title);
+        		
+        		vi.setTag(arrowHolder);
+        	}else if( type == MoreListItemView.TYPE_SWITCH_ITEM ){
+        		vi = inflater.inflate(R.layout.list_row_switch_child_manage_more_list, null);
+        		
+        		switchViewHolder.titleTextView = (TextView)vi.findViewById(R.id.title);
+        		switchViewHolder.switchCmp = (Switch)vi.findViewById(R.id.switchCmp);
+        		
+        		vi.setTag(switchViewHolder);
+        	}
+        }else{
+        	if( type == MoreListItemView.TYPE_ARROW_ITEM ){
+        		arrowHolder = (ArrowViewHolder) convertView.getTag();
+        	}else if( type == MoreListItemView.TYPE_SWITCH_ITEM ){
+        		switchViewHolder = (SwitchViewHolder) convertView.getTag();
+        	}
         }
- 
-//        TextView childNameTextView = (TextView)vi.findViewById(R.id.childName);
-//        TextView onlineStatusTextView = (TextView)vi.findViewById(R.id.onlineStatus);
         
-        MoreListItemView child = data.get(position);
- 
-        // Setting all values in listview
-  
-//        childNameTextView.setText(child.getChildName());
-//        onlineStatusTextView.setText(child.getOnlineStatus());
+        if( type == MoreListItemView.TYPE_ARROW_ITEM ){
+    		arrowHolder.titleTextView.setText(child.getTitle());
+    	}else if( type == MoreListItemView.TYPE_SWITCH_ITEM ){
+    		switchViewHolder.titleTextView.setText(child.getTitle());
+    		switchViewHolder.switchCmp.setChecked(child.getSwitchOn());
+    	}
+        
         return vi;
+    }
+    
+    static class ArrowViewHolder {
+    	TextView titleTextView;
+    }
+    
+    static class SwitchViewHolder {
+        TextView titleTextView;
+        Switch switchCmp;
     }
  
 }

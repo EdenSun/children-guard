@@ -1,19 +1,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingTop="10dip" 
-    android:paddingBottom="10dip" 
-    android:paddingLeft="5dip" 
-    android:paddingRight="5dip" 
+    style="@style/childManageMoreListItem"
     android:background="@drawable/list_selector">
  
     <TextView 
+        android:id="@+id/title"
         android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:text="Text"
         android:gravity="center_vertical"
+        style="@style/listItemTitle"
         />
     
     <!-- <Switch 
@@ -23,5 +21,14 @@
         android:textOn="On"
         android:textOff="Off"
         /> -->
- 	<include layout="@layout/cmp_switch" />
+ 	<!-- <include layout="@layout/cmp_switch" 
+ 	     android:gravity="center_vertical"
+ 	    /> -->
+ 	    
+ 	    <org.jraf.android.backport.switchwidget.Switch
+ 	        android:id="@+id/switchCmp"
+		    android:layout_width="wrap_content"
+		    android:layout_height="match_parent" 
+		    android:layout_weight="0"
+		    android:gravity="center_vertical"/>
 </LinearLayout>

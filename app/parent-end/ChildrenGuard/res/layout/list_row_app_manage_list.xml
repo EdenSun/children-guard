@@ -1,12 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:switchpref="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingTop="10dip" 
-    android:paddingBottom="10dip" 
-    android:paddingLeft="5dip" 
-    android:paddingRight="5dip" 
-    android:background="@drawable/list_selector">
+    android:background="@drawable/list_selector"
+    style="@style/childAppManageListItem">
  
     <TextView 
         android:layout_weight="1"
@@ -23,5 +21,14 @@
         android:textOn="Lock"
         android:textOff="Unlock"
         /> -->
- 	<include layout="@layout/cmp_switch" />
+ 	<!-- <include layout="@layout/cmp_switch" /> -->
+ 	
+ 	<org.jraf.android.backport.switchwidget.Switch
+		    android:layout_width="wrap_content"
+		    android:layout_height="match_parent" 
+		    android:layout_weight="0"
+		    android:gravity="center_vertical"
+		    switchpref:textOn="@string/switch_lock"
+		    switchpref:textOff="@string/switch_unlock"
+		    />
 </LinearLayout>

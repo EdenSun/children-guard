@@ -46,16 +46,69 @@ public class ChildManageMoreFragment extends Fragment{
 		ArrayList<MoreListItemView> list = new ArrayList<MoreListItemView>();
 		MoreListItemView view = null;
 		
-		for(int i=1;i<=20 ;i++){
-			view = new MoreListItemView();
-			/*view.setAppName("App-000" + i);
-			if( i%3 == 0 ){
-				view.setSwitchOn(true);
-			}else{
-				view.setLock(false);
-			}*/
-			list.add(view);
-		}
+		String title = null;
+		int type = 0;
+		Boolean switchOn = null;
+		
+		title = "Lock Phone";
+		type = MoreListItemView.TYPE_SWITCH_ITEM;
+		switchOn = false;
+		view = new MoreListItemView(title,type,switchOn);
+		list.add(view);
+		
+		title = "Lock Message";
+		type = MoreListItemView.TYPE_SWITCH_ITEM;
+		switchOn = false;
+		view = new MoreListItemView(title,type,switchOn);
+		list.add(view);
+		
+		title = "Wifi Only";
+		type = MoreListItemView.TYPE_SWITCH_ITEM;
+		switchOn = false;
+		view = new MoreListItemView(title,type,switchOn);
+		list.add(view);
+		
+		title = "Exception Phone";
+		type = MoreListItemView.TYPE_ARROW_ITEM;
+		switchOn = null;
+		view = new MoreListItemView(title,type,switchOn);
+		list.add(view);
+		
+		title = "Modify Lock Password";
+		type = MoreListItemView.TYPE_ARROW_ITEM;
+		switchOn = null;
+		view = new MoreListItemView(title,type,switchOn);
+		list.add(view);
+		
+		title = "New App Notify";
+		type = MoreListItemView.TYPE_ARROW_ITEM;
+		switchOn = null;
+		view = new MoreListItemView(title,type,switchOn);
+		list.add(view);
+
+		title = "Uninstall App Notify";
+		type = MoreListItemView.TYPE_ARROW_ITEM;
+		switchOn = null;
+		view = new MoreListItemView(title,type,switchOn);
+		list.add(view);
+		
+		title = "Network Traffic Exceed Notify";
+		type = MoreListItemView.TYPE_ARROW_ITEM;
+		switchOn = null;
+		view = new MoreListItemView(title,type,switchOn);
+		list.add(view);
+		
+		title = "Speeding Notify";
+		type = MoreListItemView.TYPE_ARROW_ITEM;
+		switchOn = null;
+		view = new MoreListItemView(title,type,switchOn);
+		list.add(view);
+		
+		title = "Lock/Unlock Notify";
+		type = MoreListItemView.TYPE_ARROW_ITEM;
+		switchOn = null;
+		view = new MoreListItemView(title,type,switchOn);
+		list.add(view);
 		
 		return new MoreListAdapter(this.getActivity(),list);
 	}

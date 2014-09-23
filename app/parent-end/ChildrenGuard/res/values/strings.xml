@@ -19,4 +19,10 @@
     <string name="childManageMoreFragment.moreTitleHeader">More</string>
 
     
+    
+    <string name="summary_on">The preference is on</string>
+    <string name="summary_off">The preference is off</string>
+    <string name="switch_lock">LOCK</string>
+    <string name="switch_unlock">UNLOCK</string>
+    
 </resources>
