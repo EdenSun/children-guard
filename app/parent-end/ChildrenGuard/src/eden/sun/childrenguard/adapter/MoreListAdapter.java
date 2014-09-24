@@ -14,7 +14,7 @@ import android.widget.TextView;
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.dto.MoreListItemView;
 
-public class MoreListAdapter extends BaseAdapter {
+public class MoreListAdapter extends BaseAdapter{
 	 
     private Activity context;
     private ArrayList<MoreListItemView> data;
@@ -32,7 +32,7 @@ public class MoreListAdapter extends BaseAdapter {
     }
  
     public Object getItem(int position) {
-        return position;
+        return data.get(position);
     }
  
     public long getItemId(int position) {
