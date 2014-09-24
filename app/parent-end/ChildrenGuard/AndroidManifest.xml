@@ -54,18 +54,25 @@
             android:label="@string/title_activity_main" >
         </activity>
         <activity
-            android:name="eden.sun.childrenguard.activity.ChildrenManageActivity"
-            android:label="@string/title_activity_children_manage">
+            android:name=".activity.ChildrenManageActivity"
+            android:label="@string/title_activity_children_manage" >
         </activity>
-        
         <activity
-            android:name="eden.sun.childrenguard.activity.NotifyMailManageActivity"
-            android:label="@string/title_activity_children_manage">
+            android:name=".activity.NotifyMailManageActivity"
+            android:label="@string/title_activity_children_manage" >
         </activity>
-        
         <activity
-            android:name="eden.sun.childrenguard.activity.NotifyMailAddActivity"
-            android:label="@string/title_activity_children_manage">
+            android:name=".activity.NotifyMailAddActivity"
+            android:label="@string/title_activity_children_manage" >
+        </activity>
+        <activity
+            android:name="eden.sun.childrenguard.activity.ExceptionPhoneManageActivity"
+            android:label="@string/title_activity_exception_phone" >
+        </activity>
+        <activity
+            android:name="eden.sun.childrenguard.activity.ModifyLockPasswordActivity"
+            android:label="@string/title_activity_modify_lock_password"
+            android:theme="@android:style/Theme.NoTitleBar"  >
         </activity>
     </application>
 
