@@ -1,6 +1,6 @@
 package eden.sun.childrenguard.dto;
 
-public class NotifyMailListItem {
+public class NotifyMailListItemView {
 	private Integer id;
 	private String name;
 	private String mail;

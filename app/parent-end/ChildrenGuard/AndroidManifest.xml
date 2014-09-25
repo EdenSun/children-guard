@@ -63,7 +63,9 @@
         </activity>
         <activity
             android:name=".activity.NotifyMailAddActivity"
-            android:label="@string/title_activity_notify_mail_add" >
+            android:label="@string/title_activity_notify_mail_add" 
+            android:theme="@android:style/Theme.NoTitleBar"
+            >
         </activity>
         <activity
             android:name=".activity.ExceptionPhoneManageActivity"

@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/android"
-    tools:context="eden.sun.childrenguard.activity.ChildrenListAddActivity" >
+    android:padding="0dp"
+    android:layout_margin="0dp"
+    tools:context="eden.sun.childrenguard.activity.NotifyMailManageActivity" >
 
    <ListView 
        android:id="@+id/list"

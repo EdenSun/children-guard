@@ -16,7 +16,7 @@ import eden.sun.childrenguard.adapter.ExceptionPhoneListAdapter;
 import eden.sun.childrenguard.dto.ExceptionPahoneListItemView;
 
 public class ExceptionPhoneManageActivity extends ActionBarActivity {
-private static final String TAG = "ExceptionPhoneManageActivity";
+	private static final String TAG = "ExceptionPhoneManageActivity";
 	
 	private ListView list;
 	private ExceptionPhoneListAdapter adapter;

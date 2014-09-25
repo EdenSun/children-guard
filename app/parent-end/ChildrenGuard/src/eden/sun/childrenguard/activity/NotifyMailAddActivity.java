@@ -4,15 +4,38 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import eden.sun.childrenguard.R;
 
 public class NotifyMailAddActivity extends Activity {
+	private Button addBtn;
+	private Button cancelBtn;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_notify_mail_add);
-		
+	
+		addBtn = (Button)findViewById(R.id.addBtn);
+		addBtn.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				NotifyMailAddActivity.this.finish();
+			}
+			
+		});
+		cancelBtn = (Button)findViewById(R.id.cancelBtn);
+		cancelBtn.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				NotifyMailAddActivity.this.finish();
+			}
+			
+		});
 	}
 
 	@Override

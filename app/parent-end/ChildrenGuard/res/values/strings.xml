@@ -37,6 +37,12 @@
 	<string name="exceptionPhoneAdd.phoneEditTextHint">Phone</string>
 	<string name="exceptionPhoneAdd.addBtn">Add</string>
 	<string name="exceptionPhoneAdd.cancelBtn">Cancel</string>
+	<string name="notifyMailAdd.title">Add Notify Mail</string>
 	
-    
+	<string name="notifyMailAdd.nameTextView">Name</string>
+	<string name="notifyMailAdd.mailTextView">Mail</string>
+	<string name="notifyMailAdd.nameEditTextHint">input name here</string>
+	<string name="notifyMailAdd.mailEditTextHint">input mail here</string>
+	<string name="notifyMailAdd.addBtn">Add</string>
+	<string name="notifyMailAdd.cancelBtn">Cancel</string>
 </resources>
