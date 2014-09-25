@@ -52,7 +52,7 @@ public class LoginActivity extends Activity {
         	
         });
         
-        registerBtn = (Button)findViewById(R.id.registerBtn);
+        registerBtn = (Button)findViewById(R.id.okBtn);
         registerBtn.setOnClickListener(new OnClickListener(){
 
 			@Override

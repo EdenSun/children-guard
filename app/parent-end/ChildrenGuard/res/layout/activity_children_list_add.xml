@@ -20,7 +20,7 @@
  	    />
 
     <TextView
-        android:id="@+id/childIpTextView"
+        android:id="@+id/passwordTextView"
         android:layout_width="125dp"
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
@@ -36,7 +36,7 @@
         android:layout_height="40dp"
         android:layout_alignLeft="@+id/titleTextView"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/childIpTextView"
+        android:layout_alignTop="@+id/passwordTextView"
         android:hint="Child Mobile"
         android:textColor="#000000"
         android:textSize="15dp" />
@@ -45,7 +45,7 @@
         android:id="@+id/childNameTextView"
         android:layout_width="125dp"
         android:layout_height="40dp"
-        android:layout_below="@+id/childIpTextView"
+        android:layout_below="@+id/passwordTextView"
         android:layout_toLeftOf="@+id/childNameEditText"
         android:text="Child Name"
         android:textColor="#fff"

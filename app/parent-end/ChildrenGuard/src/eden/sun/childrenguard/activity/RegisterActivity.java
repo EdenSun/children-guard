@@ -25,7 +25,7 @@ public class RegisterActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
 		
-		registerBtn = (Button)findViewById(R.id.registerBtn);
+		registerBtn = (Button)findViewById(R.id.okBtn);
 		registerBtn.setOnClickListener(new OnClickListener(){
 
 			@Override

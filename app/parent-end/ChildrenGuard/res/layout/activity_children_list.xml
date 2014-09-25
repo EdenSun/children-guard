@@ -15,7 +15,6 @@
         style="@style/commonList"
         />
         <!-- android:listSelector="@drawable/list_selector" -->
-
 </LinearLayout>
 <!-- <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
