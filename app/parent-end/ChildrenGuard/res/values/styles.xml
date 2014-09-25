@@ -54,7 +54,13 @@
         <item name="android:typeface">sans</item>
         <item name="android:textSize">15dip</item>
         <item name="android:textStyle">bold</item>
-    </style> 
+    </style>
+    
+    <style name="listItemPhone">
+        <item name="android:textColor">#343434</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:textSize">15dip</item>
+    </style>
     
     <style name="childManageMoreListItem">
         <item name="android:paddingTop">12dp</item>

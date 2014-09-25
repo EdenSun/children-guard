@@ -1,62 +1,50 @@
 package eden.sun.childrenguard.activity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import eden.sun.childrenguard.R;
 
-public class ChildrenListAddActivity extends Activity {
-	private Button addChildBtn;
+public class ExceptionPhoneAddActivity extends Activity {
+	private Button addBtn;
 	private Button cancelBtn;
-	
+	private EditText phoneEditText;
+	private EditText nameEditText;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_children_list_add);
+		setContentView(R.layout.activity_exception_phone_add);
 		
-		addChildBtn = (Button)findViewById(R.id.addBtn);
-		
-		addChildBtn.setOnClickListener(new OnClickListener() {
-			
+		addBtn = (Button)findViewById(R.id.addBtn);
+		addBtn.setOnClickListener(new OnClickListener(){
+
 			@Override
 			public void onClick(View v) {
-				new AlertDialog.Builder(ChildrenListAddActivity.this)
-		        .setIcon(android.R.drawable.ic_dialog_alert)
-		        .setTitle("Add Child")
-		        .setMessage("Add Child Success!")
-		        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-		            @Override
-		            public void onClick(DialogInterface dialog, int which) {
-		            	ChildrenListAddActivity.this.finish();
-		            }
-
-		        })
-		        .show();
+				// TODO Auto-generated method stub
+				ExceptionPhoneAddActivity.this.finish();
 			}
 		});
 		cancelBtn = (Button)findViewById(R.id.cancelBtn);
-		cancelBtn.setOnClickListener(new OnClickListener() {
-			
+		cancelBtn.setOnClickListener(new OnClickListener(){
+
 			@Override
 			public void onClick(View v) {
-				ChildrenListAddActivity.this.finish();
+				// TODO Auto-generated method stub
+				ExceptionPhoneAddActivity.this.finish();
 			}
 		});
-		
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.children_list_add, menu);
+		getMenuInflater().inflate(R.menu.exception_phone_add, menu);
 		return true;
 	}
 

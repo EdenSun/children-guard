@@ -3,29 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/android"
-    tools:context="eden.sun.childrenguard.activity.ChildrenListAddActivity" >
+    tools:context="eden.sun.childrenguard.activity.ExceptionPhoneAddActivity" >
 
     <TextView
  	    android:id="@+id/titleTextView"
  	    android:layout_width="wrap_content"
  	    android:layout_height="wrap_content"
- 	    android:layout_alignParentTop="true"
- 	    android:layout_centerHorizontal="true"
- 	    android:layout_gravity="center"
- 	    android:text="Add Child"
- 	    android:textColor="#fff"
- 	    android:textSize="20sp"
- 	    android:paddingTop="30dp"
- 	    android:paddingBottom="30dp" 
+ 	    android:text="Add Exception Phone"
+ 	    style="@style/commonPageTitle"
  	    />
 
     <TextView
-        android:id="@+id/passwordTextView"
+        android:id="@+id/nameTextView"
         android:layout_width="125dp"
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/titleTextView"
-        android:text="Child Mobile"
+        android:text="@string/exceptionPhoneAdd.nameTextView"
         android:textColor="#fff"
         android:textSize="15dp" 
         android:gravity="center_vertical"/>
@@ -36,18 +30,18 @@
         android:layout_height="40dp"
         android:layout_alignLeft="@+id/titleTextView"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/passwordTextView"
-        android:hint="Child Mobile"
+        android:layout_alignTop="@+id/nameTextView"
+        android:hint="@string/exceptionPhoneAdd.phoneEditTextHint"
         android:textColor="#000000"
         android:textSize="15dp" />
 
     <TextView
-        android:id="@+id/childNameTextView"
+        android:id="@+id/phoneTextView"
         android:layout_width="125dp"
         android:layout_height="40dp"
-        android:layout_below="@+id/passwordTextView"
+        android:layout_below="@+id/nameTextView"
         android:layout_toLeftOf="@+id/nameEditText"
-        android:text="Child Name"
+        android:text="@string/exceptionPhoneAdd.phoneTextView"
         android:textColor="#fff"
         android:textSize="15dp" 
         android:gravity="center_vertical"/>
@@ -58,8 +52,8 @@
         android:layout_height="40dp"
         android:layout_alignLeft="@+id/phoneEditText"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/childNameTextView"
-        android:hint="Child Name"
+        android:layout_alignTop="@+id/phoneTextView"
+        android:hint="@string/exceptionPhoneAdd.nameEditTextHint"
         android:textColor="#000000"
         android:textSize="15dp" />
 
@@ -69,9 +63,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/childNameTextView"
+        android:layout_below="@+id/phoneTextView"
         android:layout_marginTop="21dp"
-        android:text="Add Child" />
+        android:text="@string/exceptionPhoneAdd.addBtn" />
 
     <Button
         android:id="@+id/cancelBtn"
@@ -80,6 +74,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/addBtn"
-        android:text="Cancel" />
+        android:text="@string/exceptionPhoneAdd.cancelBtn" />
 
 </RelativeLayout>
+
