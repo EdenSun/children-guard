@@ -1,0 +1,47 @@
+
+1. 给Client Session或 channel 添加监听器，监听消息收发
+
+Client Sessions and Listeners
+
+Examples of client session listeners include the following:
+
+You can add extensions to a client session to interact with the incoming and outgoing messages that arrive and that the session sends, via ClientSession.addExtension(ClientSession.Extension).
+
+A client session is a repository for channels; you can add message listeners to a channel to notify you when a message arrives on that particular channel, via ClientSession.getChannel(String).addListener(ClientSessionChannel.MessageListener).
+
+2. Server listeners
+BayeuxServer allows you to add listeners that it notifies when channels are created or destroyed via BayeuxServer.addListener(BayeuxServer.ChannelListener), and when server sessions are created or destroyed via BayeuxServer.addListener(BayeuxServer.SessionListener).
+
+ServerChannel allows you to add authorizers via ServerChannel.addAuthorizer(Authorizer), and listeners that get notified when a message arrives on the channel via ServerChannel.addListener(ServerChannel.MessageListener), or when a client subscribes or unsubscribes to the channel via ServerChannel.addListener(ServerChannel.SubscriptionListener).
+
+ServerSession allows you to add listeners that get notified when the session is removed (for example because the client disconnects, or because the client disappears and therefore the server expires the correspondent server session) via ServerSession.addListener(ServerSession.RemoveListener).
+
+ServerSession allows you add listeners that can interact with the server session’s message queue for example to detect when a message is added to the queue, via ServerSession.addListener(ServerSession.QueueListener), or when the queue is exceed a maximum number of messages, via ServerSession.addListener(ServerSession.MaxQueueListener), or when the queue is ready to be sent via ServerSession.addListener(ServerSession.DeQueueListener).
+
+ServerSession allows you add listeners that get notified when a message is received by the server session (no matter on which channel) via ServerSession.addListener(ServerSession.MessageListener).
+
+-----------
+Server End 如果需要执行耗时操作，需要在新线程中：
+@Service
+public class MyService
+{
+    @Inject
+    private BayeuxServer bayeuxServer;
+    @Session
+    private LocalSession localSession;
+
+    @Listener("/service/query")
+    public void processQuery(final ServerSession remoteSession, final ServerMessage message)
+    {
+        new Thread()
+        {
+            public void run()
+            {
+                Map<String, Object> data = performTimeConsumingTask(message);
+
+                // Send data to client once the time consuming task is finished
+                remoteSession.deliver(localSession, message.getChannel(), responseData);
+            }
+        }.start();
+    }
+}
