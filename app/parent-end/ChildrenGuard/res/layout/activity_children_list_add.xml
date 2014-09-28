@@ -50,7 +50,8 @@
         android:text="Child Name"
         android:textColor="#fff"
         android:textSize="15dp" 
-        android:gravity="center_vertical"/>
+        android:gravity="center_vertical"
+        android:layout_alignParentLeft="true"/>
 
     <EditText
         android:id="@+id/nameEditText"
