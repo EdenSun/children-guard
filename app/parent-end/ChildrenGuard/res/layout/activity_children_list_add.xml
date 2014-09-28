@@ -1,86 +1,90 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+	android:orientation="vertical"
     android:background="@drawable/android"
     tools:context="eden.sun.childrenguard.activity.ChildrenListAddActivity" >
 
     <TextView
  	    android:id="@+id/titleTextView"
- 	    android:layout_width="wrap_content"
+ 	    android:layout_width="match_parent"
  	    android:layout_height="wrap_content"
  	    android:layout_alignParentTop="true"
  	    android:layout_centerHorizontal="true"
  	    android:layout_gravity="center"
  	    android:text="Add Child"
- 	    android:textColor="#fff"
- 	    android:textSize="20sp"
- 	    android:paddingTop="30dp"
- 	    android:paddingBottom="30dp" 
+ 	    style="@style/commonPageTitle"
  	    />
 
-    <TextView
-        android:id="@+id/passwordTextView"
-        android:layout_width="125dp"
-        android:layout_height="40dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/titleTextView"
-        android:text="Child Mobile"
-        android:textColor="#fff"
-        android:textSize="15dp" 
-        android:gravity="center_vertical"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+	        android:id="@+id/passwordTextView"
+	        android:layout_width="100dp"
+	        android:layout_height="40dp"
+	        android:text="Child Mobile"
+	        android:textColor="#fff"
+	        android:textSize="15dp" 
+	        android:gravity="center_vertical"
+	        android:layout_weight="0"
+	        />
+	
+	    <EditText
+	        android:id="@+id/phoneEditText"
+	        android:layout_width="wrap_content"
+	        android:layout_height="40dp"
+	        android:hint="Child Mobile"
+	        android:textColor="#000000"
+	        android:textSize="15dp" 
+	        android:layout_weight="1"/>
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+	    <TextView
+	        android:id="@+id/childNameTextView"
+	        android:layout_width="100dp"
+	        android:layout_height="40dp"
+	        android:text="Child Name"
+	        android:textColor="#fff"
+	        android:textSize="15dp" 
+	        android:layout_weight="0"
+	        />
+	
+	    <EditText
+	        android:id="@+id/nameEditText"
+	        android:layout_width="wrap_content"
+	        android:layout_height="40dp"
+	        android:hint="Child Name"
+	        android:textColor="#000000"
+	        android:textSize="15dp" 
+	        android:layout_weight="1"
+	        />
+        
+	</LinearLayout>
+    
 
-    <EditText
-        android:id="@+id/phoneEditText"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:layout_alignLeft="@+id/titleTextView"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/passwordTextView"
-        android:hint="Child Mobile"
-        android:textColor="#000000"
-        android:textSize="15dp" />
-
-    <TextView
-        android:id="@+id/childNameTextView"
-        android:layout_width="125dp"
-        android:layout_height="40dp"
-        android:layout_below="@+id/passwordTextView"
-        android:layout_toLeftOf="@+id/nameEditText"
-        android:text="Child Name"
-        android:textColor="#fff"
-        android:textSize="15dp" 
-        android:gravity="center_vertical"
-        android:layout_alignParentLeft="true"/>
-
-    <EditText
-        android:id="@+id/nameEditText"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:layout_alignLeft="@+id/phoneEditText"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/childNameTextView"
-        android:hint="Child Name"
-        android:textColor="#000000"
-        android:textSize="15dp" />
-
-    <Button
-        android:id="@+id/addBtn"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/childNameTextView"
-        android:layout_marginTop="21dp"
-        android:text="Add Child" />
+        android:layout_marginTop="10dp">
+	    <Button
+	        android:id="@+id/addBtn"
+	        android:layout_width="wrap_content"
+	        android:layout_height="40dp"
+	        android:text="Add Child" 
+	        android:layout_weight="1"/>
+	
+	    <Button
+	        android:id="@+id/cancelBtn"
+	        android:layout_width="wrap_content"
+	        android:layout_height="40dp"
+	        android:text="Cancel"
+	        android:layout_weight="1" />
+	</LinearLayout>
+    
 
-    <Button
-        android:id="@+id/cancelBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/addBtn"
-        android:text="Cancel" />
-
-</RelativeLayout>
+</LinearLayout>

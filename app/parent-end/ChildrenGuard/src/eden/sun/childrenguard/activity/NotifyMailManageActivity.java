@@ -2,9 +2,9 @@ package eden.sun.childrenguard.activity;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +15,7 @@ import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.adapter.NotifyMailListAdapter;
 import eden.sun.childrenguard.dto.NotifyMailListItemView;
 
-public class NotifyMailManageActivity extends Activity {
+public class NotifyMailManageActivity extends ActionBarActivity {
 	private ListView notifyMailList;
 	private NotifyMailListAdapter notifyMailListAdapter;
 	
@@ -73,7 +73,7 @@ public class NotifyMailManageActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.notify_mail_manage, menu);
+		getMenuInflater().inflate(R.menu.menu_notify_mail_manage, menu);
 		return true;
 	}
 

@@ -44,7 +44,7 @@ public class LoginActivity extends Activity {
 					}    
 				};    
 				timer = new Timer();  
-				timer.schedule(task, 100);
+				timer.schedule(task, 1000);
 				
 				
 				

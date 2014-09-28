@@ -1,12 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="eden.sun.childrenguard.ChildrenManageActivity" >
+    tools:context="eden.sun.childrenguard.NotifyMailManageActivity" >
 
     <item
         android:id="@+id/action_add"
         android:orderInCategory="100"
         android:title="@string/action_add"
-        app:showAsAction="never"/>
+        app:showAsAction="ifRoom|withText"/>
 
 </menu>
