@@ -1,4 +1,3 @@
-
 package eden.sun.childrenguard.server;
 
 import java.util.HashMap;
@@ -34,10 +33,10 @@ public class HelloService
     @Listener("/service/hello")
     public void processHello(ServerSession remote, ServerMessage message)
     {
-        Map<String, Object> input = message.getDataAsMap();
+    	Map<String, Object> input = message.getDataAsMap();
         String name = (String)input.get("name");
 
-        Map<String, Object> output = new HashMap<>();
+        Map<String, Object> output = new HashMap<String, Object>();
         output.put("greeting", "Hello, " + name);
         remote.deliver(serverSession, "/hello", output);
     }
