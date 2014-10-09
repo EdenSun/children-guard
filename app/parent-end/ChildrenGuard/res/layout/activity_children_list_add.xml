@@ -13,7 +13,7 @@
  	    android:layout_alignParentTop="true"
  	    android:layout_centerHorizontal="true"
  	    android:layout_gravity="center"
- 	    android:text="Add Child"
+ 	    android:text="Add Person"
  	    style="@style/commonPageTitle"
  	    />
 
@@ -24,7 +24,7 @@
 	        android:id="@+id/passwordTextView"
 	        android:layout_width="100dp"
 	        android:layout_height="40dp"
-	        android:text="Child Mobile"
+	        android:text="Person Mobile"
 	        android:textColor="#fff"
 	        android:textSize="15dp" 
 	        android:gravity="center_vertical"
@@ -35,7 +35,7 @@
 	        android:id="@+id/phoneEditText"
 	        android:layout_width="wrap_content"
 	        android:layout_height="40dp"
-	        android:hint="Child Mobile"
+	        android:hint="Person Mobile"
 	        android:textColor="#000000"
 	        android:textSize="15dp" 
 	        android:layout_weight="1"/>
@@ -48,7 +48,7 @@
 	        android:id="@+id/childNameTextView"
 	        android:layout_width="100dp"
 	        android:layout_height="40dp"
-	        android:text="Child Name"
+	        android:text="Person Name"
 	        android:textColor="#fff"
 	        android:textSize="15dp" 
 	        android:layout_weight="0"
@@ -58,7 +58,7 @@
 	        android:id="@+id/nameEditText"
 	        android:layout_width="wrap_content"
 	        android:layout_height="40dp"
-	        android:hint="Child Name"
+	        android:hint="Person Name"
 	        android:textColor="#000000"
 	        android:textSize="15dp" 
 	        android:layout_weight="1"
@@ -75,7 +75,7 @@
 	        android:id="@+id/addBtn"
 	        android:layout_width="wrap_content"
 	        android:layout_height="40dp"
-	        android:text="Add Child" 
+	        android:text="Add Person" 
 	        android:layout_weight="1"/>
 	
 	    <Button
