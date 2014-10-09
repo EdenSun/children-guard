@@ -15,14 +15,14 @@ import org.cometd.bayeux.server.BayeuxServer;
 import org.cometd.bayeux.server.ServerMessage;
 import org.cometd.bayeux.server.ServerSession;
 
-import eden.sun.childrenguard.server.dto.LoginViewDTO;
+import eden.sun.childrenguard.server.dto.RegisterViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.service.IAuthService;
 
 @Named
 @Singleton
-@Service("loginService")
-public class LoginService extends BaseCometService{
+@Service("registerService")
+public class RegisterService extends BaseCometService{
 	@Inject
 	private BayeuxServer bayeux;
 	@Session
@@ -34,19 +34,21 @@ public class LoginService extends BaseCometService{
 	public void init() {
 	}
 	
-	@Listener("/service/login")
-	public void processLogin(ServerSession remote, ServerMessage message) {
-		System.out.println("/service/login");
+	@Listener("/service/register")
+	public void processRegister(ServerSession remote, ServerMessage message) {
+		logger.info("/service/register");
 		Map<String, Object> input = message.getDataAsMap();
-		String username = (String) input.get("username");
+		String firstName = (String) input.get("firstName");
+		String lastName = (String) input.get("lastName");
+		String email = (String) input.get("email");
 		String password = (String) input.get("password");
-		System.out.println(username + "|" +password);
+		logger.info("Login(" + firstName + "," + lastName + "," + email + "," + password + ")");
 		
-		ViewDTO<LoginViewDTO> view = authService.login(username,password);
+		ViewDTO<RegisterViewDTO> view = authService.register(firstName,lastName,email,password);
 		
 		Map<String, Object> output = new HashMap<String, Object>();
-		output.put("greeting", "Hello, " + username + "-" + password);
+		output.put("greeting", "register, " + email + "-" + password);
 		
-		remote.deliver(serverSession, "/service/login", output);
+		remote.deliver(serverSession, "/service/register", output);
 	}
 }

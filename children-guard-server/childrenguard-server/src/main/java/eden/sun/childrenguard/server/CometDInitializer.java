@@ -17,7 +17,6 @@ import org.springframework.beans.factory.config.DestructionAwareBeanPostProcesso
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.ServletContextAware;
-
 @Component
 public class CometDInitializer implements ServletContextAware
 {

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation=" http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+    <context:component-scan base-package="eden.sun.childrenguard.server" />
+	<!-- <mvc:annotation-driven /> -->
+	
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:db-config.properties" />
+	</bean>
+	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
+	</bean>
+
+	<!-- c3p0 datasource -->
+	<bean id="dataSource" 
+		class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${db.driver}"></property>
+		<property name="jdbcUrl" value="${db.url}"></property>
+		<property name="user" value="${db.username}"></property>
+		<property name="password" value="${db.password}"></property>
+		<property name="initialPoolSize" value="${db.initialPoolSize}"></property>
+		<property name="minPoolSize" value="${db.minPoolSize}"></property>
+		<property name="maxPoolSize" value="${db.maxPoolSize}"></property>
+		<property name="maxIdleTime" value="${db.maxIdleTime}"></property>
+		<property name="acquireIncrement" value="${db.acquireIncrement}"></property>
+		<property name="idleConnectionTestPeriod" value="${db.idleConnectionTestPeriod}"></property>
+		<property name="acquireRetryAttempts" value="${db.acquireRetryAttempts}"></property>
+		<property name="breakAfterAcquireFailure" value="${db.breakAfterAcquireFailure}"></property>
+		<property name="maxStatements" value="${db.maxStatements}"></property>
+		<property name="testConnectionOnCheckout" value="${db.testConnectionOnCheckout}"></property>
+		<property name="numHelperThreads" value="${db.numHelperThreads}"></property>
+		<property name="preferredTestQuery" value="${db.preferredTestQuery}"></property>
+		<property name="maxAdministrativeTaskTime" value="${db.maxAdministrativeTaskTime}"></property>
+	</bean>
+	
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage"
+			value="eden.sun.childrenguard.server.dao" />
+	</bean>
+	
+	<!--事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true" propagation="REQUIRED" />
+			<tx:method name="list*" read-only="true" propagation="REQUIRED" />
+			<tx:method name="page*" read-only="true" propagation="REQUIRED" />
+			<tx:method name="*" read-only="false" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:pointcut id="serviceMethods"
+			expression="execution (* eden.sun.childrenguard.server.service.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods" />
+	</aop:config>
+</beans>
