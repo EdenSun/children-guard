@@ -13,12 +13,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import eden.sun.childrenguard.R;
+import eden.sun.childrenguard.util.Runtime;
 
 
 public class LoginActivity extends Activity {
 	private Button loginBtn;
 	private Button registerBtn ;
 	private Button forgetPasswordBtn;
+	private Runtime runtime;
 	
 	private ProgressDialog progress;
     @Override
@@ -94,4 +96,13 @@ public class LoginActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		runtime = Runtime.getInstance();
+	}
+    
+    
 }
