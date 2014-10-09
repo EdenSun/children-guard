@@ -12,7 +12,8 @@ import org.cometd.client.transport.LongPollingTransport;
 import org.eclipse.jetty.client.HttpClient;
 
 public class SubscribeDemo {
-	private static final String CHANNEL = "/service/login";
+	private static final String LOGIN_CHANNEL = "/service/login";
+	private static final String REGISTER_CHANNEL = "/service/register";
     private final ClientSessionChannel.MessageListener fooListener = new FooListener();
      
 	public static void main(String[] args) throws Exception{
@@ -31,7 +32,6 @@ public class SubscribeDemo {
 		ClientTransport transport = new LongPollingTransport(options, httpClient);
         ClientSession client = new BayeuxClient("http://localhost:8080/childrenguard-server/cometd", transport);
        
-        final ClientSession finalClient = client;
         client.handshake(null,new ClientSessionChannel.MessageListener()
 		{
 		    public void onMessage(ClientSessionChannel channel, Message message)
@@ -40,23 +40,18 @@ public class SubscribeDemo {
 		        if (message.isSuccessful())
 		        {
 		        	System.out.println("success connect to server -" + message);
-		        	finalClient.getChannel(CHANNEL).subscribe(fooListener);
+		        	//finalClient.getChannel(CHANNEL).subscribe(fooListener);
 		            // Here handshake is successful
 		        }
 		    }
 		});
         
-        Thread.sleep(1000);
+        client.getChannel(REGISTER_CHANNEL).subscribe(fooListener);
         
         Map<String, Object> data = new HashMap<String, Object>();
-	     // Fill in the data
-        data.put("username", "eden");
-        data.put("password", "123123");
-	    client.getChannel(CHANNEL).publish(data);
-	    
-	    data.put("username", "eden1");
+	    data.put("username", "cccc");
         data.put("password", "222222");
-	    client.getChannel(CHANNEL).publish(data);
+	    client.getChannel(REGISTER_CHANNEL).publish(data);
 	}
 	
 	
