@@ -1,9 +1,8 @@
 package eden.sun.childrenguard.activity;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.HashMap;
+import java.util.Map;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,16 +12,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import eden.sun.childrenguard.R;
+import eden.sun.childrenguard.comet.LoginListener;
+import eden.sun.childrenguard.util.CometdConfig;
 import eden.sun.childrenguard.util.Runtime;
 
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends CommonActivity {
 	private Button loginBtn;
 	private Button registerBtn ;
 	private Button forgetPasswordBtn;
 	private Runtime runtime;
 	
-	private ProgressDialog progress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,26 +30,17 @@ public class LoginActivity extends Activity {
         
         loginBtn = (Button)findViewById(R.id.loginBtn);
         loginBtn.setOnClickListener(new OnClickListener(){
-
+        	
 			@Override
 			public void onClick(View arg0) {
-				progress = ProgressDialog.show(LoginActivity.this, "Login",
-				    "Please wait...", true);
-
-				Timer timer;
-				TimerTask task = new TimerTask(){    
-					public void run(){    
-						progress.dismiss();
-						
-						Intent it = new Intent(LoginActivity.this, ChildrenListActivity.class);
-						startActivity(it);
-					}    
-				};    
-				timer = new Timer();  
-				timer.schedule(task, 1000);
+				String title = "Login";
+				String msg = "Please wait...";
+				showProgressDialog(title,msg);
 				
-				
-				
+				Map<String, Object> data = new HashMap<String,Object>();
+				data.put("username", "eden");
+				data.put("password", "password");
+				runtime.publish(data, CometdConfig.LOGIN_CHANNEL, new LoginListener(LoginActivity.this));
 			}
         	
         });
@@ -101,8 +92,7 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		runtime = Runtime.getInstance();
+		runtime = Runtime.getInstance(LoginActivity.this);
 	}
-    
     
 }
