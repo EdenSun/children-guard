@@ -27,7 +27,7 @@
 		<jstl.version>1.2</jstl.version>
 		<jackson.version>1.9.10</jackson.version>
 	</properties>
-	
+
     <build>
         <defaultGoal>install</defaultGoal>
         <plugins>
