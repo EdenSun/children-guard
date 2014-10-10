@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import org.apache.log4j.Logger;
 import org.cometd.annotation.Listener;
 import org.cometd.annotation.Service;
 import org.cometd.annotation.Session;
@@ -23,6 +24,7 @@ import eden.sun.childrenguard.server.service.IAuthService;
 @Singleton
 @Service("loginService")
 public class LoginService extends BaseCometService{
+	private Logger logger = Logger.getLogger(LoginService.class);
 	@Inject
 	private BayeuxServer bayeux;
 	@Session
@@ -40,7 +42,7 @@ public class LoginService extends BaseCometService{
 		Map<String, Object> input = message.getDataAsMap();
 		String username = (String) input.get("username");
 		String password = (String) input.get("password");
-		System.out.println(username + "|" +password);
+		logger.info("user login:" + username );
 		
 		ViewDTO<LoginViewDTO> view = authService.login(username,password);
 		
