@@ -3,9 +3,10 @@ package eden.sun.childrenguard.activity;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -15,9 +16,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import eden.sun.childrenguard.R;
+import eden.sun.childrenguard.activity.LoginActivity.LoginTask;
 import eden.sun.childrenguard.comet.RegisterListener;
 import eden.sun.childrenguard.util.CometdConfig;
-import eden.sun.childrenguard.util.Runtime;
 import eden.sun.childrenguard.util.StringUtil;
 import eden.sun.childrenguard.util.UIUtil;
 
@@ -35,8 +36,6 @@ public class RegisterActivity extends CommonActivity {
 	
 	/* END - ui components */
 	
-	private Runtime runtime;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,59 +50,49 @@ public class RegisterActivity extends CommonActivity {
 		registerBtn = (Button)findViewById(R.id.registerBtn);
 		registerBtn.setOnClickListener(new OnClickListener(){
 
-			@Override
+			/*@Override
 			public void onClick(View arg0) {
 				boolean valid = doValidation();
 				
 				if( valid ){
-					String title = "Register";
-					String msg = "Please wait...";
-					showProgressDialog(title,msg);
 
-					Map<String, Object> data = new HashMap<String,Object>();
+					AsyncTask<Map<String, Object>,Integer,Boolean> task = new RegisterTask(RegisterActivity.this);
 					
 					String firstName = firstNameEditText.getText().toString().trim();
 					String lastName = lastNameEditText.getText().toString().trim();
 					String email = emailEditText.getText().toString().trim();
 					String password = passwordEditText.getText().toString().trim();
 					
+					Map<String, Object> data = new HashMap<String,Object>();
+					
 					data.put("firstName", firstName);
 					data.put("lastName", lastName);
 					data.put("email", email);
 					data.put("password", password);
 					
-					runtime.publish(data, CometdConfig.REGISTER_CHANNEL, new RegisterListener(RegisterActivity.this));
+					task.execute(data);
 					
-						
-						/*Timer timer;
-						TimerTask task = new TimerTask(){
-							public void run(){    
-								progress.dismiss();
-								
-								RegisterActivity.this.runOnUiThread(new Runnable(){
+				}
+				
+			}*/
+			
+			//TODO: TEST
+			@Override
+			public void onClick(View arg0) {
+				//boolean valid = doValidation();
+				if( true ){
 
-									@Override
-									public void run() {
-										new AlertDialog.Builder(RegisterActivity.this)
-								        .setIcon(android.R.drawable.ic_dialog_alert)
-								        .setTitle("Register")
-								        .setMessage("Register Success! Click OK to Login.")
-								        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			
-								            @Override
-								            public void onClick(DialogInterface dialog, int which) {
-								            	RegisterActivity.this.finish();
-								            }
-			
-								        })
-								        .show();
-									}
-									
-								});
-							}    
-						};
-						timer = new Timer();  
-						timer.schedule(task, 3000);*/
+					AsyncTask<Map<String, Object>,Integer,Boolean> task = new RegisterTask(RegisterActivity.this);
+					
+					Map<String, Object> data = new HashMap<String,Object>();
+					
+					data.put("firstName", "eden");
+					data.put("lastName", "sun");
+					data.put("email", "eden@test.com");
+					data.put("password", "password");
+					
+					task.execute(data);
+					
 				}
 				
 			}
@@ -287,6 +276,40 @@ public class RegisterActivity extends CommonActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		runtime = Runtime.getInstance(RegisterActivity.this);
+		
+		runtime.subscribe(CometdConfig.REGISTER_CHANNEL,new RegisterListener(RegisterActivity.this));
+	}
+	
+	class RegisterTask extends AsyncTask<Map<String, Object>,Integer,Boolean>{
+		private Activity context;
+		
+		public RegisterTask(Activity context) {
+			super();
+			this.context = context;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			String title = "Register";
+			String msg = "Please wait...";
+			showProgressDialog(title,msg);
+		}
+
+		@Override
+		protected Boolean doInBackground(Map<String, Object>... params) {
+			Map<String, Object> data = params[0];
+			
+			runtime.publish(data, CometdConfig.REGISTER_CHANNEL);
+			return true;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			super.onPostExecute(result);
+			
+			dismissProgressDialog();
+		}
+		
 	}
 }

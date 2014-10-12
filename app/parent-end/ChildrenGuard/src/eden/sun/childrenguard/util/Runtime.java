@@ -1,6 +1,8 @@
 package eden.sun.childrenguard.util;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.cometd.bayeux.Message;
@@ -48,7 +50,7 @@ public class Runtime {
 		{
 		    public void onMessage(ClientSessionChannel channel, Message message)
 		    {
-		    	System.out.println("fail to connect to server.");
+		    	
 		        if (message.isSuccessful())
 		        {
 		        	Log.i(TAG,"success connect to server -" + message);
@@ -63,9 +65,19 @@ public class Runtime {
 		        	});
 		        	
 		        	
-					
 		        	//finalClient.getChannel(CHANNEL).subscribe(fooListener);
 		            // Here handshake is successful
+		        }else{
+		        	Log.i(TAG,"Fail to connect to server.Try again...");
+		        	
+		        	context.runOnUiThread(new Runnable(){
+		    			@Override
+		    			public void run() {
+		    				Toast toast = UIUtil.getToast(context,"Fail to connect to server.Try again...");
+							toast.show();
+		    			}
+		    			
+		        	});
 		        }
 		    }
 		});
@@ -74,10 +86,10 @@ public class Runtime {
 	}
 
 
-	/*private void subscribe(ClientSession client) {
-		client.getChannel(CometdConfig.LOGIN_CHANNEL).subscribe(new LoginListener());
-		client.getChannel(CometdConfig.REGISTER_CHANNEL).subscribe(new RegisterListener());
-	}*/
+	private void subscribe(ClientSession client) {
+		/*client.getChannel(CometdConfig.LOGIN_CHANNEL).subscribe(new LoginListener());
+		client.getChannel(CometdConfig.REGISTER_CHANNEL).subscribe(new RegisterListener());*/
+	}
 
 	public void publish(Map<String, Object> data,String channel){
 	    this.clientSession.getChannel(channel).publish(data);
@@ -103,6 +115,52 @@ public class Runtime {
 
 		runtime.context = context;
 		return runtime;
+	}
+
+	public void subscribe(String channel,MessageListener listener) {
+		/*if( hasNotSubscribed(clientSession,channel,listener) ){
+			clientSession.getChannel(channel).subscribe(listener);
+		}*/
+		
+		MessageListener existsListener = getSubscriberByType(channel,listener.getClass());
+		
+		if( existsListener != null ){
+			clientSession.getChannel(channel).unsubscribe(existsListener);
+		}
+		
+		clientSession.getChannel(channel).subscribe(listener);
+	}
+
+	private MessageListener getSubscriberByType(
+			String channel,
+			Class<? extends MessageListener> clazz) {
+		List<MessageListener> messageListenerList = clientSession.getChannel(channel).getSubscribers();
+		for(Iterator<MessageListener> it=messageListenerList.iterator();it.hasNext();){
+			MessageListener curListener = it.next();
+			
+			if (curListener.getClass().equals(clazz) ){
+				return curListener;
+			}
+		}
+		
+		return null;
+	}
+
+	private boolean hasNotSubscribed(ClientSession clientSession,
+			String channel,
+			MessageListener listener) {
+		boolean hasNotSubscribed = true;
+		List<MessageListener> messageListenerList = clientSession.getChannel(channel).getSubscribers();
+		for(Iterator<MessageListener> it=messageListenerList.iterator();it.hasNext();){
+			MessageListener curListener = it.next();
+			
+			if (curListener.getClass().equals(listener.getClass()) ){
+				hasNotSubscribed = false;
+				break;
+			}
+		}
+		
+		return hasNotSubscribed;
 	}
 
 	/*public HttpClient getHttpClient() {

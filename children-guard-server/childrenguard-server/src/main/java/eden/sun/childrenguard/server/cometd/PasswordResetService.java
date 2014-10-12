@@ -22,9 +22,9 @@ import eden.sun.childrenguard.server.service.IAuthService;
 
 @Named
 @Singleton
-@Service("loginService")
-public class LoginService extends BaseCometService{
-	private Logger logger = Logger.getLogger(LoginService.class);
+@Service("passwordResetService")
+public class PasswordResetService extends BaseCometService{
+	private Logger logger = Logger.getLogger(PasswordResetService.class);
 	@Inject
 	private BayeuxServer bayeux;
 	@Session
@@ -36,19 +36,18 @@ public class LoginService extends BaseCometService{
 	public void init() {
 	}
 	
-	@Listener("/service/login")
-	public void processLogin(ServerSession remote, ServerMessage message) {
-		System.out.println("/service/login");
+	@Listener("/service/passwordReset")
+	public void passwordReset(ServerSession remote, ServerMessage message) {
+		System.out.println("/service/passwordReset");
 		Map<String, Object> input = message.getDataAsMap();
-		String username = (String) input.get("username");
-		String password = (String) input.get("password");
-		logger.info("user login:" + username );
+		String email = (String) input.get("email");
+		logger.info("password reset email:" + email );
 		
-		ViewDTO<LoginViewDTO> view = authService.login(username,password);
+		//ViewDTO<LoginViewDTO> view = authService.login(username,password);
 		
 		Map<String, Object> output = new HashMap<String, Object>();
-		output.put("greeting", "Hello");
+		output.put("greeting", "Hello, " + email);
 		
-		remote.deliver(serverSession, "/service/login", output);
+		remote.deliver(serverSession, "/service/passwordReset", output);
 	}
 }

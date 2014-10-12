@@ -46,12 +46,12 @@ public class SubscribeDemo {
 		    }
 		});
         
-        client.getChannel(REGISTER_CHANNEL).subscribe(fooListener);
+        client.getChannel(LOGIN_CHANNEL).subscribe(fooListener);
         
         Map<String, Object> data = new HashMap<String, Object>();
 	    data.put("username", "cccc");
         data.put("password", "222222");
-	    client.getChannel(REGISTER_CHANNEL).publish(data);
+	    client.getChannel(LOGIN_CHANNEL).publish(data);
 	}
 	
 	
@@ -62,7 +62,7 @@ public class SubscribeDemo {
             // Here you received a message on the channel
         	System.out.println("received a message");
         	System.out.println(channel);
-        	System.out.println(message);
+        	System.out.println(message.getData());
         }
     }
 }

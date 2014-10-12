@@ -9,6 +9,7 @@ import eden.sun.childrenguard.server.dto.ParentViewDTO;
 import eden.sun.childrenguard.server.dto.RegisterViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.exception.ServiceException;
+import eden.sun.childrenguard.server.model.Parent;
 import eden.sun.childrenguard.server.service.IAuthService;
 import eden.sun.childrenguard.server.service.IParentService;
 
@@ -46,11 +47,20 @@ public class AuthServiceImpl implements IAuthService {
 			return view;
 		}
 		
-		ParentViewDTO parentView = parentService.save(firstName,lastName,email,password);
-		RegisterViewDTO registerView = trans2RegisterViewDTO(parentView);
+		Parent parent = parentService.getByEmail(email);
+		if( parent != null ){
+			view.setInfo("Email has been registered.");
+			view.setMsg(ViewDTO.MSG_ERROR);
+			return view;
+		}else{
+			// do register
+			ParentViewDTO parentView = parentService.save(firstName,lastName,email,password);
+			RegisterViewDTO registerView = trans2RegisterViewDTO(parentView);
+			
+			view.setData(registerView);
+			return view;
+		}
 		
-		view.setData(registerView);
-		return view;
 	}
 
 

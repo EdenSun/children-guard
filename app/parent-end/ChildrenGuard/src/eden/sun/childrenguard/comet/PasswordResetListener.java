@@ -7,17 +7,19 @@ import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
+import eden.sun.childrenguard.activity.ChangePasswordActivity;
 import eden.sun.childrenguard.activity.ChildrenListActivity;
 import eden.sun.childrenguard.activity.CommonActivity;
+import eden.sun.childrenguard.activity.PasswordResetActivity;
 import eden.sun.childrenguard.util.UIUtil;
 
-public class LoginListener implements ClientSessionChannel.MessageListener
+public class PasswordResetListener implements ClientSessionChannel.MessageListener
 {
 	private Activity context;
-    private static final String TAG = "LoginListener";
+    private static final String TAG = "PasswordResetListener";
 
     
-	public LoginListener(Activity context) {
+	public PasswordResetListener(Activity context) {
 		super();
 		this.context = context;
 	}
@@ -27,9 +29,16 @@ public class LoginListener implements ClientSessionChannel.MessageListener
     {
         // Here you received a message on the channel
     	Log.i(TAG, "received from channel: " + channel);
-    	Log.i(TAG," Message:" + message.getJSON());
+    	Log.i(TAG," Message:" + message);
     	
-    	context.runOnUiThread(new Runnable(){
+    	
+    	Intent it = new Intent(context, ChangePasswordActivity.class);
+		context.startActivity(it);   
+		
+		context.finish();
+		
+		
+    	/*context.runOnUiThread(new Runnable(){
 
 			@Override
 			public void run() {
@@ -49,6 +58,6 @@ public class LoginListener implements ClientSessionChannel.MessageListener
 				});
 			}
 			
-    	});
+    	});*/
     }
 }

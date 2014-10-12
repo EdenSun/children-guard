@@ -1,6 +1,6 @@
 package eden.sun.childrenguard.server.cometd;
 
-import java.util.HashMap;
+import java.io.IOException;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -8,6 +8,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.cometd.annotation.Listener;
 import org.cometd.annotation.Service;
 import org.cometd.annotation.Session;
@@ -46,9 +49,20 @@ public class RegisterService extends BaseCometService{
 		
 		ViewDTO<RegisterViewDTO> view = authService.register(firstName,lastName,email,password);
 		
-		Map<String, Object> output = new HashMap<String, Object>();
-		output.put("greeting", "register, " + email + "-" + password);
+		ObjectMapper mapper = new ObjectMapper();
+		String json;
+		try {
+			json = mapper.writeValueAsString(view);
+			
+			remote.deliver(serverSession, "/service/register", json);
+		} catch (Exception e) {
+			logger.error("convert json error",e);
+		}
 		
-		remote.deliver(serverSession, "/service/register", output);
+		
+		/*Map<String, Object> output = new HashMap<String, Object>();
+		output.put("greeting", "register, " + email + "-" + password);
+		*/
+		
 	}
 }

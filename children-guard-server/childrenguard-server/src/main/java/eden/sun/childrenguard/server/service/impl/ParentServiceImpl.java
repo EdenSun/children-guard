@@ -49,7 +49,7 @@ public class ParentServiceImpl implements IParentService {
 		return true;
 	}
 
-	private Parent getByEmail(String email) {
+	public Parent getByEmail(String email) {
 		ParentExample example = new ParentExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andEmailEqualTo(email);

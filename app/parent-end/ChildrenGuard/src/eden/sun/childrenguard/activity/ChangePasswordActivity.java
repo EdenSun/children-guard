@@ -1,17 +1,22 @@
 package eden.sun.childrenguard.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import eden.sun.childrenguard.R;
+import eden.sun.childrenguard.util.Runtime;
 
-public class ChangePasswordActivity extends Activity {
+public class ChangePasswordActivity extends CommonActivity  {
+	/* UI Components */
 	private Button changePasswordBtn;
 	private Button cancelBtn;
+	private EditText newPasswordEditText;
+	/* END - UI Components */
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,6 +43,12 @@ public class ChangePasswordActivity extends Activity {
         });
 		
 	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+	}
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

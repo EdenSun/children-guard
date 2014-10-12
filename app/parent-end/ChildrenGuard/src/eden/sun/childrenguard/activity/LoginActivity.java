@@ -3,8 +3,9 @@ package eden.sun.childrenguard.activity;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.app.ProgressDialog;
+import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +22,6 @@ public class LoginActivity extends CommonActivity {
 	private Button loginBtn;
 	private Button registerBtn ;
 	private Button forgetPasswordBtn;
-	private Runtime runtime;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +33,14 @@ public class LoginActivity extends CommonActivity {
         	
 			@Override
 			public void onClick(View arg0) {
-				String title = "Login";
-				String msg = "Please wait...";
-				showProgressDialog(title,msg);
+				
+				AsyncTask<Map<String, Object>,Integer,Boolean> task = new LoginTask(LoginActivity.this);
 				
 				Map<String, Object> data = new HashMap<String,Object>();
 				data.put("username", "eden");
 				data.put("password", "password");
-				runtime.publish(data, CometdConfig.LOGIN_CHANNEL, new LoginListener(LoginActivity.this));
+				
+				task.execute(data);
 			}
         	
         });
@@ -92,7 +92,41 @@ public class LoginActivity extends CommonActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		runtime = Runtime.getInstance(LoginActivity.this);
+		
+		runtime.subscribe(CometdConfig.LOGIN_CHANNEL,new LoginListener(LoginActivity.this));
 	}
     
+	
+	class LoginTask extends AsyncTask<Map<String, Object>,Integer,Boolean>{
+		private Activity context;
+		
+		public LoginTask(Activity context) {
+			super();
+			this.context = context;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			String title = "Login";
+			String msg = "Please wait...";
+			showProgressDialog(title,msg);
+		}
+
+		@Override
+		protected Boolean doInBackground(Map<String, Object>... params) {
+			Map<String, Object> data = params[0];
+			
+			runtime.publish(data, CometdConfig.LOGIN_CHANNEL);
+			return true;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			super.onPostExecute(result);
+			
+			dismissProgressDialog();
+		}
+		
+	}
 }
