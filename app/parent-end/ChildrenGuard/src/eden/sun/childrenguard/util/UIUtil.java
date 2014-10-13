@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.view.Gravity;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -37,5 +38,13 @@ public class UIUtil {
 	        .setTitle(title)
 	        .setMessage(msg)
 	        .setPositiveButton(btnText, listener);
+	}
+
+
+	public static String getEditTextValue(EditText emailEditText) {
+		if( emailEditText != null ){
+			return emailEditText.getText().toString().trim();
+		}
+		return null;
 	}
 }

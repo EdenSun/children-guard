@@ -16,6 +16,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import eden.sun.childrenguard.R;
+import eden.sun.childrenguard.comet.LoginListener;
 import eden.sun.childrenguard.comet.PasswordResetListener;
 import eden.sun.childrenguard.util.CometdConfig;
 import eden.sun.childrenguard.util.Runtime;
@@ -27,7 +28,7 @@ public class PasswordResetActivity extends CommonActivity {
 	private Button resetBtn;
 	private Button backBtn;
 	
-	private EditText emailEditTExt;
+	private EditText emailEditText;
 	/* END - UI Components */
 	
 	@Override
@@ -35,7 +36,7 @@ public class PasswordResetActivity extends CommonActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_password_reset);
 		
-		emailEditTExt = (EditText)findViewById(R.id.emailEditText);
+		emailEditText = (EditText)findViewById(R.id.emailEditText);
 		
 		resetBtn = (Button)findViewById(R.id.resetBtn);
 		resetBtn.setOnClickListener(new OnClickListener(){
@@ -45,12 +46,12 @@ public class PasswordResetActivity extends CommonActivity {
 				boolean isPassed = doValidation();
 				
 				if( isPassed ){
-					String email = emailEditTExt.getText().toString().trim();
+					String email = UIUtil.getEditTextValue(emailEditText);
 					
 					Map<String, Object> data = new HashMap<String,Object>();
 					data.put("email", email);
 					
-					AsyncTask task = new PasswordResetTask(PasswordResetActivity.this);
+					AsyncTask<Map<String, Object>,Integer,Boolean> task = new PasswordResetTask(PasswordResetActivity.this);
 					task.execute(data);
 					
 				}
@@ -71,7 +72,7 @@ public class PasswordResetActivity extends CommonActivity {
 	}
 
 	private boolean doValidation() {
-		String email = emailEditTExt.getText().toString().trim();
+		String email = emailEditText.getText().toString().trim();
 		
 		if( StringUtil.isBlank(email) ){
 			String title = "Reset Password";
@@ -120,6 +121,8 @@ public class PasswordResetActivity extends CommonActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
+		
+		runtime.subscribe(CometdConfig.PASSWORD_RESET_CHANNEL,new PasswordResetListener(PasswordResetActivity.this));
 	}
 	
 	class PasswordResetTask extends AsyncTask<Map<String, Object>,Integer,Boolean>{
@@ -143,7 +146,7 @@ public class PasswordResetActivity extends CommonActivity {
 				Map<String, Object>... params) {
 			Map<String, Object> data = params[0];
 			
-			runtime.publish(data, CometdConfig.PASSWORD_RESET_CHANNEL, new PasswordResetListener(context));
+			runtime.publish(data, CometdConfig.PASSWORD_RESET_CHANNEL,new PasswordResetListener(PasswordResetActivity.this));
 			return true;
 		}
 

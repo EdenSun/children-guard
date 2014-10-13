@@ -16,7 +16,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import eden.sun.childrenguard.R;
-import eden.sun.childrenguard.activity.LoginActivity.LoginTask;
 import eden.sun.childrenguard.comet.RegisterListener;
 import eden.sun.childrenguard.util.CometdConfig;
 import eden.sun.childrenguard.util.StringUtil;
@@ -58,10 +57,10 @@ public class RegisterActivity extends CommonActivity {
 
 					AsyncTask<Map<String, Object>,Integer,Boolean> task = new RegisterTask(RegisterActivity.this);
 					
-					String firstName = firstNameEditText.getText().toString().trim();
-					String lastName = lastNameEditText.getText().toString().trim();
-					String email = emailEditText.getText().toString().trim();
-					String password = passwordEditText.getText().toString().trim();
+					String firstName = UIUtil.getEditTextValue(firstNameEditText);
+					String lastName = UIUtil.getEditTextValue(lastNameEditText);
+					String email = UIUtil.getEditTextValue(emailEditText);
+					String password = UIUtil.getEditTextValue(passwordEditText);
 					
 					Map<String, Object> data = new HashMap<String,Object>();
 					
@@ -111,11 +110,11 @@ public class RegisterActivity extends CommonActivity {
 	}
 
 	private boolean doValidation() {
-		String firstName = firstNameEditText.getText().toString().trim();
-		String lastName = lastNameEditText.getText().toString().trim();
-		String email = emailEditText.getText().toString().trim();
-		String password = passwordEditText.getText().toString().trim();
-		String confirmPassword = confirmPasswordEditText.getText().toString().trim(); 
+		String firstName = UIUtil.getEditTextValue(firstNameEditText);
+		String lastName = UIUtil.getEditTextValue(lastNameEditText);
+		String email = UIUtil.getEditTextValue(emailEditText);
+		String password = UIUtil.getEditTextValue(passwordEditText);
+		String confirmPassword = UIUtil.getEditTextValue(confirmPasswordEditText);
 				
 		if( StringUtil.isBlank(firstName) ){
 			String title = "Register";
@@ -300,7 +299,7 @@ public class RegisterActivity extends CommonActivity {
 		protected Boolean doInBackground(Map<String, Object>... params) {
 			Map<String, Object> data = params[0];
 			
-			runtime.publish(data, CometdConfig.REGISTER_CHANNEL);
+			runtime.publish(data, CometdConfig.REGISTER_CHANNEL,new RegisterListener(RegisterActivity.this));
 			return true;
 		}
 

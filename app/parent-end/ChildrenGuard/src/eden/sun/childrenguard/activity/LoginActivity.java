@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,37 +14,53 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.comet.LoginListener;
 import eden.sun.childrenguard.util.CometdConfig;
 import eden.sun.childrenguard.util.Runtime;
+import eden.sun.childrenguard.util.StringUtil;
+import eden.sun.childrenguard.util.UIUtil;
 
 
 public class LoginActivity extends CommonActivity {
 	private Button loginBtn;
 	private Button registerBtn ;
 	private Button forgetPasswordBtn;
+	private EditText emailEditText;
+	private EditText passwordEditText;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         
+        emailEditText = (EditText)findViewById(R.id.emailEditText);
+        passwordEditText = (EditText)findViewById(R.id.passwordEditText);
+
         loginBtn = (Button)findViewById(R.id.loginBtn);
         loginBtn.setOnClickListener(new OnClickListener(){
         	
 			@Override
 			public void onClick(View arg0) {
+				boolean valid = doValidation();
 				
-				AsyncTask<Map<String, Object>,Integer,Boolean> task = new LoginTask(LoginActivity.this);
+				if( valid ){
+					AsyncTask<Map<String, Object>,Integer,String> task = new LoginTask(LoginActivity.this);
+					
+					Map<String, Object> data = new HashMap<String,Object>();
+					
+					String email = UIUtil.getEditTextValue(emailEditText);
+					String password = UIUtil.getEditTextValue(passwordEditText);
+					
+					data.put("email", email);
+					data.put("password", password);
+					
+					task.execute(data);
+				}
 				
-				Map<String, Object> data = new HashMap<String,Object>();
-				data.put("username", "eden");
-				data.put("password", "password");
-				
-				task.execute(data);
 			}
-        	
+
         });
         
         registerBtn = (Button)findViewById(R.id.registerBtn);
@@ -69,6 +87,57 @@ public class LoginActivity extends CommonActivity {
     }
 
 
+    private boolean doValidation() {
+    	String email = UIUtil.getEditTextValue(emailEditText);
+		String password = UIUtil.getEditTextValue(passwordEditText);
+				
+		if( StringUtil.isBlank(email) ){
+			String title = "Login";
+			String msg = "Email can not be blank.";
+			String btnText = "OK";
+			
+			AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
+				LoginActivity.this,
+				title,
+				msg,
+				btnText,
+				new DialogInterface.OnClickListener() {
+		            @Override
+		            public void onClick(DialogInterface dialog, int which) {
+		            	dialog.dismiss();
+		            }
+		        }
+			);
+			
+			dialog.show();
+			return false;
+		}
+		
+		if( StringUtil.isBlank(password) ){
+			String title = "Login";
+			String msg = "Password can not be blank.";
+			String btnText = "OK";
+			
+			AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
+				LoginActivity.this,
+				title,
+				msg,
+				btnText,
+				new DialogInterface.OnClickListener() {
+		            @Override
+		            public void onClick(DialogInterface dialog, int which) {
+		            	dialog.dismiss();
+		            }
+		        }
+			);
+			
+			dialog.show();
+			return false;
+		}
+		
+		return true;
+	}
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -97,7 +166,7 @@ public class LoginActivity extends CommonActivity {
 	}
     
 	
-	class LoginTask extends AsyncTask<Map<String, Object>,Integer,Boolean>{
+	class LoginTask extends AsyncTask<Map<String, Object>,Integer,String>{
 		private Activity context;
 		
 		public LoginTask(Activity context) {
@@ -114,18 +183,41 @@ public class LoginActivity extends CommonActivity {
 		}
 
 		@Override
-		protected Boolean doInBackground(Map<String, Object>... params) {
+		protected String doInBackground(Map<String, Object>... params) {
 			Map<String, Object> data = params[0];
 			
-			runtime.publish(data, CometdConfig.LOGIN_CHANNEL);
-			return true;
+			String msg = runtime.publish(data, CometdConfig.LOGIN_CHANNEL,new LoginListener(LoginActivity.this));
+			
+			return msg;
 		}
 
 		@Override
-		protected void onPostExecute(Boolean result) {
+		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 			
-			dismissProgressDialog();
+			if( result != null && !result.equals(Runtime.PUBLISH_SUCCESS)){
+				// login fail,show message
+				String title = "Network Error";
+				String msg = result;
+				String btnText = "OK";
+				
+				AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
+					context,
+					title,
+					msg,
+					btnText,
+					new DialogInterface.OnClickListener() {
+			            @Override
+			            public void onClick(DialogInterface dialog, int which) {
+			            	dialog.dismiss();
+			            }
+			        }
+				);
+				
+				dialog.show();
+				
+				dismissProgressDialog();
+			}
 		}
 		
 	}

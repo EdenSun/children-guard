@@ -14,12 +14,16 @@ import org.cometd.client.transport.ClientTransport;
 import org.cometd.client.transport.LongPollingTransport;
 import org.eclipse.jetty.client.HttpClient;
 
+import eden.sun.childrenguard.activity.LoginActivity;
+import eden.sun.childrenguard.comet.LoginListener;
 import android.app.Activity;
 import android.util.Log;
 import android.widget.Toast;
 
 public class Runtime {
 	protected static final String TAG = "Runtime";
+
+	public static final String PUBLISH_SUCCESS = "success";
 	
 	private Activity context;
 	private volatile static Runtime runtime;
@@ -45,7 +49,7 @@ public class Runtime {
 		Map<String, Object> options = new HashMap<String, Object>();
 		ClientTransport transport = new LongPollingTransport(options, httpClient);
         clientSession = new BayeuxClient(CometdConfig.COMETD_URL, transport);
-		
+        
         clientSession.handshake(null,new ClientSessionChannel.MessageListener()
 		{
 		    public void onMessage(ClientSessionChannel channel, Message message)
@@ -68,7 +72,7 @@ public class Runtime {
 		        	//finalClient.getChannel(CHANNEL).subscribe(fooListener);
 		            // Here handshake is successful
 		        }else{
-		        	Log.i(TAG,"Fail to connect to server.Try again...");
+		        	/*Log.i(TAG,"Fail to connect to server.Try again...");
 		        	
 		        	context.runOnUiThread(new Runnable(){
 		    			@Override
@@ -77,11 +81,22 @@ public class Runtime {
 							toast.show();
 		    			}
 		    			
-		        	});
+		        	});*/
 		        }
 		    }
 		});
         
+        clientSession.getChannel(CometdConfig.DISCONNECT_CHANNEL).addListener(new ClientSessionChannel.MessageListener(){
+
+			@Override
+			public void onMessage(ClientSessionChannel channel, Message message) {
+				Log.i(TAG,"Connection is disconnected.");
+				Log.i(TAG,"" +  channel);
+				Log.i(TAG,"" +  message);
+				Log.i(TAG,"" +  message.isSuccessful());
+			}
+        	
+        });
         //subscribe(clientSession);
 	}
 
@@ -91,13 +106,26 @@ public class Runtime {
 		client.getChannel(CometdConfig.REGISTER_CHANNEL).subscribe(new RegisterListener());*/
 	}
 
-	public void publish(Map<String, Object> data,String channel){
-	    this.clientSession.getChannel(channel).publish(data);
+	public String publish(Map<String, Object> data,String channel,MessageListener messagelistener){
+		if( this.clientSession.isConnected() ){
+			this.clientSession.getChannel(channel).publish(data);
+			return PUBLISH_SUCCESS;
+		}else{
+			this.connect();
+			this.subscribe(channel,messagelistener);
+			if( !this.clientSession.isConnected() ){
+				return "Can not connect to server,please try later.";
+			}else{
+				this.clientSession.getChannel(channel).publish(data);
+				return PUBLISH_SUCCESS;
+			}
+			
+		}
 	}
 	
-	public void publish(Map<String, Object> data,String channel,MessageListener messagelistener){
+	/*public void publish(Map<String, Object> data,String channel,MessageListener messagelistener){
 		this.clientSession.getChannel(channel).publish(data, messagelistener);
-	}
+	}*/
 	
 	
 	public HttpClient getHttpClient() {
