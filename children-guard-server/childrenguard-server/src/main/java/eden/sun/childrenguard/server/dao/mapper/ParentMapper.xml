@@ -10,6 +10,7 @@
     <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
     <result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="TIMESTAMP" />
     <result column="ACCESS_TOKEN" property="accessToken" jdbcType="VARCHAR" />
+    <result column="RESET_CODE" property="resetCode" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -70,7 +71,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    ID, EMAIL, FIRST_NAME, LAST_NAME, PASSWORD, CREATE_TIME, LAST_LOGIN_TIME, ACCESS_TOKEN
+    ID, EMAIL, FIRST_NAME, LAST_NAME, PASSWORD, CREATE_TIME, LAST_LOGIN_TIME, ACCESS_TOKEN, 
+    RESET_CODE
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="eden.sun.childrenguard.server.model.ParentExample" >
     select
@@ -108,10 +110,10 @@
     </selectKey>
     insert into tbl_parent (EMAIL, FIRST_NAME, LAST_NAME, 
       PASSWORD, CREATE_TIME, LAST_LOGIN_TIME, 
-      ACCESS_TOKEN)
+      ACCESS_TOKEN, RESET_CODE)
     values (#{email,jdbcType=VARCHAR}, #{firstName,jdbcType=VARCHAR}, #{lastName,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastLoginTime,jdbcType=TIMESTAMP}, 
-      #{accessToken,jdbcType=VARCHAR})
+      #{accessToken,jdbcType=VARCHAR}, #{resetCode,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="eden.sun.childrenguard.server.model.Parent" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -140,6 +142,9 @@
       <if test="accessToken != null" >
         ACCESS_TOKEN,
       </if>
+      <if test="resetCode != null" >
+        RESET_CODE,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="email != null" >
@@ -162,6 +167,9 @@
       </if>
       <if test="accessToken != null" >
         #{accessToken,jdbcType=VARCHAR},
+      </if>
+      <if test="resetCode != null" >
+        #{resetCode,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -198,6 +206,9 @@
       <if test="record.accessToken != null" >
         ACCESS_TOKEN = #{record.accessToken,jdbcType=VARCHAR},
       </if>
+      <if test="record.resetCode != null" >
+        RESET_CODE = #{record.resetCode,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -212,7 +223,8 @@
       PASSWORD = #{record.password,jdbcType=VARCHAR},
       CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
       LAST_LOGIN_TIME = #{record.lastLoginTime,jdbcType=TIMESTAMP},
-      ACCESS_TOKEN = #{record.accessToken,jdbcType=VARCHAR}
+      ACCESS_TOKEN = #{record.accessToken,jdbcType=VARCHAR},
+      RESET_CODE = #{record.resetCode,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -241,6 +253,9 @@
       <if test="accessToken != null" >
         ACCESS_TOKEN = #{accessToken,jdbcType=VARCHAR},
       </if>
+      <if test="resetCode != null" >
+        RESET_CODE = #{resetCode,jdbcType=VARCHAR},
+      </if>
     </set>
     where ID = #{id,jdbcType=INTEGER}
   </update>
@@ -252,7 +267,8 @@
       PASSWORD = #{password,jdbcType=VARCHAR},
       CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP},
-      ACCESS_TOKEN = #{accessToken,jdbcType=VARCHAR}
+      ACCESS_TOKEN = #{accessToken,jdbcType=VARCHAR},
+      RESET_CODE = #{resetCode,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=INTEGER}
   </update>
   <select resultMap="BaseResultMap" parameterType="eden.sun.childrenguard.server.model.ParentExample" id="selectByExampleWithRowbounds" >

@@ -634,6 +634,76 @@ public class ParentExample {
             addCriterion("ACCESS_TOKEN not between", value1, value2, "accessToken");
             return (Criteria) this;
         }
+
+        public Criteria andResetCodeIsNull() {
+            addCriterion("RESET_CODE is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetCodeIsNotNull() {
+            addCriterion("RESET_CODE is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetCodeEqualTo(String value) {
+            addCriterion("RESET_CODE =", value, "resetCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetCodeNotEqualTo(String value) {
+            addCriterion("RESET_CODE <>", value, "resetCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetCodeGreaterThan(String value) {
+            addCriterion("RESET_CODE >", value, "resetCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("RESET_CODE >=", value, "resetCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetCodeLessThan(String value) {
+            addCriterion("RESET_CODE <", value, "resetCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetCodeLessThanOrEqualTo(String value) {
+            addCriterion("RESET_CODE <=", value, "resetCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetCodeLike(String value) {
+            addCriterion("RESET_CODE like", value, "resetCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetCodeNotLike(String value) {
+            addCriterion("RESET_CODE not like", value, "resetCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetCodeIn(List<String> values) {
+            addCriterion("RESET_CODE in", values, "resetCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetCodeNotIn(List<String> values) {
+            addCriterion("RESET_CODE not in", values, "resetCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetCodeBetween(String value1, String value2) {
+            addCriterion("RESET_CODE between", value1, value2, "resetCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetCodeNotBetween(String value1, String value2) {
+            addCriterion("RESET_CODE not between", value1, value2, "resetCode");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

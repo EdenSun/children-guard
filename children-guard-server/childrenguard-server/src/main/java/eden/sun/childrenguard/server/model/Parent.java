@@ -19,6 +19,8 @@ public class Parent {
 
     private String accessToken;
 
+    private String resetCode;
+
     public Integer getId() {
         return id;
     }
@@ -81,5 +83,13 @@ public class Parent {
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken == null ? null : accessToken.trim();
+    }
+
+    public String getResetCode() {
+        return resetCode;
+    }
+
+    public void setResetCode(String resetCode) {
+        this.resetCode = resetCode == null ? null : resetCode.trim();
     }
 }

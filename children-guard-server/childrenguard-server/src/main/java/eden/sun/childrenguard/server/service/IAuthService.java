@@ -11,5 +11,8 @@ public interface IAuthService {
 
 	ViewDTO<RegisterViewDTO> register(String firstName, String lastName,
 			String email, String password)throws ServiceException;
+
+	ViewDTO<String> resetPasswordByMail(String email)throws ServiceException;
+
 	
 }

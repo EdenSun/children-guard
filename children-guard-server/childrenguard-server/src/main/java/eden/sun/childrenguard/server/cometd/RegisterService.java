@@ -21,6 +21,7 @@ import org.cometd.bayeux.server.ServerSession;
 import eden.sun.childrenguard.server.dto.RegisterViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.service.IAuthService;
+import eden.sun.childrenguard.server.util.CometdChannel;
 
 @Named
 @Singleton
@@ -54,7 +55,7 @@ public class RegisterService extends BaseCometService{
 		try {
 			json = mapper.writeValueAsString(view);
 			
-			remote.deliver(serverSession, "/service/register", json);
+			remote.deliver(serverSession, CometdChannel.REGISTER, json);
 		} catch (Exception e) {
 			logger.error("convert json error",e);
 		}

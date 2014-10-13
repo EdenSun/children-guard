@@ -1,6 +1,5 @@
 package eden.sun.childrenguard.server.cometd;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -9,6 +8,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.cometd.annotation.Listener;
 import org.cometd.annotation.Service;
 import org.cometd.annotation.Session;
@@ -16,9 +16,9 @@ import org.cometd.bayeux.server.BayeuxServer;
 import org.cometd.bayeux.server.ServerMessage;
 import org.cometd.bayeux.server.ServerSession;
 
-import eden.sun.childrenguard.server.dto.LoginViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.service.IAuthService;
+import eden.sun.childrenguard.server.util.CometdChannel;
 
 @Named
 @Singleton
@@ -45,9 +45,18 @@ public class PasswordResetService extends BaseCometService{
 		
 		//ViewDTO<LoginViewDTO> view = authService.login(username,password);
 		
-		Map<String, Object> output = new HashMap<String, Object>();
-		output.put("greeting", "Hello, " + email);
+		ViewDTO<String> view = authService.resetPasswordByMail(email);
 		
-		remote.deliver(serverSession, "/service/passwordReset", output);
+		ObjectMapper mapper = new ObjectMapper();
+		String json;
+		try {
+			json = mapper.writeValueAsString(view);
+			logger.info(json);
+			
+			remote.deliver(serverSession, CometdChannel.PASSWORD_RESET, json);
+		} catch (Exception e) {
+			logger.error("convert json error",e);
+		}
+		
 	}
 }

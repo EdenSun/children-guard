@@ -32,8 +32,8 @@ public class ParentServiceImpl implements IParentService {
 
 
 	@Override
-	public boolean doLogin(String email) throws ServiceException {
-		Parent parent = this.getByEmail(email);
+	public boolean doLogin(String email,String password) throws ServiceException {
+		Parent parent = this.getByEmailAndPassword(email, password);
 		if( parent == null ){
 			return false;
 		}
@@ -48,6 +48,22 @@ public class ParentServiceImpl implements IParentService {
 		
 		return true;
 	}
+
+	private Parent getByEmailAndPassword(String email, String password) {
+		ParentExample example = new ParentExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andEmailEqualTo(email);
+		criteria.andPasswordEqualTo(password);
+		
+		List<Parent> parentList = parentMapper.selectByExample(example);
+	
+		if( parentList != null && parentList.size() > 0 ){
+			Parent parent = parentList.get(0);
+			return parent;
+		}
+		return null;
+	}
+
 
 	public Parent getByEmail(String email) {
 		ParentExample example = new ParentExample();
@@ -95,4 +111,24 @@ public class ParentServiceImpl implements IParentService {
 		BeanUtils.copyProperties(parent, view);
 		return view;
 	}
+
+
+	@Override
+	public ParentViewDTO getViewByEmailAndPassword(String email, String password)
+			throws ServiceException {
+		Parent parent = getByEmailAndPassword(email,password);
+		return trans2ParentViewDTO(parent);
+	}
+
+
+	@Override
+	public boolean update(Parent parent) throws ServiceException {
+		int cnt = parentMapper.updateByPrimaryKey(parent);
+		if( cnt == 0 ){
+			return false;
+		}
+		
+		return true;
+	}
+	
 }
