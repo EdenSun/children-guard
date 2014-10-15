@@ -49,7 +49,7 @@ public class RegisterActivity extends CommonActivity {
 		registerBtn = (Button)findViewById(R.id.registerBtn);
 		registerBtn.setOnClickListener(new OnClickListener(){
 
-			/*@Override
+			@Override
 			public void onClick(View arg0) {
 				boolean valid = doValidation();
 				
@@ -73,10 +73,10 @@ public class RegisterActivity extends CommonActivity {
 					
 				}
 				
-			}*/
+			}
 			
 			//TODO: TEST
-			@Override
+/*			@Override
 			public void onClick(View arg0) {
 				//boolean valid = doValidation();
 				if( true ){
@@ -94,7 +94,7 @@ public class RegisterActivity extends CommonActivity {
 					
 				}
 				
-			}
+			}*/
 
         });
 		

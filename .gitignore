@@ -1,1 +1,5 @@
 *.dex
+app/parent-end/android-support-v7-appcompat/bin/*
+app/client-end/bin/*
+app/parent-end/ChildrenGuard/bin/*
+children-guard-server/childrenguard-server/target/maven-status/*

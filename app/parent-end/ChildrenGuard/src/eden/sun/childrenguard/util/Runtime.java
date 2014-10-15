@@ -14,9 +14,8 @@ import org.cometd.client.transport.ClientTransport;
 import org.cometd.client.transport.LongPollingTransport;
 import org.eclipse.jetty.client.HttpClient;
 
-import eden.sun.childrenguard.activity.LoginActivity;
-import eden.sun.childrenguard.comet.LoginListener;
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -97,6 +96,17 @@ public class Runtime {
 			}
         	
         });
+        
+        clientSession.getChannel(CometdConfig.SUBSCRIBE_CHANNEL).addListener(new ClientSessionChannel.MessageListener(){
+
+			@Override
+			public void onMessage(ClientSessionChannel channel, Message message) {
+				Log.i(TAG,"subscribe listener called.");
+				Log.i(TAG,"" +  channel);
+				Log.i(TAG,"" +  message);
+			}
+        	
+        });
         //subscribe(clientSession);
 	}
 
@@ -108,10 +118,15 @@ public class Runtime {
 
 	public String publish(Map<String, Object> data,String channel,MessageListener messagelistener){
 		if( this.clientSession.isConnected() ){
+			Log.i(TAG, "Connection is connected.");
 			this.clientSession.getChannel(channel).publish(data);
+			
+			Log.i(TAG, "Publishing...... success!");
 			return PUBLISH_SUCCESS;
 		}else{
+			Log.i(TAG, "Connection is disconnected.");
 			this.connect();
+			
 			this.subscribe(channel,messagelistener);
 			if( !this.clientSession.isConnected() ){
 				return "Can not connect to server,please try later.";
@@ -150,13 +165,37 @@ public class Runtime {
 			clientSession.getChannel(channel).subscribe(listener);
 		}*/
 		
-		MessageListener existsListener = getSubscriberByType(channel,listener.getClass());
+		/*MessageListener existsListener = getSubscriberByType(channel,listener.getClass());
 		
 		if( existsListener != null ){
-			clientSession.getChannel(channel).unsubscribe(existsListener);
-		}
+			final String finalChannel = channel;
+			final MessageListener finalListener = listener;
+			clientSession.getChannel(channel).unsubscribe(existsListener,new MessageListener(){
+
+				@Override
+				public void onMessage(ClientSessionChannel channel, Message message) {
+					// TODO Auto-generated method stub
+					if( message.isSuccessful() ){
+						clientSession.getChannel(finalChannel).subscribe(finalListener);
+					}else{
+						Log.i(TAG,"unsubscribe fail");
+					}
+				}
+				
+			});
+		}else{
+			clientSession.getChannel(channel).subscribe(listener);
+		}*/
 		
-		clientSession.getChannel(channel).subscribe(listener);
+		
+		AsyncTask<Map<String,Object>,Integer,String> subscribeTask = new SubscribeTask();
+		
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("channel", channel);
+		params.put("listener", listener);
+		
+		subscribeTask.execute(params);
+		
 	}
 
 	private MessageListener getSubscriberByType(
@@ -166,7 +205,7 @@ public class Runtime {
 		for(Iterator<MessageListener> it=messageListenerList.iterator();it.hasNext();){
 			MessageListener curListener = it.next();
 			
-			if (curListener.getClass().equals(clazz) ){
+			if (curListener.getClass().getName().equals(clazz.getName()) ){
 				return curListener;
 			}
 		}
@@ -195,4 +234,56 @@ public class Runtime {
 		return httpClient;
 	}*/
 	
+	class SubscribeTask extends AsyncTask<Map<String,Object>,Integer,String>{
+		
+		public SubscribeTask() {
+			super();
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			/*String title = "Login";
+			String msg = "Please wait...";
+			showProgressDialog(title,msg);*/
+		}
+
+		@Override
+		protected String doInBackground(Map<String,Object>... params) {
+			Map<String, Object> data = params[0];
+			String channel = (String)data.get("channel");
+			MessageListener listener = (MessageListener)data.get("listener");
+			
+			MessageListener existsListener = getSubscriberByType(channel,listener.getClass());
+			
+			if( existsListener != null ){
+				final String finalChannel = channel;
+				final MessageListener finalListener = listener;
+				clientSession.getChannel(channel).unsubscribe(existsListener,new MessageListener(){
+
+					@Override
+					public void onMessage(ClientSessionChannel channel, Message message) {
+						// TODO Auto-generated method stub
+						if( message.isSuccessful() ){
+							clientSession.getChannel(finalChannel).subscribe(finalListener);
+						}else{
+							Log.i(TAG,"unsubscribe fail");
+						}
+					}
+					
+				});
+			}else{
+				clientSession.getChannel(channel).subscribe(listener);
+			}
+			
+			return "success";
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			
+		}
+		
+	}
 }
