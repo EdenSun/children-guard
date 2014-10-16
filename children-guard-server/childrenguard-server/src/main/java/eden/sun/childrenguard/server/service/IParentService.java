@@ -1,8 +1,12 @@
 package eden.sun.childrenguard.server.service;
 
+import java.util.List;
+
+import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ParentViewDTO;
+import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.exception.ServiceException;
-import eden.sun.childrenguard.server.model.Parent;
+import eden.sun.childrenguard.server.model.generated.Parent;
 
 
 public interface IParentService {
@@ -19,6 +23,8 @@ public interface IParentService {
 	ParentViewDTO getViewByEmailAndPassword(String email, String password)throws ServiceException;
 
 	boolean update(Parent parent)throws ServiceException;
+
+	Parent getByAccessToken(String accessToken)throws ServiceException;
 
 	
 }

@@ -16,6 +16,7 @@ import org.cometd.bayeux.server.BayeuxServer;
 import org.cometd.bayeux.server.ServerMessage;
 import org.cometd.bayeux.server.ServerSession;
 
+import eden.sun.childrenguard.server.dto.IsFirstLoginViewDTO;
 import eden.sun.childrenguard.server.dto.LoginViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.service.IAuthService;
@@ -39,7 +40,7 @@ public class LoginService extends BaseCometService{
 	
 	@Listener("/service/login")
 	public void processLogin(ServerSession remote, ServerMessage message) {
-		System.out.println("/service/login");
+		System.out.println(CometdChannel.LOGIN);
 		Map<String, Object> input = message.getDataAsMap();
 		String email = (String) input.get("email");
 		String password = (String) input.get("password");
@@ -58,5 +59,28 @@ public class LoginService extends BaseCometService{
 			logger.error("convert json error",e);
 		}
 		
+	}
+	
+	
+	@Listener("/service/isFirstLogin")
+	public void isFristLogin(ServerSession remote, ServerMessage message) {
+		System.out.println("/service/isFirstLogin");
+		Map<String, Object> input = message.getDataAsMap();
+		String email = (String) input.get("email");
+		String password = (String) input.get("password");
+		logger.info("user email:" + email );
+		
+		ViewDTO<IsFirstLoginViewDTO> view = authService.isFirstLogin(email,password);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String json;
+		try {
+			json = mapper.writeValueAsString(view);
+			logger.info(json);
+			
+			remote.deliver(serverSession, CometdChannel.IS_FIRST_LOGIN, json);
+		} catch (Exception e) {
+			logger.error("convert json error",e);
+		}
 	}
 }

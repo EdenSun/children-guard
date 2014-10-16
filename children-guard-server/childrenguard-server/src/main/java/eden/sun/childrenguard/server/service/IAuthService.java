@@ -1,5 +1,6 @@
 package eden.sun.childrenguard.server.service;
 
+import eden.sun.childrenguard.server.dto.IsFirstLoginViewDTO;
 import eden.sun.childrenguard.server.dto.LoginViewDTO;
 import eden.sun.childrenguard.server.dto.RegisterViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
@@ -13,6 +14,8 @@ public interface IAuthService {
 			String email, String password)throws ServiceException;
 
 	ViewDTO<String> resetPasswordByMail(String email)throws ServiceException;
+
+	ViewDTO<IsFirstLoginViewDTO> isFirstLogin(String email, String password)throws ServiceException;
 
 	
 }

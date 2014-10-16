@@ -2,6 +2,7 @@ package eden.sun.childrenguard.server.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -9,13 +10,16 @@ import javax.inject.Inject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import eden.sun.childrenguard.server.dao.ChildMapper;
 import eden.sun.childrenguard.server.dao.ChildOfParentsMapper;
+import eden.sun.childrenguard.server.dao.generated.ChildMapper;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
+import eden.sun.childrenguard.server.dto.param.ChildAddParam;
 import eden.sun.childrenguard.server.exception.ServiceException;
-import eden.sun.childrenguard.server.model.Child;
 import eden.sun.childrenguard.server.model.ChildOfParents;
+import eden.sun.childrenguard.server.model.generated.Child;
+import eden.sun.childrenguard.server.model.generated.ChildExample;
+import eden.sun.childrenguard.server.model.generated.ChildExample.Criteria;
 import eden.sun.childrenguard.server.service.IChildService;
 
 @Service
@@ -26,7 +30,7 @@ public class ChildServiceImpl implements IChildService {
 	private ChildOfParentsMapper childOfParentsMapper;
 
 	@Override
-	public ViewDTO<List<ChildViewDTO>> listAllByParentId(Integer parentId)
+	public ViewDTO<List<ChildViewDTO>> listAllViewByParentId(Integer parentId)
 			throws ServiceException {
 		ViewDTO<List<ChildViewDTO>> view = new ViewDTO<List<ChildViewDTO>>();
 		
@@ -90,6 +94,98 @@ public class ChildServiceImpl implements IChildService {
 		ChildViewDTO dto = new ChildViewDTO();
 		BeanUtils.copyProperties(child, dto);
 		return dto;
+	}
+
+	private List<ChildViewDTO> trans2ChildViewDTOList(List<Child> childList) {
+		if( childList == null ){
+			return null;
+		}
+		List<ChildViewDTO> viewList = new ArrayList<ChildViewDTO>();
+		ChildViewDTO view = null;
+		
+		for(Iterator<Child> it = childList.iterator();it.hasNext();){
+			Child child = it.next();
+			view = trans2ChildViewDTO(child);
+			if( view != null ){
+				viewList.add(view);
+			}
+		}
+		
+		return viewList;
+	}
+
+	@Override
+	public ChildViewDTO add(ChildAddParam param) throws ServiceException {
+		if( param == null ){
+			throw new ServiceException("parameter can not be null");
+		}
+		
+		Child child = trans2Child(param);
+		
+		childMapper.insert(child);
+		
+		ChildViewDTO dto = trans2ChildViewDTO(child);
+		
+		return dto;
+	}
+
+	private Child trans2Child(ChildAddParam param) {
+		if( param == null ){
+			return null;
+		}
+		
+		Child child = new Child();
+		child.setCreateTime(new Date());
+		child.setFirstName(param.getFirstName());
+		child.setLastName(param.getLastName());
+		child.setMobile(param.getMobile());
+		child.setNickname(param.getNickname());
+		
+		return child;
+	}
+
+	@Override
+	public ChildViewDTO getChildViewByMobile(String mobile)
+			throws ServiceException {
+		if( mobile == null ){
+			throw new ServiceException("Parameter mobile can not be null.");
+		}
+		Child child = getByMobile(mobile);
+		ChildViewDTO view = trans2ChildViewDTO(child);
+		
+		return view;
+	}
+
+	private Child getByMobile(String mobile) {
+		ChildExample example = new ChildExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andMobileEqualTo(mobile);
+		
+		List<Child> childList = childMapper.selectByExample(example);
+	
+		if( childList != null && childList.size() > 0 ){
+			Child child = childList.get(0);
+			return child;
+		}
+		return null;
+	}
+
+	@Override
+	public ChildViewDTO deleteById(Integer childId) throws ServiceException {
+		if( childId == null ){
+			throw new ServiceException("Parameter childId can not be null.");
+		}
+		
+		/* check whether child is exists
+		 * if exists: delete child ,and delete all relevant relationship with this child, and return child view dto
+		 * if not exists: return null
+		 */
+		
+		
+		
+		childMapper.deleteByPrimaryKey(childId);
+		
+		return null;
 	}
 	
 }

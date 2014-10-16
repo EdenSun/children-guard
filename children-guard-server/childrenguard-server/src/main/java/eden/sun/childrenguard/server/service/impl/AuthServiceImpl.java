@@ -5,13 +5,13 @@ import javax.inject.Inject;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import eden.sun.childrenguard.server.cometd.PasswordResetService;
+import eden.sun.childrenguard.server.dto.IsFirstLoginViewDTO;
 import eden.sun.childrenguard.server.dto.LoginViewDTO;
 import eden.sun.childrenguard.server.dto.ParentViewDTO;
 import eden.sun.childrenguard.server.dto.RegisterViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.exception.ServiceException;
-import eden.sun.childrenguard.server.model.Parent;
+import eden.sun.childrenguard.server.model.generated.Parent;
 import eden.sun.childrenguard.server.service.IAuthService;
 import eden.sun.childrenguard.server.service.IParentService;
 import eden.sun.childrenguard.server.util.Constants;
@@ -87,6 +87,7 @@ public class AuthServiceImpl implements IAuthService {
 		LoginViewDTO loginView = new LoginViewDTO();
 		loginView.setAccessToken(parentView.getAccessToken());
 		loginView.setEmail(parentView.getEmail());
+		
 		return loginView;
 	}
 
@@ -130,5 +131,37 @@ public class AuthServiceImpl implements IAuthService {
 			return view;
 		}
 	}
+
+	@Override
+	public ViewDTO<IsFirstLoginViewDTO> isFirstLogin(String email, String password)
+			throws ServiceException {
+		ViewDTO<IsFirstLoginViewDTO> view = new ViewDTO<IsFirstLoginViewDTO>();
+		ParentViewDTO parentView = parentService.getViewByEmailAndPassword(email, password);
+		
+		if( parentView == null ){
+			view.setInfo("Email or password is incorrect.");
+			view.setMsg(ViewDTO.MSG_ERROR);
+			return view;
+		}
+		
+		IsFirstLoginViewDTO isFirstLoginViewDTO = new IsFirstLoginViewDTO();
+		isFirstLoginViewDTO.setEmail(email);
+		if( parentView.getLastLoginTime() == null ){
+			logger.info("First login.");
+			isFirstLoginViewDTO.setFirstLogin(true);
+			isFirstLoginViewDTO.setLegalInfo(Constants.LEGAL_INFO);
+		}else{
+			logger.info("Not first login.");
+			isFirstLoginViewDTO.setFirstLogin(false);
+		}
+		
+		view.setData(isFirstLoginViewDTO);
+		return view;
+	}
+
+	
+	
+	
+	
 	
 }

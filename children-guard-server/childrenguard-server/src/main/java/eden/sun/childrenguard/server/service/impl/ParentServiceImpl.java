@@ -8,12 +8,16 @@ import javax.inject.Inject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import eden.sun.childrenguard.server.dao.ParentMapper;
+import eden.sun.childrenguard.server.dao.ChildOfParentsMapper;
+import eden.sun.childrenguard.server.dao.generated.ParentMapper;
+import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ParentViewDTO;
+import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.exception.ServiceException;
-import eden.sun.childrenguard.server.model.Parent;
-import eden.sun.childrenguard.server.model.ParentExample;
-import eden.sun.childrenguard.server.model.ParentExample.Criteria;
+import eden.sun.childrenguard.server.model.generated.Parent;
+import eden.sun.childrenguard.server.model.generated.ParentExample;
+import eden.sun.childrenguard.server.model.generated.ParentExample.Criteria;
+import eden.sun.childrenguard.server.service.IChildService;
 import eden.sun.childrenguard.server.service.IParentService;
 import eden.sun.childrenguard.server.util.UUIDUtil;
 
@@ -22,6 +26,12 @@ public class ParentServiceImpl implements IParentService {
 
 	@Inject
 	private ParentMapper parentMapper;
+	
+	@Inject
+	private IChildService childService;
+	
+	@Inject
+	private ChildOfParentsMapper childOfParentsMapper;
 	
 	@Override
 	public ParentViewDTO getViewByEmail(String email) throws ServiceException {
@@ -130,5 +140,23 @@ public class ParentServiceImpl implements IParentService {
 		
 		return true;
 	}
+
+
+	@Override
+	public Parent getByAccessToken(String accessToken) throws ServiceException {
+		ParentExample example = new ParentExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andAccessTokenEqualTo(accessToken);
+		
+		List<Parent> parentList = parentMapper.selectByExample(example);
+	
+		if( parentList != null && parentList.size() > 0 ){
+			Parent parent = parentList.get(0);
+			return parent;
+		}
+		return null;
+	}
+
+
 	
 }

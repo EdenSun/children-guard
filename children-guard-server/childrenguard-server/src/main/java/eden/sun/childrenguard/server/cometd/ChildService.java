@@ -41,7 +41,7 @@ public class ChildService extends BaseCometService{
 		Map<String, Object> input = message.getDataAsMap();
 		Integer parentId = Integer.parseInt( (String) input.get("parentId") );
 		
-		ViewDTO<List<ChildViewDTO>> view = childService.listAllByParentId(parentId);
+		ViewDTO<List<ChildViewDTO>> view = childService.listAllViewByParentId(parentId);
 		
 		Map<String, Object> output = new HashMap<String, Object>();
 		//output.put("greeting", "Hello, " + username + "-" + password);

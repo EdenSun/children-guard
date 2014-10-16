@@ -32,4 +32,12 @@ public class NumberUtil {
         return new String(chs);
 	}
 
+	public static Integer toInteger(String numStr) {
+		if( numStr == null ){
+			return null;
+		}
+		
+		return Integer.parseInt(numStr);
+	}
+
 }
