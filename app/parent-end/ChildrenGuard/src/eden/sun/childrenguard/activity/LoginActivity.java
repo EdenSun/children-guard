@@ -3,29 +3,22 @@ package eden.sun.childrenguard.activity;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.cometd.bayeux.Message;
-import org.cometd.bayeux.client.ClientSessionChannel;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 import eden.sun.childrenguard.R;
+import eden.sun.childrenguard.comet.IsFirstLoginListener;
 import eden.sun.childrenguard.comet.LoginListener;
-import eden.sun.childrenguard.server.dto.LoginViewDTO;
-import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.CometdConfig;
-import eden.sun.childrenguard.util.JSONUtil;
 import eden.sun.childrenguard.util.Runtime;
 import eden.sun.childrenguard.util.StringUtil;
 import eden.sun.childrenguard.util.UIUtil;
@@ -56,18 +49,14 @@ public class LoginActivity extends CommonActivity {
 				if( valid ){
 					AsyncTask<Map<String, Object>,Integer,String> task = new LoginTask(LoginActivity.this);
 					
-					Map<String, Object> data = new HashMap<String,Object>();
 					
-					String email = UIUtil.getEditTextValue(emailEditText);
-					String password = UIUtil.getEditTextValue(passwordEditText);
-					
-					data.put("email", email);
-					data.put("password", password);
+					Map<String, Object> data = getLoginParam();
 					
 					task.execute(data);
 				}
 				
 			}
+
 
         });
         
@@ -171,6 +160,7 @@ public class LoginActivity extends CommonActivity {
 		super.onStart();
 		
 		runtime.subscribe(CometdConfig.LOGIN_CHANNEL,new LoginListener(LoginActivity.this));
+		runtime.subscribe(CometdConfig.IS_FIRST_LOGIN_CHANNEL,new IsFirstLoginListener(LoginActivity.this));
 	}
     
 	
@@ -194,7 +184,9 @@ public class LoginActivity extends CommonActivity {
 		protected String doInBackground(Map<String, Object>... params) {
 			Map<String, Object> data = params[0];
 			
-			String msg = runtime.publish(data, CometdConfig.LOGIN_CHANNEL,new LoginListener(LoginActivity.this));
+			String msg = runtime.publish(data, CometdConfig.IS_FIRST_LOGIN_CHANNEL,new IsFirstLoginListener(LoginActivity.this));
+			
+			/*String msg = runtime.publish(data, CometdConfig.LOGIN_CHANNEL,new LoginListener(LoginActivity.this));*/
 			
 			return msg;
 		}
@@ -229,6 +221,20 @@ public class LoginActivity extends CommonActivity {
 		}
 		
 	}
+	private Map<String, Object> getLoginParam() {
+		Map<String, Object> data = new HashMap<String,Object>();
+		
+		String email = UIUtil.getEditTextValue(emailEditText);
+		String password = UIUtil.getEditTextValue(passwordEditText);
+		
+		data.put("email", email);
+		data.put("password", password);
+		return data;
+	}
 	
+	public void doLogin(){
+		// do login
+    	runtime.publish(getLoginParam(), CometdConfig.LOGIN_CHANNEL,new LoginListener(LoginActivity.this));
+	}
 	
 }

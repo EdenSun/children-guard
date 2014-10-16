@@ -10,7 +10,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import eden.sun.childrenguard.R;
-import eden.sun.childrenguard.util.Runtime;
 import eden.sun.childrenguard.util.UIUtil;
 
 public class ChangePasswordActivity extends CommonActivity  {

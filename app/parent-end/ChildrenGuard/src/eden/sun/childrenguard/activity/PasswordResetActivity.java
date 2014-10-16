@@ -6,7 +6,6 @@ import java.util.Map;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,10 +15,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import eden.sun.childrenguard.R;
-import eden.sun.childrenguard.comet.LoginListener;
 import eden.sun.childrenguard.comet.PasswordResetListener;
 import eden.sun.childrenguard.util.CometdConfig;
-import eden.sun.childrenguard.util.Runtime;
 import eden.sun.childrenguard.util.StringUtil;
 import eden.sun.childrenguard.util.UIUtil;
 

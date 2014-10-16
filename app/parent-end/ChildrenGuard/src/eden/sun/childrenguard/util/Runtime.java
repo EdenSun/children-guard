@@ -119,9 +119,13 @@ public class Runtime {
 	public String publish(Map<String, Object> data,String channel,MessageListener messagelistener){
 		if( this.clientSession.isConnected() ){
 			Log.i(TAG, "Connection is connected.");
-			this.clientSession.getChannel(channel).publish(data);
 			
-			Log.i(TAG, "Publishing...... success!");
+			Map<String,Object> params = new HashMap<String,Object>();
+			params.put("channel", channel);
+			params.put("data", data);
+			AsyncTask<Map<String, Object>,Integer,Boolean> task = new PublishTask();
+			task.execute(params);
+			
 			return PUBLISH_SUCCESS;
 		}else{
 			Log.i(TAG, "Connection is disconnected.");
@@ -233,6 +237,22 @@ public class Runtime {
 	/*public HttpClient getHttpClient() {
 		return httpClient;
 	}*/
+	
+	class PublishTask extends AsyncTask<Map<String,Object>,Integer,Boolean>{
+
+		@Override
+		protected Boolean doInBackground(Map<String, Object>... params) {
+			Map<String, Object> param = params[0];
+			String channel = (String)param.get("channel");
+			Map<String,Object> data = (Map<String,Object>)param.get("data");
+			
+			clientSession.getChannel(channel).publish(data);
+			
+			Log.i(TAG, "Publishing...... success!");
+			return true;
+		}
+		
+	};
 	
 	class SubscribeTask extends AsyncTask<Map<String,Object>,Integer,String>{
 		
