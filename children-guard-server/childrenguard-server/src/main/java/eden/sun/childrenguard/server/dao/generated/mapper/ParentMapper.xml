@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="eden.sun.childrenguard.server.dao.ParentMapper" >
-  <resultMap id="BaseResultMap" type="eden.sun.childrenguard.server.model.Parent" >
+<mapper namespace="eden.sun.childrenguard.server.dao.generated.ParentMapper" >
+  <resultMap id="BaseResultMap" type="eden.sun.childrenguard.server.model.generated.Parent" >
     <id column="ID" property="id" jdbcType="INTEGER" />
     <result column="EMAIL" property="email" jdbcType="VARCHAR" />
     <result column="FIRST_NAME" property="firstName" jdbcType="VARCHAR" />
@@ -74,7 +74,7 @@
     ID, EMAIL, FIRST_NAME, LAST_NAME, PASSWORD, CREATE_TIME, LAST_LOGIN_TIME, ACCESS_TOKEN, 
     RESET_CODE
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="eden.sun.childrenguard.server.model.ParentExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="eden.sun.childrenguard.server.model.generated.ParentExample" >
     select
     <if test="distinct" >
       distinct
@@ -98,13 +98,13 @@
     delete from tbl_parent
     where ID = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="eden.sun.childrenguard.server.model.ParentExample" >
+  <delete id="deleteByExample" parameterType="eden.sun.childrenguard.server.model.generated.ParentExample" >
     delete from tbl_parent
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="eden.sun.childrenguard.server.model.Parent" >
+  <insert id="insert" parameterType="eden.sun.childrenguard.server.model.generated.Parent" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -115,7 +115,7 @@
       #{password,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastLoginTime,jdbcType=TIMESTAMP}, 
       #{accessToken,jdbcType=VARCHAR}, #{resetCode,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="eden.sun.childrenguard.server.model.Parent" >
+  <insert id="insertSelective" parameterType="eden.sun.childrenguard.server.model.generated.Parent" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -173,7 +173,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="eden.sun.childrenguard.server.model.ParentExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="eden.sun.childrenguard.server.model.generated.ParentExample" resultType="java.lang.Integer" >
     select count(*) from tbl_parent
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -229,7 +229,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="eden.sun.childrenguard.server.model.Parent" >
+  <update id="updateByPrimaryKeySelective" parameterType="eden.sun.childrenguard.server.model.generated.Parent" >
     update tbl_parent
     <set >
       <if test="email != null" >
@@ -259,7 +259,7 @@
     </set>
     where ID = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="eden.sun.childrenguard.server.model.Parent" >
+  <update id="updateByPrimaryKey" parameterType="eden.sun.childrenguard.server.model.generated.Parent" >
     update tbl_parent
     set EMAIL = #{email,jdbcType=VARCHAR},
       FIRST_NAME = #{firstName,jdbcType=VARCHAR},
@@ -271,7 +271,7 @@
       RESET_CODE = #{resetCode,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=INTEGER}
   </update>
-  <select resultMap="BaseResultMap" parameterType="eden.sun.childrenguard.server.model.ParentExample" id="selectByExampleWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="eden.sun.childrenguard.server.model.generated.ParentExample" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
       distinct

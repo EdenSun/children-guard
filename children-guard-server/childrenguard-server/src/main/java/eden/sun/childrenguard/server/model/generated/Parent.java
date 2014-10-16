@@ -1,21 +1,25 @@
-package eden.sun.childrenguard.server.model;
+package eden.sun.childrenguard.server.model.generated;
 
 import java.util.Date;
 
-public class Child {
+public class Parent {
     private Integer id;
 
-    private String mobile;
+    private String email;
 
     private String firstName;
 
     private String lastName;
 
-    private String nickname;
+    private String password;
 
     private Date createTime;
 
+    private Date lastLoginTime;
+
     private String accessToken;
+
+    private String resetCode;
 
     public Integer getId() {
         return id;
@@ -25,12 +29,12 @@ public class Child {
         this.id = id;
     }
 
-    public String getMobile() {
-        return mobile;
+    public String getEmail() {
+        return email;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile == null ? null : mobile.trim();
+    public void setEmail(String email) {
+        this.email = email == null ? null : email.trim();
     }
 
     public String getFirstName() {
@@ -49,12 +53,12 @@ public class Child {
         this.lastName = lastName == null ? null : lastName.trim();
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getPassword() {
+        return password;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname == null ? null : nickname.trim();
+    public void setPassword(String password) {
+        this.password = password == null ? null : password.trim();
     }
 
     public Date getCreateTime() {
@@ -65,11 +69,27 @@ public class Child {
         this.createTime = createTime;
     }
 
+    public Date getLastLoginTime() {
+        return lastLoginTime;
+    }
+
+    public void setLastLoginTime(Date lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
+    }
+
     public String getAccessToken() {
         return accessToken;
     }
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken == null ? null : accessToken.trim();
+    }
+
+    public String getResetCode() {
+        return resetCode;
+    }
+
+    public void setResetCode(String resetCode) {
+        this.resetCode = resetCode == null ? null : resetCode.trim();
     }
 }

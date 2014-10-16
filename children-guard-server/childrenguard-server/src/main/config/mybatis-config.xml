@@ -8,10 +8,11 @@
 		
 	</typeAliases>
 	<mappers>
-	    <mapper resource="eden/sun/childrenguard/server/dao/mapper/ChildMapper.xml"/>
-		<mapper resource="eden/sun/childrenguard/server/dao/mapper/ParentMapper.xml"/>
-		<mapper resource="eden/sun/childrenguard/server/dao/mapper/ParentChildMapper.xml"/>
-		<mapper resource="eden/sun/childrenguard/server/dao/mapper/RelationshipMapper.xml"/>
+	    <mapper resource="eden/sun/childrenguard/server/dao/generated/mapper/ChildMapper.xml"/>
+		<mapper resource="eden/sun/childrenguard/server/dao/generated/mapper/ParentMapper.xml"/>
+		<mapper resource="eden/sun/childrenguard/server/dao/generated/mapper/ParentChildMapper.xml"/>
+		<mapper resource="eden/sun/childrenguard/server/dao/generated/mapper/RelationshipMapper.xml"/>
+		
 		<mapper resource="eden/sun/childrenguard/server/dao/mapper/ChildOfParentsMapper.xml"/>
 		
 		<!-- <mapper resource="com/uce360/reslibadmin/dao/mapper/AnswerMapper.xml"/>

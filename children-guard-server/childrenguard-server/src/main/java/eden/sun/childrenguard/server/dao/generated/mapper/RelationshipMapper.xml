@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="eden.sun.childrenguard.server.dao.ParentChildMapper" >
-  <resultMap id="BaseResultMap" type="eden.sun.childrenguard.server.model.ParentChild" >
+<mapper namespace="eden.sun.childrenguard.server.dao.generated.RelationshipMapper" >
+  <resultMap id="BaseResultMap" type="eden.sun.childrenguard.server.model.generated.Relationship" >
     <id column="ID" property="id" jdbcType="INTEGER" />
-    <result column="RELATIONSHIP_ID" property="relationshipId" jdbcType="INTEGER" />
-    <result column="PARENT_ID" property="parentId" jdbcType="INTEGER" />
-    <result column="CHILD_ID" property="childId" jdbcType="INTEGER" />
+    <result column="RELATION_NAME" property="relationName" jdbcType="VARCHAR" />
     <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -67,15 +65,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    ID, RELATIONSHIP_ID, PARENT_ID, CHILD_ID, CREATE_TIME
+    ID, RELATION_NAME, CREATE_TIME
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="eden.sun.childrenguard.server.model.ParentChildExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="eden.sun.childrenguard.server.model.generated.RelationshipExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tbl_parent_child
+    from tbl_relationship
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -86,82 +84,62 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tbl_parent_child
+    from tbl_relationship
     where ID = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tbl_parent_child
+    delete from tbl_relationship
     where ID = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="eden.sun.childrenguard.server.model.ParentChildExample" >
-    delete from tbl_parent_child
+  <delete id="deleteByExample" parameterType="eden.sun.childrenguard.server.model.generated.RelationshipExample" >
+    delete from tbl_relationship
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="eden.sun.childrenguard.server.model.ParentChild" >
+  <insert id="insert" parameterType="eden.sun.childrenguard.server.model.generated.Relationship" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tbl_parent_child (RELATIONSHIP_ID, PARENT_ID, CHILD_ID, 
-      CREATE_TIME)
-    values (#{relationshipId,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{childId,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP})
+    insert into tbl_relationship (RELATION_NAME, CREATE_TIME)
+    values (#{relationName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="eden.sun.childrenguard.server.model.ParentChild" >
+  <insert id="insertSelective" parameterType="eden.sun.childrenguard.server.model.generated.Relationship" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tbl_parent_child
+    insert into tbl_relationship
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="relationshipId != null" >
-        RELATIONSHIP_ID,
-      </if>
-      <if test="parentId != null" >
-        PARENT_ID,
-      </if>
-      <if test="childId != null" >
-        CHILD_ID,
+      <if test="relationName != null" >
+        RELATION_NAME,
       </if>
       <if test="createTime != null" >
         CREATE_TIME,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="relationshipId != null" >
-        #{relationshipId,jdbcType=INTEGER},
-      </if>
-      <if test="parentId != null" >
-        #{parentId,jdbcType=INTEGER},
-      </if>
-      <if test="childId != null" >
-        #{childId,jdbcType=INTEGER},
+      <if test="relationName != null" >
+        #{relationName,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="eden.sun.childrenguard.server.model.ParentChildExample" resultType="java.lang.Integer" >
-    select count(*) from tbl_parent_child
+  <select id="countByExample" parameterType="eden.sun.childrenguard.server.model.generated.RelationshipExample" resultType="java.lang.Integer" >
+    select count(*) from tbl_relationship
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tbl_parent_child
+    update tbl_relationship
     <set >
       <if test="record.id != null" >
         ID = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.relationshipId != null" >
-        RELATIONSHIP_ID = #{record.relationshipId,jdbcType=INTEGER},
-      </if>
-      <if test="record.parentId != null" >
-        PARENT_ID = #{record.parentId,jdbcType=INTEGER},
-      </if>
-      <if test="record.childId != null" >
-        CHILD_ID = #{record.childId,jdbcType=INTEGER},
+      <if test="record.relationName != null" >
+        RELATION_NAME = #{record.relationName,jdbcType=VARCHAR},
       </if>
       <if test="record.createTime != null" >
         CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
@@ -172,27 +150,19 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tbl_parent_child
+    update tbl_relationship
     set ID = #{record.id,jdbcType=INTEGER},
-      RELATIONSHIP_ID = #{record.relationshipId,jdbcType=INTEGER},
-      PARENT_ID = #{record.parentId,jdbcType=INTEGER},
-      CHILD_ID = #{record.childId,jdbcType=INTEGER},
+      RELATION_NAME = #{record.relationName,jdbcType=VARCHAR},
       CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="eden.sun.childrenguard.server.model.ParentChild" >
-    update tbl_parent_child
+  <update id="updateByPrimaryKeySelective" parameterType="eden.sun.childrenguard.server.model.generated.Relationship" >
+    update tbl_relationship
     <set >
-      <if test="relationshipId != null" >
-        RELATIONSHIP_ID = #{relationshipId,jdbcType=INTEGER},
-      </if>
-      <if test="parentId != null" >
-        PARENT_ID = #{parentId,jdbcType=INTEGER},
-      </if>
-      <if test="childId != null" >
-        CHILD_ID = #{childId,jdbcType=INTEGER},
+      <if test="relationName != null" >
+        RELATION_NAME = #{relationName,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
@@ -200,21 +170,19 @@
     </set>
     where ID = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="eden.sun.childrenguard.server.model.ParentChild" >
-    update tbl_parent_child
-    set RELATIONSHIP_ID = #{relationshipId,jdbcType=INTEGER},
-      PARENT_ID = #{parentId,jdbcType=INTEGER},
-      CHILD_ID = #{childId,jdbcType=INTEGER},
+  <update id="updateByPrimaryKey" parameterType="eden.sun.childrenguard.server.model.generated.Relationship" >
+    update tbl_relationship
+    set RELATION_NAME = #{relationName,jdbcType=VARCHAR},
       CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=INTEGER}
   </update>
-  <select resultMap="BaseResultMap" parameterType="eden.sun.childrenguard.server.model.ParentChildExample" id="selectByExampleWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="eden.sun.childrenguard.server.model.generated.RelationshipExample" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tbl_parent_child
+    from tbl_relationship
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>

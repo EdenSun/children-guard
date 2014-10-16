@@ -1,4 +1,4 @@
-package eden.sun.childrenguard.server.model;
+package eden.sun.childrenguard.server.model.generated;
 
 import java.util.Date;
 

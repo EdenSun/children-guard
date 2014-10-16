@@ -1,17 +1,17 @@
-package eden.sun.childrenguard.server.model;
+package eden.sun.childrenguard.server.model.generated;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ParentChildExample {
+public class RelationshipExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public ParentChildExample() {
+    public RelationshipExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -165,183 +165,73 @@ public class ParentChildExample {
             return (Criteria) this;
         }
 
-        public Criteria andRelationshipIdIsNull() {
-            addCriterion("RELATIONSHIP_ID is null");
+        public Criteria andRelationNameIsNull() {
+            addCriterion("RELATION_NAME is null");
             return (Criteria) this;
         }
 
-        public Criteria andRelationshipIdIsNotNull() {
-            addCriterion("RELATIONSHIP_ID is not null");
+        public Criteria andRelationNameIsNotNull() {
+            addCriterion("RELATION_NAME is not null");
             return (Criteria) this;
         }
 
-        public Criteria andRelationshipIdEqualTo(Integer value) {
-            addCriterion("RELATIONSHIP_ID =", value, "relationshipId");
+        public Criteria andRelationNameEqualTo(String value) {
+            addCriterion("RELATION_NAME =", value, "relationName");
             return (Criteria) this;
         }
 
-        public Criteria andRelationshipIdNotEqualTo(Integer value) {
-            addCriterion("RELATIONSHIP_ID <>", value, "relationshipId");
+        public Criteria andRelationNameNotEqualTo(String value) {
+            addCriterion("RELATION_NAME <>", value, "relationName");
             return (Criteria) this;
         }
 
-        public Criteria andRelationshipIdGreaterThan(Integer value) {
-            addCriterion("RELATIONSHIP_ID >", value, "relationshipId");
+        public Criteria andRelationNameGreaterThan(String value) {
+            addCriterion("RELATION_NAME >", value, "relationName");
             return (Criteria) this;
         }
 
-        public Criteria andRelationshipIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("RELATIONSHIP_ID >=", value, "relationshipId");
+        public Criteria andRelationNameGreaterThanOrEqualTo(String value) {
+            addCriterion("RELATION_NAME >=", value, "relationName");
             return (Criteria) this;
         }
 
-        public Criteria andRelationshipIdLessThan(Integer value) {
-            addCriterion("RELATIONSHIP_ID <", value, "relationshipId");
+        public Criteria andRelationNameLessThan(String value) {
+            addCriterion("RELATION_NAME <", value, "relationName");
             return (Criteria) this;
         }
 
-        public Criteria andRelationshipIdLessThanOrEqualTo(Integer value) {
-            addCriterion("RELATIONSHIP_ID <=", value, "relationshipId");
+        public Criteria andRelationNameLessThanOrEqualTo(String value) {
+            addCriterion("RELATION_NAME <=", value, "relationName");
             return (Criteria) this;
         }
 
-        public Criteria andRelationshipIdIn(List<Integer> values) {
-            addCriterion("RELATIONSHIP_ID in", values, "relationshipId");
+        public Criteria andRelationNameLike(String value) {
+            addCriterion("RELATION_NAME like", value, "relationName");
             return (Criteria) this;
         }
 
-        public Criteria andRelationshipIdNotIn(List<Integer> values) {
-            addCriterion("RELATIONSHIP_ID not in", values, "relationshipId");
+        public Criteria andRelationNameNotLike(String value) {
+            addCriterion("RELATION_NAME not like", value, "relationName");
             return (Criteria) this;
         }
 
-        public Criteria andRelationshipIdBetween(Integer value1, Integer value2) {
-            addCriterion("RELATIONSHIP_ID between", value1, value2, "relationshipId");
+        public Criteria andRelationNameIn(List<String> values) {
+            addCriterion("RELATION_NAME in", values, "relationName");
             return (Criteria) this;
         }
 
-        public Criteria andRelationshipIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("RELATIONSHIP_ID not between", value1, value2, "relationshipId");
+        public Criteria andRelationNameNotIn(List<String> values) {
+            addCriterion("RELATION_NAME not in", values, "relationName");
             return (Criteria) this;
         }
 
-        public Criteria andParentIdIsNull() {
-            addCriterion("PARENT_ID is null");
+        public Criteria andRelationNameBetween(String value1, String value2) {
+            addCriterion("RELATION_NAME between", value1, value2, "relationName");
             return (Criteria) this;
         }
 
-        public Criteria andParentIdIsNotNull() {
-            addCriterion("PARENT_ID is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andParentIdEqualTo(Integer value) {
-            addCriterion("PARENT_ID =", value, "parentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andParentIdNotEqualTo(Integer value) {
-            addCriterion("PARENT_ID <>", value, "parentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andParentIdGreaterThan(Integer value) {
-            addCriterion("PARENT_ID >", value, "parentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andParentIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("PARENT_ID >=", value, "parentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andParentIdLessThan(Integer value) {
-            addCriterion("PARENT_ID <", value, "parentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andParentIdLessThanOrEqualTo(Integer value) {
-            addCriterion("PARENT_ID <=", value, "parentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andParentIdIn(List<Integer> values) {
-            addCriterion("PARENT_ID in", values, "parentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andParentIdNotIn(List<Integer> values) {
-            addCriterion("PARENT_ID not in", values, "parentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andParentIdBetween(Integer value1, Integer value2) {
-            addCriterion("PARENT_ID between", value1, value2, "parentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andParentIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("PARENT_ID not between", value1, value2, "parentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andChildIdIsNull() {
-            addCriterion("CHILD_ID is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andChildIdIsNotNull() {
-            addCriterion("CHILD_ID is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andChildIdEqualTo(Integer value) {
-            addCriterion("CHILD_ID =", value, "childId");
-            return (Criteria) this;
-        }
-
-        public Criteria andChildIdNotEqualTo(Integer value) {
-            addCriterion("CHILD_ID <>", value, "childId");
-            return (Criteria) this;
-        }
-
-        public Criteria andChildIdGreaterThan(Integer value) {
-            addCriterion("CHILD_ID >", value, "childId");
-            return (Criteria) this;
-        }
-
-        public Criteria andChildIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("CHILD_ID >=", value, "childId");
-            return (Criteria) this;
-        }
-
-        public Criteria andChildIdLessThan(Integer value) {
-            addCriterion("CHILD_ID <", value, "childId");
-            return (Criteria) this;
-        }
-
-        public Criteria andChildIdLessThanOrEqualTo(Integer value) {
-            addCriterion("CHILD_ID <=", value, "childId");
-            return (Criteria) this;
-        }
-
-        public Criteria andChildIdIn(List<Integer> values) {
-            addCriterion("CHILD_ID in", values, "childId");
-            return (Criteria) this;
-        }
-
-        public Criteria andChildIdNotIn(List<Integer> values) {
-            addCriterion("CHILD_ID not in", values, "childId");
-            return (Criteria) this;
-        }
-
-        public Criteria andChildIdBetween(Integer value1, Integer value2) {
-            addCriterion("CHILD_ID between", value1, value2, "childId");
-            return (Criteria) this;
-        }
-
-        public Criteria andChildIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("CHILD_ID not between", value1, value2, "childId");
+        public Criteria andRelationNameNotBetween(String value1, String value2) {
+            addCriterion("RELATION_NAME not between", value1, value2, "relationName");
             return (Criteria) this;
         }
 

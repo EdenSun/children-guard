@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="eden.sun.childrenguard.server.dao.ChildMapper" >
-  <resultMap id="BaseResultMap" type="eden.sun.childrenguard.server.model.Child" >
+<mapper namespace="eden.sun.childrenguard.server.dao.generated.ChildMapper" >
+  <resultMap id="BaseResultMap" type="eden.sun.childrenguard.server.model.generated.Child" >
     <id column="ID" property="id" jdbcType="INTEGER" />
     <result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
     <result column="FIRST_NAME" property="firstName" jdbcType="VARCHAR" />
@@ -71,7 +71,7 @@
   <sql id="Base_Column_List" >
     ID, MOBILE, FIRST_NAME, LAST_NAME, NICKNAME, CREATE_TIME, ACCESS_TOKEN
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="eden.sun.childrenguard.server.model.ChildExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="eden.sun.childrenguard.server.model.generated.ChildExample" >
     select
     <if test="distinct" >
       distinct
@@ -95,13 +95,13 @@
     delete from tbl_child
     where ID = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="eden.sun.childrenguard.server.model.ChildExample" >
+  <delete id="deleteByExample" parameterType="eden.sun.childrenguard.server.model.generated.ChildExample" >
     delete from tbl_child
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="eden.sun.childrenguard.server.model.Child" >
+  <insert id="insert" parameterType="eden.sun.childrenguard.server.model.generated.Child" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -112,7 +112,7 @@
       #{nickname,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{accessToken,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="eden.sun.childrenguard.server.model.Child" >
+  <insert id="insertSelective" parameterType="eden.sun.childrenguard.server.model.generated.Child" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -158,7 +158,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="eden.sun.childrenguard.server.model.ChildExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="eden.sun.childrenguard.server.model.generated.ChildExample" resultType="java.lang.Integer" >
     select count(*) from tbl_child
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -206,7 +206,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="eden.sun.childrenguard.server.model.Child" >
+  <update id="updateByPrimaryKeySelective" parameterType="eden.sun.childrenguard.server.model.generated.Child" >
     update tbl_child
     <set >
       <if test="mobile != null" >
@@ -230,7 +230,7 @@
     </set>
     where ID = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="eden.sun.childrenguard.server.model.Child" >
+  <update id="updateByPrimaryKey" parameterType="eden.sun.childrenguard.server.model.generated.Child" >
     update tbl_child
     set MOBILE = #{mobile,jdbcType=VARCHAR},
       FIRST_NAME = #{firstName,jdbcType=VARCHAR},
@@ -240,7 +240,7 @@
       ACCESS_TOKEN = #{accessToken,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=INTEGER}
   </update>
-  <select resultMap="BaseResultMap" parameterType="eden.sun.childrenguard.server.model.ChildExample" id="selectByExampleWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="eden.sun.childrenguard.server.model.generated.ChildExample" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
       distinct

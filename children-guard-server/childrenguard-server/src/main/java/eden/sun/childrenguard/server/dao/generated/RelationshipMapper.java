@@ -1,7 +1,7 @@
-package eden.sun.childrenguard.server.dao;
+package eden.sun.childrenguard.server.dao.generated;
 
-import eden.sun.childrenguard.server.model.Relationship;
-import eden.sun.childrenguard.server.model.RelationshipExample;
+import eden.sun.childrenguard.server.model.generated.Relationship;
+import eden.sun.childrenguard.server.model.generated.RelationshipExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
