@@ -17,6 +17,6 @@ public interface IChildService {
 
 	ChildViewDTO getChildViewByMobile(String mobile)throws ServiceException;
 
-	ChildViewDTO deleteById(Integer childId)throws ServiceException;
+	ChildViewDTO deleteChild(Integer childId)throws ServiceException;
 
 }

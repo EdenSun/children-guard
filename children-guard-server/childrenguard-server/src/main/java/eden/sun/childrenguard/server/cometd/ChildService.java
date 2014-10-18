@@ -43,10 +43,9 @@ public class ChildService extends BaseCometService{
 		
 		ViewDTO<List<ChildViewDTO>> view = childService.listAllViewByParentId(parentId);
 		
-		Map<String, Object> output = new HashMap<String, Object>();
-		//output.put("greeting", "Hello, " + username + "-" + password);
+		String resultJSON = toJson(view);
 		
-		remote.deliver(serverSession, "/service/child/listAll", output);
+		remote.deliver(serverSession, "/service/child/listAll", resultJSON);
 	}
 	
 	@Listener("/service/child/add")
@@ -58,10 +57,9 @@ public class ChildService extends BaseCometService{
 		
 		ViewDTO<ChildViewDTO> view = childService.add(mobile,nickname);
 		
-		Map<String, Object> output = new HashMap<String, Object>();
-		//output.put("greeting", "Hello, " + username + "-" + password);
+		String resultJSON = toJson(view);
 		
-		remote.deliver(serverSession, "/service/child/listAll", output);
+		remote.deliver(serverSession, "/service/child/add", resultJSON);
 	}
 	
 }

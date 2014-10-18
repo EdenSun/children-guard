@@ -6,4 +6,6 @@ public interface IParentChildService {
 
 	void addRelationship(Integer parentId, Integer childId, Integer relationshipId)throws ServiceException;
 
+	void deleteRelationByChild(Integer childId)throws ServiceException;
+
 }

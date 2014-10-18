@@ -21,6 +21,7 @@ import eden.sun.childrenguard.server.model.generated.Child;
 import eden.sun.childrenguard.server.model.generated.ChildExample;
 import eden.sun.childrenguard.server.model.generated.ChildExample.Criteria;
 import eden.sun.childrenguard.server.service.IChildService;
+import eden.sun.childrenguard.server.service.IParentChildService;
 
 @Service
 public class ChildServiceImpl implements IChildService {
@@ -28,7 +29,9 @@ public class ChildServiceImpl implements IChildService {
 	private ChildMapper childMapper;
 	@Inject
 	private ChildOfParentsMapper childOfParentsMapper;
-
+	@Inject
+	private IParentChildService parentChildService;
+	
 	@Override
 	public ViewDTO<List<ChildViewDTO>> listAllViewByParentId(Integer parentId)
 			throws ServiceException {
@@ -171,21 +174,52 @@ public class ChildServiceImpl implements IChildService {
 	}
 
 	@Override
-	public ChildViewDTO deleteById(Integer childId) throws ServiceException {
+	public ChildViewDTO deleteChild(Integer childId) throws ServiceException {
 		if( childId == null ){
 			throw new ServiceException("Parameter childId can not be null.");
 		}
 		
 		/* check whether child is exists
 		 * if exists: delete child ,and delete all relevant relationship with this child, and return child view dto
-		 * if not exists: return null
+		 * if not exists: throw exception
 		 */
+		Child child = this.getById(childId);
+		ChildViewDTO childView = this.trans2ChildViewDTO(child);
+		if( child == null ){
+			// condition: child is not exists
+			throw new ServiceException("Child is not exists.");
+		}
 		
+		//condition: child is exists
+		//delete child
+		boolean isSuccess = this.deleteById(childId);
 		
-		
-		childMapper.deleteByPrimaryKey(childId);
+		if( isSuccess ){
+			/* delete child success
+			 * delete relevant relationship
+			 */
+			
+			parentChildService.deleteRelationByChild(childId);
+			
+			return childView;
+		}
 		
 		return null;
+	}
+
+	private Child getById(Integer childId) {
+		Child child = childMapper.selectByPrimaryKey(childId);
+		
+		return child;
+	}
+
+	private boolean deleteById(Integer childId) {
+		int cnt = childMapper.deleteByPrimaryKey(childId);
+		if( cnt == 0 ){
+			return false;
+		}
+		
+		return true;
 	}
 	
 }

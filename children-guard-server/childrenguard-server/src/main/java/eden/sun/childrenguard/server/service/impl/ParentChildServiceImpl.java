@@ -66,6 +66,20 @@ public class ParentChildServiceImpl extends BaseServiceImpl implements IParentCh
 		}
 		return null;
 	}
-	
 
+	@Override
+	public void deleteRelationByChild(Integer childId) throws ServiceException {
+		if( childId == null ){
+			String errMsg = "Parameter childId can not be null.";
+			logger.error(errMsg);
+			throw new ServiceException(errMsg);
+		}
+		
+		ParentChildExample example = new ParentChildExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andChildIdEqualTo(childId);
+		
+		parentChildMapper.deleteByExample(example);
+	}
+	
 }

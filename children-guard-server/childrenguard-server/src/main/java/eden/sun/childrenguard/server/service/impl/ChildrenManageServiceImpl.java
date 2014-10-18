@@ -90,7 +90,7 @@ public class ChildrenManageServiceImpl implements IChildrenManageService{
 		
 		ViewDTO<ChildViewDTO> view = new ViewDTO<ChildViewDTO>();
 		
-		ChildViewDTO viewDTO = childService.deleteById(childId);
+		ChildViewDTO viewDTO = childService.deleteChild(childId);
 
 		view.setData(viewDTO);
 		return view;

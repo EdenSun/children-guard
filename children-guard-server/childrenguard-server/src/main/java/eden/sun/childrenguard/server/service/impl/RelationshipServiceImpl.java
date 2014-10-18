@@ -25,5 +25,4 @@ public class RelationshipServiceImpl extends BaseServiceImpl implements IRelatio
 		}
 	}
 
-	
 }
