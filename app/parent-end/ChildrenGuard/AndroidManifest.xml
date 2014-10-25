@@ -81,6 +81,7 @@
             android:label="@string/title_activity_exception_phone_add"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
+        
     </application>
 
 </manifest>

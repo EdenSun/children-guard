@@ -33,7 +33,7 @@ import eden.sun.childrenguard.server.util.NumberUtil;
 
 @Named
 @Singleton
-@Service("childDetailService")
+@Service("childDetailCometdService")
 public class ChildDetailService extends BaseCometService{
 	@Inject
 	private BayeuxServer bayeux;

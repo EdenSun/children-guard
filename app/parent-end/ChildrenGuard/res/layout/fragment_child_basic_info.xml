@@ -39,6 +39,7 @@
 	            android:text="Mobile:"
 	            style="@style/label"/>
 	        <TextView 
+	            android:id="@+id/mobileTextView"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="1"
@@ -55,13 +56,14 @@
 	            android:layout_width="100dp"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="0"
-	            android:text="Email:"
+	            android:text="Full Name:"
 	            style="@style/label"/>
 	        <TextView 
+	            android:id="@+id/fullNameTextView"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="1"
-	            android:text="edensun@gmail.com"
+	            android:text="Eden , Sun"
 	            android:textColor="@color/text_gray"/>
 	    </LinearLayout>
 	    
@@ -77,6 +79,7 @@
 	            android:text="Network Traffic:"
 	            style="@style/label"/>
 	        <TextView 
+	            android:id="@+id/networkTrafficTextView"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="1"
@@ -96,6 +99,7 @@
 	            android:text="Location:"
 	            style="@style/label"/>
 	        <TextView 
+	            android:id="@+id/locationTextView"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="1"
@@ -115,6 +119,7 @@
 	            android:text="Speed:"
 	            style="@style/label"/>
 	        <TextView 
+	            android:id="@+id/speedTextView"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="1"

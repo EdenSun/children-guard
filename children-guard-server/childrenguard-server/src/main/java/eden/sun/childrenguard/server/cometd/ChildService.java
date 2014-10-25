@@ -1,6 +1,5 @@
 package eden.sun.childrenguard.server.cometd;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +21,7 @@ import eden.sun.childrenguard.server.service.IChildService;
 
 @Named
 @Singleton
-@Service("childService")
+@Service("childCometdService")
 public class ChildService extends BaseCometService{
 	@Inject
 	private BayeuxServer bayeux;

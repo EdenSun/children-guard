@@ -24,7 +24,7 @@ import eden.sun.childrenguard.server.util.CometdChannel;
 
 @Named
 @Singleton
-@Service("loginService")
+@Service("loginCometdService")
 public class LoginService extends BaseCometService{
 	private Logger logger = Logger.getLogger(LoginService.class);
 	@Inject

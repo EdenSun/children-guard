@@ -9,22 +9,36 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.comet.IsFirstLoginListener;
-import eden.sun.childrenguard.comet.LoginListener;
+import eden.sun.childrenguard.server.dto.IsFirstLoginViewDTO;
+import eden.sun.childrenguard.server.dto.LoginViewDTO;
+import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.CometdConfig;
+import eden.sun.childrenguard.util.Config;
+import eden.sun.childrenguard.util.JSONUtil;
+import eden.sun.childrenguard.util.RequestHelper;
+import eden.sun.childrenguard.util.RequestURLConstants;
 import eden.sun.childrenguard.util.Runtime;
+import eden.sun.childrenguard.util.ShareDataKey;
 import eden.sun.childrenguard.util.StringUtil;
 import eden.sun.childrenguard.util.UIUtil;
 
 
 public class LoginActivity extends CommonActivity {
+	private final String TAG = "LoginActivity";
 	private Button loginBtn;
 	private Button registerBtn ;
 	private Button forgetPasswordBtn;
@@ -35,7 +49,7 @@ public class LoginActivity extends CommonActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        
+
         emailEditText = (EditText)findViewById(R.id.emailEditText);
         passwordEditText = (EditText)findViewById(R.id.passwordEditText);
 
@@ -47,12 +61,58 @@ public class LoginActivity extends CommonActivity {
 				boolean valid = doValidation();
 				
 				if( valid ){
-					AsyncTask<Map<String, Object>,Integer,String> task = new LoginTask(LoginActivity.this);
+					/*AsyncTask<Map<String, Object>,Integer,String> task = new LoginTask(LoginActivity.this);
 					
 					
 					Map<String, Object> data = getLoginParam();
 					
-					task.execute(data);
+					task.execute(data);*/
+					
+					String title = "Login";
+					String msg = "Please wait...";
+					showProgressDialog(title,msg);
+					
+					RequestHelper helper = getRequestHelper();
+					final String finalEmail = emailEditText.getText().toString();
+					final String finalPassword = passwordEditText.getText().toString();
+					String url = String.format(
+							Config.BASE_URL_MVC + RequestURLConstants.URL_IS_FIRST_LOGIN + "?email=%1$s&password=%2$s",  
+							finalEmail,  
+							finalPassword);  
+	  
+					helper.doGet(
+						url,
+						new Response.Listener<String>() {
+							@Override
+							public void onResponse(String response) {
+								ViewDTO<IsFirstLoginViewDTO> view = JSONUtil.getIsFirstLoginView(response);
+						    	
+						    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS)){
+						    		if( view.getData().isFirstLogin() ){
+						    			dismissProgressDialog();
+						    			
+						    			AlertDialog.Builder dialog = UIUtil.getLegalInfoDialog(LoginActivity.this,view.getData().getLegalInfo());
+										
+										dialog.show();
+						    		}else{
+						    			LoginActivity.this.doLogin();
+						    		}
+						    	}else{
+						    		dismissProgressDialog();
+						    		AlertDialog.Builder dialog = UIUtil.getErrorDialog(LoginActivity.this,view.getInfo());
+						    		
+									dialog.show();
+						    	}
+						    	
+							}
+						}, 
+						new Response.ErrorListener() {
+							@Override
+							public void onErrorResponse(VolleyError error) {
+								Log.e("TAG", error.getMessage(), error);
+						}
+					});
+					
 				}
 				
 			}
@@ -84,7 +144,7 @@ public class LoginActivity extends CommonActivity {
     }
 
 
-    private boolean doValidation() {
+	private boolean doValidation() {
     	String email = UIUtil.getEditTextValue(emailEditText);
 		String password = UIUtil.getEditTextValue(passwordEditText);
 				
@@ -155,15 +215,6 @@ public class LoginActivity extends CommonActivity {
     }
 
 
-	@Override
-	protected void onStart() {
-		super.onStart();
-		
-		runtime.subscribe(CometdConfig.LOGIN_CHANNEL,new LoginListener(LoginActivity.this));
-		runtime.subscribe(CometdConfig.IS_FIRST_LOGIN_CHANNEL,new IsFirstLoginListener(LoginActivity.this));
-	}
-    
-	
 	class LoginTask extends AsyncTask<Map<String, Object>,Integer,String>{
 		private Activity context;
 		
@@ -234,7 +285,52 @@ public class LoginActivity extends CommonActivity {
 	
 	public void doLogin(){
 		// do login
-    	runtime.publish(getLoginParam(), CometdConfig.LOGIN_CHANNEL,new LoginListener(LoginActivity.this));
+    	//runtime.publish(getLoginParam(), CometdConfig.LOGIN_CHANNEL,new LoginListener(LoginActivity.this));
+
+		String email = UIUtil.getEditTextValue(emailEditText);
+		String password = UIUtil.getEditTextValue(passwordEditText);
+		
+		RequestHelper helper = getRequestHelper();
+		
+		String url = String.format(
+				Config.BASE_URL_MVC + RequestURLConstants.URL_LOGIN + "?email=%1$s&password=%2$s",  
+				email,  
+				password);  
+
+		helper.doGet(
+			url,
+			new Response.Listener<String>() {
+				@Override
+				public void onResponse(String response) {
+					Log.d(TAG, "response");
+					dismissProgressDialog();
+					ViewDTO<LoginViewDTO> view = JSONUtil.getLoginView(response);
+					
+					if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
+						LoginActivity.this.putStringShareData(ShareDataKey.PARENT_ACCESS_TOKEN,view.getData().getAccessToken());
+						
+						Toast toast = UIUtil.getToast(LoginActivity.this,"Login Success!");
+						toast.show();
+						
+						Intent it = new Intent(LoginActivity.this, ChildrenListActivity.class);
+						LoginActivity.this.startActivity(it);
+						
+						// finish login activity
+						LoginActivity.this.finish();
+					}else{
+						AlertDialog.Builder dialog = UIUtil.getErrorDialog(LoginActivity.this,view.getInfo());
+			    		
+						dialog.show();
+					}
+					
+				}
+			}, 
+			new Response.ErrorListener() {
+				@Override
+				public void onErrorResponse(VolleyError error) {
+					Log.e("TAG", error.getMessage(), error);
+			}
+		});
 	}
 	
 }

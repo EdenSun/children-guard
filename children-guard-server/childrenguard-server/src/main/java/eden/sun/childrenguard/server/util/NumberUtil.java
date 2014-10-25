@@ -40,4 +40,12 @@ public class NumberUtil {
 		return Integer.parseInt(numStr);
 	}
 
+	public static Double toDouble(String numStr) {
+		if( numStr == null ){
+			return null;
+		}
+		
+		return Double.parseDouble(numStr);
+	}
+
 }

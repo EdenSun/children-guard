@@ -3,11 +3,16 @@ package eden.sun.childrenguard.activity;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,7 +21,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.comet.PasswordResetListener;
+import eden.sun.childrenguard.server.dto.IsFirstLoginViewDTO;
+import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.CometdConfig;
+import eden.sun.childrenguard.util.Config;
+import eden.sun.childrenguard.util.JSONUtil;
+import eden.sun.childrenguard.util.RequestHelper;
+import eden.sun.childrenguard.util.RequestURLConstants;
 import eden.sun.childrenguard.util.StringUtil;
 import eden.sun.childrenguard.util.UIUtil;
 
@@ -45,11 +56,83 @@ public class PasswordResetActivity extends CommonActivity {
 				if( isPassed ){
 					String email = UIUtil.getEditTextValue(emailEditText);
 					
-					Map<String, Object> data = new HashMap<String,Object>();
+					Map<String, String> data = new HashMap<String,String>();
 					data.put("email", email);
 					
-					AsyncTask<Map<String, Object>,Integer,Boolean> task = new PasswordResetTask(PasswordResetActivity.this);
-					task.execute(data);
+					/*AsyncTask<Map<String, Object>,Integer,Boolean> task = new PasswordResetTask(PasswordResetActivity.this);
+					task.execute(data);*/
+					
+					RequestHelper helper = getRequestHelper();
+					String url = Config.BASE_URL_MVC + RequestURLConstants.URL_RESET_PASSWORD;
+	  
+					String title = "Reset Password";
+					String msg = "Please wait...";
+					showProgressDialog(title,msg);
+					
+					helper.doPost(
+						url,
+						data,
+						new Response.Listener<String>() {
+							@Override
+							public void onResponse(String response) {
+								dismissProgressDialog();
+								
+								final ViewDTO<String> view = JSONUtil.getPasswordResetView(response);
+						    	
+								if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
+									String title = "Reset Password";
+									String msg = view.getData();
+									String btnText = "Go Reset Password";
+									
+									AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
+										PasswordResetActivity.this,
+										title,
+										msg,
+										btnText,
+										new DialogInterface.OnClickListener() {
+								            @Override
+								            public void onClick(DialogInterface dialog, int which) {
+								            	dialog.dismiss();
+								            	
+								            	Intent it = new Intent(PasswordResetActivity.this, ChangePasswordActivity.class);
+								            	PasswordResetActivity.this.startActivity(it);   
+												PasswordResetActivity.this.finish();
+								            }
+								        }
+									);
+									
+									dialog.show();
+									
+								}else{
+									String title = "Error";
+									String msg = view.getInfo();
+									String btnText = "OK";
+									
+									AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
+										PasswordResetActivity.this,
+										title,
+										msg,
+										btnText,
+										new DialogInterface.OnClickListener() {
+								            @Override
+								            public void onClick(DialogInterface dialog, int which) {
+								            	dialog.dismiss();
+								            }
+								        }
+									);
+									
+									dialog.show();
+								}
+						    	
+						    	
+							}
+						}, 
+						new Response.ErrorListener() {
+							@Override
+							public void onErrorResponse(VolleyError error) {
+								Log.e("TAG", error.getMessage(), error);
+						}
+					});
 					
 				}
 				
@@ -115,14 +198,14 @@ public class PasswordResetActivity extends CommonActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	@Override
+	/*@Override
 	protected void onStart() {
 		super.onStart();
 		
 		runtime.subscribe(CometdConfig.PASSWORD_RESET_CHANNEL,new PasswordResetListener(PasswordResetActivity.this));
-	}
+	}*/
 	
-	class PasswordResetTask extends AsyncTask<Map<String, Object>,Integer,Boolean>{
+	/*class PasswordResetTask extends AsyncTask<Map<String, Object>,Integer,Boolean>{
 		private Activity context;
 		
 		public PasswordResetTask(Activity context) {
@@ -154,5 +237,5 @@ public class PasswordResetActivity extends CommonActivity {
 			dismissProgressDialog();
 		}
 		
-	}
+	}*/
 }

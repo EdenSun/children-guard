@@ -18,6 +18,10 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
+import eden.sun.childrenguard.activity.LoginActivity;
+import eden.sun.childrenguard.comet.Callback;
+import eden.sun.childrenguard.comet.IsFirstLoginListener;
+import eden.sun.childrenguard.comet.LoginListener;
 
 public class Runtime {
 	protected static final String TAG = "Runtime";
@@ -31,10 +35,10 @@ public class Runtime {
 	 
 	private Runtime() {
 		Log.i(TAG, "Init Runtime.");
-		connect();
+		connect(null);
 	}
 
-	private void connect() {
+	private void connect(Callback callback) {
 		Log.i(TAG, "Connect to server.");
 		httpClient  = new HttpClient();
 		try {
@@ -47,8 +51,9 @@ public class Runtime {
 		// Prepare the transport
 		Map<String, Object> options = new HashMap<String, Object>();
 		ClientTransport transport = new LongPollingTransport(options, httpClient);
-        clientSession = new BayeuxClient(CometdConfig.COMETD_URL, transport);
+        clientSession = new BayeuxClient(Config.BASE_URL_COMETD, transport);
         
+        final Callback finalCallback = callback;
         clientSession.handshake(null,new ClientSessionChannel.MessageListener()
 		{
 		    public void onMessage(ClientSessionChannel channel, Message message)
@@ -57,6 +62,14 @@ public class Runtime {
 		        if (message.isSuccessful())
 		        {
 		        	Log.i(TAG,"success connect to server -" + message);
+		        	
+		        	Log.i(TAG,"register login listener");
+		        	/*runtime.subscribe(CometdConfig.LOGIN_CHANNEL,new LoginListener());
+		    		runtime.subscribe(CometdConfig.IS_FIRST_LOGIN_CHANNEL,new IsFirstLoginListener());*/
+		    		
+		        	if( finalCallback != null ){
+		        		finalCallback.onSuccess();
+		        	}
 		        	
 		        	context.runOnUiThread(new Runnable(){
 		    			@Override
@@ -71,6 +84,7 @@ public class Runtime {
 		        	//finalClient.getChannel(CHANNEL).subscribe(fooListener);
 		            // Here handshake is successful
 		        }else{
+		        	Log.i(TAG,"Fail to connect to server.Try again...");
 		        	/*Log.i(TAG,"Fail to connect to server.Try again...");
 		        	
 		        	context.runOnUiThread(new Runnable(){
@@ -97,7 +111,7 @@ public class Runtime {
         	
         });
         
-        clientSession.getChannel(CometdConfig.SUBSCRIBE_CHANNEL).addListener(new ClientSessionChannel.MessageListener(){
+        /*clientSession.getChannel(CometdConfig.SUBSCRIBE_CHANNEL).addListener(new ClientSessionChannel.MessageListener(){
 
 			@Override
 			public void onMessage(ClientSessionChannel channel, Message message) {
@@ -106,7 +120,7 @@ public class Runtime {
 				Log.i(TAG,"" +  message);
 			}
         	
-        });
+        });*/
         //subscribe(clientSession);
 	}
 
@@ -116,6 +130,7 @@ public class Runtime {
 		client.getChannel(CometdConfig.REGISTER_CHANNEL).subscribe(new RegisterListener());*/
 	}
 
+	
 	public String publish(Map<String, Object> data,String channel,MessageListener messagelistener){
 		if( this.clientSession.isConnected() ){
 			Log.i(TAG, "Connection is connected.");
@@ -129,16 +144,48 @@ public class Runtime {
 			return PUBLISH_SUCCESS;
 		}else{
 			Log.i(TAG, "Connection is disconnected.");
-			this.connect();
 			
-			this.subscribe(channel,messagelistener);
-			if( !this.clientSession.isConnected() ){
-				return "Can not connect to server,please try later.";
-			}else{
-				this.clientSession.getChannel(channel).publish(data);
-				return PUBLISH_SUCCESS;
-			}
+			final Map<String, Object> finalData = data;
+			final String finalChannel = channel;
+			final MessageListener finalMessagelistener = messagelistener;
+			this.connect(new Callback(){
+
+				@Override
+				public void onSuccess() {
+					// connect success
+					Runtime.this.subscribe(finalChannel,finalMessagelistener,new Callback(){
+
+						@Override
+						public void onSuccess() {
+							//subscribe success
+							/*if( !Runtime.this.clientSession.isConnected() ){
+								return "Can not connect to server,please try later.";
+							}else{
+								Map<String,Object> params = new HashMap<String,Object>();
+								params.put("channel", channel);
+								params.put("data", data);
+								AsyncTask<Map<String, Object>,Integer,Boolean> task = new PublishTask();
+								task.execute(params);
+								
+								//this.clientSession.getChannel(channel).publish(data);
+								return PUBLISH_SUCCESS;
+							}*/
+							
+							Map<String,Object> params = new HashMap<String,Object>();
+							params.put("channel", finalChannel);
+							params.put("data", finalData);
+							AsyncTask<Map<String, Object>,Integer,Boolean> task = new PublishTask();
+							task.execute(params);
+							
+						}
+						
+					});
+					
+				}
+				
+			});
 			
+			return PUBLISH_SUCCESS;
 		}
 	}
 	
@@ -164,7 +211,7 @@ public class Runtime {
 		return runtime;
 	}
 
-	public void subscribe(String channel,MessageListener listener) {
+	public void subscribe(String channel,MessageListener listener, Callback callback) {
 		/*if( hasNotSubscribed(clientSession,channel,listener) ){
 			clientSession.getChannel(channel).subscribe(listener);
 		}*/
@@ -197,6 +244,7 @@ public class Runtime {
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("channel", channel);
 		params.put("listener", listener);
+		params.put("callback", callback);
 		
 		subscribeTask.execute(params);
 		
@@ -273,6 +321,7 @@ public class Runtime {
 			Map<String, Object> data = params[0];
 			String channel = (String)data.get("channel");
 			MessageListener listener = (MessageListener)data.get("listener");
+			final Callback callback = (Callback)data.get("callback");
 			
 			MessageListener existsListener = getSubscriberByType(channel,listener.getClass());
 			
@@ -283,9 +332,23 @@ public class Runtime {
 
 					@Override
 					public void onMessage(ClientSessionChannel channel, Message message) {
-						// TODO Auto-generated method stub
 						if( message.isSuccessful() ){
-							clientSession.getChannel(finalChannel).subscribe(finalListener);
+							clientSession.getChannel(finalChannel).subscribe(finalListener, new MessageListener(){
+
+								@Override
+								public void onMessage(ClientSessionChannel channel,
+										Message message) {
+									if( message.isSuccessful() ){
+										Log.i(TAG, "subscribe success, channel: " + channel);
+										if( callback != null ){
+											callback.onSuccess();
+										}
+									}else{
+										Log.i(TAG, "subscribe fail, channel: " + channel + " ,message:" + message);
+									}
+								}
+								
+							});
 						}else{
 							Log.i(TAG,"unsubscribe fail");
 						}
@@ -293,7 +356,23 @@ public class Runtime {
 					
 				});
 			}else{
-				clientSession.getChannel(channel).subscribe(listener);
+				clientSession.getChannel(channel).subscribe(listener, new MessageListener(){
+
+					@Override
+					public void onMessage(ClientSessionChannel channel,
+							Message message) {
+						if( message.isSuccessful() ){
+							Log.i(TAG, "subscribe success, channel: " + channel);
+							if( callback != null ){
+								callback.onSuccess();
+							}
+						}else{
+							Log.i(TAG, "subscribe fail, channel: " + channel + " ,message:" + message);
+						}
+					}
+					
+				});
+				//clientSession.getChannel(channel).subscribe(listener);
 			}
 			
 			return "success";
@@ -305,5 +384,9 @@ public class Runtime {
 			
 		}
 		
+	}
+
+	public void subscribe(String channel, MessageListener listener) {
+		this.subscribe(channel, listener, null);
 	}
 }

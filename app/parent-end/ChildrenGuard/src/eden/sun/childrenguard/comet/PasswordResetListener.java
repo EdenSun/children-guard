@@ -14,7 +14,7 @@ import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.JSONUtil;
 import eden.sun.childrenguard.util.UIUtil;
 
-public class PasswordResetListener implements ClientSessionChannel.MessageListener
+public class PasswordResetListener extends BaseMessageListener implements ClientSessionChannel.MessageListener
 {
 	private Activity context;
     private static final String TAG = "PasswordResetListener";

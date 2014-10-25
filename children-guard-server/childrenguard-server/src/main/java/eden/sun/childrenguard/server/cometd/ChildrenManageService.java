@@ -24,7 +24,7 @@ import eden.sun.childrenguard.server.util.NumberUtil;
 
 @Named
 @Singleton
-@Service("childManageService")
+@Service("childManageCometdService")
 public class ChildrenManageService extends BaseCometService{
 	
 	@Inject

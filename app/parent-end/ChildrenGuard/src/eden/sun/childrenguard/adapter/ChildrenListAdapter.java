@@ -1,6 +1,8 @@
 package eden.sun.childrenguard.adapter;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,9 +13,9 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.dto.ChildrenListItemView;
+import eden.sun.childrenguard.server.dto.ChildViewDTO;
 
 public class ChildrenListAdapter extends BaseAdapter {
-	 
     private Activity context;
     private ArrayList<ChildrenListItemView> data;
     private static LayoutInflater inflater=null;
@@ -46,15 +48,45 @@ public class ChildrenListAdapter extends BaseAdapter {
  
         TextView childNameTextView = (TextView)vi.findViewById(R.id.childName);
         TextView onlineStatusTextView = (TextView)vi.findViewById(R.id.onlineStatus);
+        TextView infoTextView = (TextView)vi.findViewById(R.id.info);
         
         ChildrenListItemView child = data.get(position);
  
         // Setting all values in listview
   
-        childNameTextView.setText(child.getChildName());
+        childNameTextView.setText(child.getNickname());
         onlineStatusTextView.setText(child.getOnlineStatus());
+        String info = child.getFirstName() + "," + child.getLastName() + " / " + child.getMobile();
+        infoTextView.setText(info);
         return vi;
     }
+
+	public void reloadData(List<ChildViewDTO> childList) {
+		if( childList == null || childList.size() == 0){
+			return ;
+		}
+		this.data.clear();
+		for(Iterator<ChildViewDTO> it = childList.iterator();it.hasNext();){
+			ChildViewDTO child = it.next();
+			addChildItem(child);
+		}
+		
+		this.notifyDataSetChanged();
+	}
+
+	private void addChildItem(ChildViewDTO child) {
+		ChildrenListItemView view = new ChildrenListItemView();
+		view.setId(child.getId());
+		view.setFirstName(child.getFirstName());
+		view.setLastName(child.getLastName());
+		view.setMobile(child.getMobile());
+		view.setNickname(child.getNickname());
+		view.setOnlineStatus("Online");
+		
+		data.add(view);
+	}
+    
+    
  
     /*public View getView(int position, View convertView, ViewGroup parent) {
         View vi=convertView;

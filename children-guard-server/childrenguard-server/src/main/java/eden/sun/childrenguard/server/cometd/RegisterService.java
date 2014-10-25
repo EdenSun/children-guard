@@ -1,6 +1,5 @@
 package eden.sun.childrenguard.server.cometd;
 
-import java.io.IOException;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -8,8 +7,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.cometd.annotation.Listener;
 import org.cometd.annotation.Service;
@@ -25,7 +22,7 @@ import eden.sun.childrenguard.server.util.CometdChannel;
 
 @Named
 @Singleton
-@Service("registerService")
+@Service("registerCometdService")
 public class RegisterService extends BaseCometService{
 	@Inject
 	private BayeuxServer bayeux;

@@ -13,21 +13,31 @@ import eden.sun.childrenguard.activity.CommonActivity;
 import eden.sun.childrenguard.server.dto.LoginViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.JSONUtil;
+import eden.sun.childrenguard.util.ShareDataKey;
 import eden.sun.childrenguard.util.UIUtil;
 
-public class LoginListener implements ClientSessionChannel.MessageListener
+public class LoginListener extends BaseMessageListener implements ClientSessionChannel.MessageListener
 {
-	private Activity context;
+	//private Activity context;
     private static final String TAG = "LoginListener";
 
     
 	public LoginListener(Activity context) {
 		super();
-		this.context = context;
+		//this.context = context;
 	}
 
-
 	public void onMessage(ClientSessionChannel channel, Message message)
+    {
+        // Here you received a message on the channel
+    	Log.i(TAG, "received from channel: " + channel);
+    	final ViewDTO<LoginViewDTO> view = JSONUtil.getLoginView(message.getData().toString());
+    	
+    	/*Intent intent = new Intent("eden.sun.childrenguard.broadreceiver.login");  
+    	intent.putExtra("json", message.getData().toString());
+    	sendBroadcast(intent);*/
+    }
+	/*public void onMessage(ClientSessionChannel channel, Message message)
     {
 		((CommonActivity)context).dismissProgressDialog();
 		
@@ -41,6 +51,8 @@ public class LoginListener implements ClientSessionChannel.MessageListener
 				
 				
 				if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
+					((CommonActivity)context).putStringShareData(ShareDataKey.PARENT_ACCESS_TOKEN,view.getData().getAccessToken());
+					
 					context.runOnUiThread(new Runnable(){
 
 						@Override
@@ -66,5 +78,5 @@ public class LoginListener implements ClientSessionChannel.MessageListener
 			}
 			
     	});
-    }
+    }*/
 }

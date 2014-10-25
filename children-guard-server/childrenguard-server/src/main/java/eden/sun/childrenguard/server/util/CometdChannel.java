@@ -12,5 +12,6 @@ public class CometdChannel {
 	public static final String CHILD_DETAIL_BASEIC_INFO_CHANNEL = "/service/childDetail/basicInfo";
 	public static final String CHILD_DETAIL_LIST_CHILD_APP = "/service/childDetail/listChildApp";
 	public static final String CHILD_DETAIL_SYNC_APP_SETTING = "/service/childDetail/syncAppSetting";
+	public static final String CHILD_END_UPLOAD_CHILD_EXTRA_INFO = "/service/childend/uploadChildExtraInfo";
 
 }

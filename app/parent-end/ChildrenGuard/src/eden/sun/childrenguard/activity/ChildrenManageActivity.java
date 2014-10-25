@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -49,14 +50,17 @@ public class ChildrenManageActivity extends FragmentActivity implements ActionBa
             	clearTabStatus();
             	if( position == 0 ){
             		//Child Basic Info
+            		Log.i(TAG, "basic info show");
             		basicInfoTabImageView.setImageResource(R.drawable.tab_icon_child_basic_info_selected);
             		basicInfoTabText.setTextColor(Color.WHITE);
             	}else if( position == 1 ){
             		//App Manage
+            		Log.i(TAG, "app manage show");
             		appManageTabImageView.setImageResource(R.drawable.tab_icon_child_app_manage_selected);
             		appManageTabText.setTextColor(Color.WHITE);
             	}else if( position == 2 ){
             		//More
+            		Log.i(TAG, "more setting show");
             		moreTabImageView.setImageResource(R.drawable.tab_icon_more_selected);
             		moreTabText.setTextColor(Color.WHITE);
             	}

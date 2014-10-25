@@ -12,7 +12,7 @@ import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.JSONUtil;
 import eden.sun.childrenguard.util.UIUtil;
 
-public class RegisterListener implements ClientSessionChannel.MessageListener
+public class RegisterListener extends BaseMessageListener implements ClientSessionChannel.MessageListener
 {
 	private static final String TAG = "RegisterListener";
 	private Activity context;

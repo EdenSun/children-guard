@@ -6,6 +6,7 @@ import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.ChildAddParam;
 import eden.sun.childrenguard.server.exception.ServiceException;
+import eden.sun.childrenguard.server.model.generated.Child;
 
 public interface IChildService {
 
@@ -18,5 +19,7 @@ public interface IChildService {
 	ChildViewDTO getChildViewByMobile(String mobile)throws ServiceException;
 
 	ChildViewDTO deleteChild(Integer childId)throws ServiceException;
+
+	ChildViewDTO getViewById(Integer childId)throws ServiceException;
 
 }

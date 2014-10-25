@@ -7,12 +7,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.util.Log;
 import eden.sun.childrenguard.activity.CommonActivity;
+import eden.sun.childrenguard.activity.LoginActivity;
 import eden.sun.childrenguard.server.dto.IsFirstLoginViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.JSONUtil;
 import eden.sun.childrenguard.util.UIUtil;
 
-public class IsFirstLoginListener implements ClientSessionChannel.MessageListener
+public class IsFirstLoginListener extends BaseMessageListener implements ClientSessionChannel.MessageListener
 {
 	private Activity context;
     private static final String TAG = "IsFirstLoginListener";
@@ -44,7 +45,7 @@ public class IsFirstLoginListener implements ClientSessionChannel.MessageListene
 					
 				});
     		}else{
-    			
+    			((LoginActivity)context).doLogin();
     		}
     	}else{
     		context.runOnUiThread(new Runnable(){

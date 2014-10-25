@@ -3,10 +3,8 @@ package eden.sun.childrenguard.activity;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -15,9 +13,19 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.comet.RegisterListener;
+import eden.sun.childrenguard.server.dto.RegisterViewDTO;
+import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.CometdConfig;
+import eden.sun.childrenguard.util.Config;
+import eden.sun.childrenguard.util.JSONUtil;
+import eden.sun.childrenguard.util.RequestHelper;
+import eden.sun.childrenguard.util.RequestURLConstants;
 import eden.sun.childrenguard.util.StringUtil;
 import eden.sun.childrenguard.util.UIUtil;
 
@@ -54,8 +62,8 @@ public class RegisterActivity extends CommonActivity {
 				boolean valid = doValidation();
 				
 				if( valid ){
-
-					AsyncTask<Map<String, Object>,Integer,Boolean> task = new RegisterTask(RegisterActivity.this);
+					doRegister();
+					/*AsyncTask<Map<String, Object>,Integer,Boolean> task = new RegisterTask(RegisterActivity.this);
 					
 					String firstName = UIUtil.getEditTextValue(firstNameEditText);
 					String lastName = UIUtil.getEditTextValue(lastNameEditText);
@@ -69,32 +77,11 @@ public class RegisterActivity extends CommonActivity {
 					data.put("email", email);
 					data.put("password", password);
 					
-					task.execute(data);
+					task.execute(data);*/
 					
 				}
 				
 			}
-			
-			//TODO: TEST
-/*			@Override
-			public void onClick(View arg0) {
-				//boolean valid = doValidation();
-				if( true ){
-
-					AsyncTask<Map<String, Object>,Integer,Boolean> task = new RegisterTask(RegisterActivity.this);
-					
-					Map<String, Object> data = new HashMap<String,Object>();
-					
-					data.put("firstName", "eden");
-					data.put("lastName", "sun");
-					data.put("email", "eden@test.com");
-					data.put("password", "password");
-					
-					task.execute(data);
-					
-				}
-				
-			}*/
 
         });
 		
@@ -107,6 +94,91 @@ public class RegisterActivity extends CommonActivity {
 			}
         	
         });
+	}
+
+	private void doRegister() {
+		RequestHelper helper = getRequestHelper();
+
+		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_REGISTER;  
+
+		String title = "Register";
+		String msg = "Please wait...";
+		showProgressDialog(title,msg);	
+		
+		Map<String,String> params = this.getRegisterParams();
+		helper.doPost(
+			url,
+			params,
+			new Response.Listener<String>() {
+				@Override
+				public void onResponse(String response) {
+					dismissProgressDialog();
+					
+					final ViewDTO<RegisterViewDTO> view = JSONUtil.getRegisterView(response);
+							
+					if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
+						String title = "Register";
+						String msg = "Register Success.Press OK to login.";
+						String btnText = "OK";
+						
+						AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
+							RegisterActivity.this,
+							title,
+							msg,
+							btnText,
+							new DialogInterface.OnClickListener() {
+					            @Override
+					            public void onClick(DialogInterface dialog, int which) {
+					            	RegisterActivity.this.finish();
+					            }
+					        }
+						);
+						
+						dialog.show();
+					}else{
+						String title = "Error";
+						String msg = view.getInfo();
+						String btnText = "OK";
+						
+						AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
+							RegisterActivity.this,
+							title,
+							msg,
+							btnText,
+							new DialogInterface.OnClickListener() {
+					            @Override
+					            public void onClick(DialogInterface dialog, int which) {
+					            	dialog.dismiss();
+					            }
+					        }
+						);
+						
+						dialog.show();
+					}
+				}
+			}, 
+			new Response.ErrorListener() {
+				@Override
+				public void onErrorResponse(VolleyError error) {
+					Log.e("TAG", error.getMessage(), error);
+			}
+		});
+	}
+	
+	private Map<String, String> getRegisterParams() {
+		String firstName = UIUtil.getEditTextValue(firstNameEditText);
+		String lastName = UIUtil.getEditTextValue(lastNameEditText);
+		String email = UIUtil.getEditTextValue(emailEditText);
+		String password = UIUtil.getEditTextValue(passwordEditText);
+		
+		Map<String, String> param = new HashMap<String,String>();
+		
+		param.put("firstName", firstName);
+		param.put("lastName", lastName);
+		param.put("email", email);
+		param.put("password", password);
+		
+		return param;
 	}
 
 	private boolean doValidation() {
@@ -272,14 +344,7 @@ public class RegisterActivity extends CommonActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	@Override
-	protected void onStart() {
-		super.onStart();
-		
-		runtime.subscribe(CometdConfig.REGISTER_CHANNEL,new RegisterListener(RegisterActivity.this));
-	}
-	
-	class RegisterTask extends AsyncTask<Map<String, Object>,Integer,Boolean>{
+	/*class RegisterTask extends AsyncTask<Map<String, Object>,Integer,Boolean>{
 		private Activity context;
 		
 		public RegisterTask(Activity context) {
@@ -310,5 +375,5 @@ public class RegisterActivity extends CommonActivity {
 			dismissProgressDialog();
 		}
 		
-	}
+	}*/
 }

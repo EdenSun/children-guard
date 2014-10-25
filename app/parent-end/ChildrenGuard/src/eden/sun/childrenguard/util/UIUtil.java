@@ -9,8 +9,10 @@ import android.view.Gravity;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 import eden.sun.childrenguard.activity.LoginActivity;
+import eden.sun.childrenguard.dto.RelationshipItemView;
 
 public class UIUtil {
 
@@ -118,5 +120,32 @@ public class UIUtil {
 		);
 		
 		return dialog;
+	}
+
+
+	public static String getSpinnerValue(Spinner spinner) {
+		if( spinner.getSelectedItem() != null ){
+			return ((RelationshipItemView)spinner.getSelectedItem()).getId().toString();
+		}
+		
+		return null;
+	}
+
+
+	public static String formatTextForView(Double value) {
+		if( value == null ){
+			return "N/A";
+		}
+		
+		return value.toString();
+	}
+
+
+	public static String formatTextForView(String value) {
+		if( value == null ){
+			return "N/A";
+		}
+		
+		return value;
 	}
 }

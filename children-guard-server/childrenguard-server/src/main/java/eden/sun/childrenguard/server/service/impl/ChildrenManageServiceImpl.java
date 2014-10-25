@@ -58,13 +58,17 @@ public class ChildrenManageServiceImpl implements IChildrenManageService{
 		 * if not exists, add child ,and add relationship
 		 */
 		ChildViewDTO childViewDTO = childService.getChildViewByMobile(param.getMobile());
-		if( childViewDTO == null ){
+		if( childViewDTO != null ){
+			view.setMsg(ViewDTO.MSG_ERROR);
+			view.setInfo("Add Person fail,same mobile have been added.");
+		}else{
+			
 			// child is not exists , add child
 			childViewDTO = childService.add(param);
 			
 			if( childViewDTO == null ){
 				view.setMsg(ViewDTO.MSG_ERROR);
-				view.setInfo("Add child failure.Please try later.");
+				view.setInfo("Add person failure.Please try later.");
 				return view;
 			}
 		}

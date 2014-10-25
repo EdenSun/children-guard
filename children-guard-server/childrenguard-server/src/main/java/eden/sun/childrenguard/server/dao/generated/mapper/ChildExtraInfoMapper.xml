@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="eden.sun.childrenguard.server.dao.generated.ChildExtraInfoMapper" >
+  <resultMap id="BaseResultMap" type="eden.sun.childrenguard.server.model.generated.ChildExtraInfo" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="LONGITUDE" property="longitude" jdbcType="DOUBLE" />
+    <result column="LATITUDE" property="latitude" jdbcType="DOUBLE" />
+    <result column="LOCATION_UPDATE_TIME" property="locationUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="SPEED" property="speed" jdbcType="DOUBLE" />
+    <result column="SPEED_UPDATE_TIME" property="speedUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="NETWORK_TRAFFIC_USED" property="networkTrafficUsed" jdbcType="DOUBLE" />
+    <result column="NETWORK_TRAFFIC_UPDATE_TIME" property="networkTrafficUpdateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, LONGITUDE, LATITUDE, LOCATION_UPDATE_TIME, SPEED, SPEED_UPDATE_TIME, NETWORK_TRAFFIC_USED, 
+    NETWORK_TRAFFIC_UPDATE_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="eden.sun.childrenguard.server.model.generated.ChildExtraInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tbl_child_extra_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_child_extra_info
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tbl_child_extra_info
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="eden.sun.childrenguard.server.model.generated.ChildExtraInfoExample" >
+    delete from tbl_child_extra_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="eden.sun.childrenguard.server.model.generated.ChildExtraInfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tbl_child_extra_info (LONGITUDE, LATITUDE, LOCATION_UPDATE_TIME, 
+      SPEED, SPEED_UPDATE_TIME, NETWORK_TRAFFIC_USED, 
+      NETWORK_TRAFFIC_UPDATE_TIME)
+    values (#{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE}, #{locationUpdateTime,jdbcType=TIMESTAMP}, 
+      #{speed,jdbcType=DOUBLE}, #{speedUpdateTime,jdbcType=TIMESTAMP}, #{networkTrafficUsed,jdbcType=DOUBLE}, 
+      #{networkTrafficUpdateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="eden.sun.childrenguard.server.model.generated.ChildExtraInfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tbl_child_extra_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="longitude != null" >
+        LONGITUDE,
+      </if>
+      <if test="latitude != null" >
+        LATITUDE,
+      </if>
+      <if test="locationUpdateTime != null" >
+        LOCATION_UPDATE_TIME,
+      </if>
+      <if test="speed != null" >
+        SPEED,
+      </if>
+      <if test="speedUpdateTime != null" >
+        SPEED_UPDATE_TIME,
+      </if>
+      <if test="networkTrafficUsed != null" >
+        NETWORK_TRAFFIC_USED,
+      </if>
+      <if test="networkTrafficUpdateTime != null" >
+        NETWORK_TRAFFIC_UPDATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="longitude != null" >
+        #{longitude,jdbcType=DOUBLE},
+      </if>
+      <if test="latitude != null" >
+        #{latitude,jdbcType=DOUBLE},
+      </if>
+      <if test="locationUpdateTime != null" >
+        #{locationUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="speed != null" >
+        #{speed,jdbcType=DOUBLE},
+      </if>
+      <if test="speedUpdateTime != null" >
+        #{speedUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="networkTrafficUsed != null" >
+        #{networkTrafficUsed,jdbcType=DOUBLE},
+      </if>
+      <if test="networkTrafficUpdateTime != null" >
+        #{networkTrafficUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="eden.sun.childrenguard.server.model.generated.ChildExtraInfoExample" resultType="java.lang.Integer" >
+    select count(*) from tbl_child_extra_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tbl_child_extra_info
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.longitude != null" >
+        LONGITUDE = #{record.longitude,jdbcType=DOUBLE},
+      </if>
+      <if test="record.latitude != null" >
+        LATITUDE = #{record.latitude,jdbcType=DOUBLE},
+      </if>
+      <if test="record.locationUpdateTime != null" >
+        LOCATION_UPDATE_TIME = #{record.locationUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.speed != null" >
+        SPEED = #{record.speed,jdbcType=DOUBLE},
+      </if>
+      <if test="record.speedUpdateTime != null" >
+        SPEED_UPDATE_TIME = #{record.speedUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.networkTrafficUsed != null" >
+        NETWORK_TRAFFIC_USED = #{record.networkTrafficUsed,jdbcType=DOUBLE},
+      </if>
+      <if test="record.networkTrafficUpdateTime != null" >
+        NETWORK_TRAFFIC_UPDATE_TIME = #{record.networkTrafficUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tbl_child_extra_info
+    set ID = #{record.id,jdbcType=INTEGER},
+      LONGITUDE = #{record.longitude,jdbcType=DOUBLE},
+      LATITUDE = #{record.latitude,jdbcType=DOUBLE},
+      LOCATION_UPDATE_TIME = #{record.locationUpdateTime,jdbcType=TIMESTAMP},
+      SPEED = #{record.speed,jdbcType=DOUBLE},
+      SPEED_UPDATE_TIME = #{record.speedUpdateTime,jdbcType=TIMESTAMP},
+      NETWORK_TRAFFIC_USED = #{record.networkTrafficUsed,jdbcType=DOUBLE},
+      NETWORK_TRAFFIC_UPDATE_TIME = #{record.networkTrafficUpdateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="eden.sun.childrenguard.server.model.generated.ChildExtraInfo" >
+    update tbl_child_extra_info
+    <set >
+      <if test="longitude != null" >
+        LONGITUDE = #{longitude,jdbcType=DOUBLE},
+      </if>
+      <if test="latitude != null" >
+        LATITUDE = #{latitude,jdbcType=DOUBLE},
+      </if>
+      <if test="locationUpdateTime != null" >
+        LOCATION_UPDATE_TIME = #{locationUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="speed != null" >
+        SPEED = #{speed,jdbcType=DOUBLE},
+      </if>
+      <if test="speedUpdateTime != null" >
+        SPEED_UPDATE_TIME = #{speedUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="networkTrafficUsed != null" >
+        NETWORK_TRAFFIC_USED = #{networkTrafficUsed,jdbcType=DOUBLE},
+      </if>
+      <if test="networkTrafficUpdateTime != null" >
+        NETWORK_TRAFFIC_UPDATE_TIME = #{networkTrafficUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="eden.sun.childrenguard.server.model.generated.ChildExtraInfo" >
+    update tbl_child_extra_info
+    set LONGITUDE = #{longitude,jdbcType=DOUBLE},
+      LATITUDE = #{latitude,jdbcType=DOUBLE},
+      LOCATION_UPDATE_TIME = #{locationUpdateTime,jdbcType=TIMESTAMP},
+      SPEED = #{speed,jdbcType=DOUBLE},
+      SPEED_UPDATE_TIME = #{speedUpdateTime,jdbcType=TIMESTAMP},
+      NETWORK_TRAFFIC_USED = #{networkTrafficUsed,jdbcType=DOUBLE},
+      NETWORK_TRAFFIC_UPDATE_TIME = #{networkTrafficUpdateTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <select resultMap="BaseResultMap" parameterType="eden.sun.childrenguard.server.model.generated.ChildExtraInfoExample" id="selectByExampleWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tbl_child_extra_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

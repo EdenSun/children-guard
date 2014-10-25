@@ -1,7 +1,7 @@
 package eden.sun.childrenguard.util;
 
 public class CometdConfig {
-	public static final String COMETD_URL = "http://169.7.230.162:8080/childrenguard-server/cometd";
+	//public static final String COMETD_URL = Config.BASE_URL + "cometd";
 	//public static final String COMETD_URL = "http://192.168.2.101:8080/childrenguard-server/cometd";
 	
 	/* service channel */

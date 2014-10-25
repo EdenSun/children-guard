@@ -22,7 +22,7 @@ import eden.sun.childrenguard.server.util.CometdChannel;
 
 @Named
 @Singleton
-@Service("passwordResetService")
+@Service("passwordResetCometdService")
 public class PasswordResetService extends BaseCometService{
 	private Logger logger = Logger.getLogger(PasswordResetService.class);
 	@Inject

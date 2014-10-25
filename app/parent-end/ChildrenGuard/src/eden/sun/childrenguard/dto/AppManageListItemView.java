@@ -1,8 +1,15 @@
 package eden.sun.childrenguard.dto;
 
 public class AppManageListItemView {
+	private Integer appId;
 	private String appName;
 	private boolean isLock;
+	public Integer getAppId() {
+		return appId;
+	}
+	public void setAppId(Integer appId) {
+		this.appId = appId;
+	}
 	public String getAppName() {
 		return appName;
 	}

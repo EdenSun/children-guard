@@ -62,5 +62,12 @@
 			<generatedKey column="ID" sqlStatement="MySql" identity="true"/>
 		</table>
 		
+		<table tableName="tbl_app" domainObjectName="App">
+			<generatedKey column="ID" sqlStatement="MySql" identity="true"/>
+		</table>
+		
+		<table tableName="tbl_child_extra_info" domainObjectName="ChildExtraInfo">
+			<generatedKey column="ID" sqlStatement="MySql" identity="true"/>
+		</table>
 	</context>
 </generatorConfiguration>

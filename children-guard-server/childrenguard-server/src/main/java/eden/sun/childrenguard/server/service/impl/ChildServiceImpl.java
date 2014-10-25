@@ -221,5 +221,11 @@ public class ChildServiceImpl implements IChildService {
 		
 		return true;
 	}
+
+	@Override
+	public ChildViewDTO getViewById(Integer childId) throws ServiceException {
+		return this.trans2ChildViewDTO(getById(childId));
+	}
+	
 	
 }
