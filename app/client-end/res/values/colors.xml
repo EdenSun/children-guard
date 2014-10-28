@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="tabbar_bg">#000000</drawable>
+    <color name="weather_bg">#1FB5A2</color> 
+    <color name="fragment_bg">#fafafa</color>
+    <color name="black">#000000</color>
+    <color name="tab_text_selected">#FFFFFF</color>
+    <color name="tab_text">#727272</color>
+    <color name="font_color_white">#FFFFFF</color>
+    <color name="white">#ffffffff</color>
+    <color name="gray">#cccccccc</color>
+    <color name="text_gray">#343434</color>
+    <color name="text_black">#000000</color>
+    <color name="text_white">#ffffff</color>
+    <color name="headerTitleBg">#000</color>
+    <color name="listDividerColor">#b5b5b5</color>
+</resources>
