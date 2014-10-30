@@ -7,7 +7,7 @@
             <solid android:color="#D0D1D3" />
             <stroke
                 android:width="2dp"
-                android:color="#dcdcdc"
+                android:color="#FAFAFA"
                 />
             <!-- 圆角 -->
         </shape>
@@ -18,7 +18,7 @@
             
             <stroke
                 android:width="2dp"
-                android:color="#B8C5D2" />
+                android:color="#FAFAFA" />
         </shape>
     </item>
 </selector>

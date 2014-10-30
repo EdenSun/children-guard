@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.springframework.stereotype.Service;
+
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.UploadApplicationInfoParam;
 import eden.sun.childrenguard.server.exception.ServiceException;
@@ -12,6 +14,7 @@ import eden.sun.childrenguard.server.service.IAppService;
 import eden.sun.childrenguard.server.service.IChildAppService;
 import eden.sun.childrenguard.server.service.IChildService;
 
+@Service
 public class ChildAppServiceImpl implements IChildAppService {
 	
 	@Inject
