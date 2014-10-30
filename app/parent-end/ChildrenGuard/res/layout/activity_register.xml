@@ -1,171 +1,152 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/android"
+    style="@style/commonPageStyle"
     tools:context="eden.sun.childrenguard.activity.RegisterActivity" >
 
     <TextView
         android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Register to The Guardian App"
+        android:text="Register to Children Guard"
         style="@style/commonPageTitle"
         />
 
     <LinearLayout 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-	        android:id="@+id/passwordTextView"
-	        android:layout_width="100dp"
-	        android:layout_height="40dp"
-	        android:text="First Name"
-	        android:textColor="#fff"
-	        android:textSize="15dp" 
-	        android:gravity="center_vertical"
-	        android:layout_weight="0"
-	        />
-	
-	    <EditText
-	            android:layout_width="wrap_content"
-	            android:layout_height="40dp"
-	            android:id="@+id/firstNameEditText"
-	            android:hint="First Name"
-	            android:textColor="#000000"
-	            android:textSize="15dp"
-	            android:layout_weight="1"/>
-        
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
     
+	    <!-- <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content">
+	        <TextView
+		        android:id="@+id/passwordTextView"
+		        android:layout_width="100dp"
+		        android:layout_height="40dp"
+		        android:text="First Name"
+		        android:textColor="#fff"
+		        android:textSize="15dp" 
+		        android:gravity="center_vertical"
+		        android:layout_weight="0"
+		        /> -->
+		
+		    <EditText
+		            android:id="@+id/firstNameEditText"
+		            android:hint="First Name"
+		            style="@style/textOnLeftInputStyle"/>
+	        
+	    <!-- </LinearLayout> -->
+	    
+	
+	    <!-- <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content">
+		    <TextView
+		        android:id="@+id/lastNameTextView"
+		        android:layout_width="100dp"
+		        android:layout_height="40dp"
+		        android:text="Last Name"
+		        android:textColor="#fff"
+		        android:textSize="15dp" 
+		        android:gravity="center_vertical"
+		        android:layout_weight="0"
+		        /> -->
+		
+		    <EditText
+		            android:id="@+id/lastNameEditText"
+		            android:hint="Last Name"
+		            style="@style/textOnLeftInputStyle"
+		            />
+		<!-- </LinearLayout> -->
+	    
+	
+	    <!-- <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content">
+		    <TextView
+		        android:id="@+id/emailTextView"
+		        android:layout_width="100dp"
+		        android:layout_height="40dp"
+		        android:text="Email"
+		        android:textColor="#fff"
+		        android:textSize="15dp" 
+		        android:gravity="center_vertical"
+		        android:layout_weight="0"
+		        /> -->
+		
+		    <EditText
+		            android:id="@+id/emailEditText"
+		            android:inputType="textEmailAddress"
+		            android:hint="E-mail"
+		            style="@style/textOnLeftInputStyle"
+		            />
+		<!-- </LinearLayout> -->
+	    
+		<!-- <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content">
+		    <TextView
+		        android:id="@+id/textView5"
+		        android:layout_width="100dp"
+		        android:layout_height="40dp"
+		        android:text="Password"
+		        android:textColor="#fff"
+		        android:textSize="15dp" 
+		        android:gravity="center_vertical"
+		        android:layout_weight="0"
+		        /> -->
+		
+		    <EditText
+		            android:id="@+id/passwordEditText"
+		            android:inputType="textPassword"
+		            android:hint="Password"
+		            style="@style/textOnLeftInputStyle"
+		            />
+		<!-- </LinearLayout> -->
+	    
+		<!-- <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content">
+		    <TextView
+		        android:id="@+id/confirmPasswordTextView"
+		        android:layout_width="100dp"
+		        android:layout_height="40dp"
+		        android:text="Confirm"
+		        android:textColor="#fff"
+		        android:textSize="15dp" 
+		        android:gravity="center_vertical"
+		        android:layout_weight="0"
+		        /> -->
+		    <EditText
+		            android:id="@+id/confirmPasswordEditText"
+		            android:inputType="textPassword"
+		            android:hint="Confirm Password"
+		            style="@style/textOnLeftInputStyle"
+		            />
+		<!-- </LinearLayout> -->
+	</LinearLayout>
 
     <LinearLayout 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-	    <TextView
-	        android:id="@+id/lastNameTextView"
-	        android:layout_width="100dp"
-	        android:layout_height="40dp"
-	        android:text="Last Name"
-	        android:textColor="#fff"
-	        android:textSize="15dp" 
-	        android:gravity="center_vertical"
-	        android:layout_weight="0"
-	        />
-	
-	    <EditText
-	            android:layout_width="wrap_content"
-	            android:layout_height="40dp"
-	            android:textColor="#000000"
-	            android:id="@+id/lastNameEditText"
-	            android:hint="Last Name"
-	            android:textSize="15dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp"
+        >
+	    
+	    <Button
+	            android:id="@+id/backBtn"
 	            android:layout_weight="1"
+	            android:text="Back To Login"
+				android:layout_marginRight="5dp"
+	            style="@style/commonBtn"
 	            />
-	</LinearLayout>
-    
-
-    <LinearLayout 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-	    <TextView
-	        android:id="@+id/emailTextView"
-	        android:layout_width="100dp"
-	        android:layout_height="40dp"
-	        android:text="Email"
-	        android:textColor="#fff"
-	        android:textSize="15dp" 
-	        android:gravity="center_vertical"
-	        android:layout_weight="0"
-	        />
-	
-	    <EditText
-	            android:layout_width="wrap_content"
-	            android:layout_height="40dp"
-	            android:textColor="#000000"
-	            android:inputType="textEmailAddress"
-	            android:id="@+id/emailEditText"
-	            android:hint="E-mail"
-	            android:textSize="15dp"
-	            android:layout_weight="1"
-	            />
-	</LinearLayout>
-    
-	<LinearLayout 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-	    <TextView
-	        android:id="@+id/textView5"
-	        android:layout_width="100dp"
-	        android:layout_height="40dp"
-	        android:text="Password"
-	        android:textColor="#fff"
-	        android:textSize="15dp" 
-	        android:gravity="center_vertical"
-	        android:layout_weight="0"
-	        />
-	
-	    <EditText
-	            android:layout_width="wrap_content"
-	            android:layout_height="40dp"
-	            android:inputType="textPassword"
-	            android:textColor="#000000"
-	            android:id="@+id/passwordEditText"
-	            android:hint="Password"
-	            android:textSize="15dp"
-	            android:layout_weight="1"
-	            />
-	</LinearLayout>
-    
-	<LinearLayout 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-	    <TextView
-	        android:id="@+id/confirmPasswordTextView"
-	        android:layout_width="100dp"
-	        android:layout_height="40dp"
-	        android:text="Confirm"
-	        android:textColor="#fff"
-	        android:textSize="15dp" 
-	        android:gravity="center_vertical"
-	        android:layout_weight="0"
-	        />
-	    <EditText
-	            android:layout_width="wrap_content"
-	            android:layout_height="40dp"
-	            android:textColor="#000000"
-	            android:inputType="textPassword"
-	            android:id="@+id/confirmPasswordEditText"
-	            android:hint="Confirm Password"
-	            android:textSize="15dp"
-	            android:layout_weight="1"
-	            />
-	</LinearLayout>
-	
-
-    <LinearLayout 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 	    
         <Button
 	        android:id="@+id/registerBtn"
-	        android:layout_width="200dp"
-	        android:layout_height="40dp"
 	        android:text="Register"
-	        android:textColor="#000000"
-	        android:textSize="13dp" 
-	        android:layout_weight="1"/>
+	        android:layout_weight="1"
+	        android:layout_marginLeft="5dp"
+	        style="@style/commonBtn"/>
 	
-	    <Button
-	            android:layout_width="175dp"
-	            android:layout_height="40dp"
-	            android:textColor="#000000"
-	            android:text="Back To Login"
-	            android:id="@+id/backBtn"
-	            android:textSize="13dp"
-	            android:layout_weight="1"/>
 	    
 	</LinearLayout>
     

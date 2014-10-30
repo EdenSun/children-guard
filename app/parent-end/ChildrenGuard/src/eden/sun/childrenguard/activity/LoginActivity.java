@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -40,8 +41,8 @@ import eden.sun.childrenguard.util.UIUtil;
 public class LoginActivity extends CommonActivity {
 	private final String TAG = "LoginActivity";
 	private Button loginBtn;
-	private Button registerBtn ;
-	private Button forgetPasswordBtn;
+	private TextView registerLinkBtn;
+	private TextView forgotYourPasswordLinkBtn;
 	private EditText emailEditText;
 	private EditText passwordEditText;
 	
@@ -120,7 +121,29 @@ public class LoginActivity extends CommonActivity {
 
         });
         
-        registerBtn = (Button)findViewById(R.id.registerBtn);
+        
+        registerLinkBtn = (TextView)findViewById(R.id.registerLinkBtn);
+        registerLinkBtn.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Intent it = new Intent(LoginActivity.this, RegisterActivity.class);
+				startActivity(it);
+			}
+        	
+        });
+        forgotYourPasswordLinkBtn = (TextView)findViewById(R.id.forgotYourPasswordLinkBtn);
+        forgotYourPasswordLinkBtn.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Intent it = new Intent(LoginActivity.this, PasswordResetActivity.class);
+				startActivity(it); 
+			}
+        	
+        });
+    	
+        /*registerBtn = (Button)findViewById(R.id.registerBtn);
         registerBtn.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -140,7 +163,7 @@ public class LoginActivity extends CommonActivity {
 				startActivity(it);   
 			}
         	
-        });
+        });*/
     }
 
 

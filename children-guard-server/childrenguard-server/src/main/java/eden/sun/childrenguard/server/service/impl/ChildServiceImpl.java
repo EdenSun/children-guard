@@ -226,6 +226,21 @@ public class ChildServiceImpl implements IChildService {
 	public ChildViewDTO getViewById(Integer childId) throws ServiceException {
 		return this.trans2ChildViewDTO(getById(childId));
 	}
+
+	@Override
+	public Child getChildByAccessToken(String childAccessToken)
+			throws ServiceException {
+		ChildExample example = new ChildExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andAccessTokenEqualTo(childAccessToken);
+		
+		List<Child> childList = childMapper.selectByExample(example);
 	
+		if( childList != null && childList.size() > 0 ){
+			Child child = childList.get(0);
+			return child;
+		}
+		return null;
+	}
 	
 }

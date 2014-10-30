@@ -12,8 +12,6 @@ public class ChildViewDTO {
     
     private String nickname;
 
-    private String accessToken;
-    
 	public Integer getId() {
 		return id;
 	}
@@ -54,13 +52,4 @@ public class ChildViewDTO {
 		this.nickname = nickname;
 	}
 
-	public String getAccessToken() {
-		return accessToken;
-	}
-
-	public void setAccessToken(String accessToken) {
-		this.accessToken = accessToken;
-	}
-	
-    
 }

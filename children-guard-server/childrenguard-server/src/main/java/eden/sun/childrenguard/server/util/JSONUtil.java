@@ -1,9 +1,15 @@
 package eden.sun.childrenguard.server.util;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import eden.sun.childrenguard.server.dto.ViewDTO;
+import eden.sun.childrenguard.server.dto.param.UploadApplicationInfoParam;
 
 public class JSONUtil {
 	private static Logger logger = Logger.getLogger(JSONUtil.class);
@@ -27,6 +33,11 @@ public class JSONUtil {
 		view.setInfo(info);
 		view.setMsg(ViewDTO.MSG_ERROR);
 		return toJson(view);
+	}
+
+	public static List<UploadApplicationInfoParam> getUploadApplicationInfoParamList(
+			String appListJson) {
+		return new Gson().fromJson(appListJson, new TypeToken<List<UploadApplicationInfoParam>>(){}.getType());
 	}
 	
 }

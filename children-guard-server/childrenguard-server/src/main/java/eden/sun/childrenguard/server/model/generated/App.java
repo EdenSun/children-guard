@@ -9,6 +9,8 @@ public class App {
 
     private String name;
 
+    private String packageName;
+
     private Boolean lockStatus;
 
     private Date createTime;
@@ -35,6 +37,14 @@ public class App {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName == null ? null : packageName.trim();
     }
 
     public Boolean getLockStatus() {

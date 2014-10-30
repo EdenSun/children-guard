@@ -295,6 +295,76 @@ public class AppExample {
             return (Criteria) this;
         }
 
+        public Criteria andPackageNameIsNull() {
+            addCriterion("PACKAGE_NAME is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageNameIsNotNull() {
+            addCriterion("PACKAGE_NAME is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageNameEqualTo(String value) {
+            addCriterion("PACKAGE_NAME =", value, "packageName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageNameNotEqualTo(String value) {
+            addCriterion("PACKAGE_NAME <>", value, "packageName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageNameGreaterThan(String value) {
+            addCriterion("PACKAGE_NAME >", value, "packageName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageNameGreaterThanOrEqualTo(String value) {
+            addCriterion("PACKAGE_NAME >=", value, "packageName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageNameLessThan(String value) {
+            addCriterion("PACKAGE_NAME <", value, "packageName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageNameLessThanOrEqualTo(String value) {
+            addCriterion("PACKAGE_NAME <=", value, "packageName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageNameLike(String value) {
+            addCriterion("PACKAGE_NAME like", value, "packageName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageNameNotLike(String value) {
+            addCriterion("PACKAGE_NAME not like", value, "packageName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageNameIn(List<String> values) {
+            addCriterion("PACKAGE_NAME in", values, "packageName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageNameNotIn(List<String> values) {
+            addCriterion("PACKAGE_NAME not in", values, "packageName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageNameBetween(String value1, String value2) {
+            addCriterion("PACKAGE_NAME between", value1, value2, "packageName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageNameNotBetween(String value1, String value2) {
+            addCriterion("PACKAGE_NAME not between", value1, value2, "packageName");
+            return (Criteria) this;
+        }
+
         public Criteria andLockStatusIsNull() {
             addCriterion("LOCK_STATUS is null");
             return (Criteria) this;

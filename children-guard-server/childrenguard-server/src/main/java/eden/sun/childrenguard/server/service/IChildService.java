@@ -22,4 +22,6 @@ public interface IChildService {
 
 	ChildViewDTO getViewById(Integer childId)throws ServiceException;
 
+	Child getChildByAccessToken(String childAccessToken)throws ServiceException;
+
 }

@@ -10,7 +10,9 @@
     <color name="white">#ffffffff</color>
     <color name="gray">#cccccccc</color>
     <color name="text_gray">#343434</color>
+    <color name="text_gray1">#cccccc</color>
     <color name="text_black">#000000</color>
+    <color name="text_white">#ffffff</color>
     
     <color name="headerTitleBg">#000</color>
     <color name="listDividerColor">#b5b5b5</color>
