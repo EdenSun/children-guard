@@ -3,12 +3,26 @@
     package="eden.sun.childrenguard"
     android:versionCode="1"
     android:versionName="1.0" >
-
     <uses-sdk
         android:minSdkVersion="11"
         android:targetSdkVersion="20" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	<uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+	<uses-permission android:name="android.permission.WAKE_LOCK"/>
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.VIBRATE"/>
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+	<uses-permission android:name="getui.permission.GetuiService"/>
+	<uses-permission android:name="android.permission.GET_TASKS"/>
+    
+	<permission
+	    android:name="getui.permission.GetuiService"
+	    android:protectionLevel="normal" >
+	</permission>
 
     <application
         android:allowBackup="true"
@@ -81,6 +95,96 @@
             android:label="@string/title_activity_exception_phone_add"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
+        <!--  Getui SDK -->
+        <meta-data
+            android:name="PUSH_APPID"
+            android:value="etVyv7RHJ28BqN3KKCtKJ6" />
+ 		<!-- APPID -->
+        <meta-data
+            android:name="PUSH_APPKEY"
+            android:value="R03r2hiQI18UxbaFBZkRw" />
+ 		<!-- APPKEY -->
+        <meta-data
+            android:name="PUSH_APPSECRET"
+            android:value="36IN4XOyHLAjma8E4d0BM2" />
+ 		<!-- APPSECRET -->
+        <meta-data
+            android:name="PUSH_GROUPID"
+            android:value="" />
+        
+        <service
+            android:name="com.igexin.sdk.PushService"
+            android:exported="true"
+            android:label="NotificationCenter"
+            android:process=":pushservice" >
+        </service>
+
+        <receiver android:name="com.igexin.sdk.PushReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="com.igexin.sdk.action.refreshls" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.igexin.sdk.PushManagerReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.igexin.sdk.action.pushmanager" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name="com.igexin.sdk.PushActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:process=":pushservice"
+            android:taskAffinity="com.igexin.sdk.PushActivityTask"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <!-- activity -->
+        <activity
+            android:name="com.igexin.getuiext.activity.GetuiExtActivity"
+            android:configChanges="orientation|keyboard|keyboardHidden"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:process=":pushservice"
+            android:taskAffinity="android.task.myServicetask"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <receiver
+            android:name="com.igexin.getuiext.service.PayloadReceiver"
+            android:exported="false" >
+            <intent-filter>
+
+                <!-- com.igexin.sdk.action.7fjUl2Z3LH6xYy7NQK4ni4 -->
+                <action android:name="com.igexin.sdk.action.7fjUl2Z3LH6xYy7NQK4ni4" />
+                <!-- android:name="com.igexin.sdk.action.appId" -->
+                <action android:name="com.igexin.sdk.action.etVyv7RHJ28BqN3KKCtKJ6" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.igexin.getuiext.service.GetuiExtService"
+            android:process=":pushservice" />
+        <!-- download -->
+        <service
+            android:name="com.igexin.download.DownloadService"
+            android:process=":pushservice" />
+
+        <receiver android:name="com.igexin.download.DownloadReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <provider
+            android:name="com.igexin.download.DownloadProvider"
+            android:authorities="downloads.com.getui.demo"
+            android:process=":pushservice" />
+		 <!-- downloads. -->
+		 <!-- END - Getui SDK -->
         
     </application>
 

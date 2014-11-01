@@ -18,10 +18,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import eden.sun.childrenguard.R;
-import eden.sun.childrenguard.comet.RegisterListener;
 import eden.sun.childrenguard.server.dto.RegisterViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
-import eden.sun.childrenguard.util.CometdConfig;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
 import eden.sun.childrenguard.util.RequestHelper;

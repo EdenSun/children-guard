@@ -3,14 +3,9 @@ package eden.sun.childrenguard.activity;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -19,11 +14,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
 import eden.sun.childrenguard.R;
-import eden.sun.childrenguard.comet.PasswordResetListener;
-import eden.sun.childrenguard.server.dto.IsFirstLoginViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
-import eden.sun.childrenguard.util.CometdConfig;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
 import eden.sun.childrenguard.util.RequestHelper;

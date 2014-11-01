@@ -3,9 +3,7 @@ package eden.sun.childrenguard.activity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import eden.sun.childrenguard.util.RequestHelper;
-import eden.sun.childrenguard.util.Runtime;
 import eden.sun.childrenguard.util.ShareDataKey;
 
 public class CommonActivity extends Activity {
@@ -29,12 +27,6 @@ public class CommonActivity extends Activity {
 		}
 	}
 	
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		runtime = Runtime.getInstance(this);
-	}
 
 	private void initSharedPreferences(){
 		if( settings == null ){

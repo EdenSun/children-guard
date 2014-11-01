@@ -3,10 +3,8 @@ package eden.sun.childrenguard.fragment;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import eden.sun.childrenguard.util.RequestHelper;
-import eden.sun.childrenguard.util.Runtime;
 import eden.sun.childrenguard.util.ShareDataKey;
 
 public class CommonFragment extends Fragment {
@@ -31,12 +29,6 @@ public class CommonFragment extends Fragment {
 	}
 
 	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		runtime = Runtime.getInstance(this.getActivity());
-	}
-
 	private void initSharedPreferences(){
 		if( settings == null ){
 			settings = this.getActivity().getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE);

@@ -3,10 +3,8 @@ package eden.sun.childrenguard.activity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import eden.sun.childrenguard.util.RequestHelper;
-import eden.sun.childrenguard.util.Runtime;
 import eden.sun.childrenguard.util.ShareDataKey;
 
 public class CommonActionBarActivity extends ActionBarActivity{
@@ -30,12 +28,6 @@ public class CommonActionBarActivity extends ActionBarActivity{
 		}
 	}
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		runtime = Runtime.getInstance(this);
-	}
-	
 	private void initSharedPreferences(){
 		if( settings == null ){
 			settings = getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE);

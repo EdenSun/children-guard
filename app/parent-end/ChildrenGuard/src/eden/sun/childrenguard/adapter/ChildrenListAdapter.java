@@ -43,21 +43,19 @@ public class ChildrenListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
         if(convertView==null){
-        	vi = inflater.inflate(R.layout.list_row, null);
+        	vi = inflater.inflate(R.layout.list_row_children_list, null);
         }
  
         TextView childNameTextView = (TextView)vi.findViewById(R.id.childName);
-        TextView onlineStatusTextView = (TextView)vi.findViewById(R.id.onlineStatus);
-        TextView infoTextView = (TextView)vi.findViewById(R.id.info);
+        TextView mobileTextView = (TextView)vi.findViewById(R.id.mobile);
+        TextView emailTextView = (TextView)vi.findViewById(R.id.email);
         
         ChildrenListItemView child = data.get(position);
  
         // Setting all values in listview
-  
         childNameTextView.setText(child.getNickname());
-        onlineStatusTextView.setText(child.getOnlineStatus());
-        String info = child.getFirstName() + "," + child.getLastName() + " / " + child.getMobile();
-        infoTextView.setText(info);
+        mobileTextView.setText(child.getMobile());
+        emailTextView.setText("");
         return vi;
     }
 

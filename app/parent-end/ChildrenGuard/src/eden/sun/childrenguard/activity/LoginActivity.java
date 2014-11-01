@@ -3,11 +3,9 @@ package eden.sun.childrenguard.activity;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -21,18 +19,16 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.igexin.sdk.PushManager;
 
 import eden.sun.childrenguard.R;
-import eden.sun.childrenguard.comet.IsFirstLoginListener;
 import eden.sun.childrenguard.server.dto.IsFirstLoginViewDTO;
 import eden.sun.childrenguard.server.dto.LoginViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
-import eden.sun.childrenguard.util.CometdConfig;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
 import eden.sun.childrenguard.util.RequestHelper;
 import eden.sun.childrenguard.util.RequestURLConstants;
-import eden.sun.childrenguard.util.Runtime;
 import eden.sun.childrenguard.util.ShareDataKey;
 import eden.sun.childrenguard.util.StringUtil;
 import eden.sun.childrenguard.util.UIUtil;
@@ -49,6 +45,8 @@ public class LoginActivity extends CommonActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PushManager.getInstance().initialize(this.getApplicationContext());
+        
         setContentView(R.layout.activity_login);
 
         emailEditText = (EditText)findViewById(R.id.emailEditText);
@@ -238,63 +236,6 @@ public class LoginActivity extends CommonActivity {
     }
 
 
-	class LoginTask extends AsyncTask<Map<String, Object>,Integer,String>{
-		private Activity context;
-		
-		public LoginTask(Activity context) {
-			super();
-			this.context = context;
-		}
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			String title = "Login";
-			String msg = "Please wait...";
-			showProgressDialog(title,msg);
-		}
-
-		@Override
-		protected String doInBackground(Map<String, Object>... params) {
-			Map<String, Object> data = params[0];
-			
-			String msg = runtime.publish(data, CometdConfig.IS_FIRST_LOGIN_CHANNEL,new IsFirstLoginListener(LoginActivity.this));
-			
-			/*String msg = runtime.publish(data, CometdConfig.LOGIN_CHANNEL,new LoginListener(LoginActivity.this));*/
-			
-			return msg;
-		}
-
-		@Override
-		protected void onPostExecute(String result) {
-			super.onPostExecute(result);
-			
-			if( result != null && !result.equals(Runtime.PUBLISH_SUCCESS)){
-				// login fail,show message
-				String title = "Network Error";
-				String msg = result;
-				String btnText = "OK";
-				
-				AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
-					context,
-					title,
-					msg,
-					btnText,
-					new DialogInterface.OnClickListener() {
-			            @Override
-			            public void onClick(DialogInterface dialog, int which) {
-			            	dialog.dismiss();
-			            }
-			        }
-				);
-				
-				dialog.show();
-				
-				dismissProgressDialog();
-			}
-		}
-		
-	}
 	private Map<String, Object> getLoginParam() {
 		Map<String, Object> data = new HashMap<String,Object>();
 		
