@@ -16,4 +16,6 @@ public interface IChildDetailService {
 
 	ViewDTO<ChildBasicInfoViewDTO> getChildBasicInfo(Integer childId)throws ServiceException;
 
+	ViewDTO<Boolean> modifyLockPassword(Integer childId, String password)throws ServiceException;
+
 }

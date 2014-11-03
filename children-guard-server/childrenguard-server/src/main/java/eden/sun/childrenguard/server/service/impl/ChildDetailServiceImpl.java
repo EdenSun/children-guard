@@ -14,6 +14,7 @@ import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.SyncAppSettingParam;
 import eden.sun.childrenguard.server.exception.ServiceException;
+import eden.sun.childrenguard.server.model.generated.Child;
 import eden.sun.childrenguard.server.model.generated.ChildExtraInfo;
 import eden.sun.childrenguard.server.service.IAppService;
 import eden.sun.childrenguard.server.service.IChildDetailService;
@@ -91,6 +92,29 @@ public class ChildDetailServiceImpl implements IChildDetailService {
 		view.setOnlineStatus("");
 		view.setLocation("");
 		
+		return view;
+	}
+
+	@Override
+	public ViewDTO<Boolean> modifyLockPassword(Integer childId, String password)
+			throws ServiceException {
+		ViewDTO<Boolean> view = new ViewDTO<Boolean>();
+		if( childId == null || password == null){
+			throw new ServiceException("childId or password can not be null.");
+		}
+
+		Child child = childService.getById(childId);
+		if( child == null ){
+			view.setMsg(ViewDTO.MSG_ERROR);
+			view.setInfo("Child is not exists.");
+			return view;
+		}
+		
+		//update lock password
+		child.setAppLockPassword(password);
+		childService.update(child);
+		
+		view.setData(true);
 		return view;
 	}
 

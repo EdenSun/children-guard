@@ -207,7 +207,9 @@ public class ChildServiceImpl implements IChildService {
 		return null;
 	}
 
-	private Child getById(Integer childId) {
+
+	@Override
+	public Child getById(Integer childId) throws ServiceException {
 		Child child = childMapper.selectByPrimaryKey(childId);
 		
 		return child;
@@ -241,6 +243,15 @@ public class ChildServiceImpl implements IChildService {
 			return child;
 		}
 		return null;
+	}
+
+	@Override
+	public void update(Child child) throws ServiceException {
+		if( child == null || child.getId() == null ){
+			throw new ServiceException("Parameter child or child.id can not be null");
+		}
+		
+		childMapper.updateByPrimaryKey(child);
 	}
 	
 }

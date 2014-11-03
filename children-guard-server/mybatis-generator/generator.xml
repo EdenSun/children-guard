@@ -6,7 +6,7 @@
 
 <generatorConfiguration>
 	<!--数据库驱动jar -->
-	<classPathEntry location="D:\githubWorkspace\children-guard\children-guard-server\mybatis-generator\mysql-connector-java-5.1.26.jar" />
+	<classPathEntry location="G:\githubProject\children-guard\children-guard-server\mybatis-generator\mysql-connector-java-5.1.26.jar" />
 	
 	<context id="DB2Tables" targetRuntime="MyBatis3">
 		<plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>
@@ -17,7 +17,7 @@
 
 		<!--数据库连接 -->
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://127.0.0.1:3306/childrenguarddb?characterEncoding=utf-8" 
+			connectionURL="jdbc:mysql://127.0.0.1:3306/childguard?characterEncoding=utf-8" 
 			userId="root"
 			password="root" >
 		</jdbcConnection>

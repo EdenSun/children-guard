@@ -445,6 +445,136 @@ public class ChildExample {
             return (Criteria) this;
         }
 
+        public Criteria andAppLockPasswordIsNull() {
+            addCriterion("APP_LOCK_PASSWORD is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppLockPasswordIsNotNull() {
+            addCriterion("APP_LOCK_PASSWORD is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppLockPasswordEqualTo(String value) {
+            addCriterion("APP_LOCK_PASSWORD =", value, "appLockPassword");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppLockPasswordNotEqualTo(String value) {
+            addCriterion("APP_LOCK_PASSWORD <>", value, "appLockPassword");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppLockPasswordGreaterThan(String value) {
+            addCriterion("APP_LOCK_PASSWORD >", value, "appLockPassword");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppLockPasswordGreaterThanOrEqualTo(String value) {
+            addCriterion("APP_LOCK_PASSWORD >=", value, "appLockPassword");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppLockPasswordLessThan(String value) {
+            addCriterion("APP_LOCK_PASSWORD <", value, "appLockPassword");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppLockPasswordLessThanOrEqualTo(String value) {
+            addCriterion("APP_LOCK_PASSWORD <=", value, "appLockPassword");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppLockPasswordLike(String value) {
+            addCriterion("APP_LOCK_PASSWORD like", value, "appLockPassword");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppLockPasswordNotLike(String value) {
+            addCriterion("APP_LOCK_PASSWORD not like", value, "appLockPassword");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppLockPasswordIn(List<String> values) {
+            addCriterion("APP_LOCK_PASSWORD in", values, "appLockPassword");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppLockPasswordNotIn(List<String> values) {
+            addCriterion("APP_LOCK_PASSWORD not in", values, "appLockPassword");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppLockPasswordBetween(String value1, String value2) {
+            addCriterion("APP_LOCK_PASSWORD between", value1, value2, "appLockPassword");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppLockPasswordNotBetween(String value1, String value2) {
+            addCriterion("APP_LOCK_PASSWORD not between", value1, value2, "appLockPassword");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivateTimeIsNull() {
+            addCriterion("ACTIVATE_TIME is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivateTimeIsNotNull() {
+            addCriterion("ACTIVATE_TIME is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivateTimeEqualTo(Date value) {
+            addCriterion("ACTIVATE_TIME =", value, "activateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivateTimeNotEqualTo(Date value) {
+            addCriterion("ACTIVATE_TIME <>", value, "activateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivateTimeGreaterThan(Date value) {
+            addCriterion("ACTIVATE_TIME >", value, "activateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivateTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("ACTIVATE_TIME >=", value, "activateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivateTimeLessThan(Date value) {
+            addCriterion("ACTIVATE_TIME <", value, "activateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivateTimeLessThanOrEqualTo(Date value) {
+            addCriterion("ACTIVATE_TIME <=", value, "activateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivateTimeIn(List<Date> values) {
+            addCriterion("ACTIVATE_TIME in", values, "activateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivateTimeNotIn(List<Date> values) {
+            addCriterion("ACTIVATE_TIME not in", values, "activateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivateTimeBetween(Date value1, Date value2) {
+            addCriterion("ACTIVATE_TIME between", value1, value2, "activateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivateTimeNotBetween(Date value1, Date value2) {
+            addCriterion("ACTIVATE_TIME not between", value1, value2, "activateTime");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateTimeIsNull() {
             addCriterion("CREATE_TIME is null");
             return (Criteria) this;

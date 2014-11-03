@@ -83,4 +83,14 @@ public class ChildrenManageController extends BaseController{
 		return view;
 	}
 	
+	@RequestMapping("/modifyLockPassword")
+	@ResponseBody
+	public ViewDTO<Boolean> modifyLockPassword(Integer childId,String password) {
+		logger.info("modifyLockPassword called. childId:" + childId + ",password:" + password);
+		ViewDTO<Boolean> view = childDetailService.modifyLockPassword(childId,password);
+		
+		return view;
+	}
+	
+	
 }
