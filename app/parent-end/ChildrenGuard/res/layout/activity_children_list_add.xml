@@ -1,141 +1,43 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
 	android:orientation="vertical"
-    android:background="@drawable/background"
+    style="@style/commonPageStyle"
     tools:context="eden.sun.childrenguard.activity.ChildrenListAddActivity" >
 
     <TextView
  	    android:id="@+id/titleTextView"
- 	    android:layout_width="match_parent"
- 	    android:layout_height="wrap_content"
- 	    android:layout_alignParentTop="true"
- 	    android:layout_centerHorizontal="true"
- 	    android:layout_gravity="center"
  	    android:text="Add Person"
  	    style="@style/commonPageTitle"
  	    />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-	        android:id="@+id/mobileTextView"
-	        android:layout_width="100dp"
-	        android:layout_height="40dp"
-	        android:text="Mobile"
-	        android:textColor="#fff"
-	        android:textSize="15dp" 
-	        android:gravity="center_vertical"
-	        android:layout_weight="0"
-	        />
-	
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 	    <EditText
 	        android:id="@+id/mobileEditText"
-	        android:layout_width="wrap_content"
-	        android:layout_height="40dp"
 	        android:hint="Mobile"
-	        android:textColor="#000000"
-	        android:textSize="15dp" 
-	        android:layout_weight="1"/>
-    </LinearLayout>
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-	        android:id="@+id/firstNameTextView"
-	        android:layout_width="100dp"
-	        android:layout_height="40dp"
-	        android:text="First Name"
-	        android:textColor="#fff"
-	        android:textSize="15dp" 
-	        android:gravity="center_vertical"
-	        android:layout_weight="0"
-	        />
+	        style="@style/textOnLeftInputStyle"/>
 	
 	    <EditText
 	        android:id="@+id/firstNameEditText"
-	        android:layout_width="wrap_content"
-	        android:layout_height="40dp"
 	        android:hint="First Name"
-	        android:textColor="#000000"
-	        android:textSize="15dp" 
-	        android:layout_weight="1"/>
-    </LinearLayout>
+	        style="@style/textOnLeftInputStyle"/>
     
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-	    <TextView
-	        android:id="@+id/lastNameTextView"
-	        android:layout_width="100dp"
-	        android:layout_height="40dp"
-	        android:text="Last Name"
-	        android:textColor="#fff"
-	        android:textSize="15dp" 
-	        android:layout_weight="0"
-	        />
-	
 	    <EditText
 	        android:id="@+id/lastNameEditText"
-	        android:layout_width="wrap_content"
-	        android:layout_height="40dp"
 	        android:hint="Last Name"
-	        android:textColor="#000000"
-	        android:textSize="15dp" 
-	        android:layout_weight="1"
+	        style="@style/textOnLeftInputStyle"
 	        />
         
-	</LinearLayout>
-    
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-	        android:id="@+id/nicknameTextView"
-	        android:layout_width="100dp"
-	        android:layout_height="40dp"
-	        android:text="Nickname"
-	        android:textColor="#fff"
-	        android:textSize="15dp" 
-	        android:gravity="center_vertical"
-	        android:layout_weight="0"
-	        />
-	
 	    <EditText
 	        android:id="@+id/nicknameEditText"
-	        android:layout_width="wrap_content"
-	        android:layout_height="40dp"
 	        android:hint="Nickname"
-	        android:textColor="#000000"
-	        android:textSize="15dp" 
-	        android:layout_weight="1"/>
-    </LinearLayout>
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-	        android:id="@+id/relationshipTextView"
-	        android:layout_width="100dp"
-	        android:layout_height="40dp"
-	        android:text="Relationship"
-	        android:textColor="#fff"
-	        android:textSize="15dp" 
-	        android:gravity="center_vertical"
-	        android:layout_weight="0"
-	        />
-	
+	        style="@style/textOnLeftInputStyle"/>
+    	
         <Spinner 
             android:id="@+id/relationshipSpinner"
-	        android:layout_width="wrap_content"
-	        android:layout_height="40dp"
-	        android:textColor="#000000"
-	        android:textSize="15dp" 
-	        android:layout_weight="1"
+	        style="@style/textOnLeftInputStyle"
             />
     </LinearLayout>
     <LinearLayout
@@ -144,17 +46,17 @@
         android:layout_marginTop="10dp">
 	    <Button
 	        android:id="@+id/addBtn"
-	        android:layout_width="wrap_content"
-	        android:layout_height="40dp"
 	        android:text="Add Person" 
-	        android:layout_weight="1"/>
+	        android:layout_weight="1"
+	        android:layout_marginRight="5dp"
+            style="@style/commonBtn"/>
 	
 	    <Button
 	        android:id="@+id/cancelBtn"
-	        android:layout_width="wrap_content"
-	        android:layout_height="40dp"
 	        android:text="Cancel"
-	        android:layout_weight="1" />
+	        android:layout_weight="1" 
+	        android:layout_marginLeft="5dp"
+            style="@style/commonBtn"/>
 	</LinearLayout>
     
 

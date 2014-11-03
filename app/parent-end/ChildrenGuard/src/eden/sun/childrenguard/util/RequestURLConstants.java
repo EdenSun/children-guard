@@ -12,5 +12,6 @@ public class RequestURLConstants {
 	public static final String URL_LIST_ALL_RELATIONSHIP = "relationship/listAll";
 	public static final String URL_GET_CHILD_BASIC_INFO = "childrenManage/basicInfo";
 	public static final String URL_LIST_CHILD_APP = "childrenManage/listChildApp";
+	public static final String URL_CHANGE_LOCK_PASSWORD = "childrenManage/modifyLockPassword";
 	
 }

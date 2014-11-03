@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/childManageMoreListItem"
+    android:layout_width="match_parent"
+    android:background="@drawable/list_selector"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/listItemTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:text="Speeding Limit" />
+
+    <EditText
+        android:id="@+id/speedingLimitEditText"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0" />
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        android:gravity="center_vertical"
+        android:text="km/h" />
+
+</LinearLayout>

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.TextView;
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.dto.MoreListItemView;
@@ -56,6 +57,8 @@ public class MoreListAdapter extends BaseAdapter{
         View vi = convertView;
         ArrowViewHolder arrowHolder = new ArrowViewHolder();
         SwitchViewHolder switchViewHolder = new SwitchViewHolder();
+        EditTextViewHolder editTextViewHolder = new EditTextViewHolder();
+        
         if( convertView == null ){
         	if( type == MoreListItemView.TYPE_ARROW_ITEM ){
         		vi = inflater.inflate(R.layout.list_row_arrow_child_manage_more_list, null);
@@ -69,12 +72,22 @@ public class MoreListAdapter extends BaseAdapter{
         		switchViewHolder.switchCmp = (Switch)vi.findViewById(R.id.switchCmp);
         		
         		vi.setTag(switchViewHolder);
+        	}else if( type == MoreListItemView.TYPE_EDITTEXT_ITEM ){
+        		vi = inflater.inflate(R.layout.list_row_edittext_child_manage_more_list, null);
+        		
+        		editTextViewHolder.titleTextView = (TextView)vi.findViewById(R.id.title);
+        		editTextViewHolder.editText = (EditText)vi.findViewById(R.id.speedingLimitEditText);
+        		
+        		vi.setTag(editTextViewHolder);
         	}
         }else{
         	if( type == MoreListItemView.TYPE_ARROW_ITEM ){
         		arrowHolder = (ArrowViewHolder) convertView.getTag();
         	}else if( type == MoreListItemView.TYPE_SWITCH_ITEM ){
         		switchViewHolder = (SwitchViewHolder) convertView.getTag();
+        	}else if( type == MoreListItemView.TYPE_EDITTEXT_ITEM ){
+        		editTextViewHolder = (EditTextViewHolder) convertView.getTag();
+        		
         	}
         }
         
@@ -83,6 +96,9 @@ public class MoreListAdapter extends BaseAdapter{
     	}else if( type == MoreListItemView.TYPE_SWITCH_ITEM ){
     		switchViewHolder.titleTextView.setText(child.getTitle());
     		switchViewHolder.switchCmp.setChecked(child.getSwitchOn());
+    	}else if( type == MoreListItemView.TYPE_EDITTEXT_ITEM ){
+    		editTextViewHolder.titleTextView.setText(child.getTitle());
+    		editTextViewHolder.editText.setText(child.getSpeedingLimit());
     	}
         
         return vi;
@@ -96,5 +112,20 @@ public class MoreListAdapter extends BaseAdapter{
         TextView titleTextView;
         Switch switchCmp;
     }
+    
+    static class EditTextViewHolder {
+    	TextView titleTextView;
+        EditText editText;
+    }
+
+	public void appendItem(MoreListItemView item) {
+		data.add(item);
+		this.notifyDataSetChanged();
+	}
+
+	public void removeItem(MoreListItemView speedingLimitItem) {
+		data.remove(speedingLimitItem);
+		this.notifyDataSetChanged();
+	}
  
 }

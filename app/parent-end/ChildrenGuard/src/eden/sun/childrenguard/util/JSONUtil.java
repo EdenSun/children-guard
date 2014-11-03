@@ -57,4 +57,8 @@ public class JSONUtil {
 		return new Gson().fromJson(json, new TypeToken<ViewDTO<List<AppViewDTO>>>(){}.getType());
 	}
 
+	public static ViewDTO<Boolean> getChangeLockPasswordView(String json) {
+		return new Gson().fromJson(json, new TypeToken<ViewDTO<Boolean>>(){}.getType());
+	}
+
 }

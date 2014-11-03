@@ -76,7 +76,7 @@
 	            android:layout_width="100dp"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="0"
-	            android:text="Network Traffic:"
+	            android:text="Monthly Data Usage:"
 	            style="@style/label"/>
 	        <TextView 
 	            android:id="@+id/networkTrafficTextView"

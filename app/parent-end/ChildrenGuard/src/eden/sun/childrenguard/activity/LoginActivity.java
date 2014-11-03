@@ -16,10 +16,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import cn.jpush.android.api.JPushInterface;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.igexin.sdk.PushManager;
 
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.server.dto.IsFirstLoginViewDTO;
@@ -45,7 +45,8 @@ public class LoginActivity extends CommonActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PushManager.getInstance().initialize(this.getApplicationContext());
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
         
         setContentView(R.layout.activity_login);
 

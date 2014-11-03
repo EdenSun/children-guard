@@ -24,8 +24,9 @@
     <string name="switch_unlock">UNLOCK</string>
     <string name="title_activity_exception_phone">Exception Phone</string>
     <string name="title_activity_modify_lock_password">Modify Lock Password</string>
-    <string name="modifyLockPassword.title">Change your Password</string>
-    <string name="modifyLockPassword.passwordHint">Input new password</string>
+    <string name="modifyLockPassword.title">Change Lock Password</string>
+    <string name="modifyLockPassword.passwordHint">New password</string>
+    <string name="modifyLockPassword.confirmPasswordHint">Confirm new password</string>
     <string name="modifyLockPassword.passwordTextView">New Password</string>
     <string name="modifyLockPassword.confirmPasswordTextView">Password Confirm</string>
     <string name="modifyLockPassword.okBtn">Change Password</string>

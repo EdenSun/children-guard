@@ -20,6 +20,7 @@ import eden.sun.childrenguard.adapter.MoreListAdapter;
 import eden.sun.childrenguard.dto.MoreListItemView;
 
 public class ChildManageMoreFragment extends Fragment{
+	private Integer childId;
 	protected static final String TAG = "ChildManageMoreFragment";
 
 	private ListView moreList ;
@@ -30,7 +31,9 @@ public class ChildManageMoreFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_child_manage_more, container, false);
-        
+        Intent intent = this.getActivity().getIntent();
+		childId = intent.getIntExtra("childId",0);
+		
         moreList = (ListView)v.findViewById(R.id.list);
         moreList.setAdapter(getMoreListAdapter());
         moreList.setOnItemClickListener(new OnItemClickListener() {
@@ -46,7 +49,22 @@ public class ChildManageMoreFragment extends Fragment{
 					Class nextStep = item.getNextActivity();
 					Intent intent = new Intent(ChildManageMoreFragment.this.getActivity(),nextStep);
 					
+					intent.putExtra("childId", childId);
 					ChildManageMoreFragment.this.getActivity().startActivity(intent);
+				}else if( item.getType() == MoreListItemView.TYPE_SWITCH_ITEM ){
+					if( item.getTitle().equals(MoreListItemView.TITLE_SPEEDING_NOTIFICATION) ){
+						
+						String title = MoreListItemView.TITLE_MODITY_LOCK_PASSWORD;
+						int type = MoreListItemView.TYPE_EDITTEXT_ITEM;
+						Boolean switchOn = null;
+						MoreListItemView speedingLimitItem = new MoreListItemView(title,type,null, switchOn);
+						if( item.getSwitchOn() ){
+							moreListAdapter.appendItem(speedingLimitItem);
+						}else{
+							moreListAdapter.removeItem(speedingLimitItem);
+						}
+						
+					}
 				}
 				
 			}
@@ -64,65 +82,66 @@ public class ChildManageMoreFragment extends Fragment{
 		int type = 0;
 		Boolean switchOn = null;
 		
-		title = "Lock Phone";
-		type = MoreListItemView.TYPE_SWITCH_ITEM;
-		switchOn = false;
-		view = new MoreListItemView(title,type,null,switchOn);
-		list.add(view);
-		
-		title = "Lock Message";
-		type = MoreListItemView.TYPE_SWITCH_ITEM;
-		switchOn = false;
-		view = new MoreListItemView(title,type,null,switchOn);
-		list.add(view);
-		
-		title = "Wifi Only";
-		type = MoreListItemView.TYPE_SWITCH_ITEM;
-		switchOn = false;
-		view = new MoreListItemView(title,type,null,switchOn);
-		list.add(view);
-		
-		title = "Exception Phone";
-		type = MoreListItemView.TYPE_ARROW_ITEM;
-		switchOn = null;
-		view = new MoreListItemView(title,type,ExceptionPhoneManageActivity.class,switchOn);
-		list.add(view);
-		
-		title = "Modify Lock Password";
+		title = MoreListItemView.TITLE_MODITY_LOCK_PASSWORD;
 		type = MoreListItemView.TYPE_ARROW_ITEM;
 		switchOn = null;
 		view = new MoreListItemView(title,type,ModifyLockPasswordActivity.class, switchOn);
 		list.add(view);
 		
-		title = "New App Notify";
+		title = MoreListItemView.TITLE_EMERGENCY_CONTACTS;
 		type = MoreListItemView.TYPE_ARROW_ITEM;
 		switchOn = null;
+		view = new MoreListItemView(title,type,ExceptionPhoneManageActivity.class,switchOn);
+		list.add(view);
+		
+		title = MoreListItemView.TITLE_LOCK_CALLS;
+		type = MoreListItemView.TYPE_SWITCH_ITEM;
+		switchOn = false;
+		view = new MoreListItemView(title,type,null,switchOn);
+		list.add(view);
+		
+		title = MoreListItemView.TITLE_LOCK_TEXT_MESSAGING;
+		type = MoreListItemView.TYPE_SWITCH_ITEM;
+		switchOn = false;
+		view = new MoreListItemView(title,type,null,switchOn);
+		list.add(view);
+		
+		title = MoreListItemView.TITLE_WIFI_ONLY;
+		type = MoreListItemView.TYPE_SWITCH_ITEM;
+		switchOn = false;
+		view = new MoreListItemView(title,type,null,switchOn);
+		list.add(view);
+		
+		title = MoreListItemView.TITLE_NEW_APP_NOTIFICATION;
+		type = MoreListItemView.TYPE_SWITCH_ITEM;
+		switchOn = false;
 		view = new MoreListItemView(title,type,NotifyMailManageActivity.class,switchOn);
 		list.add(view);
 
-		title = "Uninstall App Notify";
-		type = MoreListItemView.TYPE_ARROW_ITEM;
-		switchOn = null;
+		title = MoreListItemView.TITLE_UNINSTALL_APP_NOTIFICATION;
+		type = MoreListItemView.TYPE_SWITCH_ITEM;
+		switchOn = false;
 		view = new MoreListItemView(title,type,NotifyMailManageActivity.class,switchOn);
 		list.add(view);
 		
-		title = "Network Traffic Exceed Notify";
+		/*title = "Exceed Monthly Data Usage Notification";
 		type = MoreListItemView.TYPE_ARROW_ITEM;
 		switchOn = null;
+		view = new MoreListItemView(title,type,NotifyMailManageActivity.class,switchOn);
+		list.add(view);*/
+		
+		title = MoreListItemView.TITLE_LOCK_UNLOCK_NOTIFICATION;
+		type = MoreListItemView.TYPE_SWITCH_ITEM;
+		switchOn = false;
 		view = new MoreListItemView(title,type,NotifyMailManageActivity.class,switchOn);
 		list.add(view);
 		
-		title = "Speeding Notify";
-		type = MoreListItemView.TYPE_ARROW_ITEM;
-		switchOn = null;
+		title = MoreListItemView.TITLE_SPEEDING_NOTIFICATION;
+		type = MoreListItemView.TYPE_SWITCH_ITEM;
+		switchOn = false;
 		view = new MoreListItemView(title,type,NotifyMailManageActivity.class,switchOn);
 		list.add(view);
 		
-		title = "Lock/Unlock Notify";
-		type = MoreListItemView.TYPE_ARROW_ITEM;
-		switchOn = null;
-		view = new MoreListItemView(title,type,NotifyMailManageActivity.class,switchOn);
-		list.add(view);
 		
 		return new MoreListAdapter(this.getActivity(),list);
 	}

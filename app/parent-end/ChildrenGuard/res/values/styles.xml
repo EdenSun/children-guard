@@ -17,8 +17,21 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
         <item name="switchStyle">@style/Widget.Holo.Light.CompoundButton.Switch</item>
         <item name="switchPreferenceStyle">@style/Preference.SwitchPreference</item>
+        <item name="android:actionBarStyle">@style/myActionbarStyle</item>  
     </style>
 
+    <style name="myActionbarStyle" parent="@android:style/Widget.Holo.Light.ActionBar">  
+        <item name="android:background">#647b97</item>  
+        <item name="android:titleTextStyle">@style/ActionBarTitleStyle</item> 
+        <item name="android:backgroundStacked">#4A708B</item> 
+        <item name="android:backgroundSplit">#ff0000</item>  
+    </style>
+    
+    <style name="ActionBarTitleStyle">    
+        <item name="android:textColor">#FFFFFF</item>    
+    </style>  
+    
+    
     <style name="childBasicInfoItemStyle">
         <item name="android:paddingTop">15dp</item>
         <item name="android:paddingBottom">15dp</item>
