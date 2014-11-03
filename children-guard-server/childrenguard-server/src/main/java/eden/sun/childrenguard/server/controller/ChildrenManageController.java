@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import eden.sun.childrenguard.server.dto.AppViewDTO;
 import eden.sun.childrenguard.server.dto.ChildBasicInfoViewDTO;
+import eden.sun.childrenguard.server.dto.ChildSettingViewDTO;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.ChildAddParam;
@@ -83,6 +84,16 @@ public class ChildrenManageController extends BaseController{
 		return view;
 	}
 	
+	@RequestMapping("/loadChildSetting")
+	@ResponseBody
+	public ViewDTO<ChildSettingViewDTO> loadChildSetting(Integer childId) {
+		logger.info("loadChildSetting called. childId:" + childId );
+		ViewDTO<ChildSettingViewDTO> view = childDetailService.loadChildSetting(childId);
+		
+		return view;
+	}
+	
+	
 	@RequestMapping("/modifyLockPassword")
 	@ResponseBody
 	public ViewDTO<Boolean> modifyLockPassword(Integer childId,String password) {
@@ -92,5 +103,13 @@ public class ChildrenManageController extends BaseController{
 		return view;
 	}
 	
+	@RequestMapping("/modifySpeedLimit")
+	@ResponseBody
+	public ViewDTO<Boolean> modifySpeedLimit(Integer childId,Integer speed) {
+		logger.info("modifySpeedLimit called. childId:" + childId + ",speed:" + speed);
+		ViewDTO<Boolean> view = childDetailService.modifySpeedLimit(childId,speed);
+		
+		return view;
+	}
 	
 }

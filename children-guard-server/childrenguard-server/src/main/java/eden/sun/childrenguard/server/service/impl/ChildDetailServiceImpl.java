@@ -10,16 +10,19 @@ import org.springframework.stereotype.Service;
 import eden.sun.childrenguard.server.dto.AppViewDTO;
 import eden.sun.childrenguard.server.dto.ChildBasicInfoViewDTO;
 import eden.sun.childrenguard.server.dto.ChildExtraInfoViewDTO;
+import eden.sun.childrenguard.server.dto.ChildSettingViewDTO;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.SyncAppSettingParam;
 import eden.sun.childrenguard.server.exception.ServiceException;
 import eden.sun.childrenguard.server.model.generated.Child;
 import eden.sun.childrenguard.server.model.generated.ChildExtraInfo;
+import eden.sun.childrenguard.server.model.generated.ChildSetting;
 import eden.sun.childrenguard.server.service.IAppService;
 import eden.sun.childrenguard.server.service.IChildDetailService;
 import eden.sun.childrenguard.server.service.IChildExtraInfoService;
 import eden.sun.childrenguard.server.service.IChildService;
+import eden.sun.childrenguard.server.service.IChildSettingService;
 
 @Service
 public class ChildDetailServiceImpl implements IChildDetailService {
@@ -29,6 +32,8 @@ public class ChildDetailServiceImpl implements IChildDetailService {
 	private IChildService childService;
 	@Inject
 	private IAppService appService;
+	@Inject
+	private IChildSettingService childSettingService;
 	
 	@Override
 	public ViewDTO<List<AppViewDTO>> listChildApp(Integer childId)
@@ -111,11 +116,54 @@ public class ChildDetailServiceImpl implements IChildDetailService {
 		}
 		
 		//update lock password
-		child.setAppLockPassword(password);
-		childService.update(child);
+		ChildSetting childSetting = childSettingService.addIfNotExists(childId);
+		if( childSetting != null ){
+			childSetting.setAppLockPassword(password);
+			childSettingService.update(childSetting);
+		}
 		
 		view.setData(true);
 		return view;
 	}
+
+	@Override
+	public ViewDTO<Boolean> modifySpeedLimit(Integer childId, Integer speed)
+			throws ServiceException {
+		ViewDTO<Boolean> view = new ViewDTO<Boolean>();
+		if( childId == null || speed == null){
+			throw new ServiceException("childId or speed can not be null.");
+		}
+
+		Child child = childService.getById(childId);
+		if( child == null ){
+			view.setMsg(ViewDTO.MSG_ERROR);
+			view.setInfo("Child is not exists.");
+			return view;
+		}
+		
+		//update speed limit
+		ChildSetting childSetting = childSettingService.addIfNotExists(childId);
+		if( childSetting != null ){
+			childSetting.setSpeedingLimit(speed);
+			childSettingService.update(childSetting);
+		}
+		
+		view.setData(true);
+		return view;
+	}
+
+	@Override
+	public ViewDTO<ChildSettingViewDTO> loadChildSetting(Integer childId)
+			throws ServiceException {
+		if( childId == null ){
+			throw new ServiceException("Parameter childId can not be null.");
+		}
+		ViewDTO<ChildSettingViewDTO> view = new ViewDTO<ChildSettingViewDTO>();
+		ChildSettingViewDTO childSettingView = childSettingService.getViewById(childId);
+		
+		view.setData(childSettingView);
+		return view;
+	}
+	
 
 }
