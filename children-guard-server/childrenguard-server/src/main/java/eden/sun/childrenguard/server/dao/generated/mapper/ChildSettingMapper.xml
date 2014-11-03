@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="eden.sun.childrenguard.server.dao.generated.ChildSettingMapper" >
+  <resultMap id="BaseResultMap" type="eden.sun.childrenguard.server.model.generated.ChildSetting" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="LOCK_CALLS_SWITCH" property="lockCallsSwitch" jdbcType="BIT" />
+    <result column="LOCK_TEXT_MESSAGE_SWITCH" property="lockTextMessageSwitch" jdbcType="BIT" />
+    <result column="WIFI_ONLY_SWITCH" property="wifiOnlySwitch" jdbcType="BIT" />
+    <result column="NEW_APP_NOTIFICATION_SWITCH" property="newAppNotificationSwitch" jdbcType="BIT" />
+    <result column="UNINSTALL_APP_NOTIFICATION_SWITCH" property="uninstallAppNotificationSwitch" jdbcType="BIT" />
+    <result column="SPEEDING_NOTIFICATION_SWITCH" property="speedingNotificationSwitch" jdbcType="BIT" />
+    <result column="SPEEDING_LIMIT" property="speedingLimit" jdbcType="INTEGER" />
+    <result column="APP_LOCK_UNLOCK_NOTIFICATION_SWITCH" property="appLockUnlockNotificationSwitch" jdbcType="BIT" />
+    <result column="APP_LOCK_PASSWORD" property="appLockPassword" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, LOCK_CALLS_SWITCH, LOCK_TEXT_MESSAGE_SWITCH, WIFI_ONLY_SWITCH, NEW_APP_NOTIFICATION_SWITCH, 
+    UNINSTALL_APP_NOTIFICATION_SWITCH, SPEEDING_NOTIFICATION_SWITCH, SPEEDING_LIMIT, 
+    APP_LOCK_UNLOCK_NOTIFICATION_SWITCH, APP_LOCK_PASSWORD
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="eden.sun.childrenguard.server.model.generated.ChildSettingExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tbl_child_setting
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_child_setting
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tbl_child_setting
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="eden.sun.childrenguard.server.model.generated.ChildSettingExample" >
+    delete from tbl_child_setting
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="eden.sun.childrenguard.server.model.generated.ChildSetting" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tbl_child_setting (LOCK_CALLS_SWITCH, LOCK_TEXT_MESSAGE_SWITCH, WIFI_ONLY_SWITCH, 
+      NEW_APP_NOTIFICATION_SWITCH, UNINSTALL_APP_NOTIFICATION_SWITCH, 
+      SPEEDING_NOTIFICATION_SWITCH, SPEEDING_LIMIT, 
+      APP_LOCK_UNLOCK_NOTIFICATION_SWITCH, APP_LOCK_PASSWORD
+      )
+    values (#{lockCallsSwitch,jdbcType=BIT}, #{lockTextMessageSwitch,jdbcType=BIT}, #{wifiOnlySwitch,jdbcType=BIT}, 
+      #{newAppNotificationSwitch,jdbcType=BIT}, #{uninstallAppNotificationSwitch,jdbcType=BIT}, 
+      #{speedingNotificationSwitch,jdbcType=BIT}, #{speedingLimit,jdbcType=INTEGER}, 
+      #{appLockUnlockNotificationSwitch,jdbcType=BIT}, #{appLockPassword,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="eden.sun.childrenguard.server.model.generated.ChildSetting" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tbl_child_setting
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="lockCallsSwitch != null" >
+        LOCK_CALLS_SWITCH,
+      </if>
+      <if test="lockTextMessageSwitch != null" >
+        LOCK_TEXT_MESSAGE_SWITCH,
+      </if>
+      <if test="wifiOnlySwitch != null" >
+        WIFI_ONLY_SWITCH,
+      </if>
+      <if test="newAppNotificationSwitch != null" >
+        NEW_APP_NOTIFICATION_SWITCH,
+      </if>
+      <if test="uninstallAppNotificationSwitch != null" >
+        UNINSTALL_APP_NOTIFICATION_SWITCH,
+      </if>
+      <if test="speedingNotificationSwitch != null" >
+        SPEEDING_NOTIFICATION_SWITCH,
+      </if>
+      <if test="speedingLimit != null" >
+        SPEEDING_LIMIT,
+      </if>
+      <if test="appLockUnlockNotificationSwitch != null" >
+        APP_LOCK_UNLOCK_NOTIFICATION_SWITCH,
+      </if>
+      <if test="appLockPassword != null" >
+        APP_LOCK_PASSWORD,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="lockCallsSwitch != null" >
+        #{lockCallsSwitch,jdbcType=BIT},
+      </if>
+      <if test="lockTextMessageSwitch != null" >
+        #{lockTextMessageSwitch,jdbcType=BIT},
+      </if>
+      <if test="wifiOnlySwitch != null" >
+        #{wifiOnlySwitch,jdbcType=BIT},
+      </if>
+      <if test="newAppNotificationSwitch != null" >
+        #{newAppNotificationSwitch,jdbcType=BIT},
+      </if>
+      <if test="uninstallAppNotificationSwitch != null" >
+        #{uninstallAppNotificationSwitch,jdbcType=BIT},
+      </if>
+      <if test="speedingNotificationSwitch != null" >
+        #{speedingNotificationSwitch,jdbcType=BIT},
+      </if>
+      <if test="speedingLimit != null" >
+        #{speedingLimit,jdbcType=INTEGER},
+      </if>
+      <if test="appLockUnlockNotificationSwitch != null" >
+        #{appLockUnlockNotificationSwitch,jdbcType=BIT},
+      </if>
+      <if test="appLockPassword != null" >
+        #{appLockPassword,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="eden.sun.childrenguard.server.model.generated.ChildSettingExample" resultType="java.lang.Integer" >
+    select count(*) from tbl_child_setting
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tbl_child_setting
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.lockCallsSwitch != null" >
+        LOCK_CALLS_SWITCH = #{record.lockCallsSwitch,jdbcType=BIT},
+      </if>
+      <if test="record.lockTextMessageSwitch != null" >
+        LOCK_TEXT_MESSAGE_SWITCH = #{record.lockTextMessageSwitch,jdbcType=BIT},
+      </if>
+      <if test="record.wifiOnlySwitch != null" >
+        WIFI_ONLY_SWITCH = #{record.wifiOnlySwitch,jdbcType=BIT},
+      </if>
+      <if test="record.newAppNotificationSwitch != null" >
+        NEW_APP_NOTIFICATION_SWITCH = #{record.newAppNotificationSwitch,jdbcType=BIT},
+      </if>
+      <if test="record.uninstallAppNotificationSwitch != null" >
+        UNINSTALL_APP_NOTIFICATION_SWITCH = #{record.uninstallAppNotificationSwitch,jdbcType=BIT},
+      </if>
+      <if test="record.speedingNotificationSwitch != null" >
+        SPEEDING_NOTIFICATION_SWITCH = #{record.speedingNotificationSwitch,jdbcType=BIT},
+      </if>
+      <if test="record.speedingLimit != null" >
+        SPEEDING_LIMIT = #{record.speedingLimit,jdbcType=INTEGER},
+      </if>
+      <if test="record.appLockUnlockNotificationSwitch != null" >
+        APP_LOCK_UNLOCK_NOTIFICATION_SWITCH = #{record.appLockUnlockNotificationSwitch,jdbcType=BIT},
+      </if>
+      <if test="record.appLockPassword != null" >
+        APP_LOCK_PASSWORD = #{record.appLockPassword,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tbl_child_setting
+    set ID = #{record.id,jdbcType=INTEGER},
+      LOCK_CALLS_SWITCH = #{record.lockCallsSwitch,jdbcType=BIT},
+      LOCK_TEXT_MESSAGE_SWITCH = #{record.lockTextMessageSwitch,jdbcType=BIT},
+      WIFI_ONLY_SWITCH = #{record.wifiOnlySwitch,jdbcType=BIT},
+      NEW_APP_NOTIFICATION_SWITCH = #{record.newAppNotificationSwitch,jdbcType=BIT},
+      UNINSTALL_APP_NOTIFICATION_SWITCH = #{record.uninstallAppNotificationSwitch,jdbcType=BIT},
+      SPEEDING_NOTIFICATION_SWITCH = #{record.speedingNotificationSwitch,jdbcType=BIT},
+      SPEEDING_LIMIT = #{record.speedingLimit,jdbcType=INTEGER},
+      APP_LOCK_UNLOCK_NOTIFICATION_SWITCH = #{record.appLockUnlockNotificationSwitch,jdbcType=BIT},
+      APP_LOCK_PASSWORD = #{record.appLockPassword,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="eden.sun.childrenguard.server.model.generated.ChildSetting" >
+    update tbl_child_setting
+    <set >
+      <if test="lockCallsSwitch != null" >
+        LOCK_CALLS_SWITCH = #{lockCallsSwitch,jdbcType=BIT},
+      </if>
+      <if test="lockTextMessageSwitch != null" >
+        LOCK_TEXT_MESSAGE_SWITCH = #{lockTextMessageSwitch,jdbcType=BIT},
+      </if>
+      <if test="wifiOnlySwitch != null" >
+        WIFI_ONLY_SWITCH = #{wifiOnlySwitch,jdbcType=BIT},
+      </if>
+      <if test="newAppNotificationSwitch != null" >
+        NEW_APP_NOTIFICATION_SWITCH = #{newAppNotificationSwitch,jdbcType=BIT},
+      </if>
+      <if test="uninstallAppNotificationSwitch != null" >
+        UNINSTALL_APP_NOTIFICATION_SWITCH = #{uninstallAppNotificationSwitch,jdbcType=BIT},
+      </if>
+      <if test="speedingNotificationSwitch != null" >
+        SPEEDING_NOTIFICATION_SWITCH = #{speedingNotificationSwitch,jdbcType=BIT},
+      </if>
+      <if test="speedingLimit != null" >
+        SPEEDING_LIMIT = #{speedingLimit,jdbcType=INTEGER},
+      </if>
+      <if test="appLockUnlockNotificationSwitch != null" >
+        APP_LOCK_UNLOCK_NOTIFICATION_SWITCH = #{appLockUnlockNotificationSwitch,jdbcType=BIT},
+      </if>
+      <if test="appLockPassword != null" >
+        APP_LOCK_PASSWORD = #{appLockPassword,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="eden.sun.childrenguard.server.model.generated.ChildSetting" >
+    update tbl_child_setting
+    set LOCK_CALLS_SWITCH = #{lockCallsSwitch,jdbcType=BIT},
+      LOCK_TEXT_MESSAGE_SWITCH = #{lockTextMessageSwitch,jdbcType=BIT},
+      WIFI_ONLY_SWITCH = #{wifiOnlySwitch,jdbcType=BIT},
+      NEW_APP_NOTIFICATION_SWITCH = #{newAppNotificationSwitch,jdbcType=BIT},
+      UNINSTALL_APP_NOTIFICATION_SWITCH = #{uninstallAppNotificationSwitch,jdbcType=BIT},
+      SPEEDING_NOTIFICATION_SWITCH = #{speedingNotificationSwitch,jdbcType=BIT},
+      SPEEDING_LIMIT = #{speedingLimit,jdbcType=INTEGER},
+      APP_LOCK_UNLOCK_NOTIFICATION_SWITCH = #{appLockUnlockNotificationSwitch,jdbcType=BIT},
+      APP_LOCK_PASSWORD = #{appLockPassword,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <select resultMap="BaseResultMap" parameterType="eden.sun.childrenguard.server.model.generated.ChildSettingExample" id="selectByExampleWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tbl_child_setting
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

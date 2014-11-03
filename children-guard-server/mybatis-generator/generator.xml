@@ -69,5 +69,14 @@
 		<table tableName="tbl_child_extra_info" domainObjectName="ChildExtraInfo">
 			<generatedKey column="ID" sqlStatement="MySql" identity="true"/>
 		</table>
+		
+		
+		<table tableName="tbl_child_setting" domainObjectName="ChildSetting">
+			<generatedKey column="ID" sqlStatement="MySql" identity="true"/>
+		</table>
+		
+		<table tableName="tbl_emergency_contacts" domainObjectName="EmergencyContacts">
+			<generatedKey column="ID" sqlStatement="MySql" identity="true"/>
+		</table>
 	</context>
 </generatorConfiguration>

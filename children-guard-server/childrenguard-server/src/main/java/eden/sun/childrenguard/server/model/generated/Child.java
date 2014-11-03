@@ -13,8 +13,6 @@ public class Child {
 
     private String nickname;
 
-    private String appLockPassword;
-
     private Date activateTime;
 
     private Date createTime;
@@ -59,14 +57,6 @@ public class Child {
 
     public void setNickname(String nickname) {
         this.nickname = nickname == null ? null : nickname.trim();
-    }
-
-    public String getAppLockPassword() {
-        return appLockPassword;
-    }
-
-    public void setAppLockPassword(String appLockPassword) {
-        this.appLockPassword = appLockPassword == null ? null : appLockPassword.trim();
     }
 
     public Date getActivateTime() {
