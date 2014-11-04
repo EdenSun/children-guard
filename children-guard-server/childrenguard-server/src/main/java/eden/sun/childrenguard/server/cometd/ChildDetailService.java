@@ -85,7 +85,8 @@ public class ChildDetailService extends BaseCometService{
 			remote.deliver(serverSession, CometdChannel.CHILD_DETAIL_SYNC_APP_SETTING, resultJSON);
 		}
 		
-		ViewDTO<Boolean> view = childDetailService.syncChildApp(param);
+		ViewDTO<Boolean> view = null;
+		//ViewDTO<Boolean> view = childDetailService.syncChildApp(param);
 		
 		String resultJSON = toJson(view);
 		

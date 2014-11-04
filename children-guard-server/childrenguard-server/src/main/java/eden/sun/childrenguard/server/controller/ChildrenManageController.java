@@ -17,10 +17,13 @@ import eden.sun.childrenguard.server.dto.ChildBasicInfoViewDTO;
 import eden.sun.childrenguard.server.dto.ChildSettingViewDTO;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
+import eden.sun.childrenguard.server.dto.param.AppManageSettingParam;
 import eden.sun.childrenguard.server.dto.param.ChildAddParam;
+import eden.sun.childrenguard.server.dto.param.MoreSettingParam;
 import eden.sun.childrenguard.server.service.IChildDetailService;
 import eden.sun.childrenguard.server.service.IChildrenManageService;
 import eden.sun.childrenguard.server.util.CometdChannel;
+import eden.sun.childrenguard.server.util.JSONUtil;
 import eden.sun.childrenguard.server.util.NumberUtil;
 
 @Controller
@@ -108,6 +111,28 @@ public class ChildrenManageController extends BaseController{
 	public ViewDTO<Boolean> modifySpeedLimit(Integer childId,Integer speed) {
 		logger.info("modifySpeedLimit called. childId:" + childId + ",speed:" + speed);
 		ViewDTO<Boolean> view = childDetailService.modifySpeedLimit(childId,speed);
+		
+		return view;
+	}
+	
+	@RequestMapping("/applyChildSettingMore")
+	@ResponseBody
+	public ViewDTO<Boolean> applyChildSettingMore(Integer childId,String settingInfo) {
+		logger.info("applyChildSettingMore called. childId:" + childId + ",settingInfo:" + settingInfo);
+		
+		List<MoreSettingParam> moreSettingList = JSONUtil.getMoreSettingParamList(settingInfo);
+		ViewDTO<Boolean> view = childDetailService.applyChildSettingMore(childId,moreSettingList);
+		
+		return view;
+	}
+	
+	@RequestMapping("/applyChildSettingApp")
+	@ResponseBody
+	public ViewDTO<Boolean> applyChildSettingApp(Integer childId,String settingInfo) {
+		logger.info("applyChildSettingApp called. childId:" + childId + ",settingInfo:" + settingInfo );
+		
+		List<AppManageSettingParam> appManageSettingList = JSONUtil.getAppManageSettingParamList(settingInfo);
+		ViewDTO<Boolean> view = childDetailService.applyChildSettingApp(childId,appManageSettingList);
 		
 		return view;
 	}

@@ -9,6 +9,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import eden.sun.childrenguard.server.dto.ViewDTO;
+import eden.sun.childrenguard.server.dto.param.AppManageSettingParam;
+import eden.sun.childrenguard.server.dto.param.MoreSettingParam;
 import eden.sun.childrenguard.server.dto.param.UploadApplicationInfoParam;
 
 public class JSONUtil {
@@ -38,6 +40,16 @@ public class JSONUtil {
 	public static List<UploadApplicationInfoParam> getUploadApplicationInfoParamList(
 			String appListJson) {
 		return new Gson().fromJson(appListJson, new TypeToken<List<UploadApplicationInfoParam>>(){}.getType());
+	}
+
+	public static List<MoreSettingParam> getMoreSettingParamList(
+			String settingInfoJson) {
+		return new Gson().fromJson(settingInfoJson, new TypeToken<List<MoreSettingParam>>(){}.getType());
+	}
+
+	public static List<AppManageSettingParam> getAppManageSettingParamList(
+			String settingInfoJson) {
+		return new Gson().fromJson(settingInfoJson, new TypeToken<List<AppManageSettingParam>>(){}.getType());
 	}
 	
 }

@@ -3,6 +3,7 @@ package eden.sun.childrenguard.server.service;
 import java.util.List;
 
 import eden.sun.childrenguard.server.dto.AppViewDTO;
+import eden.sun.childrenguard.server.dto.param.AppManageSettingParam;
 import eden.sun.childrenguard.server.dto.param.UploadApplicationInfoParam;
 import eden.sun.childrenguard.server.exception.ServiceException;
 
@@ -17,5 +18,8 @@ public interface IAppService {
 	void clearAppInfoByChildId(Integer childId)throws ServiceException;
 
 	void saveAll(Integer childId,List<UploadApplicationInfoParam> appList)throws ServiceException;
+
+	void updateApp(Integer childId,
+			List<AppManageSettingParam> appManageSettingList)throws ServiceException;
 
 }

@@ -13,6 +13,8 @@ import eden.sun.childrenguard.server.dto.ChildExtraInfoViewDTO;
 import eden.sun.childrenguard.server.dto.ChildSettingViewDTO;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
+import eden.sun.childrenguard.server.dto.param.AppManageSettingParam;
+import eden.sun.childrenguard.server.dto.param.MoreSettingParam;
 import eden.sun.childrenguard.server.dto.param.SyncAppSettingParam;
 import eden.sun.childrenguard.server.exception.ServiceException;
 import eden.sun.childrenguard.server.model.generated.Child;
@@ -47,13 +49,6 @@ public class ChildDetailServiceImpl implements IChildDetailService {
 		
 		view.setData(appViewDTOList);
 		return view;
-	}
-
-	@Override
-	public ViewDTO<Boolean> syncChildApp(SyncAppSettingParam param)
-			throws ServiceException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -164,6 +159,44 @@ public class ChildDetailServiceImpl implements IChildDetailService {
 		view.setData(childSettingView);
 		return view;
 	}
-	
+
+	@Override
+	public ViewDTO<Boolean> applyChildSettingMore(Integer childId,
+			List<MoreSettingParam> moreSettingList) throws ServiceException {
+		if( childId == null || moreSettingList == null ){
+			throw new ServiceException("Parameter childId or moreSettingList can not be null.");
+		}
+		ViewDTO<Boolean> view = new ViewDTO<Boolean>();
+		try {
+			Integer settingId = childId;
+			childSettingService.updateChildSetting(settingId,moreSettingList);
+			
+			view.setData(true);
+		} catch (Exception e) {
+			view.setData(false);
+			view.setInfo("Apply child setting error.");
+		}
+		return view;
+	}
+
+	@Override
+	public ViewDTO<Boolean> applyChildSettingApp(Integer childId,
+			List<AppManageSettingParam> appManageSettingList)
+			throws ServiceException {
+		if( childId == null || appManageSettingList == null ){
+			throw new ServiceException("Parameter childId or appManageSettingList can not be null.");
+		}
+		ViewDTO<Boolean> view = new ViewDTO<Boolean>();
+		try {
+			
+			appService.updateApp(childId,appManageSettingList);
+			
+			view.setData(true);
+		} catch (Exception e) {
+			view.setData(false);
+			view.setInfo("Apply child app lock/unlock status error.");
+		}
+		return view;
+	}
 
 }

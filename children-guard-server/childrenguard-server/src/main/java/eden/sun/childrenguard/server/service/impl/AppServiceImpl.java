@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import eden.sun.childrenguard.server.dao.generated.AppMapper;
 import eden.sun.childrenguard.server.dto.AppViewDTO;
+import eden.sun.childrenguard.server.dto.param.AppManageSettingParam;
 import eden.sun.childrenguard.server.dto.param.UploadApplicationInfoParam;
 import eden.sun.childrenguard.server.exception.ServiceException;
 import eden.sun.childrenguard.server.model.generated.App;
@@ -27,14 +28,19 @@ public class AppServiceImpl extends BaseServiceImpl implements IAppService{
 	@Override
 	public List<AppViewDTO> listViewByChildId(Integer childId)
 			throws ServiceException {
+		List<App> appList = listByChildId(childId);
+		List<AppViewDTO> appViewList = trans2AppViewDTOList(appList);
+		
+		return appViewList;
+	}
+
+	private List<App> listByChildId(Integer childId) {
 		AppExample example = new AppExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andChildIdEqualTo(childId);
 		
 		List<App> appList = appMapper.selectByExample(example);
-		List<AppViewDTO> appViewList = trans2AppViewDTOList(appList);
-		
-		return appViewList;
+		return appList;
 	}
 
 	private List<AppViewDTO> trans2AppViewDTOList(List<App> appList) {
@@ -154,6 +160,28 @@ public class AppServiceImpl extends BaseServiceImpl implements IAppService{
 		app.setName(param.getAppName());
 		app.setPackageName(param.getPackageName());
 		return app;
+	}
+
+	@Override
+	public void updateApp(Integer childId,
+			List<AppManageSettingParam> appManageSettingList)
+			throws ServiceException {
+		if( childId == null || appManageSettingList == null ){
+			throw new ServiceException("Parameter childId or appManageSettingList can not be null.");
+		}
+		
+		List<App> appList = this.listByChildId(childId);
+		
+		for( App app:appList ){
+			for(AppManageSettingParam param:appManageSettingList){
+				if( app.getId().equals(param.getAppId()) && !app.getLockStatus().equals(param.getLockStatus()) ){
+					// update app
+					app.setLockStatus(param.getLockStatus());
+					appMapper.updateByPrimaryKey(app);
+					break;
+				}
+			}
+		}
 	}
 	
 }
