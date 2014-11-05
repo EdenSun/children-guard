@@ -36,7 +36,6 @@
                 <includes>  
                     <include>**/*.*</include>  
                 </includes>  
-                <!-- 是否替换资源中的属性-->  
                 <filtering>false</filtering>  
             </resource>  
             <resource>  
