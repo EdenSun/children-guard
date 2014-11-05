@@ -12,7 +12,7 @@ import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.service.IChildAuthService;
 
 @Controller
-@RequestMapping("/app/child")
+@RequestMapping("/app/child/auth")
 public class ChildLoginController extends BaseController{
 	@Inject
 	private IChildAuthService childAuthService;

@@ -28,4 +28,6 @@ public interface IChildService {
 
 	void update(Child child)throws ServiceException;
 
+	ChildViewDTO getViewByImei(String imei)throws ServiceException;
+
 }

@@ -253,5 +253,30 @@ public class ChildServiceImpl implements IChildService {
 		
 		childMapper.updateByPrimaryKey(child);
 	}
+
+	@Override
+	public ChildViewDTO getViewByImei(String imei) throws ServiceException {
+		if( imei == null ){
+			throw new ServiceException("Parameter imei can not be null");
+		}
+		
+		Child child = getByImei(imei);
+		
+		return trans2ChildViewDTO(child);
+	}
+
+	private Child getByImei(String imei) {
+		ChildExample example = new ChildExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andImeiEqualTo(imei);
+		
+		List<Child> childList = childMapper.selectByExample(example);
+	
+		if( childList != null && childList.size() > 0 ){
+			Child child = childList.get(0);
+			return child;
+		}
+		return null;
+	}
 	
 }

@@ -19,6 +19,8 @@ public class Child {
 
     private String accessToken;
 
+    private String imei;
+
     public Integer getId() {
         return id;
     }
@@ -81,5 +83,13 @@ public class Child {
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken == null ? null : accessToken.trim();
+    }
+
+    public String getImei() {
+        return imei;
+    }
+
+    public void setImei(String imei) {
+        this.imei = imei == null ? null : imei.trim();
     }
 }

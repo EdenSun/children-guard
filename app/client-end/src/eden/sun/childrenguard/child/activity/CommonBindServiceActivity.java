@@ -1,25 +1,86 @@
 package eden.sun.childrenguard.child.activity;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v7.app.ActionBarActivity;
+import android.telephony.TelephonyManager;
 import android.widget.Toast;
 import eden.sun.childrenguard.child.service.MainService;
+import eden.sun.childrenguard.child.util.RequestHelper;
+import eden.sun.childrenguard.child.util.ShareDataKey;
 
-public class CommonBindServiceActionBarActivity extends ActionBarActivity{
+public class CommonBindServiceActivity extends Activity{
 	private boolean mIsBound;
 	private MainService mainService; 
+	protected ProgressDialog progress;
+	private static final String PREFS_NAME = "share-data";
+	private SharedPreferences settings ;  
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 	}
-
+	
+	public void showProgressDialog(String title, String msg){
+		this.progress = ProgressDialog.show(this, title,
+			    msg, true);
+	}
+	
+	public void dismissProgressDialog(){
+		if( progress != null ){
+			progress.dismiss();
+		}
+	}
+	
+	private void initSharedPreferences(){
+		if( settings == null ){
+			settings = getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE);
+		}
+	}
+	
+	public void putStringShareData(String key, String value) {
+		initSharedPreferences();
+		SharedPreferences.Editor editor = settings.edit();  
+		editor.putString(key, value);  
+		editor.commit();  
+	}
+	
+	public String getStringShareData(String key) {
+		initSharedPreferences();
+		return settings.getString(key, null);
+	}
+	
+	public String getAccessToken() {
+		return this.getStringShareData(ShareDataKey.CHILD_ACCESS_TOKEN);
+	}
+	
+	protected RequestHelper getRequestHelper() {
+		return RequestHelper.getInstance(this);		
+	}
+	
+	public String getChildMobile() {
+		String childMobile = this.getStringShareData(ShareDataKey.CHILD_MOBILE);
+		if( childMobile == null ){
+			TelephonyManager phoneMgr=(TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+			childMobile = phoneMgr.getLine1Number();
+			if( childMobile == null ){
+				return null;
+			}else{
+				this.putStringShareData(ShareDataKey.CHILD_MOBILE, childMobile);
+				return childMobile;
+			}
+		}else{
+			return childMobile;
+		}
+	}
+	
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
@@ -68,7 +129,7 @@ public class CommonBindServiceActionBarActivity extends ActionBarActivity{
 		} 
 	}
 	private ServiceConnection mConnection = new ServiceConnection() {
-		Context context = CommonBindServiceActionBarActivity.this;
+		Context context = CommonBindServiceActivity.this;
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			// This is called when the connection with the service has been
 			// established, giving us the service object we can use to

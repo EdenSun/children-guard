@@ -634,6 +634,76 @@ public class ChildExample {
             addCriterion("ACCESS_TOKEN not between", value1, value2, "accessToken");
             return (Criteria) this;
         }
+
+        public Criteria andImeiIsNull() {
+            addCriterion("IMEI is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andImeiIsNotNull() {
+            addCriterion("IMEI is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andImeiEqualTo(String value) {
+            addCriterion("IMEI =", value, "imei");
+            return (Criteria) this;
+        }
+
+        public Criteria andImeiNotEqualTo(String value) {
+            addCriterion("IMEI <>", value, "imei");
+            return (Criteria) this;
+        }
+
+        public Criteria andImeiGreaterThan(String value) {
+            addCriterion("IMEI >", value, "imei");
+            return (Criteria) this;
+        }
+
+        public Criteria andImeiGreaterThanOrEqualTo(String value) {
+            addCriterion("IMEI >=", value, "imei");
+            return (Criteria) this;
+        }
+
+        public Criteria andImeiLessThan(String value) {
+            addCriterion("IMEI <", value, "imei");
+            return (Criteria) this;
+        }
+
+        public Criteria andImeiLessThanOrEqualTo(String value) {
+            addCriterion("IMEI <=", value, "imei");
+            return (Criteria) this;
+        }
+
+        public Criteria andImeiLike(String value) {
+            addCriterion("IMEI like", value, "imei");
+            return (Criteria) this;
+        }
+
+        public Criteria andImeiNotLike(String value) {
+            addCriterion("IMEI not like", value, "imei");
+            return (Criteria) this;
+        }
+
+        public Criteria andImeiIn(List<String> values) {
+            addCriterion("IMEI in", values, "imei");
+            return (Criteria) this;
+        }
+
+        public Criteria andImeiNotIn(List<String> values) {
+            addCriterion("IMEI not in", values, "imei");
+            return (Criteria) this;
+        }
+
+        public Criteria andImeiBetween(String value1, String value2) {
+            addCriterion("IMEI between", value1, value2, "imei");
+            return (Criteria) this;
+        }
+
+        public Criteria andImeiNotBetween(String value1, String value2) {
+            addCriterion("IMEI not between", value1, value2, "imei");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

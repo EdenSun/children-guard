@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.telephony.TelephonyManager;
 import eden.sun.childrenguard.child.dto.AppInfo;
 
 public class ApplicationHelper {
@@ -56,5 +57,15 @@ public class ApplicationHelper {
 	    } else {
 	    	return false;
 	    }
-    }  
+    }
+
+	public static String getPhoneNumber(Context context) {
+		TelephonyManager phoneMgr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+		String childMobile = phoneMgr.getLine1Number();
+		if( childMobile == null ){
+			return null;
+		}else{
+			return childMobile;
+		}
+	}  
 }

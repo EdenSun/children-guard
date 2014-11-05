@@ -12,7 +12,7 @@ import android.widget.TextView;
 import eden.sun.childrenguard.child.R;
 import eden.sun.childrenguard.child.dto.AppInfo;
 
-public class AppStatusActivity extends CommonBindServiceActionBarActivity {
+public class AppStatusActivity extends CommonBindServiceActivity {
 	private ListView list;
 	
 	@Override
