@@ -3,6 +3,7 @@ package eden.sun.childrenguard.child.activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
+import cn.jpush.android.api.JPushInterface;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -27,6 +28,9 @@ public class ActivationActivity extends CommonActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_activation);
+
+		JPushInterface.setDebugMode(true);
+		JPushInterface.init(this);
 
 		String childMobile = getChildMobile();
 		if( childMobile == null ){
