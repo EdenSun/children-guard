@@ -3,6 +3,7 @@ package eden.sun.childrenguard.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -26,6 +28,7 @@ import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
 import eden.sun.childrenguard.util.RequestHelper;
 import eden.sun.childrenguard.util.RequestURLConstants;
+import eden.sun.childrenguard.util.ShareDataKey;
 import eden.sun.childrenguard.util.UIUtil;
 
 public class ChildAppManageFragment extends CommonFragment{
@@ -34,6 +37,7 @@ public class ChildAppManageFragment extends CommonFragment{
 	
 	private ListView appList;
 	private AppManageListAdapter appListAdapter;
+	private TextView nicknameTextView;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,11 +63,14 @@ public class ChildAppManageFragment extends CommonFragment{
 		
 		loadAppList();
 		
+		nicknameTextView.setText(getStringShareData( ShareDataKey.CHILD_NICKNAME ));
 		return v;
     }
 
+	
 	private void initComponent(View v) {
 		appList = (ListView)v.findViewById(R.id.list);		
+		nicknameTextView = (TextView)v.findViewById(R.id.nicknameTextView);
 	}
 
 	private void loadAppList() {

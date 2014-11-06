@@ -43,7 +43,7 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="1"
-	            android:text="14799288827"
+	            android:text="N/A"
 	            android:textColor="@color/text_gray"/>
 	    </LinearLayout>
 	    
@@ -63,7 +63,7 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="1"
-	            android:text="Eden , Sun"
+	            android:text="N/A"
 	            android:textColor="@color/text_gray"/>
 	    </LinearLayout>
 	    
@@ -83,7 +83,7 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="1"
-	            android:text="303MB Used"
+	            android:text="N/A"
 	            android:textColor="@color/text_gray"/>
 	    </LinearLayout>
 	    
@@ -103,7 +103,7 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="1"
-	            android:text="xxx ,xxx road ,New York (updated at 2014-9-17 18:32)"
+	            android:text="N/A"
 	            android:textColor="@color/text_gray"/>
 	    </LinearLayout>
 	    
@@ -123,7 +123,7 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="1"
-	            android:text="30km/s (updated at 2014-9-17 18:32)"
+	            android:text="N/A"
 	            android:textColor="@color/text_gray"/>
 	    </LinearLayout>
 	    </LinearLayout>

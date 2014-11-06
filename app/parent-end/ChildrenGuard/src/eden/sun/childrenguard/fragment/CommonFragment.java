@@ -3,9 +3,13 @@ package eden.sun.childrenguard.fragment;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.widget.TextView;
+import eden.sun.childrenguard.activity.ChildrenManageActivity;
 import eden.sun.childrenguard.util.RequestHelper;
 import eden.sun.childrenguard.util.ShareDataKey;
+import eden.sun.childrenguard.util.UIUtil;
 
 public class CommonFragment extends Fragment {
 	protected ProgressDialog progress;
@@ -54,4 +58,14 @@ public class CommonFragment extends Fragment {
 	protected RequestHelper getRequestHelper() {
 		return RequestHelper.getInstance(this.getActivity());		
 	}
+	
+	/*protected void initCommonChildBasicInfo(){
+		ChildrenManageActivity parentActivity = ((ChildrenManageActivity)this.getActivity());
+		if( parentActivity.getChildBasicInfo() != null ){
+			String text = UIUtil.formatTextForView(parentActivity.getChildBasicInfo().getChild().getNickname());
+			if( nicknameTextView != null ){
+				nicknameTextView.setText(text);
+			}
+		}
+	}*/
 }

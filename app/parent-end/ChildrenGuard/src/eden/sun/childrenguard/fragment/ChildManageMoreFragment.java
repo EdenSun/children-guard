@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import eden.sun.childrenguard.R;
@@ -18,14 +18,16 @@ import eden.sun.childrenguard.activity.ModifyLockPasswordActivity;
 import eden.sun.childrenguard.activity.NotifyMailManageActivity;
 import eden.sun.childrenguard.adapter.MoreListAdapter;
 import eden.sun.childrenguard.dto.MoreListItemView;
+import eden.sun.childrenguard.util.ShareDataKey;
 
-public class ChildManageMoreFragment extends Fragment{
+public class ChildManageMoreFragment extends CommonFragment{
 	private Integer childId;
 	protected static final String TAG = "ChildManageMoreFragment";
 
 	private ListView moreList ;
 	
 	private MoreListAdapter moreListAdapter;
+	private TextView nicknameTextView;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,6 +35,8 @@ public class ChildManageMoreFragment extends Fragment{
         View v = inflater.inflate(R.layout.fragment_child_manage_more, container, false);
         Intent intent = this.getActivity().getIntent();
 		childId = intent.getIntExtra("childId",0);
+		
+		nicknameTextView = (TextView)v.findViewById(R.id.nicknameTextView);
 		
         moreList = (ListView)v.findViewById(R.id.list);
         moreList.setAdapter(getMoreListAdapter());
@@ -71,6 +75,7 @@ public class ChildManageMoreFragment extends Fragment{
 			
 		});
 		
+        nicknameTextView.setText(getStringShareData( ShareDataKey.CHILD_NICKNAME ));
 		return v;
     }
 

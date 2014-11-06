@@ -21,18 +21,20 @@ import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
 import eden.sun.childrenguard.util.RequestHelper;
 import eden.sun.childrenguard.util.RequestURLConstants;
+import eden.sun.childrenguard.util.ShareDataKey;
 import eden.sun.childrenguard.util.UIUtil;
 
 public class ChildBasicInfoFragment extends CommonFragment{
 	private final String TAG = "ChildBasicInfoFragment";
 	private Integer childId;
 	private TextView mobileTextView;
-	private TextView nicknameTextView;
 	private TextView fullNameTextView;
 	private TextView networkTrafficTextView;
 	private TextView locationTextView;
 	private TextView speedTextView;
+	private TextView nicknameTextView;
 	
+
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -79,6 +81,8 @@ public class ChildBasicInfoFragment extends CommonFragment{
 					ViewDTO<ChildBasicInfoViewDTO> view = JSONUtil.getChildBasicInfoView(response);
 			    	
 			    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS)){
+			    		putStringShareData( ShareDataKey.CHILD_NICKNAME ,view.getData().getChild().getNickname());
+			    		
 			    		ChildViewDTO child = view.getData().getChild();
 			    		ChildExtraInfoViewDTO childExtra = view.getData().getExtraInfo();
 			    		

@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.adapter.AppSectionsPagerAdapter;
+import eden.sun.childrenguard.fragment.CommonFragment;
+import eden.sun.childrenguard.server.dto.ChildBasicInfoViewDTO;
 
 public class ChildrenManageActivity extends FragmentActivity implements ActionBar.TabListener,View.OnClickListener{
 	public static final String TAG = "ChildrenManageActivity";
@@ -19,6 +21,8 @@ public class ChildrenManageActivity extends FragmentActivity implements ActionBa
     private AppSectionsPagerAdapter mAppSectionsPagerAdapter;
 
     private ViewPager mViewPager;
+    
+    private ChildBasicInfoViewDTO childBasicInfo;
     
     /* TABS */
     View basicInfoTab;
@@ -48,22 +52,27 @@ public class ChildrenManageActivity extends FragmentActivity implements ActionBa
             @Override
             public void onPageSelected(int position) {
             	clearTabStatus();
+            	
             	if( position == 0 ){
             		//Child Basic Info
             		Log.i(TAG, "basic info show");
             		basicInfoTabImageView.setImageResource(R.drawable.tab_icon_child_basic_info_selected);
             		basicInfoTabText.setTextColor(Color.WHITE);
+            		
             	}else if( position == 1 ){
             		//App Manage
             		Log.i(TAG, "app manage show");
             		appManageTabImageView.setImageResource(R.drawable.tab_icon_child_app_manage_selected);
             		appManageTabText.setTextColor(Color.WHITE);
+            		
             	}else if( position == 2 ){
             		//More
             		Log.i(TAG, "more setting show");
             		moreTabImageView.setImageResource(R.drawable.tab_icon_more_selected);
             		moreTabText.setTextColor(Color.WHITE);
             	}
+            	
+            	
             }
 
         });
@@ -78,6 +87,7 @@ public class ChildrenManageActivity extends FragmentActivity implements ActionBa
         initTab();
 	}
 
+	
 	
 	private void initTab() {
     	basicInfoTab = findViewById(R.id.basicInfoTab);
@@ -144,7 +154,18 @@ public class ChildrenManageActivity extends FragmentActivity implements ActionBa
 			mViewPager.setCurrentItem(2);
 		}
 	}
-	
+
+
+	public void setChildBasicInfo(ChildBasicInfoViewDTO childBasicInfo) {
+		this.childBasicInfo = childBasicInfo;
+	}
+
+
+
+	public ChildBasicInfoViewDTO getChildBasicInfo() {
+		return childBasicInfo;
+	}
+
 	/*@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -180,4 +201,5 @@ public class ChildrenManageActivity extends FragmentActivity implements ActionBa
 			return rootView;
 		}
 	}*/
+	
 }
