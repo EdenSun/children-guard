@@ -260,12 +260,12 @@ public class ChildServiceImpl implements IChildService {
 			throw new ServiceException("Parameter imei can not be null");
 		}
 		
-		Child child = getByImei(imei);
+		Child child = getChildByImei(imei);
 		
 		return trans2ChildViewDTO(child);
 	}
 
-	private Child getByImei(String imei) {
+	public Child getChildByImei(String imei) {
 		ChildExample example = new ChildExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andImeiEqualTo(imei);

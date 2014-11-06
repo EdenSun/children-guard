@@ -32,4 +32,6 @@ public interface IChildService {
 
 	Child getChildByMobile(String childMobile)throws ServiceException;
 
+	Child getChildByImei(String imei)throws ServiceException;
+
 }

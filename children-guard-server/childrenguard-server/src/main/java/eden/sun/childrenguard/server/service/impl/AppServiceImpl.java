@@ -135,14 +135,20 @@ public class AppServiceImpl extends BaseServiceImpl implements IAppService{
 	}
 
 	@Override
-	public void saveAll(Integer childId,List<UploadApplicationInfoParam> appList)
+	public void saveOrUpdateAll(Integer childId,List<UploadApplicationInfoParam> appList)
 			throws ServiceException {
 		if( appList != null ){
 			App app = null;
 			for(UploadApplicationInfoParam param : appList ){
-				app = trans2App(childId,param);
-				if( app != null ){
-					appMapper.insert(app);
+				String packageName = param.getPackageName();
+				
+				app = this.getByPackageName(packageName);
+				if( app == null ){
+					// if app with same package name is not exists,insert
+					app = trans2App(childId,param);
+					if( app != null ){
+						appMapper.insert(app);
+					}
 				}
 			}
 		}

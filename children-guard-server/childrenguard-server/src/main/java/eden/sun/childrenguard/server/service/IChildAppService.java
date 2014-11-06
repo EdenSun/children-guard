@@ -8,13 +8,13 @@ import eden.sun.childrenguard.server.exception.ServiceException;
 
 public interface IChildAppService {
 
-	ViewDTO<Boolean> installApp(String childAccessToken,
+	ViewDTO<Boolean> installApp(String imei,
 			UploadApplicationInfoParam appInfo)throws ServiceException;
 
-	ViewDTO<Boolean> uninstallApp(String childAccessToken,
+	ViewDTO<Boolean> uninstallApp(String imei,
 			UploadApplicationInfoParam appInfo)throws ServiceException;
 
-	ViewDTO<Boolean> uploadAllApp(String childAccessToken,
+	ViewDTO<Boolean> uploadAllApp(String imei,
 			List<UploadApplicationInfoParam> appList)throws ServiceException;
 
 }

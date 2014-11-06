@@ -17,7 +17,7 @@ public interface IAppService {
 
 	void clearAppInfoByChildId(Integer childId)throws ServiceException;
 
-	void saveAll(Integer childId,List<UploadApplicationInfoParam> appList)throws ServiceException;
+	void saveOrUpdateAll(Integer childId,List<UploadApplicationInfoParam> appList)throws ServiceException;
 
 	void updateApp(Integer childId,
 			List<AppManageSettingParam> appManageSettingList)throws ServiceException;
