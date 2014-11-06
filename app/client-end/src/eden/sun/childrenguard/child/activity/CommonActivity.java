@@ -24,6 +24,17 @@ public class CommonActivity extends Activity {
 			    msg, true);
 	}
 	
+	public void setProgressDialogText(String title, String msg){
+		if( this.progress != null ){
+			if( title != null ){
+				this.progress.setTitle(title);
+			}
+			if( msg != null ){
+				this.progress.setMessage(msg);
+			}
+		}
+	}
+	
 	public void dismissProgressDialog(){
 		if( progress != null ){
 			progress.dismiss();

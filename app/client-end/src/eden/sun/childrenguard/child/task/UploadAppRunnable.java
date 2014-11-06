@@ -15,6 +15,8 @@ import com.android.volley.VolleyError;
 import eden.sun.childrenguard.child.dto.AppInfo;
 import eden.sun.childrenguard.child.util.ApplicationHelper;
 import eden.sun.childrenguard.child.util.Config;
+import eden.sun.childrenguard.child.util.DeviceHelper;
+import eden.sun.childrenguard.child.util.HandlerConstants;
 import eden.sun.childrenguard.child.util.JSONUtil;
 import eden.sun.childrenguard.child.util.RequestHelper;
 import eden.sun.childrenguard.child.util.RequestURLConstants;
@@ -63,9 +65,11 @@ public class UploadAppRunnable implements Runnable{
 		RequestHelper helper = RequestHelper.getInstance(context);
 		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_UPLOAD_ALL_APP_INFO;  
 
+		String imei = DeviceHelper.getIMEI(context);
+		
 		Map<String,String> params = new HashMap<String,String>();
 		params.put("appList", JSONUtil.transUploadApplicationInfoParamList2String(requestParam));
-		params.put("childAccessToken", "");
+		params.put("imei", imei);
 		helper.doPost(
 			url,
 			params,
@@ -75,7 +79,7 @@ public class UploadAppRunnable implements Runnable{
 					ViewDTO<Boolean> view = JSONUtil.getUploadAllAppInfoView(response);
 			    	
 			    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS)){
-			    		
+			    		handler.sendEmptyMessage(HandlerConstants.UPLOAD_FINISH);
 			    	}
 			    	
 				}

@@ -57,9 +57,11 @@ public class InitActivity extends CommonBindServiceActivity {
 				    			// have activated, auto login
 				    			Intent intent = new Intent(InitActivity.this,MainActivity.class);
 				    			startActivity(intent);
+				    			
+				    			InitActivity.this.finish();
 				    		}
 				    		
-				    		InitActivity.this.finish();
+				    		
 				    	}else{
 				    		//dismissProgressDialog();
 				    		AlertDialog.Builder dialog = UIUtil.getErrorDialog(InitActivity.this,view.getInfo());

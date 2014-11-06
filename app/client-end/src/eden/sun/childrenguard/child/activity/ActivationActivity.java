@@ -4,7 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,20 +19,21 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import eden.sun.childrenguard.child.R;
+import eden.sun.childrenguard.child.task.UploadAppRunnable;
 import eden.sun.childrenguard.child.util.Config;
 import eden.sun.childrenguard.child.util.DeviceHelper;
+import eden.sun.childrenguard.child.util.HandlerConstants;
 import eden.sun.childrenguard.child.util.JSONUtil;
 import eden.sun.childrenguard.child.util.RequestHelper;
 import eden.sun.childrenguard.child.util.RequestURLConstants;
-import eden.sun.childrenguard.child.util.ShareDataKey;
 import eden.sun.childrenguard.child.util.UIUtil;
-import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 
 public class ActivationActivity extends CommonActivity {
 	private Button activateBtn;
 	private EditText parentEmailEditText;
 	private EditText childMobileEditText;
+	private Handler handler;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +86,11 @@ public class ActivationActivity extends CommonActivity {
 					ViewDTO<Boolean> view = JSONUtil.getActivateAccountView(response);
 			    	
 			    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS)){
-			    		// success
+			    		// activate success
+			    		
+			    		// upload applications info
+			    		setProgressDialogText(null, "Uploading data...");  
+			    		uploadApplicationInfo();
 			    		
 			    	}else{
 			    		dismissProgressDialog();
@@ -99,6 +107,60 @@ public class ActivationActivity extends CommonActivity {
 					Log.e("TAG", error.getMessage(), error);
 			}
 		});		
+	}
+	
+	private void uploadApplicationInfo() {
+		handler = new Handler(){
+
+			@Override
+			public void handleMessage(Message message) {
+				if ( message.what == HandlerConstants.UPLOAD_FINISH ) {
+					// upload application finish
+                    dismissProgressDialog();
+                    
+                    
+                    String title = "Activate Account";
+    				String msg = "Activate success. Press OK to login.";
+    				String btnText = "OK";
+    				
+    				AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
+    					ActivationActivity.this,
+    					title,
+    					msg,
+    					btnText,
+    					new DialogInterface.OnClickListener() {
+    			            @Override
+    			            public void onClick(DialogInterface dialog, int which) {
+    			            	dialog.dismiss();
+    			            	ActivationActivity.this.finish();
+    			            }
+    			        }
+    				);
+    				
+    				dialog.show();
+                }  
+				
+				super.handleMessage(message);
+			}
+			
+		};
+
+		handler.post(new UploadAppRunnable(ActivationActivity.this,handler));
+		
+		/*//upload all applications info to server every 24 hours
+		int interval = 1000 * 24 * 3600;	
+		Timer timer = new Timer();
+		
+		timer.scheduleAtFixedRate(new TimerTask() {
+
+		    @Override
+		    public void run() {
+		        // Do upload task
+		    	Runnable uploadAppRunnable = new UploadAppRunnable(ActivationActivity.this,handler);
+				handler.post(uploadAppRunnable);
+		    }
+
+		}, 0, interval);*/
 	}
 	
 	/*private void doInitData(String childMobile) {

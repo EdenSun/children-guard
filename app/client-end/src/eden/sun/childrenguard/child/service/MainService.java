@@ -23,7 +23,7 @@ public class MainService extends Service {
 		Log.d(TAG, "onCreate() executed");
 
         // Display a notification about us starting.    We put an icon in the status bar. 
-        uploadApplicationInfo();
+        //uploadApplicationInfo();
         
         startGps();
 	}
@@ -34,7 +34,7 @@ public class MainService extends Service {
 		gpsHelper.start();
 	}
 
-	private void uploadApplicationInfo() {
+	/*private void uploadApplicationInfo() {
 		handler = new Handler();
 		
 		//upload all applications info to server every 24 hours
@@ -50,7 +50,7 @@ public class MainService extends Service {
 		    }
 
 		}, 0, interval);
-	}
+	}*/
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
