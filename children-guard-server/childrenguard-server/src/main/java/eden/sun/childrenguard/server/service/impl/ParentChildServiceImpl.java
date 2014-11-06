@@ -81,5 +81,15 @@ public class ParentChildServiceImpl extends BaseServiceImpl implements IParentCh
 		
 		parentChildMapper.deleteByExample(example);
 	}
+
+	@Override
+	public boolean isChildBelongTo(Integer childId, Integer parentId)
+			throws ServiceException {
+		ParentChild parentChild = this.getRelationship(parentId, childId);
+		if( parentChild != null ){
+			return true;
+		}
+		return false;
+	}
 	
 }

@@ -8,4 +8,6 @@ public interface IParentChildService {
 
 	void deleteRelationByChild(Integer childId)throws ServiceException;
 
+	boolean isChildBelongTo(Integer childId, Integer parentId)throws ServiceException;
+
 }

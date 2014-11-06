@@ -30,4 +30,6 @@ public interface IChildService {
 
 	ChildViewDTO getViewByImei(String imei)throws ServiceException;
 
+	Child getChildByMobile(String childMobile)throws ServiceException;
+
 }

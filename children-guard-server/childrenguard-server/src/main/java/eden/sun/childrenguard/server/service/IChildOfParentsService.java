@@ -9,4 +9,6 @@ public interface IChildOfParentsService {
 
 	List<ChildViewDTO> listChildrenViewByParentId(Integer parentId)throws ServiceException;
 
+	//boolean isChildBelongTo(Integer childId, Integer parentId)throws ServiceException;
+
 }

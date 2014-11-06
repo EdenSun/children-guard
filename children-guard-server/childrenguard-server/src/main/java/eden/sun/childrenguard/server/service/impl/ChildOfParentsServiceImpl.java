@@ -13,6 +13,7 @@ import eden.sun.childrenguard.server.dao.ChildOfParentsMapper;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.exception.ServiceException;
 import eden.sun.childrenguard.server.model.ChildOfParents;
+import eden.sun.childrenguard.server.model.generated.Child;
 import eden.sun.childrenguard.server.service.IChildOfParentsService;
 
 @Service
@@ -61,5 +62,22 @@ public class ChildOfParentsServiceImpl extends BaseServiceImpl implements IChild
 		BeanUtils.copyProperties(childOfParents, chldViewDTO);
 		return chldViewDTO;
 	}
+
+	/*@Override
+	public boolean isChildBelongTo(Integer childId, Integer parentId)
+			throws ServiceException {
+		if( childId == null || parentId == null ){
+			throw new ServiceException("Parameter parentId or childId can not be null");
+		}
+		
+		List<ChildOfParents> list = childOfParentsMapper.selectByChildIdAndParentId(childId,parentId);
+		
+		if( list != null && list.size() > 0 ){
+			return true;
+		}
+		return false;
+	}*/
+	
+	
 
 }

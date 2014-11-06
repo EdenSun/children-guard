@@ -25,4 +25,14 @@ public class ChildAccountController  extends BaseController{
 		
 		return view;
 	}
+	
+	@RequestMapping("/doActivate")
+	@ResponseBody
+	public ViewDTO<Boolean> doActivate(String parentEmail ,String childMobile,String imei){
+		logger.info("doActivate called.parentEmail:" + parentEmail + " childMobile:"+ childMobile + " imei:" + imei);
+		ViewDTO<Boolean> view = childAccountService.doActivate(parentEmail,childMobile,imei);
+		
+		return view;
+	}
+	
 }

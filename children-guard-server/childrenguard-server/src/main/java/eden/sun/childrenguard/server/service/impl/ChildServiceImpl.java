@@ -278,5 +278,20 @@ public class ChildServiceImpl implements IChildService {
 		}
 		return null;
 	}
+
+	@Override
+	public Child getChildByMobile(String childMobile) throws ServiceException {
+		ChildExample example = new ChildExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andMobileEqualTo(childMobile);
+		
+		List<Child> childList = childMapper.selectByExample(example);
+	
+		if( childList != null && childList.size() > 0 ){
+			Child child = childList.get(0);
+			return child;
+		}
+		return null;
+	}
 	
 }

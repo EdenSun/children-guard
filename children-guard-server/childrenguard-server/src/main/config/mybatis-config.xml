@@ -8,30 +8,15 @@
 		
 	</typeAliases>
 	<mappers>
-	    <mapper resource="eden/sun/childrenguard/server/dao/generated/mapper/ChildMapper.xml"/>
-		<mapper resource="eden/sun/childrenguard/server/dao/generated/mapper/ParentMapper.xml"/>
-		<mapper resource="eden/sun/childrenguard/server/dao/generated/mapper/ParentChildMapper.xml"/>
-		<mapper resource="eden/sun/childrenguard/server/dao/generated/mapper/RelationshipMapper.xml"/>
 		<mapper resource="eden/sun/childrenguard/server/dao/generated/mapper/AppMapper.xml"/>
 		<mapper resource="eden/sun/childrenguard/server/dao/generated/mapper/ChildExtraInfoMapper.xml"/>
-		
+	    <mapper resource="eden/sun/childrenguard/server/dao/generated/mapper/ChildMapper.xml"/>
+	    <mapper resource="eden/sun/childrenguard/server/dao/generated/mapper/ChildSettingMapper.xml"/>
+	    <mapper resource="eden/sun/childrenguard/server/dao/generated/mapper/EmergencyContactsMapper.xml"/>
+		<mapper resource="eden/sun/childrenguard/server/dao/generated/mapper/ParentChildMapper.xml"/>
+		<mapper resource="eden/sun/childrenguard/server/dao/generated/mapper/ParentMapper.xml"/>
+		<mapper resource="eden/sun/childrenguard/server/dao/generated/mapper/RelationshipMapper.xml"/>
 		<mapper resource="eden/sun/childrenguard/server/dao/mapper/ChildOfParentsMapper.xml"/>
-		
-		<!-- <mapper resource="com/uce360/reslibadmin/dao/mapper/AnswerMapper.xml"/>
-		<mapper resource="com/uce360/reslibadmin/dao/mapper/AssignmentAnswerMapper.xml"/>
-		<mapper resource="com/uce360/reslibadmin/dao/mapper/AssignmentMapper.xml"/>
-		<mapper resource="com/uce360/reslibadmin/dao/mapper/CatalogMapper.xml"/>
-		<mapper resource="com/uce360/reslibadmin/dao/mapper/CourseMapper.xml"/>
-		<mapper resource="com/uce360/reslibadmin/dao/mapper/DownloadMapper.xml"/>
-		<mapper resource="com/uce360/reslibadmin/dao/mapper/ElectiveCourseMapper.xml"/>
-		<mapper resource="com/uce360/reslibadmin/dao/mapper/ElectiveCourseStudentMapper.xml"/>
-		<mapper resource="com/uce360/reslibadmin/dao/mapper/OnlineReadingChannelMapper.xml"/>
-		<mapper resource="com/uce360/reslibadmin/dao/mapper/QuestionMapper.xml"/>
-		<mapper resource="com/uce360/reslibadmin/dao/mapper/ResourceCatalogMapper.xml"/>
-		<mapper resource="com/uce360/reslibadmin/dao/mapper/ResourceCategoryMapper.xml"/>
-		<mapper resource="com/uce360/reslibadmin/dao/mapper/ResourceMapper.xml"/>
-		<mapper resource="com/uce360/reslibadmin/dao/mapper/ResourceResourceCategoryMapper.xml"/>
-		<mapper resource="com/uce360/reslibadmin/dao/mapper/UserMapper.xml"/> -->
 		
 	</mappers>
 </configuration>   
