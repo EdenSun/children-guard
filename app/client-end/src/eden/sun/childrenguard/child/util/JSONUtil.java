@@ -27,4 +27,8 @@ public class JSONUtil {
 		return new Gson().fromJson(json, new TypeToken<ViewDTO<ChildViewDTO>>(){}.getType());
 	}
 
+	public static ViewDTO<Boolean> getActivateAccountView(String json) {
+		return new Gson().fromJson(json, new TypeToken<ViewDTO<Boolean>>(){}.getType());
+	}
+
 }

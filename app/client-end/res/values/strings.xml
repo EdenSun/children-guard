@@ -7,5 +7,7 @@
     <string name="title_activity_app_password">AppPasswordActivity</string>
     <string name="title_activity_app_status">App lock/unlock status</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_activation">MainActivity</string>
+    
 
 </resources>

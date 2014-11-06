@@ -103,4 +103,29 @@
         <item name="android:windowNoTitle">true</item>  
         <item name="android:windowIsFloating">true</item>  
     </style> 
+    
+    <style name="commonBtn">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:textColor">@color/text_white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@drawable/bg_common_button</item> 
+    </style>
+    
+    <style name="commonInputStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item> 
+        <item name="android:textColor">@color/text_black</item> 
+        <item name="android:textSize">14dp</item> 
+        <item name="android:gravity">center</item> 
+        <item name="android:background">#ffffff</item>
+    </style>
+    
+    <style name="commonPageStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item> 
+        <item name="android:background">@drawable/background</item> 
+        <item name="android:paddingLeft">10dp</item> 
+        <item name="android:paddingRight">10dp</item> 
+    </style>
 </resources>

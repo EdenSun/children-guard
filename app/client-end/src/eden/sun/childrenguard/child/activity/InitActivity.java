@@ -58,6 +58,8 @@ public class InitActivity extends CommonBindServiceActivity {
 				    			Intent intent = new Intent(InitActivity.this,MainActivity.class);
 				    			startActivity(intent);
 				    		}
+				    		
+				    		InitActivity.this.finish();
 				    	}else{
 				    		//dismissProgressDialog();
 				    		AlertDialog.Builder dialog = UIUtil.getErrorDialog(InitActivity.this,view.getInfo());

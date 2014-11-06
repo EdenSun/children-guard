@@ -64,6 +64,11 @@
             android:name=".activity.AppPasswordActivity"
             android:label="@string/title_activity_app_password" >
         </activity>
+        <activity
+            android:name=".activity.ActivationActivity"
+            android:theme="@android:style/Theme.NoTitleBar"  >
+        </activity>
+        
 
         <!-- Required -->
         <service
