@@ -277,6 +277,13 @@ public class ChildServiceImpl implements IChildService {
 		}
 		return null;
 	}
+	
+	
+
+	@Override
+	public ChildViewDTO getChildViewByImei(String imei) throws ServiceException {
+		return trans2ChildViewDTO(getChildByImei(imei));
+	}
 
 	@Override
 	public Child getChildByMobile(String childMobile) throws ServiceException {

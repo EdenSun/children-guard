@@ -142,7 +142,7 @@
             android:value="f7196716f406e7911af46e9c" />
 
         <receiver
-            android:name=".broadreceiver.JPushCustomMsgReceiver"
+            android:name="eden.sun.childrenguard.child.receiver.JPushCustomMsgReceiver"
             android:enabled="true" >
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.REGISTRATION" />
@@ -158,6 +158,18 @@
             android:name="eden.sun.childrenguard.child.activity.MainActivity"
             android:label="@string/title_activity_main" >
         </activity>
+        
+        
+        <receiver 
+            android:name="eden.sun.childrenguard.child.receiver.PackageChangeReceiver">
+            <intent-filter>
+				<action android:name="android.intent.action.PACKAGE_ADDED"/>
+				<!-- <action android:name="android.intent.action.PACKAGE_REPLACED"/> -->
+				<action android:name="android.intent.action.PACKAGE_REMOVED"/>
+				<data android:scheme="package"/>
+		    </intent-filter>
+            
+        </receiver>
     </application>
 
 </manifest>

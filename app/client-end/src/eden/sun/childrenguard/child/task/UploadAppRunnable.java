@@ -68,7 +68,7 @@ public class UploadAppRunnable implements Runnable{
 		String imei = DeviceHelper.getIMEI(context);
 		
 		Map<String,String> params = new HashMap<String,String>();
-		params.put("appList", JSONUtil.transUploadApplicationInfoParamList2String(requestParam));
+		params.put("appListJson", JSONUtil.transUploadApplicationInfoParamList2String(requestParam));
 		params.put("imei", imei);
 		helper.doPost(
 			url,

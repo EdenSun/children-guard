@@ -1,4 +1,4 @@
-package eden.sun.childrenguard.child.broadreceiver;
+package eden.sun.childrenguard.child.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

@@ -7,19 +7,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import eden.sun.childrenguard.server.controller.BaseController;
 import eden.sun.childrenguard.server.dto.ChildLoginViewDTO;
+import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.service.IChildAuthService;
 
 @Controller
 @RequestMapping("/app/child/auth")
-public class ChildLoginController extends BaseController{
+public class ChildAuthController extends BaseController{
 	@Autowired
 	private IChildAuthService childAuthService;
 	
-	@RequestMapping("/login")
+	@RequestMapping("/doLogin")
 	@ResponseBody
-	public ViewDTO<ChildLoginViewDTO> login(String mobile){
-		ViewDTO<ChildLoginViewDTO> view = childAuthService.login(mobile);
+	public ViewDTO<ChildViewDTO> doLogin(String imei){
+		logger.info("child doLogin.imei:" + imei);
+		ViewDTO<ChildViewDTO> view = childAuthService.login(imei);
 		
 		return view;
 	}

@@ -1,14 +1,19 @@
 package eden.sun.childrenguard.child.activity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import eden.sun.childrenguard.child.R;
+import eden.sun.childrenguard.child.util.Callback;
 import eden.sun.childrenguard.child.util.Config;
 import eden.sun.childrenguard.child.util.DeviceHelper;
 import eden.sun.childrenguard.child.util.JSONUtil;
@@ -20,12 +25,40 @@ import eden.sun.childrenguard.server.dto.ViewDTO;
 
 public class InitActivity extends CommonBindServiceActivity {
 	private static final String TAG = "InitActivity";
-
+	private TextView text;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_init);
+		initComponent();
 		
+		initService();
+	}
+
+	private void initComponent() {
+		text = (TextView)findViewById(R.id.text);
+	}
+
+	private void initService() {
+		startMainService();
+		bindMainService();		
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		unbindMainService();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		isActivate();
+	}
+
+	
+	private void isActivate() {
 		String imei = DeviceHelper.getIMEI(this);
 		if( imei != null ){
 			/* 通过 imei 检查是否已经激活
@@ -55,10 +88,20 @@ public class InitActivity extends CommonBindServiceActivity {
 				    			startActivity(intent);
 				    		}else{
 				    			// have activated, auto login
-				    			Intent intent = new Intent(InitActivity.this,MainActivity.class);
-				    			startActivity(intent);
+				    			text.setText("please wait,logining...");
 				    			
-				    			InitActivity.this.finish();
+				    			doLogin(new Callback(){
+
+									@Override
+									public void callback() {
+										text.setText("Login success.");
+										
+										Intent intent = new Intent(InitActivity.this,MainActivity.class);
+						    			startActivity(intent);
+						    			InitActivity.this.finish();
+									}
+				    				
+				    			});
 				    		}
 				    		
 				    		
@@ -70,6 +113,7 @@ public class InitActivity extends CommonBindServiceActivity {
 				    	}
 				    	
 					}
+
 				}, 
 				new Response.ErrorListener() {
 					@Override
@@ -81,6 +125,39 @@ public class InitActivity extends CommonBindServiceActivity {
 		}
 	}
 	
-	
+	private void doLogin(final Callback successCallback) {
+		RequestHelper helper = getRequestHelper();
+		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_DO_LOGIN;
 
+		String imei = DeviceHelper.getIMEI(this);
+		Map<String,String> param = new HashMap<String,String>();
+		param.put("imei", imei);
+		helper.doPost(
+			url,
+			param,
+			new Response.Listener<String>() {
+				@Override
+				public void onResponse(String response) {
+					ViewDTO<ChildViewDTO> view = JSONUtil.getDoLoginView(response);
+			    	
+			    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS)){
+			    		successCallback.callback();
+			    		
+			    	}else{
+			    		//dismissProgressDialog();
+			    		AlertDialog.Builder dialog = UIUtil.getErrorDialog(InitActivity.this,view.getInfo());
+			    		
+						dialog.show();
+			    	}
+			    	
+				}
+
+			}, 
+			new Response.ErrorListener() {
+				@Override
+				public void onErrorResponse(VolleyError error) {
+					Log.e("TAG", error.getMessage(), error);
+			}
+		});
+	}
 }

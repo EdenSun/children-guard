@@ -1,8 +1,6 @@
 package eden.sun.childrenguard.child.service;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
+import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
@@ -10,8 +8,22 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
-import eden.sun.childrenguard.child.task.UploadAppRunnable;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
+import eden.sun.childrenguard.child.activity.ActivationActivity;
+import eden.sun.childrenguard.child.activity.InitActivity;
+import eden.sun.childrenguard.child.activity.MainActivity;
+import eden.sun.childrenguard.child.util.Config;
+import eden.sun.childrenguard.child.util.DeviceHelper;
+import eden.sun.childrenguard.child.util.JSONUtil;
+import eden.sun.childrenguard.child.util.RequestHelper;
+import eden.sun.childrenguard.child.util.RequestURLConstants;
+import eden.sun.childrenguard.child.util.UIUtil;
 import eden.sun.childrenguard.child.util.gps.GPSHelper;
+import eden.sun.childrenguard.server.dto.ChildViewDTO;
+import eden.sun.childrenguard.server.dto.ViewDTO;
 
 public class MainService extends Service {
 	public static final String TAG = "MainService";
@@ -90,5 +102,6 @@ public class MainService extends Service {
      */ 
     private void showNotification() { 
     	Log.i(TAG, "show notification");
-    } 
+    }
+
 }

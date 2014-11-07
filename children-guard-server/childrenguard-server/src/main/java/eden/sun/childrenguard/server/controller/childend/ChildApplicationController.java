@@ -24,7 +24,7 @@ public class ChildApplicationController extends BaseController{
 	@RequestMapping("/uploadAllApp")
 	@ResponseBody
 	public ViewDTO<Boolean> uploadAllApp(String imei,String appListJson){
-		
+		logger.info("uploadAllApp. imei:" + imei + "appListJson:" + appListJson);
 		List<UploadApplicationInfoParam> appList = JSONUtil.getUploadApplicationInfoParamList(appListJson);
 		ViewDTO<Boolean> view = childAppService.uploadAllApp(imei,appList);
 		

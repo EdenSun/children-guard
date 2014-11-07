@@ -17,7 +17,7 @@ import eden.sun.childrenguard.child.util.ShareDataKey;
 
 public class CommonBindServiceActivity extends Activity{
 	private boolean mIsBound;
-	private MainService mainService; 
+	protected MainService mainService; 
 	protected ProgressDialog progress;
 	private static final String PREFS_NAME = "share-data";
 	private SharedPreferences settings ;  
@@ -87,29 +87,9 @@ public class CommonBindServiceActivity extends Activity{
 		super.onPause();
 	}
 
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-		startMainService();
-		bindMainService();
-	}
-	
-	@Override
-	protected void onStop() {
-		super.onStop();
-		unbindMainService();
-	}
-	
-	
 	public void startMainService() {
 		startService(new Intent(this,    
-                MainService.class));		
+                MainService.class));
 	}
 
 	public void bindMainService() {

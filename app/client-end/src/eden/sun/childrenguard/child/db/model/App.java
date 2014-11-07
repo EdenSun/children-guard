@@ -1,6 +1,6 @@
-package eden.sun.childrenguard.server.dto;
+package eden.sun.childrenguard.child.db.model;
 
-public class AppViewDTO {
+public class App {
 	private Integer id;
 
     private String name;
@@ -40,5 +40,5 @@ public class AppViewDTO {
 	public void setPackageName(String packageName) {
 		this.packageName = packageName;
 	}
-
+    
 }

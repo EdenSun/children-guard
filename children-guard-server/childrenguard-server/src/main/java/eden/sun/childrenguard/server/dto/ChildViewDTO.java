@@ -1,5 +1,7 @@
 package eden.sun.childrenguard.server.dto;
 
+import java.util.Date;
+
 
 public class ChildViewDTO {
 	private Integer id;
@@ -11,6 +13,8 @@ public class ChildViewDTO {
     private String lastName;
     
     private String nickname;
+    
+    private Date activateTime;
 
 	public Integer getId() {
 		return id;
@@ -50,6 +54,14 @@ public class ChildViewDTO {
 
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
+	}
+
+	public Date getActivateTime() {
+		return activateTime;
+	}
+
+	public void setActivateTime(Date activateTime) {
+		this.activateTime = activateTime;
 	}
 
 }
