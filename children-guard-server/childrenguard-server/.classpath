@@ -1,27 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
-	<classpathentry kind="src" path="src/main/config"/>
+	<classpathentry excluding="**/*.java" kind="src" path="src/main/config"/>
 	<classpathentry kind="var" path="M2_REPO/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar"/>
-	<classpathentry kind="var" path="M2_REPO/javax/inject/javax.inject/1/javax.inject-1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/javax/annotation/jsr250-api/1.0/jsr250-api-1.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Jetty_Runtime"/>
-	<classpathentry kind="var" path="M2_REPO/org/cometd/java/bayeux-api/3.0.1/bayeux-api-3.0.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/cometd/java/cometd-java-server/3.0.1/cometd-java-server-3.0.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/cometd/java/cometd-java-common/3.0.1/cometd-java-common-3.0.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/eclipse/jetty/jetty-util/9.2.2.v20140723/jetty-util-9.2.2.v20140723.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/eclipse/jetty/jetty-util-ajax/9.2.2.v20140723/jetty-util-ajax-9.2.2.v20140723.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/eclipse/jetty/jetty-jmx/9.2.2.v20140723/jetty-jmx-9.2.2.v20140723.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/cometd/java/cometd-java-websocket-javax-server/3.0.1/cometd-java-websocket-javax-server-3.0.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/cometd/java/cometd-java-websocket-common-server/3.0.1/cometd-java-websocket-common-server-3.0.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/cometd/java/cometd-java-annotations/3.0.1/cometd-java-annotations-3.0.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/eclipse/jetty/jetty-servlets/9.3.0.M0/jetty-servlets-9.3.0.M0.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/eclipse/jetty/jetty-continuation/9.3.0.M0/jetty-continuation-9.3.0.M0.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/eclipse/jetty/jetty-http/9.3.0.M0/jetty-http-9.3.0.M0.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/eclipse/jetty/jetty-io/9.3.0.M0/jetty-io-9.3.0.M0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0"/>
 	<classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-simple/1.7.7/slf4j-simple-1.7.7.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-web/3.2.4.RELEASE/spring-web-3.2.4.RELEASE.jar"/>
 	<classpathentry kind="var" path="M2_REPO/aopalliance/aopalliance/1.0/aopalliance-1.0.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-aop/3.2.4.RELEASE/spring-aop-3.2.4.RELEASE.jar"/>
