@@ -2,9 +2,8 @@ package eden.sun.childrenguard.server.service.impl;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eden.sun.childrenguard.server.dto.AppViewDTO;
@@ -15,7 +14,6 @@ import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.AppManageSettingParam;
 import eden.sun.childrenguard.server.dto.param.MoreSettingParam;
-import eden.sun.childrenguard.server.dto.param.SyncAppSettingParam;
 import eden.sun.childrenguard.server.exception.ServiceException;
 import eden.sun.childrenguard.server.model.generated.Child;
 import eden.sun.childrenguard.server.model.generated.ChildExtraInfo;
@@ -28,13 +26,13 @@ import eden.sun.childrenguard.server.service.IChildSettingService;
 
 @Service
 public class ChildDetailServiceImpl implements IChildDetailService {
-	@Inject
+	@Autowired
 	private IChildExtraInfoService childExtraInfoService;
-	@Inject
+	@Autowired
 	private IChildService childService;
-	@Inject
+	@Autowired
 	private IAppService appService;
-	@Inject
+	@Autowired
 	private IChildSettingService childSettingService;
 	
 	@Override

@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eden.sun.childrenguard.server.dao.generated.RelationshipMapper;
@@ -19,7 +18,7 @@ import eden.sun.childrenguard.server.service.IRelationshipService;
 
 @Service
 public class RelationshipServiceImpl extends BaseServiceImpl implements IRelationshipService{
-	@Inject
+	@Autowired
 	private RelationshipMapper relationshipMapper;
 	
 	@Override

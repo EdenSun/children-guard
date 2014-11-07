@@ -3,16 +3,13 @@ package eden.sun.childrenguard.server.service.impl;
 import java.util.Date;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eden.sun.childrenguard.server.dao.ChildOfParentsMapper;
 import eden.sun.childrenguard.server.dao.generated.ParentMapper;
-import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ParentViewDTO;
-import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.exception.ServiceException;
 import eden.sun.childrenguard.server.model.generated.Parent;
 import eden.sun.childrenguard.server.model.generated.ParentExample;
@@ -24,13 +21,13 @@ import eden.sun.childrenguard.server.util.UUIDUtil;
 @Service
 public class ParentServiceImpl implements IParentService {
 
-	@Inject
+	@Autowired
 	private ParentMapper parentMapper;
 	
-	@Inject
+	@Autowired
 	private IChildService childService;
 	
-	@Inject
+	@Autowired
 	private ChildOfParentsMapper childOfParentsMapper;
 	
 	@Override

@@ -2,8 +2,7 @@ package eden.sun.childrenguard.server.service.impl;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eden.sun.childrenguard.server.dto.ViewDTO;
@@ -17,10 +16,10 @@ import eden.sun.childrenguard.server.service.IChildService;
 @Service
 public class ChildAppServiceImpl implements IChildAppService {
 	
-	@Inject
+	@Autowired
 	private IChildService childService;
 	
-	@Inject
+	@Autowired
 	private IAppService appService;
 	
 	@Override

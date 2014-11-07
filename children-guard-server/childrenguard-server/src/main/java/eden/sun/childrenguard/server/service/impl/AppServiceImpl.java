@@ -5,9 +5,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eden.sun.childrenguard.server.dao.generated.AppMapper;
@@ -22,7 +21,7 @@ import eden.sun.childrenguard.server.service.IAppService;
 
 @Service
 public class AppServiceImpl extends BaseServiceImpl implements IAppService{
-	@Inject
+	@Autowired
 	private AppMapper appMapper;
 	
 	@Override

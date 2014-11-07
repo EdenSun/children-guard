@@ -2,9 +2,8 @@ package eden.sun.childrenguard.server.service.impl;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eden.sun.childrenguard.server.dao.generated.ChildSettingMapper;
@@ -18,7 +17,7 @@ import eden.sun.childrenguard.server.util.NumberUtil;
 
 @Service
 public class ChildSettingServiceImpl implements IChildSettingService {
-	@Inject
+	@Autowired
 	ChildSettingMapper childSettingMapper;
 	
 

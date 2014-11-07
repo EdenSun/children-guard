@@ -3,8 +3,7 @@ package eden.sun.childrenguard.server.service.impl;
 import java.util.Date;
 import java.util.List;
 
-import javax.inject.Inject;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eden.sun.childrenguard.server.dao.generated.ParentChildMapper;
@@ -17,9 +16,9 @@ import eden.sun.childrenguard.server.service.IRelationshipService;
 
 @Service
 public class ParentChildServiceImpl extends BaseServiceImpl implements IParentChildService{
-	@Inject
+	@Autowired
 	private ParentChildMapper parentChildMapper;
-	@Inject
+	@Autowired
 	private IRelationshipService relationshipService;
 	@Override
 	public void addRelationship(Integer parentId, Integer childId,

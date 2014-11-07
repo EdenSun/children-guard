@@ -2,15 +2,13 @@ package eden.sun.childrenguard.server.service.impl;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.ChildAddParam;
 import eden.sun.childrenguard.server.exception.ServiceException;
-import eden.sun.childrenguard.server.model.generated.Child;
 import eden.sun.childrenguard.server.model.generated.Parent;
 import eden.sun.childrenguard.server.service.IChildOfParentsService;
 import eden.sun.childrenguard.server.service.IChildService;
@@ -20,13 +18,13 @@ import eden.sun.childrenguard.server.service.IParentService;
 
 @Service
 public class ChildrenManageServiceImpl implements IChildrenManageService{
-	@Inject
+	@Autowired
 	private IParentService parentService;
-	@Inject
+	@Autowired
 	private IChildService childService;
-	@Inject
+	@Autowired
 	private IChildOfParentsService childOfParentsService;
-	@Inject
+	@Autowired
 	private IParentChildService parentChildService;
 	@Override
 	public ViewDTO<List<ChildViewDTO>> listChildrenByParentAccessToken(

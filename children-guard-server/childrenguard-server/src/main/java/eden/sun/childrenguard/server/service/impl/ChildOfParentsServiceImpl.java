@@ -4,22 +4,20 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eden.sun.childrenguard.server.dao.ChildOfParentsMapper;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.exception.ServiceException;
 import eden.sun.childrenguard.server.model.ChildOfParents;
-import eden.sun.childrenguard.server.model.generated.Child;
 import eden.sun.childrenguard.server.service.IChildOfParentsService;
 
 @Service
 public class ChildOfParentsServiceImpl extends BaseServiceImpl implements IChildOfParentsService{
 
-	@Inject
+	@Autowired
 	private ChildOfParentsMapper childOfParentsMapper;
 	
 	@Override

@@ -1,8 +1,7 @@
 package eden.sun.childrenguard.server.service.impl;
 
-import javax.inject.Inject;
-
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eden.sun.childrenguard.server.dto.IsFirstLoginViewDTO;
@@ -20,7 +19,7 @@ import eden.sun.childrenguard.server.util.NumberUtil;
 @Service
 public class AuthServiceImpl implements IAuthService {
 	private Logger logger = Logger.getLogger(AuthServiceImpl.class);
-	@Inject 
+	@Autowired 
 	private IParentService parentService;
 	
 	@Override

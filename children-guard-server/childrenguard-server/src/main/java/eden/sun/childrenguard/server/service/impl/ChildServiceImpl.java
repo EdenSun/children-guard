@@ -5,9 +5,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eden.sun.childrenguard.server.dao.ChildOfParentsMapper;
@@ -25,11 +24,11 @@ import eden.sun.childrenguard.server.service.IParentChildService;
 
 @Service
 public class ChildServiceImpl implements IChildService {
-	@Inject
+	@Autowired
 	private ChildMapper childMapper;
-	@Inject
+	@Autowired
 	private ChildOfParentsMapper childOfParentsMapper;
-	@Inject
+	@Autowired
 	private IParentChildService parentChildService;
 	
 	@Override
