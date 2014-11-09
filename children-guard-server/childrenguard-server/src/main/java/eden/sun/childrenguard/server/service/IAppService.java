@@ -22,4 +22,6 @@ public interface IAppService {
 	void updateApp(Integer childId,
 			List<AppManageSettingParam> appManageSettingList)throws ServiceException;
 
+	AppViewDTO getViewByPackageName(String packageName)throws ServiceException;
+
 }

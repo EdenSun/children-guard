@@ -5,11 +5,13 @@ import java.util.Map;
 import android.content.Context;
 import android.util.Log;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
+import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -40,7 +42,16 @@ public class RequestHelper {
 			Method.GET,
 			url,
 			successListener, 
-			errListener);
+			errListener){
+
+				@Override
+				public RetryPolicy getRetryPolicy() {
+					RetryPolicy retryPolicy = new DefaultRetryPolicy(5000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT); 
+			        return retryPolicy; 
+				};
+			
+		};
+			
 		mQueue.add(stringRequest);
 		
 	}
@@ -59,7 +70,14 @@ public class RequestHelper {
 		
 			protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
 				return finalParams;
+			}
+
+			@Override
+			public RetryPolicy getRetryPolicy() {
+				RetryPolicy retryPolicy = new DefaultRetryPolicy(10000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT); 
+		        return retryPolicy; 
 			};
+			
 		};
 		
 		mQueue.add(myReq);

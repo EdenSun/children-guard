@@ -40,5 +40,11 @@ public class App {
 	public void setPackageName(String packageName) {
 		this.packageName = packageName;
 	}
+
+	@Override
+	public String toString() {
+		return "App [id=" + id + ", name=" + name + ", lockStatus="
+				+ lockStatus + ", packageName=" + packageName + "]";
+	}
     
 }

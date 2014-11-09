@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import eden.sun.childrenguard.server.dto.AppViewDTO;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.UploadApplicationInfoParam;
@@ -42,6 +43,15 @@ public class JSONUtil {
 
 	public static ViewDTO<ChildViewDTO> getDoLoginView(String json) {
 		return gson.fromJson(json, new TypeToken<ViewDTO<ChildViewDTO>>(){}.getType());
+	}
+
+	public static ViewDTO<List<AppViewDTO>> getListChildAppInfoView(
+			String json) {
+		return gson.fromJson(json, new TypeToken<ViewDTO<List<AppViewDTO>>>(){}.getType());
+	}
+
+	public static ViewDTO<AppViewDTO> getInstallAppView(String json) {
+		return gson.fromJson(json, new TypeToken<ViewDTO<AppViewDTO>>(){}.getType());
 	}
 	
 	

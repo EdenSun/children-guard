@@ -118,7 +118,10 @@ public class InitActivity extends CommonBindServiceActivity {
 				new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						Log.e("TAG", error.getMessage(), error);
+						Log.e(TAG, error.getMessage(), error);
+						AlertDialog.Builder dialog = UIUtil.getServerErrorDialog(InitActivity.this);
+			    		
+						dialog.show();
 				}
 			});
 			
@@ -156,7 +159,10 @@ public class InitActivity extends CommonBindServiceActivity {
 			new Response.ErrorListener() {
 				@Override
 				public void onErrorResponse(VolleyError error) {
-					Log.e("TAG", error.getMessage(), error);
+					Log.e(TAG, error.getMessage(), error);
+					AlertDialog.Builder dialog = UIUtil.getServerErrorDialog(InitActivity.this);
+		    		
+					dialog.show();
 			}
 		});
 	}

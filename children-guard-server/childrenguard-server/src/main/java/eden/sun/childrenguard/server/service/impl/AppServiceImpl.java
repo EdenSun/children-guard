@@ -188,5 +188,18 @@ public class AppServiceImpl extends BaseServiceImpl implements IAppService{
 			}
 		}
 	}
+
+	@Override
+	public AppViewDTO getViewByPackageName(String packageName)
+			throws ServiceException {
+		if( packageName == null ){
+			throw new ServiceException("Parameter package name can not be null.");
+		}
+		
+		AppViewDTO view = trans2AppViewDTO(getByPackageName(packageName));
+		
+		return view;
+	}
+	
 	
 }

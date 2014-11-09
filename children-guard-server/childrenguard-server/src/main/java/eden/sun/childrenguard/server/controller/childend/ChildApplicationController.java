@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import eden.sun.childrenguard.server.controller.BaseController;
+import eden.sun.childrenguard.server.dto.AppViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.UploadApplicationInfoParam;
 import eden.sun.childrenguard.server.service.IChildAppService;
@@ -33,10 +34,10 @@ public class ChildApplicationController extends BaseController{
 	
 	@RequestMapping("/installApp")
 	@ResponseBody
-	public ViewDTO<Boolean> installApp(
-			String childAccessToken,
+	public ViewDTO<AppViewDTO> installApp(
+			String imei,
 			@ModelAttribute("appInfo")UploadApplicationInfoParam appInfo){
-		ViewDTO<Boolean> view = childAppService.installApp(childAccessToken,appInfo);
+		ViewDTO<AppViewDTO> view = childAppService.installApp(imei,appInfo);
 		
 		return view;
 	}
@@ -44,11 +45,20 @@ public class ChildApplicationController extends BaseController{
 	@RequestMapping("/uninstallApp")
 	@ResponseBody
 	public ViewDTO<Boolean> uninstallApp(
-			String childAccessToken,
+			String imei,
 			@ModelAttribute("appInfo")UploadApplicationInfoParam appInfo){
-		ViewDTO<Boolean> view = childAppService.uninstallApp(childAccessToken,appInfo);
+		ViewDTO<Boolean> view = childAppService.uninstallApp(imei,appInfo);
 		
 		return view;
 	}
 	
+	
+	@RequestMapping("/listChildAppInfo")
+	@ResponseBody
+	public ViewDTO<List<AppViewDTO>> listChildAppInfo(String imei){
+		logger.info("listChildAppInfo. imei:" + imei );
+		ViewDTO<List<AppViewDTO>> view = childAppService.listAppByChildImei(imei);
+		
+		return view;
+	}
 }

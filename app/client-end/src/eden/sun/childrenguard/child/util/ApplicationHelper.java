@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.telephony.TelephonyManager;
 import eden.sun.childrenguard.child.dto.AppInfo;
 
@@ -25,19 +26,22 @@ public class ApplicationHelper {
 		List<PackageInfo> packages = packageManager.getInstalledPackages(0);
 		
 		for(PackageInfo packageInfo :packages ){
-			AppInfo appdto =new AppInfo(); 
-			String appName = packageInfo.applicationInfo.loadLabel(packageManager).toString(); 
-			String packageName = packageInfo.packageName; 
-			String versionName = packageInfo.versionName; 
-			int versionCode = packageInfo.versionCode; 
-			
-			appdto.setAppName(appName);
-			appdto.setPackageName(packageName);
-			appdto.setVersionName(versionName);
-			appdto.setVersonCode(versionCode);
-			appdto.setSysApp(isSysApp(packageInfo.applicationInfo));
-			
-			dtoList.add(appdto);
+			if( !isSysApp(packageInfo.applicationInfo) ){
+				// ONLY add non-system app
+				AppInfo appdto =new AppInfo(); 
+				String appName = packageInfo.applicationInfo.loadLabel(packageManager).toString(); 
+				String packageName = packageInfo.packageName; 
+				String versionName = packageInfo.versionName; 
+				int versionCode = packageInfo.versionCode; 
+				
+				appdto.setAppName(appName);
+				appdto.setPackageName(packageName);
+				appdto.setVersionName(versionName);
+				appdto.setVersonCode(versionCode);
+				//appdto.setSysApp(isSysApp(packageInfo.applicationInfo));
+				
+				dtoList.add(appdto);
+			}
 		}
 		return dtoList;
 	}
@@ -68,4 +72,17 @@ public class ApplicationHelper {
 			return childMobile;
 		}
 	}  
+	
+	
+	public static String getAppNameByPackage(Context context,String packageName){
+		final PackageManager pm = context.getPackageManager();
+		ApplicationInfo ai;
+		try {
+		    ai = pm.getApplicationInfo( packageName, 0);
+		} catch (final NameNotFoundException e) {
+		    ai = null;
+		}
+		String applicationName = (String) (ai != null ? pm.getApplicationLabel(ai) : "(unknown)");
+		return applicationName;
+	}
 }

@@ -7,10 +7,10 @@
     <TextView
         android:id="@+id/registerLinkBtn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:gravity="right"
         style="@style/rightLinkStyle"
-        android:text="Register" />
+        android:text="Register"/>
     
     <!-- <TextView
         android:id="@+id/titleTextView"
@@ -24,7 +24,9 @@
 	    android:layout_height="wrap_content"
 	    android:layout_weight="1"
 	    android:gravity="center"
-	    android:orientation="vertical" >
+	    android:orientation="vertical" 
+	    android:layout_marginBottom="20dp"
+	    android:layout_marginTop="20dp">
 
 	    <ImageView
 	        android:layout_width="130dp"
@@ -96,7 +98,7 @@
     	<Button
     	    android:id="@+id/loginBtn"
     	    style="@style/commonBtn"
-    	    android:layout_marginBottom="50dp"
+    	    android:layout_marginBottom="35dp"
     	    android:text="Login" />
     	
 	    <!-- <LinearLayout

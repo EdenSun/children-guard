@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import eden.sun.childrenguard.server.dto.AppViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.UploadApplicationInfoParam;
 import eden.sun.childrenguard.server.exception.ServiceException;
@@ -23,20 +24,16 @@ public class ChildAppServiceImpl implements IChildAppService {
 	private IAppService appService;
 	
 	@Override
-	public ViewDTO<Boolean> installApp(String imei,
+	public ViewDTO<AppViewDTO> installApp(String imei,
 			UploadApplicationInfoParam appInfo) throws ServiceException {
-		ViewDTO<Boolean> view = new ViewDTO<Boolean>();
+		ViewDTO<AppViewDTO> view = new ViewDTO<AppViewDTO>();
 		if( imei == null || appInfo == null ){
-			view.setMsg(ViewDTO.MSG_ERROR);
-			view.setInfo("Parameter is incorrect.");
-			view.setData(false);
+			throw new ServiceException("Parameter is incorrect.");
 		}
 		
 		Child child = childService.getChildByImei(imei);
 		if( child == null ){
-			view.setMsg(ViewDTO.MSG_ERROR);
-			view.setInfo("upload app failure.child is not exits.");
-			view.setData(false);
+			throw new ServiceException("upload app failure.child is not exits.");
 		}
 		
 		// insert app
@@ -44,10 +41,10 @@ public class ChildAppServiceImpl implements IChildAppService {
 		if( !isSuccess ){
 			view.setMsg(ViewDTO.MSG_ERROR);
 			view.setInfo("add or update application failure.");
-			view.setData(false);
+			return view;
 		}
 		
-		view.setData(true);
+		view.setData(appService.getViewByPackageName(appInfo.getPackageName()));
 		return view;
 	}
 
@@ -100,4 +97,24 @@ public class ChildAppServiceImpl implements IChildAppService {
 		return view;
 	}
 
+	@Override
+	public ViewDTO<List<AppViewDTO>> listAppByChildImei(String imei)
+			throws ServiceException {
+		if( imei == null ){
+			throw new ServiceException("Parameter imei can not be null.");
+		}
+		
+		Child child = childService.getChildByImei(imei);
+		if( child == null ){
+			throw new ServiceException("Error,child is not exists.");
+		}
+		
+		
+		ViewDTO<List<AppViewDTO>> view = new ViewDTO<List<AppViewDTO>>();
+		List<AppViewDTO> viewList = appService.listViewByChildId(child.getId());
+	
+		view.setData(viewList);
+		return view;
+	}
+	
 }
