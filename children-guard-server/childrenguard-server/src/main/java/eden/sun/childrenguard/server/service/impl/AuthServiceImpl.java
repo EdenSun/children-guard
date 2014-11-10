@@ -43,10 +43,10 @@ public class AuthServiceImpl implements IAuthService {
 	}
 
 	@Override
-	public ViewDTO<RegisterViewDTO> register(String firstName, String lastName,
+	public ViewDTO<RegisterViewDTO> register(String imei,String firstName, String lastName,
 			String email, String password) throws ServiceException {
 		ViewDTO<RegisterViewDTO> view = new ViewDTO<RegisterViewDTO>();
-		if( firstName == null || lastName == null || email == null || password == null ){
+		if( imei == null || firstName == null || lastName == null || email == null || password == null ){
 			view.setInfo("Server parameters error");
 			view.setMsg(ViewDTO.MSG_ERROR);
 			return view;
@@ -59,7 +59,7 @@ public class AuthServiceImpl implements IAuthService {
 			return view;
 		}else{
 			// do register
-			ParentViewDTO parentView = parentService.save(firstName,lastName,email,password);
+			ParentViewDTO parentView = parentService.save(imei,firstName,lastName,email,password);
 			RegisterViewDTO registerView = trans2RegisterViewDTO(parentView);
 			
 			view.setData(registerView);

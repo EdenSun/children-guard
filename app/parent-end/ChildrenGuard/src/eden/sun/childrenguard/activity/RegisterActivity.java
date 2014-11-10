@@ -21,6 +21,7 @@ import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.server.dto.RegisterViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Config;
+import eden.sun.childrenguard.util.DeviceHelper;
 import eden.sun.childrenguard.util.JSONUtil;
 import eden.sun.childrenguard.util.RequestHelper;
 import eden.sun.childrenguard.util.RequestURLConstants;
@@ -168,6 +169,7 @@ public class RegisterActivity extends CommonActivity {
 		String lastName = UIUtil.getEditTextValue(lastNameEditText);
 		String email = UIUtil.getEditTextValue(emailEditText);
 		String password = UIUtil.getEditTextValue(passwordEditText);
+		String imei = DeviceHelper.getIMEI(this);
 		
 		Map<String, String> param = new HashMap<String,String>();
 		
@@ -175,6 +177,7 @@ public class RegisterActivity extends CommonActivity {
 		param.put("lastName", lastName);
 		param.put("email", email);
 		param.put("password", password);
+		param.put("imei", imei);
 		
 		return param;
 	}

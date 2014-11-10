@@ -18,10 +18,10 @@ public class RegisterController extends BaseController{
 	
 	@RequestMapping("/register")
 	@ResponseBody
-	public ViewDTO<RegisterViewDTO> register(String firstName,String lastName,String email,String password){
-		logger.info("Register(" + firstName + "," + lastName + "," + email + "," + password + ")");
+	public ViewDTO<RegisterViewDTO> register(String imei,String firstName,String lastName,String email,String password){
+		logger.info("Register(" + imei + "," + firstName + "," + lastName + "," + email + "," + password + ")");
 		
-		ViewDTO<RegisterViewDTO> view = authService.register(firstName,lastName,email,password);
+		ViewDTO<RegisterViewDTO> view = authService.register(imei,firstName,lastName,email,password);
 		return view;
 	}
 	

@@ -10,7 +10,7 @@ public interface IAuthService {
 
 	ViewDTO<LoginViewDTO> login(String email, String password)throws ServiceException;
 
-	ViewDTO<RegisterViewDTO> register(String firstName, String lastName,
+	ViewDTO<RegisterViewDTO> register(String imei,String firstName, String lastName,
 			String email, String password)throws ServiceException;
 
 	ViewDTO<String> resetPasswordByMail(String email)throws ServiceException;

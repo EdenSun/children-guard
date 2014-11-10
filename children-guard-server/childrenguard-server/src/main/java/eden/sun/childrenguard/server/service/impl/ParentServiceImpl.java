@@ -93,7 +93,7 @@ public class ParentServiceImpl implements IParentService {
 	}
 
 	@Override
-	public ParentViewDTO save(String firstName, String lastName, String email,
+	public ParentViewDTO save(String imei,String firstName, String lastName, String email,
 			String password) throws ServiceException {
 		Date now = new Date();
 		Parent parent = new Parent();
@@ -105,6 +105,7 @@ public class ParentServiceImpl implements IParentService {
 		parent.setLastLoginTime(now);
 		parent.setLastName(lastName);
 		parent.setPassword(password);
+		parent.setImei(imei);
 		
 		int cnt = parentMapper.insert(parent);
 		
