@@ -309,8 +309,22 @@ public class ChildServiceImpl implements IChildService {
 	@Override
 	public ViewDTO<Boolean> saveOrUpdateRegistionId(String imei,
 			String registionId) throws ServiceException {
-		// TODO Auto-generated method stub
-		return null;
+		if( imei == null || registionId == null ){
+			throw new ServiceException("Parameter can not be null.");
+		}
+		
+		Child child = this.getChildByImei(imei);
+		
+		if( child == null ){
+			throw new ServiceException("Child is not exists.");
+		}
+		
+		child.setRegistionId(registionId);
+		childMapper.updateByPrimaryKey(child);
+		
+		ViewDTO<Boolean> view = new ViewDTO<Boolean>();
+		view.setData(true);
+		return view;
 	}
 	
 }

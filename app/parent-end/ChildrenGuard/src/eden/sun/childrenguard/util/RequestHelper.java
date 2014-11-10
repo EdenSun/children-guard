@@ -1,10 +1,8 @@
 package eden.sun.childrenguard.util;
 
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 
-import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.Request.Method;
@@ -24,7 +22,7 @@ public class RequestHelper {
 		Log.i(TAG, "Init RequestHelper.");
 	}
 	
-	public static RequestHelper getInstance(Activity activity) {
+	public static RequestHelper getInstance(Context context) {
 		if (requestHelper == null) {
 			synchronized (RequestHelper.class) {
 				if (requestHelper == null) {
@@ -33,7 +31,7 @@ public class RequestHelper {
 			}
 		}
 
-		requestHelper.mQueue = Volley.newRequestQueue(activity);
+		requestHelper.mQueue = Volley.newRequestQueue(context);
 		return requestHelper;
 	}
 	

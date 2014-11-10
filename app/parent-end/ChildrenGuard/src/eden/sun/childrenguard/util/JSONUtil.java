@@ -61,4 +61,8 @@ public class JSONUtil {
 		return new Gson().fromJson(json, new TypeToken<ViewDTO<Boolean>>(){}.getType());
 	}
 
+	public static ViewDTO<Boolean> getSaveRegistionIdView(String json) {
+		return new Gson().fromJson(json, new TypeToken<ViewDTO<Boolean>>(){}.getType());
+	}
+
 }

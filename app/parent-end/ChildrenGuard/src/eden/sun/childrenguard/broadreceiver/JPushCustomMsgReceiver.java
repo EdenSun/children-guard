@@ -1,5 +1,8 @@
 package eden.sun.childrenguard.broadreceiver;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +10,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 import cn.jpush.android.api.JPushInterface;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
+import eden.sun.childrenguard.server.dto.ViewDTO;
+import eden.sun.childrenguard.util.Config;
+import eden.sun.childrenguard.util.DeviceHelper;
+import eden.sun.childrenguard.util.JSONUtil;
+import eden.sun.childrenguard.util.RequestHelper;
+import eden.sun.childrenguard.util.RequestURLConstants;
 
 public class JPushCustomMsgReceiver extends BroadcastReceiver {
 	private static final String TAG = "JPushCustomMsgReceiver";
@@ -16,7 +29,11 @@ public class JPushCustomMsgReceiver extends BroadcastReceiver {
 		Log.d(TAG, "onReceive - " + intent.getAction());
 
 		if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
-
+			String registionId = JPushInterface.getRegistrationID(context);
+			if( registionId != null ){
+				String imei = DeviceHelper.getIMEI(context);
+				saveRegistionId(context,imei,registionId);
+			}
 		} else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent
 				.getAction())) {
 			Log.d(TAG, "收到了自定义消息。消息内容是："
@@ -39,5 +56,37 @@ public class JPushCustomMsgReceiver extends BroadcastReceiver {
 		} else {
 			Log.d(TAG, "Unhandled intent - " + intent.getAction());
 		}
+	}
+
+	private void saveRegistionId(Context context, String imei,
+			String registionId) {
+		RequestHelper helper = RequestHelper.getInstance(context);	
+		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_SAVE_REGISTION_ID;
+
+		Map<String,String> param = new HashMap<String,String>();
+		param.put("imei", imei);
+		param.put("registionId", registionId);
+		helper.doPost(
+			url,
+			param,
+			new Response.Listener<String>() {
+				@Override
+				public void onResponse(String response) {
+					ViewDTO<Boolean> view = JSONUtil.getSaveRegistionIdView(response);
+			    	
+			    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS)){
+			    		Log.i(TAG, "Save registion id success.");
+			    	}else{
+			    		Log.e(TAG, "Save registion id failure.");
+			    	}
+				}
+			}, 
+			new Response.ErrorListener() {
+				@Override
+				public void onErrorResponse(VolleyError error) {
+					Log.e(TAG, error.getMessage(), error);
+			}
+		});
+		
 	}
 }

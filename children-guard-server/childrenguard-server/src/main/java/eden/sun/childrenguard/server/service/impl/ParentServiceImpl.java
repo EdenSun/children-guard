@@ -166,8 +166,39 @@ public class ParentServiceImpl implements IParentService {
 	@Override
 	public ViewDTO<Boolean> saveOrUpdateRegistionId(String imei,
 			String registionId) throws ServiceException {
-		// TODO Auto-generated method stub
+		if( imei == null || registionId == null ){
+			throw new ServiceException("Parameter can not be null.");
+		}
+		
+		Parent parent = this.getByImei(imei);
+		
+		if( parent == null ){
+			throw new ServiceException("Guardian is not exists.");
+		}
+		
+		parent.setRegistionId(registionId);
+		parentMapper.updateByPrimaryKey(parent);
+		
+		ViewDTO<Boolean> view = new ViewDTO<Boolean>();
+		view.setData(true);
+		return view;
+	}
+
+
+	@Override
+	public Parent getByImei(String imei) throws ServiceException {
+		ParentExample example = new ParentExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andImeiEqualTo(imei);
+		
+		List<Parent> parentList = parentMapper.selectByExample(example);
+	
+		if( parentList != null && parentList.size() > 0 ){
+			Parent parent = parentList.get(0);
+			return parent;
+		}
 		return null;
 	}
+
 
 }

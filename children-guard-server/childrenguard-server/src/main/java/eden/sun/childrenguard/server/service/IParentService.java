@@ -27,5 +27,5 @@ public interface IParentService {
 
 	ViewDTO<Boolean> saveOrUpdateRegistionId(String imei, String registionId)throws ServiceException;
 
-	
+	Parent getByImei(String imei)throws ServiceException;
 }

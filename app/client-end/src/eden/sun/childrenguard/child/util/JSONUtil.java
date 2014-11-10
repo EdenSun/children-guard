@@ -53,6 +53,10 @@ public class JSONUtil {
 	public static ViewDTO<AppViewDTO> getInstallAppView(String json) {
 		return gson.fromJson(json, new TypeToken<ViewDTO<AppViewDTO>>(){}.getType());
 	}
+
+	public static ViewDTO<Boolean> getSaveRegistionIdView(String json) {
+		return gson.fromJson(json, new TypeToken<ViewDTO<Boolean>>(){}.getType());
+	}
 	
 	
 
