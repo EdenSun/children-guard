@@ -11,6 +11,8 @@
     <result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="TIMESTAMP" />
     <result column="ACCESS_TOKEN" property="accessToken" jdbcType="VARCHAR" />
     <result column="RESET_CODE" property="resetCode" jdbcType="VARCHAR" />
+    <result column="IMEI" property="imei" jdbcType="VARCHAR" />
+    <result column="REGISTION_ID" property="registionId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -72,7 +74,7 @@
   </sql>
   <sql id="Base_Column_List" >
     ID, EMAIL, FIRST_NAME, LAST_NAME, PASSWORD, CREATE_TIME, LAST_LOGIN_TIME, ACCESS_TOKEN, 
-    RESET_CODE
+    RESET_CODE, IMEI, REGISTION_ID
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="eden.sun.childrenguard.server.model.generated.ParentExample" >
     select
@@ -110,10 +112,12 @@
     </selectKey>
     insert into tbl_parent (EMAIL, FIRST_NAME, LAST_NAME, 
       PASSWORD, CREATE_TIME, LAST_LOGIN_TIME, 
-      ACCESS_TOKEN, RESET_CODE)
+      ACCESS_TOKEN, RESET_CODE, IMEI, 
+      REGISTION_ID)
     values (#{email,jdbcType=VARCHAR}, #{firstName,jdbcType=VARCHAR}, #{lastName,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastLoginTime,jdbcType=TIMESTAMP}, 
-      #{accessToken,jdbcType=VARCHAR}, #{resetCode,jdbcType=VARCHAR})
+      #{accessToken,jdbcType=VARCHAR}, #{resetCode,jdbcType=VARCHAR}, #{imei,jdbcType=VARCHAR}, 
+      #{registionId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="eden.sun.childrenguard.server.model.generated.Parent" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -145,6 +149,12 @@
       <if test="resetCode != null" >
         RESET_CODE,
       </if>
+      <if test="imei != null" >
+        IMEI,
+      </if>
+      <if test="registionId != null" >
+        REGISTION_ID,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="email != null" >
@@ -170,6 +180,12 @@
       </if>
       <if test="resetCode != null" >
         #{resetCode,jdbcType=VARCHAR},
+      </if>
+      <if test="imei != null" >
+        #{imei,jdbcType=VARCHAR},
+      </if>
+      <if test="registionId != null" >
+        #{registionId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -209,6 +225,12 @@
       <if test="record.resetCode != null" >
         RESET_CODE = #{record.resetCode,jdbcType=VARCHAR},
       </if>
+      <if test="record.imei != null" >
+        IMEI = #{record.imei,jdbcType=VARCHAR},
+      </if>
+      <if test="record.registionId != null" >
+        REGISTION_ID = #{record.registionId,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -224,7 +246,9 @@
       CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
       LAST_LOGIN_TIME = #{record.lastLoginTime,jdbcType=TIMESTAMP},
       ACCESS_TOKEN = #{record.accessToken,jdbcType=VARCHAR},
-      RESET_CODE = #{record.resetCode,jdbcType=VARCHAR}
+      RESET_CODE = #{record.resetCode,jdbcType=VARCHAR},
+      IMEI = #{record.imei,jdbcType=VARCHAR},
+      REGISTION_ID = #{record.registionId,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -256,6 +280,12 @@
       <if test="resetCode != null" >
         RESET_CODE = #{resetCode,jdbcType=VARCHAR},
       </if>
+      <if test="imei != null" >
+        IMEI = #{imei,jdbcType=VARCHAR},
+      </if>
+      <if test="registionId != null" >
+        REGISTION_ID = #{registionId,jdbcType=VARCHAR},
+      </if>
     </set>
     where ID = #{id,jdbcType=INTEGER}
   </update>
@@ -268,7 +298,9 @@
       CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP},
       ACCESS_TOKEN = #{accessToken,jdbcType=VARCHAR},
-      RESET_CODE = #{resetCode,jdbcType=VARCHAR}
+      RESET_CODE = #{resetCode,jdbcType=VARCHAR},
+      IMEI = #{imei,jdbcType=VARCHAR},
+      REGISTION_ID = #{registionId,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=INTEGER}
   </update>
   <select resultMap="BaseResultMap" parameterType="eden.sun.childrenguard.server.model.generated.ParentExample" id="selectByExampleWithRowbounds" >

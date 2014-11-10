@@ -704,6 +704,76 @@ public class ChildExample {
             addCriterion("IMEI not between", value1, value2, "imei");
             return (Criteria) this;
         }
+
+        public Criteria andRegistionIdIsNull() {
+            addCriterion("REGISTION_ID is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegistionIdIsNotNull() {
+            addCriterion("REGISTION_ID is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegistionIdEqualTo(String value) {
+            addCriterion("REGISTION_ID =", value, "registionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegistionIdNotEqualTo(String value) {
+            addCriterion("REGISTION_ID <>", value, "registionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegistionIdGreaterThan(String value) {
+            addCriterion("REGISTION_ID >", value, "registionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegistionIdGreaterThanOrEqualTo(String value) {
+            addCriterion("REGISTION_ID >=", value, "registionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegistionIdLessThan(String value) {
+            addCriterion("REGISTION_ID <", value, "registionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegistionIdLessThanOrEqualTo(String value) {
+            addCriterion("REGISTION_ID <=", value, "registionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegistionIdLike(String value) {
+            addCriterion("REGISTION_ID like", value, "registionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegistionIdNotLike(String value) {
+            addCriterion("REGISTION_ID not like", value, "registionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegistionIdIn(List<String> values) {
+            addCriterion("REGISTION_ID in", values, "registionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegistionIdNotIn(List<String> values) {
+            addCriterion("REGISTION_ID not in", values, "registionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegistionIdBetween(String value1, String value2) {
+            addCriterion("REGISTION_ID between", value1, value2, "registionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegistionIdNotBetween(String value1, String value2) {
+            addCriterion("REGISTION_ID not between", value1, value2, "registionId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

@@ -21,6 +21,8 @@ public class Child {
 
     private String imei;
 
+    private String registionId;
+
     public Integer getId() {
         return id;
     }
@@ -91,5 +93,13 @@ public class Child {
 
     public void setImei(String imei) {
         this.imei = imei == null ? null : imei.trim();
+    }
+
+    public String getRegistionId() {
+        return registionId;
+    }
+
+    public void setRegistionId(String registionId) {
+        this.registionId = registionId == null ? null : registionId.trim();
     }
 }

@@ -21,6 +21,10 @@ public class Parent {
 
     private String resetCode;
 
+    private String imei;
+
+    private String registionId;
+
     public Integer getId() {
         return id;
     }
@@ -91,5 +95,21 @@ public class Parent {
 
     public void setResetCode(String resetCode) {
         this.resetCode = resetCode == null ? null : resetCode.trim();
+    }
+
+    public String getImei() {
+        return imei;
+    }
+
+    public void setImei(String imei) {
+        this.imei = imei == null ? null : imei.trim();
+    }
+
+    public String getRegistionId() {
+        return registionId;
+    }
+
+    public void setRegistionId(String registionId) {
+        this.registionId = registionId == null ? null : registionId.trim();
     }
 }
