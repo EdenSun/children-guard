@@ -9,7 +9,7 @@ import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.service.IAuthService;
 
 @Controller
-@RequestMapping("/reset")
+@RequestMapping("/parent/reset")
 public class ResetPasswordController extends BaseController{
 
 	@Autowired

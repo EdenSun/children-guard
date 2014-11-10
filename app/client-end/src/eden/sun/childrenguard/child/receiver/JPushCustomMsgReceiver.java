@@ -16,6 +16,7 @@ public class JPushCustomMsgReceiver extends BroadcastReceiver {
 		Log.d(TAG, "onReceive - " + intent.getAction());
 
 		if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
+			Log.d(TAG, "JPush register returned - " + intent.getAction());
 
 		} else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent
 				.getAction())) {

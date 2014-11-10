@@ -10,7 +10,7 @@ import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.service.IAuthService;
 
 @Controller
-@RequestMapping("/reg")
+@RequestMapping("/parent/reg")
 public class RegisterController extends BaseController{
 
 	@Autowired

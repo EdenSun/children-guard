@@ -11,7 +11,7 @@ import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.service.IAuthService;
 
 @Controller
-@RequestMapping("/auth")
+@RequestMapping("/parent/auth")
 public class LoginController extends BaseController{
 
 	@Autowired

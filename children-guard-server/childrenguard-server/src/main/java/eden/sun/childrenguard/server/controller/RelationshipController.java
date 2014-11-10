@@ -12,7 +12,7 @@ import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.service.IRelationshipService;
 
 @Controller
-@RequestMapping("/relationship")
+@RequestMapping("/parent/relationship")
 public class RelationshipController extends BaseController{
 
 	@Autowired

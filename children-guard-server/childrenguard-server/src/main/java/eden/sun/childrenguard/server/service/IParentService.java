@@ -1,6 +1,7 @@
 package eden.sun.childrenguard.server.service;
 
 import eden.sun.childrenguard.server.dto.ParentViewDTO;
+import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.exception.ServiceException;
 import eden.sun.childrenguard.server.model.generated.Parent;
 
@@ -23,6 +24,8 @@ public interface IParentService {
 	Parent getByAccessToken(String accessToken)throws ServiceException;
 
 	Parent getById(Integer parentId)throws ServiceException;
+
+	ViewDTO<Boolean> saveOrUpdateRegistionId(String imei, String registionId)throws ServiceException;
 
 	
 }

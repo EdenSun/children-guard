@@ -21,7 +21,7 @@ import eden.sun.childrenguard.server.util.JSONUtil;
 import eden.sun.childrenguard.server.util.NumberUtil;
 
 @Controller
-@RequestMapping("/childrenManage")
+@RequestMapping("/parent/childrenManage")
 public class ChildrenManageController extends BaseController{
 
 	@Autowired

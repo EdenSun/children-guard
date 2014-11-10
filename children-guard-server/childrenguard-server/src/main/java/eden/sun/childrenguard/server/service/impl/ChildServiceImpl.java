@@ -305,5 +305,12 @@ public class ChildServiceImpl implements IChildService {
 	public List<Parent> getParentsByChildId(Integer childId) throws ServiceException {
 		return parentChildService.getParentByChildId(childId);
 	}
+
+	@Override
+	public ViewDTO<Boolean> saveOrUpdateRegistionId(String imei,
+			String registionId) throws ServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

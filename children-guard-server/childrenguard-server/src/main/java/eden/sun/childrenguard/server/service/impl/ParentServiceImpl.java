@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import eden.sun.childrenguard.server.dao.ChildOfParentsMapper;
 import eden.sun.childrenguard.server.dao.generated.ParentMapper;
 import eden.sun.childrenguard.server.dto.ParentViewDTO;
+import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.exception.ServiceException;
 import eden.sun.childrenguard.server.model.generated.Parent;
 import eden.sun.childrenguard.server.model.generated.ParentExample;
@@ -162,5 +163,11 @@ public class ParentServiceImpl implements IParentService {
 	}
 
 
-	
+	@Override
+	public ViewDTO<Boolean> saveOrUpdateRegistionId(String imei,
+			String registionId) throws ServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
