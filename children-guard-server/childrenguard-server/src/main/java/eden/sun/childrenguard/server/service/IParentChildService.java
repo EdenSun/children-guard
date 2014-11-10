@@ -1,6 +1,9 @@
 package eden.sun.childrenguard.server.service;
 
+import java.util.List;
+
 import eden.sun.childrenguard.server.exception.ServiceException;
+import eden.sun.childrenguard.server.model.generated.Parent;
 
 public interface IParentChildService {
 
@@ -9,5 +12,7 @@ public interface IParentChildService {
 	void deleteRelationByChild(Integer childId)throws ServiceException;
 
 	boolean isChildBelongTo(Integer childId, Integer parentId)throws ServiceException;
+
+	List<Parent> getParentByChildId(Integer childId)throws ServiceException;
 
 }

@@ -12,6 +12,7 @@ import eden.sun.childrenguard.server.dao.ChildOfParentsMapper;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.exception.ServiceException;
 import eden.sun.childrenguard.server.model.ChildOfParents;
+import eden.sun.childrenguard.server.model.generated.Parent;
 import eden.sun.childrenguard.server.service.IChildOfParentsService;
 
 @Service

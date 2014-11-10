@@ -39,16 +39,17 @@ public class PackageChangeReceiver extends BroadcastReceiver{
 		/*Log.d(TAG, "Action: " + intent.getAction());
 		Log.d(TAG, "The DATA: " + data);	
 		Log.d(TAG, "Is Replacing: " + replacing);	*/
+		String packageName = data.toString().substring("package:".length());
+		String appName = ApplicationHelper.getAppNameByPackage(context, packageName);
+		
 		if( intent.getAction().equals(ACTION_PACKAGE_ADDED) ){
 			// submit added package 
 			
-			String packageName = data.toString().substring("package:".length());
-			String appName = ApplicationHelper.getAppNameByPackage(context, packageName);
 			onAppInstalled(context,appName,packageName);
 		}else if( intent.getAction().equals(ACTION_PACKAGE_REMOVED) ){
 			// submit removed package
 			
-			onAppUnistalled();
+			onAppUnistalled(context,appName,packageName);
 		}
 	}
 
@@ -85,9 +86,36 @@ public class PackageChangeReceiver extends BroadcastReceiver{
 		
 	}
 
-	private void onAppUnistalled() {
-		// TODO Auto-generated method stub
-		
+	private void onAppUnistalled(final Context context, String appName, String packageName) {
+		RequestHelper helper = RequestHelper.getInstance(context);	
+		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_UNINSTALL_APP;
+
+		String imei = DeviceHelper.getIMEI(context);
+		Map<String,String> param = new HashMap<String,String>();
+		param.put("imei", imei);
+		param.put("appName", appName);
+		param.put("packageName", packageName);
+		helper.doPost(
+			url,
+			param,
+			new Response.Listener<String>() {
+				@Override
+				public void onResponse(String response) {
+					ViewDTO<AppViewDTO> view = JSONUtil.getInstallAppView(response);
+			    	
+			    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS)){
+			    		AppDao appDao = new AppDao(context);
+			    		appDao.delete(view.getData().getId());
+			    	}
+				}
+
+			}, 
+			new Response.ErrorListener() {
+				@Override
+				public void onErrorResponse(VolleyError error) {
+					Log.e(TAG, error.getMessage(), error);
+			}
+		});
 	}
 
 

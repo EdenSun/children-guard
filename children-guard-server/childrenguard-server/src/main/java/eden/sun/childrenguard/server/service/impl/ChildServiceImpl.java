@@ -19,6 +19,7 @@ import eden.sun.childrenguard.server.model.ChildOfParents;
 import eden.sun.childrenguard.server.model.generated.Child;
 import eden.sun.childrenguard.server.model.generated.ChildExample;
 import eden.sun.childrenguard.server.model.generated.ChildExample.Criteria;
+import eden.sun.childrenguard.server.model.generated.Parent;
 import eden.sun.childrenguard.server.service.IChildService;
 import eden.sun.childrenguard.server.service.IParentChildService;
 
@@ -298,6 +299,11 @@ public class ChildServiceImpl implements IChildService {
 			return child;
 		}
 		return null;
+	}
+
+	@Override
+	public List<Parent> getParentsByChildId(Integer childId) throws ServiceException {
+		return parentChildService.getParentByChildId(childId);
 	}
 	
 }

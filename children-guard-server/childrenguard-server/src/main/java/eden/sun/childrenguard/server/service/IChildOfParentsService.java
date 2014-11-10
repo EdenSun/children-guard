@@ -4,6 +4,7 @@ import java.util.List;
 
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.exception.ServiceException;
+import eden.sun.childrenguard.server.model.generated.Parent;
 
 public interface IChildOfParentsService {
 

@@ -19,4 +19,10 @@
     order by CREATE_TIME DESC
  </select>
  
+<select id="getByChildId" resultMap="BaseResultMap" >
+    select * from view_childrenofparents
+    where PARENT_ID = #{parentId}
+    order by CREATE_TIME DESC
+ </select>
+ 
  </mapper>

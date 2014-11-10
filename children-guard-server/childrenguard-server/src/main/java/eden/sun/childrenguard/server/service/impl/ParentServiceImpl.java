@@ -72,6 +72,12 @@ public class ParentServiceImpl implements IParentService {
 	}
 
 
+	@Override
+	public Parent getById(Integer parentId) throws ServiceException {
+		return parentMapper.selectByPrimaryKey(parentId);
+	}
+
+
 	public Parent getByEmail(String email) {
 		ParentExample example = new ParentExample();
 		Criteria criteria = example.createCriteria();

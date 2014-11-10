@@ -1,5 +1,6 @@
 package eden.sun.childrenguard.server.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -8,10 +9,12 @@ import org.springframework.stereotype.Service;
 
 import eden.sun.childrenguard.server.dao.generated.ParentChildMapper;
 import eden.sun.childrenguard.server.exception.ServiceException;
+import eden.sun.childrenguard.server.model.generated.Parent;
 import eden.sun.childrenguard.server.model.generated.ParentChild;
 import eden.sun.childrenguard.server.model.generated.ParentChildExample;
 import eden.sun.childrenguard.server.model.generated.ParentChildExample.Criteria;
 import eden.sun.childrenguard.server.service.IParentChildService;
+import eden.sun.childrenguard.server.service.IParentService;
 import eden.sun.childrenguard.server.service.IRelationshipService;
 
 @Service
@@ -20,6 +23,9 @@ public class ParentChildServiceImpl extends BaseServiceImpl implements IParentCh
 	private ParentChildMapper parentChildMapper;
 	@Autowired
 	private IRelationshipService relationshipService;
+	@Autowired
+	private IParentService parentService;
+	
 	@Override
 	public void addRelationship(Integer parentId, Integer childId,
 			Integer relationshipId) throws ServiceException {
@@ -89,6 +95,26 @@ public class ParentChildServiceImpl extends BaseServiceImpl implements IParentCh
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public List<Parent> getParentByChildId(Integer childId) throws ServiceException {
+		ParentChildExample example = new ParentChildExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andChildIdEqualTo(childId);
+		
+		List<ParentChild> parentChildList = parentChildMapper.selectByExample(example);
+		if( parentChildList == null || parentChildList.size() == 0 ){
+			return null;
+		}
+		List<Parent> parentList = new ArrayList<Parent>();
+		Parent parent = null;
+		for(ParentChild parentChild: parentChildList){
+			parent = parentService.getById(parentChild.getParentId());
+			parentList.add(parent);
+		}
+		
+		return parentList;
 	}
 	
 }

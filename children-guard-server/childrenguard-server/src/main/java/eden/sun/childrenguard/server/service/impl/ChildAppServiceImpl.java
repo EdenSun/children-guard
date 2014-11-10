@@ -10,9 +10,12 @@ import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.UploadApplicationInfoParam;
 import eden.sun.childrenguard.server.exception.ServiceException;
 import eden.sun.childrenguard.server.model.generated.Child;
+import eden.sun.childrenguard.server.model.generated.Parent;
 import eden.sun.childrenguard.server.service.IAppService;
 import eden.sun.childrenguard.server.service.IChildAppService;
+import eden.sun.childrenguard.server.service.IChildOfParentsService;
 import eden.sun.childrenguard.server.service.IChildService;
+import eden.sun.childrenguard.server.service.IJPushService;
 
 @Service
 public class ChildAppServiceImpl implements IChildAppService {
@@ -22,6 +25,12 @@ public class ChildAppServiceImpl implements IChildAppService {
 	
 	@Autowired
 	private IAppService appService;
+	
+	@Autowired
+	private IJPushService jpushService;
+	
+	@Autowired
+	private IChildOfParentsService childOfParentsService;
 	
 	@Override
 	public ViewDTO<AppViewDTO> installApp(String imei,
@@ -45,6 +54,12 @@ public class ChildAppServiceImpl implements IChildAppService {
 		}
 		
 		view.setData(appService.getViewByPackageName(appInfo.getPackageName()));
+		
+		// push uninstall notification messages to parent 
+		String title = "App installed notification";
+		String content = child.getNickname() + " installed app:" + appInfo.getAppName();
+		List<Parent> parentList = childService.getParentsByChildId(child.getId());
+		jpushService.pushMessageToParent(parentList,title,content);
 		return view;
 	}
 
@@ -68,6 +83,13 @@ public class ChildAppServiceImpl implements IChildAppService {
 		appService.deleteApp(child.getId(),appInfo);
 
 		view.setData(true);
+
+		// push uninstall notification messages to parent 
+		String title = "App uninstalled notification";
+		String message = child.getNickname() + " uninstalled app:" + appInfo.getAppName();
+		List<Parent> parentList = childService.getParentsByChildId(child.getId());
+		jpushService.pushMessageToParent(parentList,title,message);
+		
 		return view;
 	}
 

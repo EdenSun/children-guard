@@ -112,12 +112,27 @@ public class AppServiceImpl extends BaseServiceImpl implements IAppService{
 		if( childId == null || appInfo == null ){
 			throw new ServiceException("Parameter can not be null.");
 		}
-		App app = getByPackageName(appInfo.getPackageName());
+		App app = getByChildIdAndPackageName(childId,appInfo.getPackageName());
 		
 		if( app != null ){
 			// app with same package name is exists, delete it
 			appMapper.deleteByPrimaryKey(app.getId());
 		}
+	}
+
+	private App getByChildIdAndPackageName(Integer childId, String packageName) {
+		AppExample example = new AppExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andChildIdEqualTo(childId);
+		criteria.andPackageNameEqualTo(packageName);
+		
+		List<App> appList = appMapper.selectByExample(example);
+	
+		if( appList != null && appList.size() > 0 ){
+			App app = appList.get(0);
+			return app;
+		}
+		return null;
 	}
 
 	@Override

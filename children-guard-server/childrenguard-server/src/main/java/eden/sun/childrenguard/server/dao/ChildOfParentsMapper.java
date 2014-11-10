@@ -10,6 +10,8 @@ public interface ChildOfParentsMapper {
 
     List<ChildOfParents> selectAllByParentId(@Param("parentId") Integer parentId);
 
+	ChildOfParents getByChildId(@Param("childId")Integer childId);
+
 	/*List<ChildOfParents> selectByChildIdAndParentId(@Param("childId")Integer childId,
 			@Param("parentId")Integer parentId);*/
 

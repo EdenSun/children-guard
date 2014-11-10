@@ -7,6 +7,7 @@ import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.ChildAddParam;
 import eden.sun.childrenguard.server.exception.ServiceException;
 import eden.sun.childrenguard.server.model.generated.Child;
+import eden.sun.childrenguard.server.model.generated.Parent;
 
 public interface IChildService {
 
@@ -35,5 +36,7 @@ public interface IChildService {
 	Child getChildByImei(String imei)throws ServiceException;
 
 	ChildViewDTO getChildViewByImei(String imei)throws ServiceException;
+
+	List<Parent> getParentsByChildId(Integer childId)throws ServiceException;
 
 }
