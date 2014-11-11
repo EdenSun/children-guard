@@ -3,6 +3,7 @@ package eden.sun.childrenguard.child.activity;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import eden.sun.childrenguard.child.R;
 import eden.sun.childrenguard.child.db.dao.AppDao;
 import eden.sun.childrenguard.child.db.dao.ChildInfoDao;
 import eden.sun.childrenguard.child.db.dao.ChildSettingDao;
+import eden.sun.childrenguard.child.service.WatchDogService;
 import eden.sun.childrenguard.child.util.Config;
 import eden.sun.childrenguard.child.util.DeviceHelper;
 import eden.sun.childrenguard.child.util.JSONUtil;
@@ -32,11 +34,14 @@ public class MainActivity extends CommonActivity {
 	private ChildInfoDao childInfoDao;
 	private ChildSettingDao childSettingDao;
 	private int syncFinishCnt;
+	private Intent appLockIntent;  
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		startWatchDogService();
+		
 		appDao = new AppDao(this);
 		childInfoDao = new ChildInfoDao(this);
 		childSettingDao = new ChildSettingDao(this);
@@ -48,6 +53,12 @@ public class MainActivity extends CommonActivity {
 		syncChildSettingFromServer();
 		syncAppFromServer();
 		
+	}
+
+	private void startWatchDogService() {
+		appLockIntent = new Intent(this, WatchDogService.class);
+	
+		startService(appLockIntent);
 	}
 
 	private void syncChildSettingFromServer() {

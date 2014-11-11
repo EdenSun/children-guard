@@ -32,6 +32,6 @@ public class ChildInfoController extends BaseController{
 		logger.info("retrieveChildSetting.imei:" + imei);
 		ViewDTO<ChildSettingViewDTO> view = childService.getChildSetting(imei);
 		
-		return view;
+		return null;
 	}
 }

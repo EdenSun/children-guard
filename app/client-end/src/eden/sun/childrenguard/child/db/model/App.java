@@ -9,6 +9,15 @@ public class App {
     
     private String packageName;
 
+	public App() {
+		super();
+	}
+
+	public App(String packageName) {
+		super();
+		this.packageName = packageName;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -46,5 +55,31 @@ public class App {
 		return "App [id=" + id + ", name=" + name + ", lockStatus="
 				+ lockStatus + ", packageName=" + packageName + "]";
 	}
-    
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((packageName == null) ? 0 : packageName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		App other = (App) obj;
+		if (packageName == null) {
+			if (other.packageName != null)
+				return false;
+		} else if (!packageName.equals(other.packageName))
+			return false;
+		return true;
+	}
+	
 }

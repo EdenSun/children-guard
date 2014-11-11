@@ -184,5 +184,37 @@ public class AppDao extends BaseDao{
 			this.update(appView);
 		}
 	}
-	
+
+	public List<App> listLockedApp() {
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		if ( db != null && db.isOpen() ) {
+			App app = null;
+			Cursor cursor = db.rawQuery("select ID,NAME,PACKAGE_NAME,LOCK_STATUS from TBL_APP where LOCK_STATUS='true' order by NAME asc",new String[]{});
+			List<App> appList = new ArrayList<App>();
+			
+			while(cursor.moveToNext()) { 
+				app = new App();
+			    int id = cursor.getInt(0);
+			    String name = cursor.getString(1);
+			    String packageName = cursor.getString(2);
+			    String lockStatus = cursor.getString(3);//获取第三列的值 
+			
+			    app.setId(id);
+			    app.setName(name);
+			    app.setPackageName(packageName);
+			    if( lockStatus != null && lockStatus.equals("true")){
+			    	app.setLockStatus(true);
+			    }else{
+			    	app.setLockStatus(false);
+			    }
+			    appList.add(app);
+			} 
+			
+			cursor.close();
+			db.close();
+			return appList;
+		}
+		return null;
+	}
+
 }
