@@ -11,5 +11,7 @@ public class RequestURLConstants {
 	public static final String URL_INSTALL_APP = "app/child/app/installApp";
 	public static final String URL_UNINSTALL_APP = "app/child/app/uninstallApp";
 	public static final String URL_SAVE_REGISTION_ID = "/child/push/saveRegistionId";
+	public static final String URL_RETRIEVE_CHID_INFO = "app/child/childinfo/retrieveChildInfo";
+	public static final String URL_RETRIEVE_CHID_SETTING = "app/child/childinfo/retrieveChildSetting";
 	
 }

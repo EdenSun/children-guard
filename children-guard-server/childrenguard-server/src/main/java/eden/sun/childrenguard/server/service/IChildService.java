@@ -2,6 +2,8 @@ package eden.sun.childrenguard.server.service;
 
 import java.util.List;
 
+import eden.sun.childrenguard.server.dto.ChildInfoViewDTO;
+import eden.sun.childrenguard.server.dto.ChildSettingViewDTO;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.ChildAddParam;
@@ -40,5 +42,9 @@ public interface IChildService {
 	List<Parent> getParentsByChildId(Integer childId)throws ServiceException;
 
 	ViewDTO<Boolean> saveOrUpdateRegistionId(String imei, String registionId)throws ServiceException;
+
+	ViewDTO<ChildInfoViewDTO> getChildInfo(String imei)throws ServiceException;
+
+	ViewDTO<ChildSettingViewDTO> getChildSetting(String imei)throws ServiceException;
 
 }

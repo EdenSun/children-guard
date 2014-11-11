@@ -116,4 +116,11 @@ public class ChildSettingServiceImpl implements IChildSettingService {
 		
 	}
 
+
+	@Override
+	public ChildSetting getById(Integer childSettingId) throws ServiceException {
+		ChildSetting childSetting = childSettingMapper.selectByPrimaryKey(childSettingId);
+		return childSetting;
+	}
+
 }

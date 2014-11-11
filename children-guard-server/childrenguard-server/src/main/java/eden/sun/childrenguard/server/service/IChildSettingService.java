@@ -18,4 +18,6 @@ public interface IChildSettingService {
 	void updateChildSetting(Integer settingId,
 			List<MoreSettingParam> moreSettingList)throws ServiceException;
 
+	ChildSetting getById(Integer id)throws ServiceException;
+
 }

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import eden.sun.childrenguard.server.dao.ChildOfParentsMapper;
 import eden.sun.childrenguard.server.dao.generated.ChildMapper;
+import eden.sun.childrenguard.server.dto.ChildInfoViewDTO;
+import eden.sun.childrenguard.server.dto.ChildSettingViewDTO;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.ChildAddParam;
@@ -19,8 +21,12 @@ import eden.sun.childrenguard.server.model.ChildOfParents;
 import eden.sun.childrenguard.server.model.generated.Child;
 import eden.sun.childrenguard.server.model.generated.ChildExample;
 import eden.sun.childrenguard.server.model.generated.ChildExample.Criteria;
+import eden.sun.childrenguard.server.model.generated.ChildExtraInfo;
+import eden.sun.childrenguard.server.model.generated.ChildSetting;
 import eden.sun.childrenguard.server.model.generated.Parent;
+import eden.sun.childrenguard.server.service.IChildExtraInfoService;
 import eden.sun.childrenguard.server.service.IChildService;
+import eden.sun.childrenguard.server.service.IChildSettingService;
 import eden.sun.childrenguard.server.service.IParentChildService;
 
 @Service
@@ -31,6 +37,10 @@ public class ChildServiceImpl implements IChildService {
 	private ChildOfParentsMapper childOfParentsMapper;
 	@Autowired
 	private IParentChildService parentChildService;
+	@Autowired
+	private IChildExtraInfoService childExtraInfoService;
+	@Autowired
+	private IChildSettingService childSettingService;
 	
 	@Override
 	public ViewDTO<List<ChildViewDTO>> listAllViewByParentId(Integer parentId)
@@ -325,6 +335,55 @@ public class ChildServiceImpl implements IChildService {
 		ViewDTO<Boolean> view = new ViewDTO<Boolean>();
 		view.setData(true);
 		return view;
+	}
+
+	@Override
+	public ViewDTO<ChildInfoViewDTO> getChildInfo(String imei)
+			throws ServiceException {
+		if( imei == null ){
+			throw new ServiceException("Parameter can not be null.");
+		}
+		ViewDTO<ChildInfoViewDTO> view = new ViewDTO<ChildInfoViewDTO>();
+
+		Child child = this.getChildByImei(imei);
+		if( child == null ){
+			view.setMsg(ViewDTO.MSG_ERROR);
+			view.setInfo("Person is not exists.");
+			return view;
+		}
+		ChildInfoViewDTO childInfo = new ChildInfoViewDTO();
+		BeanUtils.copyProperties(child, childInfo);
+		
+		ChildExtraInfo childExtraInfo = childExtraInfoService.getById(child.getId());
+		BeanUtils.copyProperties(childExtraInfo, childInfo);
+		
+		view.setData(childInfo);
+		return view;
+	}
+
+	@Override
+	public ViewDTO<ChildSettingViewDTO> getChildSetting(String imei)
+			throws ServiceException {
+		if( imei == null ){
+			throw new ServiceException("Parameter can not be null.");
+		}
+		ViewDTO<ChildSettingViewDTO> view = new ViewDTO<ChildSettingViewDTO>();
+
+		Child child = this.getChildByImei(imei);
+		if( child == null ){
+			view.setMsg(ViewDTO.MSG_ERROR);
+			view.setInfo("Person is not exists.");
+			return view;
+		}
+		
+		ChildSettingViewDTO childSettingView = new ChildSettingViewDTO();
+		
+		ChildSetting childSetting = childSettingService.getById(child.getId());
+		BeanUtils.copyProperties(childSetting, childSettingView);
+		
+		view.setData(childSettingView);
+		return view;
+		
 	}
 	
 }
