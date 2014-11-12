@@ -30,14 +30,14 @@ public class ChildSettingDao extends BaseDao{
 		        ContentValues cv = new ContentValues();  
 		        
 		        cv.put("ID",  settingView.getId());
-		        cv.put("LOCK_CALL_SWITCH",  settingView.getLockCallsSwitch());
-		        cv.put("LOCK_TEXT_MESSAGE_SWITCH",  settingView.getLockTextMessageSwitch());
-		        cv.put("WIFI_ONLY_SWITCH",  settingView.getWifiOnlySwitch());
-		        cv.put("NEW_APP_NOTIFICATION_SWITCH",  settingView.getNewAppNotificationSwitch());
-		        cv.put("UNINSTALL_APP_NOTIFICATION_SWITCH",  settingView.getUninstallAppNotificationSwitch());
-		        cv.put("SPEEDING_NOTIFICATION_SWITCH",  settingView.getSpeedingNotificationSwitch());
+		        cv.put("LOCK_CALL_SWITCH",  settingView.getLockCallsSwitch()==null?"false":settingView.getLockCallsSwitch().toString() );
+		        cv.put("LOCK_TEXT_MESSAGE_SWITCH",  settingView.getLockTextMessageSwitch()==null?"false":settingView.getLockTextMessageSwitch().toString() );
+		        cv.put("WIFI_ONLY_SWITCH",  settingView.getWifiOnlySwitch()==null?"false":settingView.getWifiOnlySwitch().toString());
+		        cv.put("NEW_APP_NOTIFICATION_SWITCH",  settingView.getNewAppNotificationSwitch()==null?"false":settingView.getNewAppNotificationSwitch().toString());
+		        cv.put("UNINSTALL_APP_NOTIFICATION_SWITCH",  settingView.getUninstallAppNotificationSwitch()==null?"false":settingView.getUninstallAppNotificationSwitch().toString());
+		        cv.put("SPEEDING_NOTIFICATION_SWITCH",  settingView.getSpeedingNotificationSwitch()==null?"false":settingView.getSpeedingNotificationSwitch().toString());
 		        cv.put("SPEEDING_LIMIT",  settingView.getSpeedingLimit());
-		        cv.put("APP_LOCK_UNLOCK_NOTIFICATION",  settingView.getAppLockUnlockNotificationSwitch());
+		        cv.put("APP_LOCK_UNLOCK_NOTIFICATION",  settingView.getAppLockUnlockNotificationSwitch()==null?"false":settingView.getAppLockUnlockNotificationSwitch().toString());
 		        cv.put("APP_LOCK_PASSWORD",  settingView.getAppLockPassword());
 		        
 		        db.insert(TABLE_NAME, null, cv);  
@@ -245,4 +245,7 @@ public class ChildSettingDao extends BaseDao{
 			this.update(childSettingView);
 		}
 	}
+
+	
+	
 }

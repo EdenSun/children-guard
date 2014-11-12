@@ -24,11 +24,12 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
- <!-- since 1.6.0 -->
+    <!-- since 1.6.0 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
 
     <application
         android:allowBackup="true"
@@ -64,15 +65,14 @@
         </activity>
         <activity
             android:name=".activity.AppPasswordActivity"
-            android:label="@string/title_activity_app_password" 
+            android:label="@string/title_activity_app_password"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity
             android:name=".activity.ActivationActivity"
-            android:theme="@android:style/Theme.NoTitleBar"  
-            android:windowSoftInputMode="adjustResize">
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="adjustResize" >
         </activity>
-        
 
         <!-- Required -->
         <service
@@ -92,13 +92,14 @@
             android:name="cn.jpush.android.service.PushReceiver"
             android:enabled="true" >
             <intent-filter android:priority="1000" >
- <!-- since 1.3.5 -->
+
+                <!-- since 1.3.5 -->
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
- <!-- since 1.3.5 -->
+                <!-- since 1.3.5 -->
                 <category android:name="eden.sun.childrenguard.child" />
- <!-- since 1.3.5 -->
+                <!-- since 1.3.5 -->
             </intent-filter>
- <!-- since 1.3.5 -->
+            <!-- since 1.3.5 -->
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -146,7 +147,7 @@
             android:value="f7196716f406e7911af46e9c" />
 
         <receiver
-            android:name="eden.sun.childrenguard.child.receiver.JPushCustomMsgReceiver"
+            android:name=".receiver.JPushCustomMsgReceiver"
             android:enabled="true" >
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.REGISTRATION" />
@@ -159,22 +160,25 @@
         </receiver>
 
         <activity
-            android:name="eden.sun.childrenguard.child.activity.MainActivity"
-            android:label="@string/title_activity_main" 
+            android:name=".activity.MainActivity"
+            android:label="@string/title_activity_main"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
-        
-        
-        <receiver 
-            android:name="eden.sun.childrenguard.child.receiver.PackageChangeReceiver">
+
+        <receiver android:name=".receiver.PackageChangeReceiver" >
             <intent-filter>
-				<action android:name="android.intent.action.PACKAGE_ADDED"/>
-				<!-- <action android:name="android.intent.action.PACKAGE_REPLACED"/> -->
-				<action android:name="android.intent.action.PACKAGE_REMOVED"/>
-				<data android:scheme="package"/>
-		    </intent-filter>
-            
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <!-- <action android:name="android.intent.action.PACKAGE_REPLACED"/> -->
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
         </receiver>
+
+        <activity
+            android:name="eden.sun.childrenguard.child.activity.AbortCallActivity"
+            android:label="@string/title_activity_abort_call" >
+        </activity>
     </application>
 
 </manifest>

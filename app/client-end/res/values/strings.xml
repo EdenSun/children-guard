@@ -8,6 +8,6 @@
     <string name="title_activity_app_status">App lock/unlock status</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_activation">MainActivity</string>
-    
+    <string name="title_activity_abort_call">AbortCallActivity</string>
 
 </resources>

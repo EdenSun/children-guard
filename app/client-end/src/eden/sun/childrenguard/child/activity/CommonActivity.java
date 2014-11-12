@@ -6,13 +6,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import eden.sun.childrenguard.child.util.Constants;
 import eden.sun.childrenguard.child.util.RequestHelper;
 import eden.sun.childrenguard.child.util.ShareDataKey;
 
 public class CommonActivity extends Activity {
 	protected ProgressDialog progress;
 	//protected Runtime runtime;
-	private static final String PREFS_NAME = "share-data";
 	private SharedPreferences settings ;  
 	
 	public CommonActivity() {
@@ -50,7 +50,7 @@ public class CommonActivity extends Activity {
 
 	private void initSharedPreferences(){
 		if( settings == null ){
-			settings = getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE);
+			settings = getSharedPreferences(Constants.PREFS_NAME, Activity.MODE_PRIVATE);
 		}
 	}
 	
