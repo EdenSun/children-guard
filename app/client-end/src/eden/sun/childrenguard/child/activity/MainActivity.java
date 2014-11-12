@@ -3,10 +3,15 @@ package eden.sun.childrenguard.child.activity;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -34,7 +39,26 @@ public class MainActivity extends CommonActivity {
 	private ChildInfoDao childInfoDao;
 	private ChildSettingDao childSettingDao;
 	private int syncFinishCnt;
-	private Intent appLockIntent;  
+	private Intent appLockIntent; 
+	private WatchDogService watchDogService;
+	
+	private ServiceConnection mConnection = new ServiceConnection() {
+		Context context = MainActivity.this;
+		public void onServiceConnected(ComponentName className, IBinder service) {
+			watchDogService = ((WatchDogService.LocalBinder) service).getService();
+
+			Toast.makeText(context,
+					"watch dog service connected", Toast.LENGTH_SHORT)
+					.show();
+		}
+
+		public void onServiceDisconnected(ComponentName className) {
+			watchDogService = null;
+			Toast.makeText(context,
+					"watch dog service disconnected", Toast.LENGTH_SHORT)
+					.show();
+		}
+	};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +83,12 @@ public class MainActivity extends CommonActivity {
 		appLockIntent = new Intent(this, WatchDogService.class);
 	
 		startService(appLockIntent);
+		bindWatchDogService();
+	}
+	
+	public void bindWatchDogService() {
+        bindService(new Intent(this,    
+                        WatchDogService.class), mConnection, Context.BIND_AUTO_CREATE); 
 	}
 
 	private void syncChildSettingFromServer() {
@@ -80,9 +110,9 @@ public class MainActivity extends CommonActivity {
 			    			ChildSettingViewDTO childSettingView = view.getData();
 
 			    			childSettingDao.addOrUpdate(childSettingView);
-			    			syncFinished();
 			    		}
 			    		
+			    		syncFinished();
 			    	}else{
 			    		AlertDialog.Builder dialog = UIUtil.getErrorDialog(MainActivity.this,view.getInfo());
 			    		
@@ -122,9 +152,8 @@ public class MainActivity extends CommonActivity {
 			    			ChildInfoViewDTO childInfoView = view.getData();
 
 			    			childInfoDao.addOrUpdate(childInfoView);
-			    			
-			    			syncFinished();
 			    		}
+			    		syncFinished();
 			    		
 			    	}else{
 			    		AlertDialog.Builder dialog = UIUtil.getErrorDialog(MainActivity.this,view.getInfo());
@@ -166,9 +195,12 @@ public class MainActivity extends CommonActivity {
 
 			    			appDao.clearAll();
 			    			appDao.batchAdd(appList);
-			    			syncFinished();
+			    			
+			    			//init locked app list in watch dog service
+			    			watchDogService.initAppData();
 			    		}
 			    		
+			    		syncFinished();
 			    	}else{
 			    		AlertDialog.Builder dialog = UIUtil.getErrorDialog(MainActivity.this,view.getInfo());
 			    		

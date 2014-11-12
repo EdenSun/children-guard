@@ -67,8 +67,7 @@ public class AppPasswordActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				
+				AppPasswordActivity.this.finish();
 			}
 			
 		});		

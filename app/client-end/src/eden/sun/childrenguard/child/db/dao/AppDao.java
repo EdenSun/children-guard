@@ -31,7 +31,7 @@ public class AppDao extends BaseDao{
 		        cv.put("ID",  appView.getId());  
 		        cv.put("NAME", appView.getName());  
 		        cv.put("PACKAGE_NAME", appView.getPackageName());  
-		        cv.put("LOCK_STATUS", appView.getLockStatus());  
+		        cv.put("LOCK_STATUS", appView.getLockStatus()==null? "false": appView.getLockStatus().toString());  
 		        db.insert("TBL_APP", null, cv);  
 			}
 			
@@ -164,7 +164,6 @@ public class AppDao extends BaseDao{
 			    	app.setLockStatus(false);
 			    }
 			    appList.add(app);
-			    Log.d(TAG, app.toString());
 			} 
 			
 			cursor.close();
@@ -207,6 +206,8 @@ public class AppDao extends BaseDao{
 			    }else{
 			    	app.setLockStatus(false);
 			    }
+			    
+			    Log.d(TAG, app.toString());
 			    appList.add(app);
 			} 
 			

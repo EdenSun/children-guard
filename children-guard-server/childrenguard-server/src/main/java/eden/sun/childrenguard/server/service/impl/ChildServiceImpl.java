@@ -30,7 +30,7 @@ import eden.sun.childrenguard.server.service.IChildSettingService;
 import eden.sun.childrenguard.server.service.IParentChildService;
 
 @Service
-public class ChildServiceImpl implements IChildService {
+public class ChildServiceImpl extends BaseServiceImpl implements IChildService {
 	@Autowired
 	private ChildMapper childMapper;
 	@Autowired
@@ -346,17 +346,21 @@ public class ChildServiceImpl implements IChildService {
 		ViewDTO<ChildInfoViewDTO> view = new ViewDTO<ChildInfoViewDTO>();
 
 		Child child = this.getChildByImei(imei);
+		
 		if( child == null ){
 			view.setMsg(ViewDTO.MSG_ERROR);
 			view.setInfo("Person is not exists.");
 			return view;
 		}
+		
 		ChildInfoViewDTO childInfo = new ChildInfoViewDTO();
 		BeanUtils.copyProperties(child, childInfo);
 		
 		ChildExtraInfo childExtraInfo = childExtraInfoService.getById(child.getId());
-		BeanUtils.copyProperties(childExtraInfo, childInfo);
-		
+		if( childExtraInfo != null ){
+			BeanUtils.copyProperties(childExtraInfo, childInfo);
+		}
+
 		view.setData(childInfo);
 		return view;
 	}
@@ -379,9 +383,11 @@ public class ChildServiceImpl implements IChildService {
 		ChildSettingViewDTO childSettingView = new ChildSettingViewDTO();
 		
 		ChildSetting childSetting = childSettingService.getById(child.getId());
-		BeanUtils.copyProperties(childSetting, childSettingView);
+		if( childSetting != null ){
+			BeanUtils.copyProperties(childSetting, childSettingView);
+			view.setData(childSettingView);
+		}
 		
-		view.setData(childSettingView);
 		return view;
 		
 	}

@@ -48,6 +48,8 @@
 
         <service android:name=".service.MainService" >
         </service>
+        <service android:name=".service.WatchDogService" >
+        </service>
 
         <receiver android:name=".receiver.BootBroadCast" >
             <intent-filter>

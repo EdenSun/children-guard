@@ -6,6 +6,7 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.IBinder;
 import eden.sun.childrenguard.child.activity.AppPasswordActivity;
 import eden.sun.childrenguard.child.db.dao.AppDao;
@@ -17,11 +18,12 @@ public class WatchDogService extends Service{
     private ActivityManager activityManager;  
     private Intent intent;  
     private boolean flag = true;  
+    private LocalBinder binder = new LocalBinder();
   
     @Override  
     public IBinder onBind(Intent intent)  
     {  
-        return null;  
+        return binder;  
     }  
   
     @Override  
@@ -71,7 +73,7 @@ public class WatchDogService extends Service{
         }.start();  
     }  
   
-    private void initAppData() {
+    public void initAppData() {
     	dao = new AppDao(this);  
         
         appList = dao.listLockedApp();
@@ -83,4 +85,10 @@ public class WatchDogService extends Service{
         super.onDestroy();  
         flag = false;  
     }  
+	
+	public class LocalBinder extends Binder {
+		public WatchDogService getService() {
+			return WatchDogService.this;
+		}
+	}
 }
