@@ -6,7 +6,7 @@
 
 <generatorConfiguration>
 	<!--数据库驱动jar -->
-	<classPathEntry location="G:\githubProject\children-guard\children-guard-server\mybatis-generator\mysql-connector-java-5.1.26.jar" />
+	<classPathEntry location="D:\githubWorkspace\children-guard\children-guard-server\mybatis-generator\mysql-connector-java-5.1.26.jar" />
 	
 	<context id="DB2Tables" targetRuntime="MyBatis3">
 		<plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>
@@ -67,12 +67,10 @@
 		</table>
 		
 		<table tableName="tbl_child_extra_info" domainObjectName="ChildExtraInfo">
-			<generatedKey column="ID" sqlStatement="MySql" identity="true"/>
 		</table>
 		
 		
 		<table tableName="tbl_child_setting" domainObjectName="ChildSetting">
-			<generatedKey column="ID" sqlStatement="MySql" identity="true"/>
 		</table>
 		
 		<table tableName="tbl_emergency_contacts" domainObjectName="EmergencyContacts">
