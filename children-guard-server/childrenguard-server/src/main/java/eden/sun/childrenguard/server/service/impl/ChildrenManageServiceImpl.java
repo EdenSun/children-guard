@@ -12,6 +12,7 @@ import eden.sun.childrenguard.server.exception.ServiceException;
 import eden.sun.childrenguard.server.model.generated.Parent;
 import eden.sun.childrenguard.server.service.IChildOfParentsService;
 import eden.sun.childrenguard.server.service.IChildService;
+import eden.sun.childrenguard.server.service.IChildSettingService;
 import eden.sun.childrenguard.server.service.IChildrenManageService;
 import eden.sun.childrenguard.server.service.IParentChildService;
 import eden.sun.childrenguard.server.service.IParentService;
@@ -26,6 +27,10 @@ public class ChildrenManageServiceImpl implements IChildrenManageService{
 	private IChildOfParentsService childOfParentsService;
 	@Autowired
 	private IParentChildService parentChildService;
+	
+	@Autowired
+	private IChildSettingService childSettingService;
+	
 	@Override
 	public ViewDTO<List<ChildViewDTO>> listChildrenByParentAccessToken(
 			String accessToken) throws ServiceException {
@@ -69,6 +74,11 @@ public class ChildrenManageServiceImpl implements IChildrenManageService{
 				view.setInfo("Add person failure.Please try later.");
 				return view;
 			}
+			
+			/* cond: add child success
+			 * then add child setting
+			 */
+			childSettingService.addIfNotExists(childViewDTO.getId());
 		}
 		
 		//add relationship

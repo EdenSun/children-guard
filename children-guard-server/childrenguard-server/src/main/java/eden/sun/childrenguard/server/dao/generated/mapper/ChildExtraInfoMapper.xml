@@ -104,22 +104,21 @@
     </if>
   </delete>
   <insert id="insert" parameterType="eden.sun.childrenguard.server.model.generated.ChildExtraInfo" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into tbl_child_extra_info (LONGITUDE, LATITUDE, LOCATION_UPDATE_TIME, 
-      SPEED, SPEED_UPDATE_TIME, NETWORK_TRAFFIC_USED, 
-      NETWORK_TRAFFIC_UPDATE_TIME)
-    values (#{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE}, #{locationUpdateTime,jdbcType=TIMESTAMP}, 
-      #{speed,jdbcType=DOUBLE}, #{speedUpdateTime,jdbcType=TIMESTAMP}, #{networkTrafficUsed,jdbcType=DOUBLE}, 
-      #{networkTrafficUpdateTime,jdbcType=TIMESTAMP})
+    insert into tbl_child_extra_info (ID, LONGITUDE, LATITUDE, 
+      LOCATION_UPDATE_TIME, SPEED, SPEED_UPDATE_TIME, 
+      NETWORK_TRAFFIC_USED, NETWORK_TRAFFIC_UPDATE_TIME
+      )
+    values (#{id,jdbcType=INTEGER}, #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE}, 
+      #{locationUpdateTime,jdbcType=TIMESTAMP}, #{speed,jdbcType=DOUBLE}, #{speedUpdateTime,jdbcType=TIMESTAMP}, 
+      #{networkTrafficUsed,jdbcType=DOUBLE}, #{networkTrafficUpdateTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="eden.sun.childrenguard.server.model.generated.ChildExtraInfo" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into tbl_child_extra_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
       <if test="longitude != null" >
         LONGITUDE,
       </if>
@@ -143,6 +142,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
       <if test="longitude != null" >
         #{longitude,jdbcType=DOUBLE},
       </if>

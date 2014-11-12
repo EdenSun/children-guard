@@ -88,6 +88,26 @@ public class UIUtil {
 		);
 		return dialog;
 	}
+	
+	public static Builder getServerErrorDialog(Activity context) {
+		String title = "Error";
+		String msg = "Server error,please try later.";
+		String btnText = "OK";
+		
+		AlertDialog.Builder dialog = getAlertDialogWithOneBtn(
+			context,
+			title,
+			msg,
+			btnText,
+			new DialogInterface.OnClickListener() {
+	            @Override
+	            public void onClick(DialogInterface dialog, int which) {
+	            	dialog.dismiss();
+	            }
+	        }
+		);
+		return dialog;
+	}
 
 
 	public static Builder getLegalInfoDialog(Activity context, String legalInfo) {

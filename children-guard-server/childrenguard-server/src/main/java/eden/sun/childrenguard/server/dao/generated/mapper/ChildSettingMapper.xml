@@ -107,26 +107,23 @@
     </if>
   </delete>
   <insert id="insert" parameterType="eden.sun.childrenguard.server.model.generated.ChildSetting" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into tbl_child_setting (LOCK_CALLS_SWITCH, LOCK_TEXT_MESSAGE_SWITCH, WIFI_ONLY_SWITCH, 
-      NEW_APP_NOTIFICATION_SWITCH, UNINSTALL_APP_NOTIFICATION_SWITCH, 
+    insert into tbl_child_setting (ID, LOCK_CALLS_SWITCH, LOCK_TEXT_MESSAGE_SWITCH, 
+      WIFI_ONLY_SWITCH, NEW_APP_NOTIFICATION_SWITCH, UNINSTALL_APP_NOTIFICATION_SWITCH, 
       SPEEDING_NOTIFICATION_SWITCH, SPEEDING_LIMIT, 
       APP_LOCK_UNLOCK_NOTIFICATION_SWITCH, APP_LOCK_PASSWORD
       )
-    values (#{lockCallsSwitch,jdbcType=BIT}, #{lockTextMessageSwitch,jdbcType=BIT}, #{wifiOnlySwitch,jdbcType=BIT}, 
-      #{newAppNotificationSwitch,jdbcType=BIT}, #{uninstallAppNotificationSwitch,jdbcType=BIT}, 
+    values (#{id,jdbcType=INTEGER}, #{lockCallsSwitch,jdbcType=BIT}, #{lockTextMessageSwitch,jdbcType=BIT}, 
+      #{wifiOnlySwitch,jdbcType=BIT}, #{newAppNotificationSwitch,jdbcType=BIT}, #{uninstallAppNotificationSwitch,jdbcType=BIT}, 
       #{speedingNotificationSwitch,jdbcType=BIT}, #{speedingLimit,jdbcType=INTEGER}, 
       #{appLockUnlockNotificationSwitch,jdbcType=BIT}, #{appLockPassword,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="eden.sun.childrenguard.server.model.generated.ChildSetting" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into tbl_child_setting
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
       <if test="lockCallsSwitch != null" >
         LOCK_CALLS_SWITCH,
       </if>
@@ -156,6 +153,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
       <if test="lockCallsSwitch != null" >
         #{lockCallsSwitch,jdbcType=BIT},
       </if>

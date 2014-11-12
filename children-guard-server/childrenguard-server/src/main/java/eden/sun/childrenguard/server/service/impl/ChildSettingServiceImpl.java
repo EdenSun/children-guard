@@ -13,10 +13,11 @@ import eden.sun.childrenguard.server.exception.ServiceException;
 import eden.sun.childrenguard.server.model.generated.ChildSetting;
 import eden.sun.childrenguard.server.service.IChildSettingService;
 import eden.sun.childrenguard.server.util.ChildMoreSettingItemTypeConstants;
+import eden.sun.childrenguard.server.util.Constants;
 import eden.sun.childrenguard.server.util.NumberUtil;
 
 @Service
-public class ChildSettingServiceImpl implements IChildSettingService {
+public class ChildSettingServiceImpl extends BaseServiceImpl implements IChildSettingService {
 	@Autowired
 	ChildSettingMapper childSettingMapper;
 	
@@ -31,6 +32,7 @@ public class ChildSettingServiceImpl implements IChildSettingService {
 			Integer childSettingId = childId;
 			childSetting = initChildSetting(childSettingId);
 			
+			logger.info(childSetting);
 			childSettingMapper.insert(childSetting);
 		}
 		
@@ -48,8 +50,7 @@ public class ChildSettingServiceImpl implements IChildSettingService {
 		childSetting.setSpeedingNotificationSwitch(false);
 		childSetting.setUninstallAppNotificationSwitch(false);
 		childSetting.setWifiOnlySwitch(false);
-		
-		childSettingMapper.insert(childSetting);
+		childSetting.setAppLockPassword(Constants.APP_LOCK_DEFAULT_PASSWORD);
 		return childSetting;
 	}
 

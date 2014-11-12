@@ -1,5 +1,6 @@
 package eden.sun.childrenguard.child.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ActivityManager;
@@ -15,6 +16,7 @@ import eden.sun.childrenguard.child.db.model.App;
 public class WatchDogService extends Service{
 	private AppDao dao;  
 	private List<App> appList; 
+	private List<App> unlockedAppList;
     private ActivityManager activityManager;  
     private Intent intent;  
     private boolean flag = true;  
@@ -38,7 +40,7 @@ public class WatchDogService extends Service{
         intent = new Intent(this, AppPasswordActivity.class);  
         
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);  
-  
+        
         new Thread()  
         {  
             public void run()  
@@ -53,7 +55,7 @@ public class WatchDogService extends Service{
                                 .get(0);  
                         String packageName = runningTaskInfo.topActivity  
                                 .getPackageName();  
-                        if( appList.contains(new App(packageName)) )  
+                        if( appList.contains(new App(packageName)) && !unlockedAppList.contains(new App(packageName)) )  
                         {  
                             intent.putExtra("packageName", packageName);  
                             startActivity(intent);  
@@ -75,10 +77,20 @@ public class WatchDogService extends Service{
   
     public void initAppData() {
     	dao = new AppDao(this);  
-        
         appList = dao.listLockedApp();
+        
+        unlockedAppList = new ArrayList<App>();
 	}
 
+    public void unlockApp(String packageName){
+    	if( unlockedAppList == null ){
+    		unlockedAppList = new ArrayList<App>();
+    	}
+    	
+    	App app = appList.get(appList.indexOf(new App(packageName)));
+    	unlockedAppList.add(app);
+    }
+    
 	@Override  
     public void onDestroy()  
     {  

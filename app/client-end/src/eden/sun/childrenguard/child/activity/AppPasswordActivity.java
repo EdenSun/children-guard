@@ -1,9 +1,14 @@
 package eden.sun.childrenguard.child.activity;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.ApplicationInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -15,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import eden.sun.childrenguard.child.R;
 import eden.sun.childrenguard.child.db.dao.ChildSettingDao;
+import eden.sun.childrenguard.child.service.WatchDogService;
 import eden.sun.childrenguard.child.util.UIUtil;
 
 public class AppPasswordActivity extends Activity {
@@ -25,11 +31,31 @@ public class AppPasswordActivity extends Activity {
     private ChildSettingDao childSettingDao;
     private ImageView appIconImageView;
     private TextView appNameTextView;
-    
+	private WatchDogService watchDogService;
+    private ServiceConnection mConnection = new ServiceConnection() {
+		Context context = AppPasswordActivity.this;
+		public void onServiceConnected(ComponentName className, IBinder service) {
+			watchDogService = ((WatchDogService.LocalBinder) service).getService();
+
+			Toast.makeText(context,
+					"watch dog service connected", Toast.LENGTH_SHORT)
+					.show();
+		}
+
+		public void onServiceDisconnected(ComponentName className) {
+			watchDogService = null;
+			Toast.makeText(context,
+					"watch dog service disconnected", Toast.LENGTH_SHORT)
+					.show();
+		}
+	};
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_app_password);
+		startWatchDogService();
+		
 		childSettingDao = new ChildSettingDao(this);
 		
 		initComponent();
@@ -42,6 +68,19 @@ public class AppPasswordActivity extends Activity {
 		
 		bindEvent();
 	}
+	
+	private void startWatchDogService() {
+		Intent appLockIntent = new Intent(this, WatchDogService.class);
+	
+		startService(appLockIntent);
+		bindWatchDogService();
+	}
+	
+	public void bindWatchDogService() {
+        bindService(new Intent(this,    
+                        WatchDogService.class), mConnection, Context.BIND_AUTO_CREATE); 
+	}
+	
 
 	private void bindEvent() {
 		confirmBtn.setOnClickListener(new OnClickListener(){
@@ -54,6 +93,9 @@ public class AppPasswordActivity extends Activity {
 		            Toast.makeText(AppPasswordActivity.this, "Password can not be blank.", Toast.LENGTH_SHORT).show();  
 		        }
 		        else if( password.equals(inputPassword) ){  
+		        	String packageName = getIntent().getStringExtra("packageName");
+		        	watchDogService.unlockApp(packageName);
+		        	
 		            finish();
 		        }  
 		        else{
@@ -67,7 +109,7 @@ public class AppPasswordActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				AppPasswordActivity.this.finish();
+				finish();
 			}
 			
 		});		
@@ -108,4 +150,15 @@ public class AppPasswordActivity extends Activity {
 		appNameTextView = (TextView)findViewById(R.id.appNameTextView);
 	}
 
+	@Override
+	protected void onDestroy() {
+		if (mConnection != null)  
+	    {  
+	        unbindService(mConnection);  
+	        mConnection = null;  
+	    }
+	    super.onDestroy();  
+	}
+
+	
 }

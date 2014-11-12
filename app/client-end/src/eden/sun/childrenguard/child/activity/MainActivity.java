@@ -233,4 +233,14 @@ public class MainActivity extends CommonActivity {
 		return syncFinishCnt;
 	}
 	
+	
+	@Override
+	protected void onDestroy() {
+		if (mConnection != null)  
+	    {  
+	        unbindService(mConnection);  
+	        mConnection = null;  
+	    }
+	    super.onDestroy();  
+	}
 }

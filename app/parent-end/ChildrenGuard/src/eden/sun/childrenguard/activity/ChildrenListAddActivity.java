@@ -106,6 +106,9 @@ public class ChildrenListAddActivity extends CommonActivity {
 			@Override
 			public void onErrorResponse(VolleyError error) {
 				Log.e("TAG", error.getMessage(), error);
+				AlertDialog.Builder dialog = UIUtil.getServerErrorDialog(ChildrenListAddActivity.this);
+	    		
+				dialog.show();
 			}
 		});
 	}
