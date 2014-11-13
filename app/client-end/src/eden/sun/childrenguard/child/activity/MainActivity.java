@@ -103,6 +103,7 @@ public class MainActivity extends CommonActivity {
 			new Response.Listener<String>() {
 				@Override
 				public void onResponse(String response) {
+					Log.d(TAG, response);
 					ViewDTO<ChildSettingViewDTO> view = JSONUtil.getRetrieveChildSettingView(response);
 			    	
 			    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS)){
@@ -145,6 +146,7 @@ public class MainActivity extends CommonActivity {
 			new Response.Listener<String>() {
 				@Override
 				public void onResponse(String response) {
+					Log.d(TAG, response);
 					ViewDTO<ChildInfoViewDTO> view = JSONUtil.getRetrieveChildInfoView(response);
 			    	
 			    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS)){
@@ -187,6 +189,7 @@ public class MainActivity extends CommonActivity {
 			new Response.Listener<String>() {
 				@Override
 				public void onResponse(String response) {
+					Log.d(TAG, response);
 					ViewDTO<List<AppViewDTO>> view = JSONUtil.getListChildAppInfoView(response);
 			    	
 			    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS)){

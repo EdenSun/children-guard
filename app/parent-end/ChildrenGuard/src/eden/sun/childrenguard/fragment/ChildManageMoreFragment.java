@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import eden.sun.childrenguard.R;
-import eden.sun.childrenguard.activity.ExceptionPhoneManageActivity;
+import eden.sun.childrenguard.activity.EmergencyContactManageActivity;
 import eden.sun.childrenguard.activity.ModifyLockPasswordActivity;
 import eden.sun.childrenguard.activity.NotifyMailManageActivity;
 import eden.sun.childrenguard.adapter.MoreListAdapter;
@@ -96,7 +96,7 @@ public class ChildManageMoreFragment extends CommonFragment{
 		title = MoreListItemView.TITLE_EMERGENCY_CONTACTS;
 		type = MoreListItemView.TYPE_ARROW_ITEM;
 		switchOn = null;
-		view = new MoreListItemView(title,type,ExceptionPhoneManageActivity.class,switchOn);
+		view = new MoreListItemView(title,type,EmergencyContactManageActivity.class,switchOn);
 		list.add(view);
 		
 		title = MoreListItemView.TITLE_LOCK_CALLS;

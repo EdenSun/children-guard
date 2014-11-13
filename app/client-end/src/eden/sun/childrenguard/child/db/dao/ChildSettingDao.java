@@ -246,6 +246,14 @@ public class ChildSettingDao extends BaseDao{
 		}
 	}
 
+	public Boolean getLockCallSwitch() {
+		ChildSetting childSetting = getChildSetting();
+		if( childSetting != null ){
+			return childSetting.getLockCallsSwitch();
+		}
+		return null;
+	}
+
 	
 	
 }

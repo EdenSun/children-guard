@@ -15,8 +15,8 @@ import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.adapter.ExceptionPhoneListAdapter;
 import eden.sun.childrenguard.dto.ExceptionPahoneListItemView;
 
-public class ExceptionPhoneManageActivity extends ActionBarActivity {
-	private static final String TAG = "ExceptionPhoneManageActivity";
+public class EmergencyContactManageActivity extends ActionBarActivity {
+	private static final String TAG = "EmergencyContactManageActivity";
 	
 	private ListView list;
 	private ExceptionPhoneListAdapter adapter;
@@ -87,9 +87,9 @@ public class ExceptionPhoneManageActivity extends ActionBarActivity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_add) {
-			Intent intent = new Intent(ExceptionPhoneManageActivity.this,ExceptionPhoneAddActivity.class);
+			Intent intent = new Intent(EmergencyContactManageActivity.this,EmergencyContactAddActivity.class);
 			
-			ExceptionPhoneManageActivity.this.startActivity(intent);
+			EmergencyContactManageActivity.this.startActivity(intent);
 
 			return true;
 		}

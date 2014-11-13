@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import eden.sun.childrenguard.R;
 
-public class ExceptionPhoneAddActivity extends Activity {
+public class EmergencyContactAddActivity extends Activity {
 	private Button addBtn;
 	private Button cancelBtn;
 	private EditText phoneEditText;
@@ -27,7 +27,7 @@ public class ExceptionPhoneAddActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				ExceptionPhoneAddActivity.this.finish();
+				EmergencyContactAddActivity.this.finish();
 			}
 		});
 		cancelBtn = (Button)findViewById(R.id.cancelBtn);
@@ -36,7 +36,7 @@ public class ExceptionPhoneAddActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				ExceptionPhoneAddActivity.this.finish();
+				EmergencyContactAddActivity.this.finish();
 			}
 		});
 	}
