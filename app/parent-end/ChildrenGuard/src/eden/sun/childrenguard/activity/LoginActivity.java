@@ -25,6 +25,7 @@ import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.server.dto.IsFirstLoginViewDTO;
 import eden.sun.childrenguard.server.dto.LoginViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
+import eden.sun.childrenguard.util.Callback;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
 import eden.sun.childrenguard.util.RequestHelper;
@@ -294,8 +295,21 @@ public class LoginActivity extends CommonActivity {
 				@Override
 				public void onErrorResponse(VolleyError error) {
 					Log.e("TAG", error.getMessage(), error);
+					dismissProgressDialog();
+					AlertDialog.Builder dialog = UIUtil.getServerErrorDialog(LoginActivity.this);
+		    		
+					dialog.show();
+				}
+			},
+			new Callback(){
+
+				@Override
+				public void execute() {
+					Log.d(TAG, "teest");
+				}
+				
 			}
-		});
+		);
 	}
 
 

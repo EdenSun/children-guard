@@ -22,7 +22,7 @@ public class EmergencyContactController extends BaseController{
 	@ResponseBody
 	public ViewDTO<List<EmergencyContactViewDTO>> listByChild(Integer childId){
 		logger.info("listByChild. Child ID:" + childId );
-		ViewDTO<List<EmergencyContactViewDTO>> view = emergencyContactsService.listByChild(childId);
+		ViewDTO<List<EmergencyContactViewDTO>> view = emergencyContactsService.listViewByChild(childId);
 		
 		return view;
 	}
