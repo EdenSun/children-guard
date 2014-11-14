@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,13 +15,13 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 
 import eden.sun.childrenguard.R;
+import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
+import eden.sun.childrenguard.helper.RequestHelper;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
-import eden.sun.childrenguard.util.RequestHelper;
 import eden.sun.childrenguard.util.RequestURLConstants;
 import eden.sun.childrenguard.util.StringUtil;
 import eden.sun.childrenguard.util.UIUtil;
@@ -58,16 +57,16 @@ public class PasswordResetActivity extends CommonActivity {
 					/*AsyncTask<Map<String, Object>,Integer,Boolean> task = new PasswordResetTask(PasswordResetActivity.this);
 					task.execute(data);*/
 					
-					RequestHelper helper = getRequestHelper();
 					String url = Config.BASE_URL_MVC + RequestURLConstants.URL_RESET_PASSWORD;
 	  
 					String title = "Reset Password";
 					String msg = "Please wait...";
 					showProgressDialog(title,msg);
 					
-					helper.doPost(
+					getRequestHelper().doPost(
 						url,
 						data,
+						PasswordResetActivity.this.getClass(),
 						new Response.Listener<String>() {
 							@Override
 							public void onResponse(String response) {
@@ -123,12 +122,8 @@ public class PasswordResetActivity extends CommonActivity {
 						    	
 							}
 						}, 
-						new Response.ErrorListener() {
-							@Override
-							public void onErrorResponse(VolleyError error) {
-								Log.e("TAG", error.getMessage(), error);
-						}
-					});
+						new DefaultVolleyErrorHandler(PasswordResetActivity.this)
+					);
 					
 				}
 				

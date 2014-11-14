@@ -3,24 +3,28 @@ package eden.sun.childrenguard.fragment;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.widget.TextView;
-import eden.sun.childrenguard.activity.ChildrenManageActivity;
-import eden.sun.childrenguard.util.RequestHelper;
+import eden.sun.childrenguard.helper.RequestHelper;
 import eden.sun.childrenguard.util.ShareDataKey;
-import eden.sun.childrenguard.util.UIUtil;
 
 public class CommonFragment extends Fragment {
 	protected ProgressDialog progress;
 	protected Runtime runtime;
 	private static final String PREFS_NAME = "share-data";
 	private SharedPreferences settings ;  
+	protected RequestHelper requestHelper;
 	
 	public CommonFragment() {
 		super();
 	}
 	
+	@Override
+	public void onStart() {
+		super.onStart();
+		requestHelper = this.getRequestHelper();
+	}
+
+
 	public void showProgressDialog(String title, String msg){
 		this.progress = ProgressDialog.show(this.getActivity(), title,
 			    msg, true);
@@ -56,8 +60,20 @@ public class CommonFragment extends Fragment {
 	}
 	
 	protected RequestHelper getRequestHelper() {
-		return RequestHelper.getInstance(this.getActivity());		
+		if( requestHelper == null ){
+			requestHelper = RequestHelper.getInstance(this.getActivity());
+		}
+		return requestHelper;
 	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		if( requestHelper != null ){
+			requestHelper.cancelAll(this.getClass());
+		}
+	}
+	
 	
 	/*protected void initCommonChildBasicInfo(){
 		ChildrenManageActivity parentActivity = ((ChildrenManageActivity)this.getActivity());

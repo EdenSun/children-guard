@@ -15,15 +15,15 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 
 import eden.sun.childrenguard.R;
+import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
+import eden.sun.childrenguard.helper.DeviceHelper;
+import eden.sun.childrenguard.helper.RequestHelper;
 import eden.sun.childrenguard.server.dto.RegisterViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Config;
-import eden.sun.childrenguard.util.DeviceHelper;
 import eden.sun.childrenguard.util.JSONUtil;
-import eden.sun.childrenguard.util.RequestHelper;
 import eden.sun.childrenguard.util.RequestURLConstants;
 import eden.sun.childrenguard.util.StringUtil;
 import eden.sun.childrenguard.util.UIUtil;
@@ -96,8 +96,6 @@ public class RegisterActivity extends CommonActivity {
 	}
 
 	private void doRegister() {
-		RequestHelper helper = getRequestHelper();
-
 		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_REGISTER;  
 
 		String title = "Register";
@@ -105,9 +103,10 @@ public class RegisterActivity extends CommonActivity {
 		showProgressDialog(title,msg);	
 		
 		Map<String,String> params = this.getRegisterParams();
-		helper.doPost(
+		getRequestHelper().doPost(
 			url,
 			params,
+			RegisterActivity.this.getClass(),
 			new Response.Listener<String>() {
 				@Override
 				public void onResponse(String response) {
@@ -156,12 +155,7 @@ public class RegisterActivity extends CommonActivity {
 					}
 				}
 			}, 
-			new Response.ErrorListener() {
-				@Override
-				public void onErrorResponse(VolleyError error) {
-					Log.e("TAG", error.getMessage(), error);
-			}
-		});
+			new DefaultVolleyErrorHandler(RegisterActivity.this));
 	}
 	
 	private Map<String, String> getRegisterParams() {

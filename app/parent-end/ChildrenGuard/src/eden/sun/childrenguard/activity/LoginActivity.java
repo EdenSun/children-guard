@@ -22,13 +22,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import eden.sun.childrenguard.R;
+import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
+import eden.sun.childrenguard.helper.RequestHelper;
 import eden.sun.childrenguard.server.dto.IsFirstLoginViewDTO;
 import eden.sun.childrenguard.server.dto.LoginViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
-import eden.sun.childrenguard.util.Callback;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
-import eden.sun.childrenguard.util.RequestHelper;
 import eden.sun.childrenguard.util.RequestURLConstants;
 import eden.sun.childrenguard.util.ShareDataKey;
 import eden.sun.childrenguard.util.StringUtil;
@@ -73,7 +73,6 @@ public class LoginActivity extends CommonActivity {
 					String msg = "Please wait...";
 					showProgressDialog(title,msg);
 					
-					RequestHelper helper = getRequestHelper();
 					final String finalEmail = emailEditText.getText().toString();
 					final String finalPassword = passwordEditText.getText().toString();
 					String url = String.format(
@@ -81,16 +80,17 @@ public class LoginActivity extends CommonActivity {
 							finalEmail,  
 							finalPassword);  
 	  
-					helper.doGet(
+					getRequestHelper().doGet(
 						url,
+						this.getClass(),
 						new Response.Listener<String>() {
 							@Override
 							public void onResponse(String response) {
+								dismissProgressDialog();
 								ViewDTO<IsFirstLoginViewDTO> view = JSONUtil.getIsFirstLoginView(response);
 						    	
 						    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS)){
 						    		if( view.getData().isFirstLogin() ){
-						    			dismissProgressDialog();
 						    			
 						    			AlertDialog.Builder dialog = UIUtil.getLegalInfoDialog(LoginActivity.this,view.getData().getLegalInfo());
 										
@@ -99,7 +99,6 @@ public class LoginActivity extends CommonActivity {
 						    			LoginActivity.this.doLogin();
 						    		}
 						    	}else{
-						    		dismissProgressDialog();
 						    		AlertDialog.Builder dialog = UIUtil.getErrorDialog(LoginActivity.this,view.getInfo());
 						    		
 									dialog.show();
@@ -107,12 +106,7 @@ public class LoginActivity extends CommonActivity {
 						    	
 							}
 						}, 
-						new Response.ErrorListener() {
-							@Override
-							public void onErrorResponse(VolleyError error) {
-								Log.e("TAG", error.getMessage(), error);
-						}
-					});
+						new DefaultVolleyErrorHandler(LoginActivity.this));
 					
 				}
 				
@@ -256,15 +250,14 @@ public class LoginActivity extends CommonActivity {
 		String email = UIUtil.getEditTextValue(emailEditText);
 		String password = UIUtil.getEditTextValue(passwordEditText);
 		
-		RequestHelper helper = getRequestHelper();
-		
 		String url = String.format(
 				Config.BASE_URL_MVC + RequestURLConstants.URL_LOGIN + "?email=%1$s&password=%2$s",  
 				email,  
 				password);  
 
-		helper.doGet(
+		getRequestHelper().doGet(
 			url,
+			this.getClass(),
 			new Response.Listener<String>() {
 				@Override
 				public void onResponse(String response) {
@@ -291,24 +284,7 @@ public class LoginActivity extends CommonActivity {
 					
 				}
 			}, 
-			new Response.ErrorListener() {
-				@Override
-				public void onErrorResponse(VolleyError error) {
-					Log.e("TAG", error.getMessage(), error);
-					dismissProgressDialog();
-					AlertDialog.Builder dialog = UIUtil.getServerErrorDialog(LoginActivity.this);
-		    		
-					dialog.show();
-				}
-			},
-			new Callback(){
-
-				@Override
-				public void execute() {
-					Log.d(TAG, "teest");
-				}
-				
-			}
+			new DefaultVolleyErrorHandler(LoginActivity.this)
 		);
 	}
 

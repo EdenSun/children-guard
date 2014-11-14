@@ -4,29 +4,36 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
-import eden.sun.childrenguard.util.RequestHelper;
+import eden.sun.childrenguard.helper.DialogHolder;
+import eden.sun.childrenguard.helper.RequestHelper;
 import eden.sun.childrenguard.util.ShareDataKey;
 
-public class CommonActionBarActivity extends ActionBarActivity{
+public class CommonActionBarActivity extends ActionBarActivity implements DialogHolder{
 	protected ProgressDialog progress;
 	protected Runtime runtime;
 	private static final String PREFS_NAME = "share-data";
 	private SharedPreferences settings ;  
+	protected RequestHelper requestHelper;
 	
 	public CommonActionBarActivity() {
 		super();
 	}
 	
-	public void showProgressDialog(String title, String msg){
+	@Override
+	public void showProgressDialog(String title, String msg) {
 		this.progress = ProgressDialog.show(this, title,
 			    msg, true);
+		
 	}
-	
-	public void dismissProgressDialog(){
+
+	@Override
+	public void dismissProgressDialog() {
 		if( progress != null ){
 			progress.dismiss();
-		}
+		}		
 	}
+
+
 
 	private void initSharedPreferences(){
 		if( settings == null ){
@@ -51,7 +58,20 @@ public class CommonActionBarActivity extends ActionBarActivity{
 	}
 	
 	protected RequestHelper getRequestHelper() {
-		return RequestHelper.getInstance(this);		
+		if( requestHelper == null ){
+			requestHelper = RequestHelper.getInstance(this);
+		}
+		return requestHelper;
 	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		if( requestHelper != null ){
+			requestHelper.cancelAll(this.getClass());
+		}
+	}
+	
+	
 	
 }

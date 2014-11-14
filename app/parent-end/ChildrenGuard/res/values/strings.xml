@@ -31,7 +31,8 @@
     <string name="modifyLockPassword.confirmPasswordTextView">Password Confirm</string>
     <string name="modifyLockPassword.okBtn">Change Password</string>
     <string name="modifyLockPassword.cancelBtn">Cancel</string>
-    <string name="title_activity_exception_phone_add">Add Exception Phone</string>
+    <string name="title_activity_exception_phone_add">Add Emergency Contacts</string>
+    <string name="title_activity_emergency_contact_manage">Emergency Contacts</string>
 	<string name="exceptionPhoneAdd.nameTextView">Name</string>
 	<string name="exceptionPhoneAdd.phoneTextView">Phone</string>
 	<string name="exceptionPhoneAdd.nameEditTextHint">Name</string>

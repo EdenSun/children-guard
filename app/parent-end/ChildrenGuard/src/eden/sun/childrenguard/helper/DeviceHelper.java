@@ -1,4 +1,4 @@
-package eden.sun.childrenguard.util;
+package eden.sun.childrenguard.helper;
 
 import android.content.Context;
 import android.telephony.TelephonyManager;

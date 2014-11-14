@@ -1,21 +1,19 @@
-package eden.sun.childrenguard.util;
+package eden.sun.childrenguard.helper;
 
 import java.util.Map;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.util.Log;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Request.Method;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.RequestQueue;
+import com.android.volley.RequestQueue.RequestFilter;
 import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.RetryPolicy;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -23,7 +21,7 @@ public class RequestHelper {
 	private static final String TAG = "RequestHelper";
 	private RequestQueue mQueue ;  
 	private volatile static RequestHelper requestHelper;
-	 
+
 	private RequestHelper() {
 		Log.i(TAG, "Init RequestHelper.");
 	}
@@ -39,72 +37,6 @@ public class RequestHelper {
 
 		requestHelper.mQueue = Volley.newRequestQueue(context);
 		return requestHelper;
-	}
-	
-	public void doGet(String url,Response.Listener successListener,Response.ErrorListener errListener,final Callback noConnectionErrorListener){
-		StringRequest stringRequest = new StringRequest(
-			Method.GET,
-			url,
-			successListener, 
-			errListener
-			){
-
-				@Override
-				protected VolleyError parseNetworkError(VolleyError volleyError) {
-					if( noConnectionErrorListener != null ){
-						noConnectionErrorListener.execute();
-					}
-					
-					return volleyError;
-				}
-
-				@Override
-				public RetryPolicy getRetryPolicy() {
-					RetryPolicy retryPolicy = new DefaultRetryPolicy(5000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT); 
-			        return retryPolicy; 
-				};
-			
-		};
-		mQueue.add(stringRequest);
-		
-	}
-
-	public void doPost(
-			String url,
-			Map<String,String> params,
-			Listener<String> successlistener,
-			ErrorListener errorListener,
-			final Callback noConnectionErrorListener) {
-		final Map<String,String> finalParams = params;
-		StringRequest myReq = new StringRequest(
-				Method.POST,
-                url,
-                successlistener,
-		        errorListener) {
-		
-			@Override
-			protected VolleyError parseNetworkError(
-					VolleyError volleyError) {
-				if( noConnectionErrorListener != null ){
-					noConnectionErrorListener.execute();
-				}
-				
-				return volleyError;
-			}
-			
-			@Override
-			public RetryPolicy getRetryPolicy() {
-				RetryPolicy retryPolicy = new DefaultRetryPolicy(5000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT); 
-		        return retryPolicy; 
-			};
-
-			protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
-				return finalParams;
-			};
-		};
-		
-		mQueue.add(myReq);
-		
 	}
 	
 	/*public String getParameterUrl(String url,Map<String,String> param){
@@ -130,19 +62,14 @@ public class RequestHelper {
 	}*/
 	
 	
-	public void doGet(String url,Response.Listener successListener,Response.ErrorListener errListener){
+	public void doGet(String url,Object tag,Response.Listener successListener,Response.ErrorListener errListener){
 		StringRequest stringRequest = new StringRequest(
 			Method.GET,
 			url,
 			successListener, 
 			errListener
 			){
-
-				@Override
-				protected VolleyError parseNetworkError(VolleyError volleyError) {
-					return volleyError;
-				}
-
+			
 				@Override
 				public RetryPolicy getRetryPolicy() {
 					RetryPolicy retryPolicy = new DefaultRetryPolicy(5000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT); 
@@ -150,6 +77,8 @@ public class RequestHelper {
 				};
 			
 		};
+		
+		stringRequest.setTag(tag);
 		mQueue.add(stringRequest);
 		
 	}
@@ -157,6 +86,7 @@ public class RequestHelper {
 	public void doPost(
 			String url,
 			Map<String,String> params,
+			Object tag,
 			Listener<String> successlistener,
 			ErrorListener errorListener) {
 		final Map<String,String> finalParams = params;
@@ -167,12 +97,6 @@ public class RequestHelper {
 		        errorListener) {
 		
 			@Override
-			protected VolleyError parseNetworkError(
-					VolleyError volleyError) {
-				return volleyError;
-			}
-			
-			@Override
 			public RetryPolicy getRetryPolicy() {
 				RetryPolicy retryPolicy = new DefaultRetryPolicy(5000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT); 
 		        return retryPolicy; 
@@ -182,8 +106,20 @@ public class RequestHelper {
 				return finalParams;
 			};
 		};
-		
+		myReq.setTag(tag);
 		mQueue.add(myReq);
 		
+	}
+
+	public void cancelAll(final Object tag) {
+		if (tag == null) {  
+	        throw new IllegalArgumentException("Cannot cancelAll with a null tag");  
+	    }  
+		mQueue.cancelAll(new RequestFilter() {  
+	        @Override  
+	        public boolean apply(Request<?> request) {  
+	            return request.getTag() == tag;  
+	        }  
+	    }); 
 	}
 }

@@ -7,8 +7,8 @@ import java.util.Map;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,17 +18,17 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.adapter.RelationshipSpinnerAdapter;
 import eden.sun.childrenguard.dto.RelationshipItemView;
+import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
+import eden.sun.childrenguard.helper.RequestHelper;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.RelationshipViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
-import eden.sun.childrenguard.util.RequestHelper;
 import eden.sun.childrenguard.util.RequestURLConstants;
 import eden.sun.childrenguard.util.StringUtil;
 import eden.sun.childrenguard.util.UIUtil;
@@ -42,12 +42,15 @@ public class ChildrenListAddActivity extends CommonActivity {
 	private EditText nicknameEditText;
 	private Spinner relationshipSpinner;
 	private RelationshipSpinnerAdapter relationshipSpinnerAdapter;
-
+	private Intent resultIntent;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_children_list_add);
 
+		setResult();
+		
 		initComponent();
 
 		addChildBtn.setOnClickListener(new OnClickListener() {
@@ -66,13 +69,13 @@ public class ChildrenListAddActivity extends CommonActivity {
 			}
 		});
 
+		initData();
 	}
 
 	
-	@Override
-	protected void onResume() {
-		super.onResume();
-		initData();
+	private void setResult() {
+		resultIntent = new Intent();
+		setResult(0,resultIntent);		
 	}
 
 
@@ -86,11 +89,10 @@ public class ChildrenListAddActivity extends CommonActivity {
 		String msg = "Loading relationship,Please wait...";
 		showProgressDialog(title, msg);
 
-		RequestHelper helper = getRequestHelper();
 		String url = String.format(Config.BASE_URL_MVC
 				+ RequestURLConstants.URL_LIST_ALL_RELATIONSHIP);
 
-		helper.doGet(url, new Response.Listener<String>() {
+		getRequestHelper().doGet(url,this.getClass(), new Response.Listener<String>() {
 			@Override
 			public void onResponse(String response) {
 				dismissProgressDialog();
@@ -102,23 +104,13 @@ public class ChildrenListAddActivity extends CommonActivity {
 				}
 
 			}
-		}, new Response.ErrorListener() {
-			@Override
-			public void onErrorResponse(VolleyError error) {
-				Log.e("TAG", error.getMessage(), error);
-				AlertDialog.Builder dialog = UIUtil.getServerErrorDialog(ChildrenListAddActivity.this);
-	    		
-				dialog.show();
-			}
-		});
+		}, new DefaultVolleyErrorHandler(ChildrenListAddActivity.this));
 	}
 
 	private void doAddChild() {
 		boolean isPassed = doValidation();
 		
 		if( isPassed ){
-			RequestHelper helper = getRequestHelper();
-	
 			String url = Config.BASE_URL_MVC
 					+ RequestURLConstants.URL_LIST_ADD_CHILD;
 	
@@ -127,7 +119,7 @@ public class ChildrenListAddActivity extends CommonActivity {
 			showProgressDialog(title, msg);
 	
 			Map<String, String> params = this.getAddChildParams();
-			helper.doPost(url, params, new Response.Listener<String>() {
+			getRequestHelper().doPost(url, params, this.getClass(),new Response.Listener<String>() {
 				@Override
 				public void onResponse(String response) {
 					dismissProgressDialog();
@@ -148,6 +140,10 @@ public class ChildrenListAddActivity extends CommonActivity {
 													DialogInterface dialog,
 													int which) {
 	
+												resultIntent = new Intent();
+												resultIntent.putExtra("result", "success");
+												setResult(0,resultIntent);		
+												
 												ChildrenListAddActivity.this
 														.finish();
 											}
@@ -163,12 +159,7 @@ public class ChildrenListAddActivity extends CommonActivity {
 					
 				}
 				
-			}, new Response.ErrorListener() {
-				@Override
-				public void onErrorResponse(VolleyError error) {
-					Log.e("TAG", error.getMessage(), error);
-				}
-			});
+			}, new DefaultVolleyErrorHandler(ChildrenListAddActivity.this));
 		
 		}
 	}

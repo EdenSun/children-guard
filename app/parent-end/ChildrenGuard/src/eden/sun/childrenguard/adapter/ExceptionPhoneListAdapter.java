@@ -1,6 +1,7 @@
 package eden.sun.childrenguard.adapter;
 
-import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,14 +12,15 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.dto.ExceptionPahoneListItemView;
+import eden.sun.childrenguard.server.dto.EmergencyContactViewDTO;
 
 public class ExceptionPhoneListAdapter extends BaseAdapter{
 	private Activity context;
-    private ArrayList<ExceptionPahoneListItemView> data;
+    private List<ExceptionPahoneListItemView> data;
     private static LayoutInflater inflater=null;
     //public ImageLoader imageLoader; 
  
-    public ExceptionPhoneListAdapter(Activity context, ArrayList<ExceptionPahoneListItemView> data) {
+    public ExceptionPhoneListAdapter(Activity context, List<ExceptionPahoneListItemView> data) {
         this.context = context;
         this.data=data;
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -60,4 +62,26 @@ public class ExceptionPhoneListAdapter extends BaseAdapter{
     	TextView phoneTextView;
     	TextView nameTextView;
     }
+    
+    public void reloadData(List<EmergencyContactViewDTO> contactList) {
+		if( contactList == null || contactList.size() == 0){
+			return ;
+		}
+		this.data.clear();
+		for(Iterator<EmergencyContactViewDTO> it = contactList.iterator();it.hasNext();){
+			EmergencyContactViewDTO contact = it.next();
+			addItem(contact);
+		}
+		
+		this.notifyDataSetChanged();
+	}
+
+    private void addItem(EmergencyContactViewDTO contact) {
+    	ExceptionPahoneListItemView item = new ExceptionPahoneListItemView();
+		item.setId(contact.getId());
+		item.setName(contact.getName());
+		item.setPhone(contact.getPhone());
+		
+		data.add(item);
+	}
 }

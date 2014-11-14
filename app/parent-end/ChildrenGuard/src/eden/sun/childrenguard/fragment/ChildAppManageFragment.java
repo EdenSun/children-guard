@@ -3,11 +3,9 @@ package eden.sun.childrenguard.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,16 +15,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.adapter.AppManageListAdapter;
 import eden.sun.childrenguard.dto.AppManageListItemView;
+import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
+import eden.sun.childrenguard.helper.RequestHelper;
 import eden.sun.childrenguard.server.dto.AppViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
-import eden.sun.childrenguard.util.RequestHelper;
 import eden.sun.childrenguard.util.RequestURLConstants;
 import eden.sun.childrenguard.util.ShareDataKey;
 import eden.sun.childrenguard.util.UIUtil;
@@ -74,14 +72,14 @@ public class ChildAppManageFragment extends CommonFragment{
 	}
 
 	private void loadAppList() {
-		RequestHelper helper = getRequestHelper();
 		String url = String.format(
 				Config.BASE_URL_MVC + RequestURLConstants.URL_LIST_CHILD_APP + "?childId=%1$s",  
 				childId
 				);  
 
-		helper.doGet(
+		getRequestHelper().doGet(
 			url,
+			ChildAppManageFragment.this.getClass(),
 			new Response.Listener<String>() {
 				@Override
 				public void onResponse(String response) {
@@ -98,12 +96,8 @@ public class ChildAppManageFragment extends CommonFragment{
 			    	
 				}
 			}, 
-			new Response.ErrorListener() {
-				@Override
-				public void onErrorResponse(VolleyError error) {
-					Log.e("TAG", error.getMessage(), error);
-			}
-		});		
+			new DefaultVolleyErrorHandler(getActivity())
+		);		
 	}
 
 	private AppManageListAdapter getAppListAdapter() {

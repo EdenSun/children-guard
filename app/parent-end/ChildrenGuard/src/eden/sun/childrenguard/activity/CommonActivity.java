@@ -3,24 +3,35 @@ package eden.sun.childrenguard.activity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
-import eden.sun.childrenguard.util.RequestHelper;
+import eden.sun.childrenguard.helper.DialogHolder;
+import eden.sun.childrenguard.helper.RequestHelper;
 import eden.sun.childrenguard.util.ShareDataKey;
 
-public class CommonActivity extends Activity {
+public class CommonActivity extends Activity implements DialogHolder{
 	protected ProgressDialog progress;
 	protected Runtime runtime;
 	private static final String PREFS_NAME = "share-data";
 	private SharedPreferences settings ;  
+	protected RequestHelper requestHelper;
 	
 	public CommonActivity() {
 		super();
 	}
 	
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		requestHelper = this.getRequestHelper();
+	}
+
+	@Override
 	public void showProgressDialog(String title, String msg){
 		this.progress = ProgressDialog.show(this, title,
 			    msg, true);
 	}
 	
+	@Override
 	public void dismissProgressDialog(){
 		if( progress != null ){
 			progress.dismiss();
@@ -51,6 +62,19 @@ public class CommonActivity extends Activity {
 	}
 	
 	protected RequestHelper getRequestHelper() {
-		return RequestHelper.getInstance(this);		
+		if( requestHelper == null ){
+			requestHelper = RequestHelper.getInstance(this);
+		}
+		return requestHelper;	
 	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		if( requestHelper != null ){
+			requestHelper.cancelAll(this.getClass());
+		}
+	}
+	
+	
 }

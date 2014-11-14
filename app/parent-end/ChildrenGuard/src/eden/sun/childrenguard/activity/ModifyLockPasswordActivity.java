@@ -5,21 +5,19 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 
 import eden.sun.childrenguard.R;
-import eden.sun.childrenguard.server.dto.IsFirstLoginViewDTO;
+import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
+import eden.sun.childrenguard.helper.RequestHelper;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
-import eden.sun.childrenguard.util.RequestHelper;
 import eden.sun.childrenguard.util.RequestURLConstants;
 import eden.sun.childrenguard.util.StringUtil;
 import eden.sun.childrenguard.util.UIUtil;
@@ -182,7 +180,6 @@ public class ModifyLockPasswordActivity extends CommonActivity {
 		String msg = "Please wait...";
 		showProgressDialog(title,msg);
 		
-		RequestHelper helper = getRequestHelper();
 		String password = UIUtil.getEditTextValue(passwordEditText);
 		String confirmPassword = UIUtil.getEditTextValue(confirmPasswordEditText);
 		
@@ -191,8 +188,9 @@ public class ModifyLockPasswordActivity extends CommonActivity {
 				childId,
 				password);  
 
-		helper.doGet(
+		getRequestHelper().doGet(
 			url,
+			this.getClass(),
 			new Response.Listener<String>() {
 				@Override
 				public void onResponse(String response) {
@@ -227,12 +225,8 @@ public class ModifyLockPasswordActivity extends CommonActivity {
 			    	
 				}
 			}, 
-			new Response.ErrorListener() {
-				@Override
-				public void onErrorResponse(VolleyError error) {
-					Log.e("TAG", error.getMessage(), error);
-			}
-		});
+			new DefaultVolleyErrorHandler(ModifyLockPasswordActivity.this)
+		);
 		
 	}
 }

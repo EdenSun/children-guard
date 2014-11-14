@@ -4,22 +4,23 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 
 import eden.sun.childrenguard.R;
+import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
+import eden.sun.childrenguard.helper.RequestHelper;
 import eden.sun.childrenguard.server.dto.ChildBasicInfoViewDTO;
 import eden.sun.childrenguard.server.dto.ChildExtraInfoViewDTO;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
-import eden.sun.childrenguard.util.RequestHelper;
 import eden.sun.childrenguard.util.RequestURLConstants;
 import eden.sun.childrenguard.util.ShareDataKey;
 import eden.sun.childrenguard.util.UIUtil;
@@ -34,7 +35,6 @@ public class ChildBasicInfoFragment extends CommonFragment{
 	private TextView speedTextView;
 	private TextView nicknameTextView;
 	
-
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -47,7 +47,6 @@ public class ChildBasicInfoFragment extends CommonFragment{
 		return vi;
     }
 	
-
 	private void initComponent(View vi) {
 		mobileTextView = (TextView)vi.findViewById(R.id.mobileTextView);
 		nicknameTextView = (TextView)vi.findViewById(R.id.nicknameTextView);
@@ -56,7 +55,6 @@ public class ChildBasicInfoFragment extends CommonFragment{
 		locationTextView = (TextView)vi.findViewById(R.id.locationTextView);
 		speedTextView = (TextView)vi.findViewById(R.id.speedTextView);
 	}
-
 
 	@Override
 	public void onResume() {
@@ -67,14 +65,14 @@ public class ChildBasicInfoFragment extends CommonFragment{
 	}
 
 	private void loadChildBasicInfo() {
-		RequestHelper helper = getRequestHelper();
 		String url = String.format(
 				Config.BASE_URL_MVC + RequestURLConstants.URL_GET_CHILD_BASIC_INFO + "?childId=%1$s",  
 				childId
 				);  
 
-		helper.doGet(
+		getRequestHelper().doGet(
 			url,
+			ChildBasicInfoFragment.this.getClass(),
 			new Response.Listener<String>() {
 				@Override
 				public void onResponse(String response) {
@@ -121,20 +119,9 @@ public class ChildBasicInfoFragment extends CommonFragment{
 			    	
 				}
 			}, 
-			new Response.ErrorListener() {
-				@Override
-				public void onErrorResponse(VolleyError error) {
-					Log.e("TAG", error.getMessage(), error);
-			}
-		});
+			new DefaultVolleyErrorHandler(getActivity()));
 		
 
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		Log.i(TAG, "onstart");
 	}
 
 }

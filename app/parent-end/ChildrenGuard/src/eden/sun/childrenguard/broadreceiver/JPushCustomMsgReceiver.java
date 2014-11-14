@@ -14,11 +14,11 @@ import cn.jpush.android.api.JPushInterface;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import eden.sun.childrenguard.helper.DeviceHelper;
+import eden.sun.childrenguard.helper.RequestHelper;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Config;
-import eden.sun.childrenguard.util.DeviceHelper;
 import eden.sun.childrenguard.util.JSONUtil;
-import eden.sun.childrenguard.util.RequestHelper;
 import eden.sun.childrenguard.util.RequestURLConstants;
 
 public class JPushCustomMsgReceiver extends BroadcastReceiver {
@@ -69,6 +69,7 @@ public class JPushCustomMsgReceiver extends BroadcastReceiver {
 		helper.doPost(
 			url,
 			param,
+			JPushCustomMsgReceiver.this.getClass(),
 			new Response.Listener<String>() {
 				@Override
 				public void onResponse(String response) {

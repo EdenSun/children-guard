@@ -6,7 +6,7 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,16 +15,15 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.adapter.ChildrenListAdapter;
 import eden.sun.childrenguard.dto.ChildrenListItemView;
+import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
-import eden.sun.childrenguard.util.RequestHelper;
 import eden.sun.childrenguard.util.RequestURLConstants;
 import eden.sun.childrenguard.util.UIUtil;
 
@@ -32,13 +31,14 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 	private static final String TAG = "ChildrenListActivity";
 	private ListView list;
 	private ChildrenListAdapter childrenListAdapter;
+	private boolean doubleBackToExitPressedOnce;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_children_list);
 		
-		//runtime.subscribe(CometdChannel.CHILD_MANAGE_LIST_MY_CHILDREN , new ListMyChildrenListener(ChildrenListActivity.this));
+		doubleBackToExitPressedOnce = false;
 		
 	    ArrayList<ChildrenListItemView> childrenList = retrieveChildrenData();
 	    
@@ -67,10 +67,16 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 		Map<String, Object> data = getLoadMyChildrenParam();
 		task.execute(data);*/
 	}
-
 	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		
+		 // load person list
+	    loadChildrenList();
+	}
+
 	private void loadChildrenList() {
-		RequestHelper helper = getRequestHelper();
 	    String url = String.format(
 				Config.BASE_URL_MVC + RequestURLConstants.URL_LIST_MY_CHILDREN + "?accessToken=%1$s",  
 				getAccessToken());  
@@ -79,8 +85,9 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 		String msg = "Loading person list,please wait...";
 		showProgressDialog(title,msg);
 		
-		helper.doGet(
+		getRequestHelper().doGet(
 			url,
+			ChildrenListActivity.class,
 			new Response.Listener<String>() {
 				@Override
 				public void onResponse(String response) {
@@ -104,12 +111,8 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 					
 				}
 			}, 
-			new Response.ErrorListener() {
-				@Override
-				public void onErrorResponse(VolleyError error) {
-					Log.e("TAG", error.getMessage(), error);
-			}
-		});
+			new DefaultVolleyErrorHandler(ChildrenListActivity.this)
+		);
 		
 	}
 
@@ -154,13 +157,27 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 		if (id == R.id.action_children_list_add) {
 			Intent intent = new Intent(ChildrenListActivity.this,ChildrenListAddActivity.class);
 			
-			this.startActivity(intent);
+			int requestCode = 0;
+			this.startActivityForResult(intent,requestCode);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 	
 	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {  
+        case 0:  
+        	String result = data.getStringExtra("result");
+        	if( result != null && result.equals("success") ){
+        		this.loadChildrenList();
+        	}
+            break;  
+        default:  
+            break;  
+        }  
+	}
 	
 	/*class LoadMyChildrenTask extends AsyncTask<Map<String, Object>,Integer,String>{
 		private Activity context;
@@ -198,13 +215,39 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		// load person list
-	    loadChildrenList();
 	}
 
 
 	public ChildrenListAdapter getChildrenListAdapter() {
 		return childrenListAdapter;
 	}
+	
+	@Override  
+    public boolean onKeyDown(int keyCode, KeyEvent event) {  
+        if (keyCode == KeyEvent.KEYCODE_BACK) {  
+            moveTaskToBack(false);  
+            return true;  
+        }  
+        return super.onKeyDown(keyCode, event);  
+    }  
+	
 
+	/*@Override
+	public void onBackPressed() {
+	    if (doubleBackToExitPressedOnce) {
+	        super.onBackPressed();
+	        return;
+	    }
+
+	    this.doubleBackToExitPressedOnce = true;
+	    Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+	    new Handler().postDelayed(new Runnable() {
+
+	        @Override
+	        public void run() {
+	            doubleBackToExitPressedOnce=false;                       
+	        }
+	    }, 2000);
+	} */
 }
