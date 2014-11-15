@@ -44,6 +44,7 @@ public class ChildBasicInfoFragment extends CommonFragment{
 		
 		initComponent(vi);
         
+		loadChildBasicInfo();
 		return vi;
     }
 	
@@ -61,10 +62,13 @@ public class ChildBasicInfoFragment extends CommonFragment{
 		super.onResume();
 		Log.i(TAG, "onresume");
 		
-		loadChildBasicInfo();
 	}
 
 	private void loadChildBasicInfo() {
+		String title = "Loading Data";
+		String msg = "Please wait...";
+		showProgressDialog(title,msg);
+		
 		String url = String.format(
 				Config.BASE_URL_MVC + RequestURLConstants.URL_GET_CHILD_BASIC_INFO + "?childId=%1$s",  
 				childId
@@ -117,11 +121,10 @@ public class ChildBasicInfoFragment extends CommonFragment{
 						dialog.show();
 			    	}
 			    	
+			    	dismissProgressDialog();
 				}
 			}, 
 			new DefaultVolleyErrorHandler(getActivity()));
-		
-
 	}
 
 }

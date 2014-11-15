@@ -266,16 +266,16 @@ public class LoginActivity extends CommonActivity {
 					ViewDTO<LoginViewDTO> view = JSONUtil.getLoginView(response);
 					
 					if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
-						LoginActivity.this.putStringShareData(ShareDataKey.PARENT_ACCESS_TOKEN,view.getData().getAccessToken());
-						
-						Toast toast = UIUtil.getToast(LoginActivity.this,"Login Success!");
-						toast.show();
-						
 						Intent it = new Intent(LoginActivity.this, ChildrenListActivity.class);
 						LoginActivity.this.startActivity(it);
 						
 						// finish login activity
 						LoginActivity.this.finish();
+
+						LoginActivity.this.putStringShareData(ShareDataKey.PARENT_ACCESS_TOKEN,view.getData().getAccessToken());
+						
+						Toast toast = UIUtil.getToast(LoginActivity.this,"Login Success!");
+						toast.show();
 					}else{
 						AlertDialog.Builder dialog = UIUtil.getErrorDialog(LoginActivity.this,view.getInfo());
 			    		

@@ -10,10 +10,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 import eden.sun.childrenguard.R;
+import eden.sun.childrenguard.activity.ChildrenManageActivity;
 import eden.sun.childrenguard.dto.AppManageListItemView;
 import eden.sun.childrenguard.server.dto.AppViewDTO;
 
@@ -54,6 +58,31 @@ public class AppManageListAdapter extends BaseAdapter{
         appNameTextView.setText(app.getAppName());
         switchBtn.setChecked(app.isLock());
         
+        final int finalPos = position;
+        switchBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				((ChildrenManageActivity)context).setConfigChanges(true);
+				Switch curSwitch = (Switch)v;
+				boolean isChecked = curSwitch.isChecked();
+				data.get(finalPos).setLock(isChecked);
+			}
+			
+		
+		});
+       /* switchBtn.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				Switch curSwitch = (Switch)buttonView;
+				((ChildrenManageActivity)context).setConfigChanges(true);
+				data.get(finalPos).setLock(true);
+				
+			}
+        	
+        });*/
         /*TextView childNameTextView = (TextView)vi.findViewById(R.id.childName);
         TextView onlineStatusTextView = (TextView)vi.findViewById(R.id.onlineStatus);
         

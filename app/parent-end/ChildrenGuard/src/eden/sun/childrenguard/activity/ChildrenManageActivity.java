@@ -1,19 +1,26 @@
 package eden.sun.childrenguard.activity;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.adapter.AppSectionsPagerAdapter;
-import eden.sun.childrenguard.fragment.CommonFragment;
 import eden.sun.childrenguard.server.dto.ChildBasicInfoViewDTO;
+import eden.sun.childrenguard.util.Callback;
+import eden.sun.childrenguard.util.Callback.CallbackResult;
+import eden.sun.childrenguard.util.UIUtil;
 
 public class ChildrenManageActivity extends FragmentActivity implements ActionBar.TabListener,View.OnClickListener{
 	public static final String TAG = "ChildrenManageActivity";
@@ -35,15 +42,17 @@ public class ChildrenManageActivity extends FragmentActivity implements ActionBa
     TextView appManageTabText;
     TextView moreTabText ;
     
+    private boolean isConfigChanges;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_children_manage);
-
+        isConfigChanges = false;
+        
         mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
 
         final ActionBar actionBar = getActionBar();
-
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         
         mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -166,10 +175,16 @@ public class ChildrenManageActivity extends FragmentActivity implements ActionBa
 		return childBasicInfo;
 	}
 
-	/*@Override
+	private MenuItem applyChangeMenu;
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.children_manage, menu);
+		if( menu.getItem(0) != null ){
+			applyChangeMenu = menu.getItem(0);
+			applyChangeMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+			applyChangeMenu.setEnabled(false);
+		}
 		return true;
 	}
 
@@ -179,13 +194,14 @@ public class ChildrenManageActivity extends FragmentActivity implements ActionBa
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		if (id == R.id.apply) {
+			Toast.makeText(this, "Applying changes...", 2000).show();;
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
-	*//**
+	/**
 	 * A placeholder fragment containing a simple view.
 	 *//*
 	public static class PlaceholderFragment extends Fragment {
@@ -201,5 +217,74 @@ public class ChildrenManageActivity extends FragmentActivity implements ActionBa
 			return rootView;
 		}
 	}*/
+	
+	public void setConfigChanges(boolean isChanges){
+		this.isConfigChanges = isChanges;
+		if( isChanges == true ){
+			if( applyChangeMenu != null ){
+				applyChangeMenu.setEnabled(true);
+			}
+		}else {
+			if( applyChangeMenu != null ){
+				applyChangeMenu.setEnabled(false);
+			}
+		}
+	}
+
+	private void saveChanges(Callback callback) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void onBackPressed() {
+		if( isConfigChanges == false ){
+			// no changes	
+			super.onBackPressed();
+		}else{
+			String title = "Setting Changes";
+			String msg = "Setting changes, Press Save to save and return, Discard to discard and return.Press back button again to cancel.";
+			String leftBtnText = "Save";
+			String rightBtnText = "Discard";
+			
+			AlertDialog.Builder dialog = UIUtil.getAlertDialogWithTwoBtn(
+				ChildrenManageActivity.this,
+				title,
+				msg,
+				leftBtnText,
+				rightBtnText,
+				new DialogInterface.OnClickListener() {
+		            @Override
+		            public void onClick(DialogInterface dialog, int which) {
+		            	dialog.dismiss();
+		            	saveChanges(new Callback(){
+
+							@Override
+							public void execute(CallbackResult result) {
+								if(result.isSuccess()){
+									ChildrenManageActivity.this.finish();								
+								}
+							}
+		            		
+		            	});
+		            	
+		            }
+
+		        },
+		        new DialogInterface.OnClickListener() {
+		            @Override
+		            public void onClick(DialogInterface dialog, int which) {
+		            	dialog.dismiss();
+		            	ChildrenManageActivity.this.finish();
+		            }
+		        }
+			);
+			
+			dialog.show();
+		}
+	}
+	
+	
 	
 }

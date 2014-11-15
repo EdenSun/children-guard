@@ -57,7 +57,8 @@ public class UIUtil {
 	        .setTitle(title)
 	        .setMessage(msg)
 	        .setPositiveButton(leftBtnText, leftBtnListener)
-	        .setNegativeButton(rightBtnText, rightBtnListener);
+	        .setNegativeButton(rightBtnText, rightBtnListener)
+	        .setCancelable(true);
 	}
 
 

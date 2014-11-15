@@ -47,4 +47,7 @@
 	<string name="notifyMailAdd.mailEditTextHint">input mail here</string>
 	<string name="notifyMailAdd.addBtn">Add</string>
 	<string name="notifyMailAdd.cancelBtn">Cancel</string>
+	
+	<string name="action_apply">Apply</string>
+	
 </resources>

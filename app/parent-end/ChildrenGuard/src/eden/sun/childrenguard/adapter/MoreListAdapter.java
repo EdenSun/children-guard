@@ -8,11 +8,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 import eden.sun.childrenguard.R;
+import eden.sun.childrenguard.activity.ChildrenManageActivity;
 import eden.sun.childrenguard.dto.MoreListItemView;
 
 public class MoreListAdapter extends BaseAdapter{
@@ -70,6 +72,19 @@ public class MoreListAdapter extends BaseAdapter{
         		
         		switchViewHolder.titleTextView = (TextView)vi.findViewById(R.id.title);
         		switchViewHolder.switchCmp = (Switch)vi.findViewById(R.id.switchCmp);
+        		
+        		final int finalPos = position;
+        		switchViewHolder.switchCmp.setOnClickListener(new OnClickListener(){
+
+					@Override
+					public void onClick(View v) {
+						((ChildrenManageActivity)context).setConfigChanges(true);
+						Switch curSwitch = (Switch)v;
+						boolean isChecked = curSwitch.isChecked();
+						data.get(finalPos).setSwitchOn(isChecked);
+					}
+        			
+        		});
         		
         		vi.setTag(switchViewHolder);
         	}else if( type == MoreListItemView.TYPE_EDITTEXT_ITEM ){

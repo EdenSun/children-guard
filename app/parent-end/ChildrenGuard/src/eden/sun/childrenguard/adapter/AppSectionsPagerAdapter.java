@@ -8,9 +8,15 @@ import eden.sun.childrenguard.fragment.ChildBasicInfoFragment;
 import eden.sun.childrenguard.fragment.ChildManageMoreFragment;
 
 public class AppSectionsPagerAdapter extends FragmentPagerAdapter {
-
+	private Fragment[] fragments ;
+	
     public AppSectionsPagerAdapter(FragmentManager fm) {
         super(fm);
+        
+        /*fragments.add(new ChildBasicInfoFragment());
+        fragments.add(new ChildAppManageFragment());
+        fragments.add(new ChildManageMoreFragment());*/
+        fragments = new Fragment[3];
     }
 
     @Override
@@ -19,20 +25,29 @@ public class AppSectionsPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 // The first section of the app is the most interesting -- it offers
                 // a launchpad into the other demonstrations in this example application.
-                return new ChildBasicInfoFragment();
+            	if( fragments[0] == null ){
+            		fragments[0] = new ChildBasicInfoFragment();
+            	}
+                return fragments[0];
             case 1:
                 // The first section of the app is the most interesting -- it offers
                 // a launchpad into the other demonstrations in this example application.
-                return new ChildAppManageFragment();
+            	if( fragments[1] == null ){
+            		fragments[1] = new ChildAppManageFragment();
+            	}
+                return fragments[1];
             default:
                 // The other sections of the app are dummy placeholders.
-                return new ChildManageMoreFragment();
+            	if( fragments[2] == null ){
+            		fragments[2] = new ChildManageMoreFragment();
+            	}
+                return fragments[2];
         }
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return fragments.length;
     }
 
     @Override
