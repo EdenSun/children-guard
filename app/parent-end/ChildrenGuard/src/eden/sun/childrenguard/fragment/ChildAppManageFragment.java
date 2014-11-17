@@ -20,7 +20,6 @@ import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.adapter.AppManageListAdapter;
 import eden.sun.childrenguard.dto.AppManageListItemView;
 import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
-import eden.sun.childrenguard.helper.RequestHelper;
 import eden.sun.childrenguard.server.dto.AppViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Config;
@@ -118,4 +117,10 @@ public class ChildAppManageFragment extends CommonFragment{
 		return appListAdapter;
 	}
 	
+	public List<AppManageListItemView> getChangesApp(){
+		if( appListAdapter != null ){
+			return appListAdapter.getChangesData();
+		}
+		return null;
+	}
 }

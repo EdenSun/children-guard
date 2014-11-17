@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import eden.sun.childrenguard.dto.AppManageListItemView;
 import eden.sun.childrenguard.server.dto.AppViewDTO;
 import eden.sun.childrenguard.server.dto.ChildBasicInfoViewDTO;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
@@ -77,6 +78,15 @@ public class JSONUtil {
 	public static ViewDTO<List<EmergencyContactViewDTO>> getListEmergencyContactByChildView(
 			String json) {
 		return gson.fromJson(json, new TypeToken<ViewDTO<List<EmergencyContactViewDTO>>>(){}.getType());
+	}
+
+	public static ViewDTO<Boolean> getApplyAppChangesView(String json) {
+		return gson.fromJson(json, new TypeToken<ViewDTO<Boolean>>(){}.getType());
+	}
+
+	public static String transAppManageListItemViewList2String(
+			List<AppManageListItemView> appList) {
+		return gson.toJson(appList);
 	}
 
 }

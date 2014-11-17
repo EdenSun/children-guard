@@ -105,8 +105,10 @@ public class PackageChangeReceiver extends BroadcastReceiver{
 					ViewDTO<AppViewDTO> view = JSONUtil.getInstallAppView(response);
 			    	
 			    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS)){
-			    		AppDao appDao = new AppDao(context);
-			    		appDao.delete(view.getData().getId());
+			    		if( view.getData() != null ){
+			    			AppDao appDao = new AppDao(context);
+			    			appDao.delete(view.getData().getId());
+			    		}
 			    	}
 				}
 

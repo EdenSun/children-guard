@@ -2,18 +2,25 @@ package eden.sun.childrenguard.server.dto.param;
 
 public class AppManageSettingParam {
 	private Integer appId;
-	private Boolean lockStatus;
+	private String appName;
+	private boolean isLock;
 	public Integer getAppId() {
 		return appId;
 	}
 	public void setAppId(Integer appId) {
 		this.appId = appId;
 	}
-	public Boolean getLockStatus() {
-		return lockStatus;
+	public String getAppName() {
+		return appName;
 	}
-	public void setLockStatus(Boolean lockStatus) {
-		this.lockStatus = lockStatus;
+	public void setAppName(String appName) {
+		this.appName = appName;
+	}
+	public boolean isLock() {
+		return isLock;
+	}
+	public void setLock(boolean isLock) {
+		this.isLock = isLock;
 	}
 	@Override
 	public int hashCode() {

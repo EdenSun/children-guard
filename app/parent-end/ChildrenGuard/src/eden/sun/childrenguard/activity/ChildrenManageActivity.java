@@ -1,12 +1,15 @@
 package eden.sun.childrenguard.activity;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
@@ -15,14 +18,24 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.Response;
+
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.adapter.AppSectionsPagerAdapter;
+import eden.sun.childrenguard.dto.AppManageListItemView;
+import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
+import eden.sun.childrenguard.fragment.ChildAppManageFragment;
+import eden.sun.childrenguard.helper.DeviceHelper;
 import eden.sun.childrenguard.server.dto.ChildBasicInfoViewDTO;
+import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Callback;
-import eden.sun.childrenguard.util.Callback.CallbackResult;
+import eden.sun.childrenguard.util.Config;
+import eden.sun.childrenguard.util.JSONUtil;
+import eden.sun.childrenguard.util.RequestURLConstants;
 import eden.sun.childrenguard.util.UIUtil;
 
-public class ChildrenManageActivity extends FragmentActivity implements ActionBar.TabListener,View.OnClickListener{
+public class ChildrenManageActivity extends CommonFragmentActivity implements ActionBar.TabListener,View.OnClickListener{
 	public static final String TAG = "ChildrenManageActivity";
 
     private AppSectionsPagerAdapter mAppSectionsPagerAdapter;
@@ -43,11 +56,14 @@ public class ChildrenManageActivity extends FragmentActivity implements ActionBa
     TextView moreTabText ;
     
     private boolean isConfigChanges;
+    private Integer childId;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_children_manage);
+        childId = getIntent().getIntExtra("childId", 0);
+        
         isConfigChanges = false;
         
         mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
@@ -195,11 +211,81 @@ public class ChildrenManageActivity extends FragmentActivity implements ActionBa
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.apply) {
-			Toast.makeText(this, "Applying changes...", 2000).show();;
+			ChildAppManageFragment appManageFragment = (ChildAppManageFragment)mAppSectionsPagerAdapter.getItem(AppSectionsPagerAdapter.FRAGMENT_INDEX_APP_MANAGE);
+			
+			List<AppManageListItemView> itemList = appManageFragment.getChangesApp();
+			
+			String imei = DeviceHelper.getIMEI(ChildrenManageActivity.this);
+			applyAppChanges(childId,itemList);
+			
+			
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+	private void applyAppChanges(Integer childId,List<AppManageListItemView> itemList) {
+		if( childId != null && itemList != null && itemList.size() > 0 ){
+			String url = Config.BASE_URL_MVC + RequestURLConstants.URL_APPLY_APP_CHANGES;  
+
+			String title = "Apply Changes";
+			String msg = "Please wait...";
+			showProgressDialog(title,msg);	
+			
+			Map<String,String> params = this.getApplyAppChangesParams(childId,itemList);
+			getRequestHelper().doPost(
+				url,
+				params,
+				ChildrenManageActivity.this.getClass(),
+				new Response.Listener<String>() {
+					@Override
+					public void onResponse(String response) {
+						dismissProgressDialog();
+						
+						final ViewDTO<Boolean> view = JSONUtil.getApplyAppChangesView(response);
+								
+						if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
+							Toast.makeText(ChildrenManageActivity.this, "Apply changes success", 2000).show();
+							
+							//setConfigChanges(false);
+						}else{
+							String title = "Error";
+							String msg = view.getInfo();
+							String btnText = "OK";
+							
+							AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
+								ChildrenManageActivity.this,
+								title,
+								msg,
+								btnText,
+								new DialogInterface.OnClickListener() {
+						            @Override
+						            public void onClick(DialogInterface dialog, int which) {
+						            	dialog.dismiss();
+						            }
+						        }
+							);
+							
+							dialog.show();
+						}
+					}
+				}, 
+				new DefaultVolleyErrorHandler(ChildrenManageActivity.this));
+		}
+	}
+
+
+
+	private Map<String, String> getApplyAppChangesParams(Integer childId, List<AppManageListItemView> appList) {
+		Map<String, String> param = new HashMap<String,String>();
+		
+		param.put("childId", childId.toString());
+		param.put("appListJson", JSONUtil.transAppManageListItemViewList2String(appList));
+
+		return param;
+	}
+
+
 
 	/**
 	 * A placeholder fragment containing a simple view.

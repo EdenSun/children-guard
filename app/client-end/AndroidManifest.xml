@@ -49,7 +49,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".service.MainService" >
+        <service android:name=".service.LocationMonitorService" >
         </service>
         <service android:name=".service.WatchDogService" >
         </service>

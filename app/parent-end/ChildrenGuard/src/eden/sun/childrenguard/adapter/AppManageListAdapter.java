@@ -13,8 +13,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.activity.ChildrenManageActivity;
@@ -26,11 +24,13 @@ public class AppManageListAdapter extends BaseAdapter{
     private ArrayList<AppManageListItemView> data;
     private static LayoutInflater inflater=null;
     //public ImageLoader imageLoader; 
+    private List<AppManageListItemView> changesData;
  
     public AppManageListAdapter(Activity context, ArrayList<AppManageListItemView> data) {
         this.context = context;
         this.data=data;
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        changesData = new ArrayList<AppManageListItemView>();
         //imageLoader=new ImageLoader(context.getApplicationContext());
     }
  
@@ -53,7 +53,7 @@ public class AppManageListAdapter extends BaseAdapter{
         }
         TextView appNameTextView = (TextView)vi.findViewById(R.id.appNameTextView);
         Switch switchBtn = (Switch)vi.findViewById(R.id.switchBtn);
-        AppManageListItemView app = data.get(position);
+        final AppManageListItemView app = data.get(position);
         
         appNameTextView.setText(app.getAppName());
         switchBtn.setChecked(app.isLock());
@@ -66,7 +66,10 @@ public class AppManageListAdapter extends BaseAdapter{
 				((ChildrenManageActivity)context).setConfigChanges(true);
 				Switch curSwitch = (Switch)v;
 				boolean isChecked = curSwitch.isChecked();
-				data.get(finalPos).setLock(isChecked);
+				AppManageListItemView curApp = data.get(finalPos);
+				curApp.setLock(isChecked);
+				
+				changesData.add(curApp);
 			}
 			
 		
@@ -117,4 +120,9 @@ public class AppManageListAdapter extends BaseAdapter{
 		
 		data.add(view);
 	}
+
+	public List<AppManageListItemView> getChangesData() {
+		return changesData;
+	}
+
 }

@@ -194,9 +194,9 @@ public class AppServiceImpl extends BaseServiceImpl implements IAppService{
 		
 		for( App app:appList ){
 			for(AppManageSettingParam param:appManageSettingList){
-				if( app.getId().equals(param.getAppId()) && !app.getLockStatus().equals(param.getLockStatus()) ){
+				if( app.getId().equals(param.getAppId()) && !app.getLockStatus().equals(param.isLock()) ){
 					// update app
-					app.setLockStatus(param.getLockStatus());
+					app.setLockStatus(param.isLock());
 					appMapper.updateByPrimaryKey(app);
 					break;
 				}

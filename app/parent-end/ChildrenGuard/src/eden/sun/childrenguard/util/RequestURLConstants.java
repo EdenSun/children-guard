@@ -17,6 +17,7 @@ public class RequestURLConstants {
 	public static final String URL_SAVE_REGISTION_ID = "parent/push/saveRegistionId";
 	public static final String URL_LIST_EMERGENCY_CONTACT_BY_CHILD = "parent/emergencyContact/listByChild";
 	public static final String URL_ADD_EMERGENCY_CONTACT = "parent/emergencyContact/add";
+	public static final String URL_APPLY_APP_CHANGES = "parent/childrenManage/applyAppChanges";
 	
 	
 }

@@ -8,6 +8,7 @@ import android.app.Service;
 import android.location.Location;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 import eden.sun.childrenguard.child.db.dao.ChildInfoDao;
 import eden.sun.childrenguard.child.db.model.ChildInfo;
 
@@ -61,6 +62,7 @@ public class GPSHelper implements GPSCallback {
 		
 		Log.i(TAG, (latitude + "," + longitude) );
 		Log.i(TAG, speedString + " " + unitString);
+		Toast.makeText(context, "speed", 2000).show();
 	}
 	
 	private double convertSpeed(double speed) {

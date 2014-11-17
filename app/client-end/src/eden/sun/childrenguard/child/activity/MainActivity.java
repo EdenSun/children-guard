@@ -273,6 +273,12 @@ public class MainActivity extends CommonActivity {
 	        unbindService(watchDogServiceConnection);  
 	        watchDogServiceConnection = null;  
 	    }
+		
+		if (locationMonitorServiceConnection != null)  
+	    {  
+	        unbindService(locationMonitorServiceConnection);  
+	        locationMonitorServiceConnection = null;  
+	    }
 	    super.onDestroy();  
 	}
 }
