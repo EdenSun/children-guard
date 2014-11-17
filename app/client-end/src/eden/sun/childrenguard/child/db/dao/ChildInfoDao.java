@@ -6,11 +6,13 @@ import java.util.List;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import eden.sun.childrenguard.child.db.model.ChildInfo;
 import eden.sun.childrenguard.child.util.DataTypeUtil;
 import eden.sun.childrenguard.server.dto.ChildInfoViewDTO;
 
 public class ChildInfoDao extends BaseDao{
+	private static final String TAG = "ChildInfoDao";
 	private static final String TABLE_NAME = "TBL_CHILD_INFO";
 	
 	public ChildInfoDao(Context context) {
@@ -99,6 +101,40 @@ public class ChildInfoDao extends BaseDao{
 							childInfoView.getId()});
 			
 			db.close();
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean update(ChildInfo childInfo){
+		if( childInfo == null && childInfo.getId() == null ){
+			Log.i(TAG, "Update child info fail.");
+			return false;
+		}
+		
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		if ( db != null && db.isOpen() ) {
+			
+			db.execSQL("update " + TABLE_NAME + " set MOBILE=?,FIRST_NAME=?,LAST_NAME=?,NICKNAME=?,ACTIVATE_TIME=?,LONGITUDE=?,LATITUDE=?,LOCATION_UPDATE_TIME=?,SPEED=?,SPEED_UPDATE_TIME=?,NETWORK_TRAFFIC_USED=?,NETWORK_TRAFFIC_UPDATE_TIME=? where ID = ?",
+						new Object[] { 
+							childInfo.getMobile(),
+							childInfo.getFirstName(),
+							childInfo.getLastName(),
+							childInfo.getNickname(),
+							childInfo.getActivateTime(),
+							childInfo.getLongitude(),
+							childInfo.getLatitude(),
+							childInfo.getLocationUpdateTime(),
+							childInfo.getSpeed(),
+							childInfo.getSpeedUpdateTime(),
+							childInfo.getNetworkTrafficUsed(),
+							childInfo.getNetworkTrafficUpdateTime(),
+							childInfo.getId()});
+			
+			db.close();
+			
+			Log.i(TAG, "Update child info success.");
 			return true;
 		}
 		

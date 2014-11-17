@@ -101,6 +101,7 @@ public class PackageChangeReceiver extends BroadcastReceiver{
 			new Response.Listener<String>() {
 				@Override
 				public void onResponse(String response) {
+					Log.d(TAG, "Uninstall App Response:" + response);
 					ViewDTO<AppViewDTO> view = JSONUtil.getInstallAppView(response);
 			    	
 			    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS)){

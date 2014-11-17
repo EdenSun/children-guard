@@ -2,9 +2,12 @@ package eden.sun.childrenguard.child.activity;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -26,14 +29,19 @@ import eden.sun.childrenguard.server.dto.ViewDTO;
 public class InitActivity extends CommonBindServiceActivity {
 	private static final String TAG = "InitActivity";
 	private TextView text;
+	private Timer timer;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_init);
+		timer = new Timer(true);
+		
 		initComponent();
 		
 		initService();
+		
+		isActivate();
 	}
 
 	private void initComponent() {
@@ -54,7 +62,6 @@ public class InitActivity extends CommonBindServiceActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		isActivate();
 	}
 
 	
@@ -119,7 +126,27 @@ public class InitActivity extends CommonBindServiceActivity {
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						Log.e(TAG, error.getMessage(), error);
-						AlertDialog.Builder dialog = UIUtil.getServerErrorDialog(InitActivity.this);
+						AlertDialog.Builder dialog = UIUtil.getServerErrorDialog(
+							InitActivity.this,
+							new DialogInterface.OnClickListener(){
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									dialog.dismiss();
+									AsyncTask task = new AsyncTask() {
+										@Override
+										protected Object doInBackground(
+												Object... params) {
+											 Log.i(TAG, "Retry call is activate");
+											 isActivate();
+											 return null;
+										}
+								    }; 
+								    task.execute();
+								}
+								
+							});
 			    		
 						dialog.show();
 				}

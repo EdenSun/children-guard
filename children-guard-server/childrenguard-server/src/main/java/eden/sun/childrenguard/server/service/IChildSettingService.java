@@ -20,4 +20,8 @@ public interface IChildSettingService {
 
 	ChildSetting getById(Integer id)throws ServiceException;
 
+	boolean isInstallSwitchOn(Integer settingId)throws ServiceException;
+
+	boolean isUnInstallSwitchOn(Integer settingId)throws ServiceException;
+
 }

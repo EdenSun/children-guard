@@ -44,10 +44,10 @@ public class ChildApplicationController extends BaseController{
 	
 	@RequestMapping("/uninstallApp")
 	@ResponseBody
-	public ViewDTO<Boolean> uninstallApp(
+	public ViewDTO<AppViewDTO> uninstallApp(
 			String imei,
 			@ModelAttribute("appInfo")UploadApplicationInfoParam appInfo){
-		ViewDTO<Boolean> view = childAppService.uninstallApp(imei,appInfo);
+		ViewDTO<AppViewDTO> view = childAppService.uninstallApp(imei,appInfo);
 		
 		return view;
 	}

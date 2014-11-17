@@ -2,13 +2,17 @@ package eden.sun.childrenguard.child.util.gps;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Date;
 
 import android.app.Service;
 import android.location.Location;
 import android.os.Handler;
-import android.widget.Toast;
+import android.util.Log;
+import eden.sun.childrenguard.child.db.dao.ChildInfoDao;
+import eden.sun.childrenguard.child.db.model.ChildInfo;
 
 public class GPSHelper implements GPSCallback {
+	private static final String TAG = "GPSHelper";
 	public static final int TEXT_SIZE_SMALL = 15;
     public static final int TEXT_SIZE_LARGE = 80;
     public static final int DEFAULT_SPEED_LIMIT = 80;
@@ -41,8 +45,22 @@ public class GPSHelper implements GPSCallback {
 				.valueOf(roundDecimal(convertSpeed(speed), 2));
 		final String unitString = "km/h";
 
-		Toast.makeText(context, (latitude + "," + longitude), 2000).show();
-		Toast.makeText(context, speedString + " " + unitString, 2000).show();
+		// save coordinate and speed
+		ChildInfoDao dao = new ChildInfoDao(context);
+		Date now = new Date();
+		
+		ChildInfo childInfo = dao.getChildInfo();
+		childInfo.setSpeed(Double.valueOf(speed));
+		childInfo.setSpeedUpdateTime(now);
+		
+		childInfo.setLatitude(latitude);
+		childInfo.setLongitude(longitude);
+		childInfo.setLocationUpdateTime(now);
+		
+		dao.update(childInfo);
+		
+		Log.i(TAG, (latitude + "," + longitude) );
+		Log.i(TAG, speedString + " " + unitString);
 	}
 	
 	private double convertSpeed(double speed) {
@@ -58,7 +76,7 @@ public class GPSHelper implements GPSCallback {
 		return value;
 	}
 
-	public void onDestroy() {
+	public void stop() {
 		gpsManager.stopListening();
 		gpsManager.setGPSCallback(null);
 

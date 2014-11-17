@@ -3,7 +3,7 @@ package eden.sun.childrenguard.child.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import eden.sun.childrenguard.child.service.MainService;
+import eden.sun.childrenguard.child.service.LocationMonitorService;
 
 public class BootBroadCast extends BroadcastReceiver {
 
@@ -12,7 +12,7 @@ public class BootBroadCast extends BroadcastReceiver {
 		 /*  
          * 开机启动服务*  
          */  
-		Intent service=new Intent(context, MainService.class);  
+		Intent service=new Intent(context, LocationMonitorService.class);  
         context.startService(service);  
         
         /*  

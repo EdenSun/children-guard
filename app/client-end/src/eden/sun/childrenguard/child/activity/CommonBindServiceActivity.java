@@ -11,13 +11,13 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
-import eden.sun.childrenguard.child.service.MainService;
+import eden.sun.childrenguard.child.service.LocationMonitorService;
 import eden.sun.childrenguard.child.util.RequestHelper;
 import eden.sun.childrenguard.child.util.ShareDataKey;
 
 public class CommonBindServiceActivity extends Activity{
 	private boolean mIsBound;
-	protected MainService mainService; 
+	protected LocationMonitorService mainService; 
 	protected ProgressDialog progress;
 	private static final String PREFS_NAME = "share-data";
 	private SharedPreferences settings ;  
@@ -89,7 +89,7 @@ public class CommonBindServiceActivity extends Activity{
 
 	public void startMainService() {
 		startService(new Intent(this,    
-                MainService.class));
+                LocationMonitorService.class));
 	}
 
 	public void bindMainService() {
@@ -98,7 +98,7 @@ public class CommonBindServiceActivity extends Activity{
         // we know will be running in our own process (and thus won't be 
         // supporting component replacement by other applications). 
         bindService(new Intent(this,    
-                        MainService.class), mConnection, Context.BIND_AUTO_CREATE); 
+                        LocationMonitorService.class), mConnection, Context.BIND_AUTO_CREATE); 
         mIsBound = true; 		
 	}
 
@@ -116,7 +116,7 @@ public class CommonBindServiceActivity extends Activity{
 			// interact with the service. Because we have bound to a explicit
 			// service that we know is running in our own process, we can
 			// cast its IBinder to a concrete class and directly access it.
-			mainService = ((MainService.LocalBinder) service).getService();
+			mainService = ((LocationMonitorService.LocalBinder) service).getService();
 
 			// Tell the user about this for our demo.
 			Toast.makeText(context,

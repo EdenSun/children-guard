@@ -15,6 +15,7 @@ import eden.sun.childrenguard.server.service.IAppService;
 import eden.sun.childrenguard.server.service.IChildAppService;
 import eden.sun.childrenguard.server.service.IChildOfParentsService;
 import eden.sun.childrenguard.server.service.IChildService;
+import eden.sun.childrenguard.server.service.IChildSettingService;
 import eden.sun.childrenguard.server.service.IJPushService;
 
 @Service
@@ -31,6 +32,9 @@ public class ChildAppServiceImpl implements IChildAppService {
 	
 	@Autowired
 	private IChildOfParentsService childOfParentsService;
+	
+	@Autowired
+	private IChildSettingService childSettingService;
 	
 	@Override
 	public ViewDTO<AppViewDTO> installApp(String imei,
@@ -55,40 +59,46 @@ public class ChildAppServiceImpl implements IChildAppService {
 		
 		view.setData(appService.getViewByPackageName(appInfo.getPackageName()));
 		
-		// push uninstall notification messages to parent 
-		String title = "App installed notification";
-		String content = child.getNickname() + " installed app:" + appInfo.getAppName();
-		List<Parent> parentList = childService.getParentsByChildId(child.getId());
-		jpushService.pushMessageToParent(parentList,title,content);
+		//if push install app switch is on , push install notification messages to parent 
+		boolean isInstallSwitchOn = childSettingService.isInstallSwitchOn(child.getId());
+		if( isInstallSwitchOn ){
+			String title = "App installed notification";
+			String content = child.getNickname() + " installed app:" + appInfo.getAppName();
+			List<Parent> parentList = childService.getParentsByChildId(child.getId());
+			jpushService.pushMessageToParent(parentList,title,content);
+		}
 		return view;
 	}
 
 	@Override
-	public ViewDTO<Boolean> uninstallApp(String imei,
+	public ViewDTO<AppViewDTO> uninstallApp(String imei,
 			UploadApplicationInfoParam appInfo) throws ServiceException {
-		ViewDTO<Boolean> view = new ViewDTO<Boolean>();
+		ViewDTO<AppViewDTO> view = new ViewDTO<AppViewDTO>();
 		if( imei == null || appInfo == null ){
 			view.setMsg(ViewDTO.MSG_ERROR);
 			view.setInfo("Parameter is incorrect.");
-			view.setData(false);
+			view.setData(null);
 		}
 		
 		Child child = childService.getChildByImei(imei);
 		if( child == null ){
 			view.setMsg(ViewDTO.MSG_ERROR);
 			view.setInfo("upload app failure.child is not exits.");
-			view.setData(false);
+			view.setData(null);
 		}
 		
 		appService.deleteApp(child.getId(),appInfo);
 
-		view.setData(true);
+		view.setData(appService.getViewByPackageName(appInfo.getPackageName()));
 
-		// push uninstall notification messages to parent 
-		String title = "App uninstalled notification";
-		String message = child.getNickname() + " uninstalled app:" + appInfo.getAppName();
-		List<Parent> parentList = childService.getParentsByChildId(child.getId());
-		jpushService.pushMessageToParent(parentList,title,message);
+		// if push uninstall app switch is on ,push uninstall notification messages to parent 
+		boolean isUnInstallSwitchOn = childSettingService.isUnInstallSwitchOn(child.getId());
+		if( isUnInstallSwitchOn ){
+			String title = "App uninstalled notification";
+			String message = child.getNickname() + " uninstalled app:" + appInfo.getAppName();
+			List<Parent> parentList = childService.getParentsByChildId(child.getId());
+			jpushService.pushMessageToParent(parentList,title,message);
+		}
 		
 		return view;
 	}

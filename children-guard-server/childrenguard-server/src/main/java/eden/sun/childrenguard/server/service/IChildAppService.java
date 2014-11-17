@@ -12,7 +12,7 @@ public interface IChildAppService {
 	ViewDTO<AppViewDTO> installApp(String imei,
 			UploadApplicationInfoParam appInfo)throws ServiceException;
 
-	ViewDTO<Boolean> uninstallApp(String imei,
+	ViewDTO<AppViewDTO> uninstallApp(String imei,
 			UploadApplicationInfoParam appInfo)throws ServiceException;
 
 	ViewDTO<Boolean> uploadAllApp(String imei,

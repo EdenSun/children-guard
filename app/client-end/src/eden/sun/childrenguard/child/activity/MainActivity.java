@@ -20,6 +20,7 @@ import eden.sun.childrenguard.child.R;
 import eden.sun.childrenguard.child.db.dao.AppDao;
 import eden.sun.childrenguard.child.db.dao.ChildInfoDao;
 import eden.sun.childrenguard.child.db.dao.ChildSettingDao;
+import eden.sun.childrenguard.child.service.LocationMonitorService;
 import eden.sun.childrenguard.child.service.WatchDogService;
 import eden.sun.childrenguard.child.util.Config;
 import eden.sun.childrenguard.child.util.DeviceHelper;
@@ -39,10 +40,10 @@ public class MainActivity extends CommonActivity {
 	private ChildInfoDao childInfoDao;
 	private ChildSettingDao childSettingDao;
 	private int syncFinishCnt;
-	private Intent appLockIntent; 
 	private WatchDogService watchDogService;
+	private LocationMonitorService locationMonitorService;
 	
-	private ServiceConnection mConnection = new ServiceConnection() {
+	private ServiceConnection watchDogServiceConnection = new ServiceConnection() {
 		Context context = MainActivity.this;
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			watchDogService = ((WatchDogService.LocalBinder) service).getService();
@@ -60,11 +61,30 @@ public class MainActivity extends CommonActivity {
 		}
 	};
 	
+	private ServiceConnection locationMonitorServiceConnection = new ServiceConnection() {
+		Context context = MainActivity.this;
+		public void onServiceConnected(ComponentName className, IBinder service) {
+			locationMonitorService = ((LocationMonitorService.LocalBinder) service).getService();
+
+			Toast.makeText(context,
+					"locationMonitorService connected", Toast.LENGTH_SHORT)
+					.show();
+		}
+
+		public void onServiceDisconnected(ComponentName className) {
+			locationMonitorService = null;
+			Toast.makeText(context,
+					"locationMonitorService disconnected", Toast.LENGTH_SHORT)
+					.show();
+		}
+	};
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		startWatchDogService();
+		startServices();
 		
 		appDao = new AppDao(this);
 		childInfoDao = new ChildInfoDao(this);
@@ -79,17 +99,26 @@ public class MainActivity extends CommonActivity {
 		
 	}
 
+	private void startServices() {
+		startWatchDogService();
+		startLocationMonitorService();		
+	}
+
+	private void startLocationMonitorService() {
+		Intent intent = new Intent(this, LocationMonitorService.class);
+		
+		startService(intent);
+
+		bindService(intent, locationMonitorServiceConnection, Context.BIND_AUTO_CREATE); 
+	}
+
 	private void startWatchDogService() {
-		appLockIntent = new Intent(this, WatchDogService.class);
+		Intent appLockIntent = new Intent(this, WatchDogService.class);
 	
 		startService(appLockIntent);
-		bindWatchDogService();
+		bindService(appLockIntent, watchDogServiceConnection, Context.BIND_AUTO_CREATE); 
 	}
 	
-	public void bindWatchDogService() {
-        bindService(new Intent(this,    
-                        WatchDogService.class), mConnection, Context.BIND_AUTO_CREATE); 
-	}
 
 	private void syncChildSettingFromServer() {
 		RequestHelper helper = getRequestHelper();
@@ -239,10 +268,10 @@ public class MainActivity extends CommonActivity {
 	
 	@Override
 	protected void onDestroy() {
-		if (mConnection != null)  
+		if (watchDogServiceConnection != null)  
 	    {  
-	        unbindService(mConnection);  
-	        mConnection = null;  
+	        unbindService(watchDogServiceConnection);  
+	        watchDogServiceConnection = null;  
 	    }
 	    super.onDestroy();  
 	}

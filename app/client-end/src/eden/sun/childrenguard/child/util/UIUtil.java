@@ -124,4 +124,19 @@ public class UIUtil {
 		);
 		return dialog;
 	}
+	
+	public static Builder getServerErrorDialog(Activity context,DialogInterface.OnClickListener onClick) {
+		String title = "Error";
+		String msg = "Cannot connect to server,click Ok to try again.";
+		String btnText = "OK";
+		
+		AlertDialog.Builder dialog = getAlertDialogWithOneBtn(
+			context,
+			title,
+			msg,
+			btnText,
+			onClick
+		);
+		return dialog;
+	}
 }

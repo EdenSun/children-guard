@@ -124,4 +124,38 @@ public class ChildSettingServiceImpl extends BaseServiceImpl implements IChildSe
 		return childSetting;
 	}
 
+
+	@Override
+	public boolean isInstallSwitchOn(Integer settingId)
+			throws ServiceException {
+		if( settingId == null ){
+			throw new ServiceException("Parameter setting id can not be null");
+		}
+		
+		ChildSetting setting = getById(settingId);
+		Boolean newAppNotificationSwitch = setting.getNewAppNotificationSwitch();
+		if( newAppNotificationSwitch != null && newAppNotificationSwitch.booleanValue() == true ){
+			return true;
+		}
+		return false;
+	}
+
+
+	@Override
+	public boolean isUnInstallSwitchOn(Integer settingId)
+			throws ServiceException {
+		if( settingId == null ){
+			throw new ServiceException("Parameter setting id can not be null");
+		}
+		
+		ChildSetting setting = getById(settingId);
+		Boolean uninstallAppNotificationSwitch = setting.getUninstallAppNotificationSwitch();
+		
+		if( uninstallAppNotificationSwitch != null && uninstallAppNotificationSwitch.booleanValue() == true ){
+			return true;
+		}
+		
+		return false;
+	}
+	
 }
