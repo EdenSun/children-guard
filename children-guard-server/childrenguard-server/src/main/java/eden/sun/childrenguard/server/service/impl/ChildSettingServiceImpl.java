@@ -91,30 +91,30 @@ public class ChildSettingServiceImpl extends BaseServiceImpl implements IChildSe
 		ChildSetting childSetting = childSettingMapper.selectByPrimaryKey(settingId);
 		
 		for( MoreSettingParam param: moreSettingList ){
-			Integer type = param.getType();
-			Boolean booleanVal = param.getBooleanVal();
-			String strVal = param.getStrVal();
-			if( type.equals(ChildMoreSettingItemTypeConstants.APP_LOCK_UNLOCK_NOTIFICATION_SWITCH) ){
+			Integer settingType = param.getSettingType();
+			Boolean booleanVal = param.getSwitchOn();
+			String strVal = param.getInputText();
+			if( settingType.equals(ChildMoreSettingItemTypeConstants.APP_LOCK_UNLOCK_NOTIFICATION_SWITCH) ){
 				childSetting.setAppLockUnlockNotificationSwitch(booleanVal);
-			}else if( type.equals(ChildMoreSettingItemTypeConstants.LOCK_CALLS_SWITCH) ){
+			}else if( settingType.equals(ChildMoreSettingItemTypeConstants.LOCK_CALLS_SWITCH) ){
 				childSetting.setLockCallsSwitch(booleanVal);
-			}else if( type.equals(ChildMoreSettingItemTypeConstants.LOCK_TEXT_MESSAGE_SWITCH) ){
+			}/*else if( settingType.equals(ChildMoreSettingItemTypeConstants.LOCK_TEXT_MESSAGE_SWITCH) ){
 				childSetting.setLockTextMessageSwitch(booleanVal);
-			}else if( type.equals(ChildMoreSettingItemTypeConstants.NEW_APP_NOTIFICATION_SWITCH) ){
+			}*/else if( settingType.equals(ChildMoreSettingItemTypeConstants.NEW_APP_NOTIFICATION_SWITCH) ){
 				childSetting.setNewAppNotificationSwitch(booleanVal);
-			}else if( type.equals(ChildMoreSettingItemTypeConstants.SPEEDING_LIMIT) ){
+			}else if( settingType.equals(ChildMoreSettingItemTypeConstants.SPEEDING_LIMIT) ){
 				childSetting.setSpeedingLimit(NumberUtil.toInteger(strVal));
-			}else if( type.equals(ChildMoreSettingItemTypeConstants.SPEEDING_NOTIFICATION_SWITCH) ){
+			}else if( settingType.equals(ChildMoreSettingItemTypeConstants.SPEEDING_NOTIFICATION_SWITCH) ){
 				childSetting.setSpeedingNotificationSwitch(booleanVal);
-			}else if( type.equals(ChildMoreSettingItemTypeConstants.UNISTALL_APP_NOTIFICATION_SWITCH) ){
+			}else if( settingType.equals(ChildMoreSettingItemTypeConstants.UNISTALL_APP_NOTIFICATION_SWITCH) ){
 				childSetting.setUninstallAppNotificationSwitch(booleanVal);
-			}else if( type.equals(ChildMoreSettingItemTypeConstants.WIFI_ONLY_SWITCH) ){
+			}else if( settingType.equals(ChildMoreSettingItemTypeConstants.WIFI_ONLY_SWITCH) ){
 				childSetting.setWifiOnlySwitch(booleanVal);
 			}
 		}
 		
+		logger.info(childSetting);
 		childSettingMapper.updateByPrimaryKey(childSetting);
-		
 	}
 
 

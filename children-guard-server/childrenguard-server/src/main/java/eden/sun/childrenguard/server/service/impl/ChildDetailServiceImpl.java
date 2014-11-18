@@ -159,7 +159,7 @@ public class ChildDetailServiceImpl implements IChildDetailService {
 	}
 
 	@Override
-	public ViewDTO<Boolean> applyChildSettingMore(Integer childId,
+	public ViewDTO<Boolean> applyChildSettingMoreChanges(Integer childId,
 			List<MoreSettingParam> moreSettingList) throws ServiceException {
 		if( childId == null || moreSettingList == null ){
 			throw new ServiceException("Parameter childId or moreSettingList can not be null.");
@@ -178,7 +178,7 @@ public class ChildDetailServiceImpl implements IChildDetailService {
 	}
 
 	@Override
-	public ViewDTO<Boolean> applyChildSettingApp(Integer childId,
+	public ViewDTO<Boolean> applyChildAppChanges(Integer childId,
 			List<AppManageSettingParam> appManageSettingList)
 			throws ServiceException {
 		if( childId == null || appManageSettingList == null ){

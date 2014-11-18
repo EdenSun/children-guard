@@ -13,17 +13,19 @@ public class MoreListItemView {
 	public static final String TITLE_UNINSTALL_APP_NOTIFICATION = "Uninstall App Notification";
 	public static final String TITLE_SPEEDING_NOTIFICATION = "Speeding Notification";
 	public static final String TITLE_LOCK_UNLOCK_NOTIFICATION = "Lock/Unlock Notification";
+	public static final String TITLE_SPEEDING_LIMIT = "Speeding Limit";
 	
 	/*public static final int ITEM_TYPE_NOTIFY = 0;
 	public static final int ITEM_TYPE_MODIFY_PASSWORD = 1;
 	public static final int ITEM_TYPE_EXCEPTION_PHONE = 2;*/
 	
 	private String title;
-	//arraw item or switch item
+	//arraw item or switch item or input item
 	private int type;
+	private int settingType;
 	private Class nextActivity;
 	private Boolean switchOn;
-	private Integer speedingLimit;
+	private String inputText;
 	
 	public MoreListItemView() {
 		super();
@@ -34,6 +36,42 @@ public class MoreListItemView {
 		this.title = title;
 		this.type = type;
 		this.nextActivity = nextActivity;
+		this.switchOn = switchOn;
+	}
+	
+	public MoreListItemView(String title, int type, Class nextActivity,
+			Boolean switchOn, String inputText) {
+		super();
+		this.title = title;
+		this.type = type;
+		this.nextActivity = nextActivity;
+		this.switchOn = switchOn;
+		this.inputText = inputText;
+	}
+	
+	public MoreListItemView(String title, int type,int settingType, Class nextActivity,
+			Boolean switchOn) {
+		super();
+		this.title = title;
+		this.type = type;
+		this.nextActivity = nextActivity;
+		this.switchOn = switchOn;
+		this.settingType = settingType;
+	}
+
+	public MoreListItemView(String title, int type, int settingType,
+			String inputText) {
+		this.title = title;
+		this.type = type;
+		this.settingType = settingType;
+		this.inputText = inputText;
+	}
+
+	public MoreListItemView(String title, int type, int settingType,
+			Boolean switchOn) {
+		this.title = title;
+		this.type = type;
+		this.settingType = settingType;
 		this.switchOn = switchOn;
 	}
 
@@ -64,12 +102,12 @@ public class MoreListItemView {
 		this.nextActivity = nextActivity;
 	}
 
-	public Integer getSpeedingLimit() {
-		return speedingLimit;
+	public String getInputText() {
+		return inputText;
 	}
 
-	public void setSpeedingLimit(Integer speedingLimit) {
-		this.speedingLimit = speedingLimit;
+	public void setInputText(String inputText) {
+		this.inputText = inputText;
 	}
 
 	@Override
@@ -77,6 +115,7 @@ public class MoreListItemView {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
+		result = prime * result + type;
 		return result;
 	}
 
@@ -93,6 +132,8 @@ public class MoreListItemView {
 			if (other.title != null)
 				return false;
 		} else if (!title.equals(other.title))
+			return false;
+		if (type != other.type)
 			return false;
 		return true;
 	}

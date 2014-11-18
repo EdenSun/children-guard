@@ -18,6 +18,8 @@ public class RequestURLConstants {
 	public static final String URL_LIST_EMERGENCY_CONTACT_BY_CHILD = "parent/emergencyContact/listByChild";
 	public static final String URL_ADD_EMERGENCY_CONTACT = "parent/emergencyContact/add";
 	public static final String URL_APPLY_APP_CHANGES = "parent/childrenManage/applyAppChanges";
+	public static final String URL_APPLY_SETTING_CHANGES = "parent/childrenManage/applySettingChanges";
+	public static final String URL_LOAD_CHILD_SETTING = "parent/childrenManage/loadChildSetting";
 	
 	
 }

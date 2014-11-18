@@ -109,13 +109,13 @@ public class ChildrenManageController extends BaseController{
 		return view;
 	}
 	
-	@RequestMapping("/applyChildSettingMore")
+	@RequestMapping("/applySettingChanges")
 	@ResponseBody
-	public ViewDTO<Boolean> applyChildSettingMore(Integer childId,String settingInfo) {
-		logger.info("applyChildSettingMore called. childId:" + childId + ",settingInfo:" + settingInfo);
+	public ViewDTO<Boolean> applySettingChanges(Integer childId,String settingListJson) {
+		logger.info("applySettingChanges called. childId:" + childId + ",settingListJson:" + settingListJson);
 		
-		List<MoreSettingParam> moreSettingList = JSONUtil.getMoreSettingParamList(settingInfo);
-		ViewDTO<Boolean> view = childDetailService.applyChildSettingMore(childId,moreSettingList);
+		List<MoreSettingParam> moreSettingList = JSONUtil.getMoreSettingParamList(settingListJson);
+		ViewDTO<Boolean> view = childDetailService.applyChildSettingMoreChanges(childId,moreSettingList);
 		
 		return view;
 	}
@@ -126,7 +126,7 @@ public class ChildrenManageController extends BaseController{
 		logger.info("applyAppChanges called. childId:" + childId + ",appListJson:" + appListJson );
 		
 		List<AppManageSettingParam> appList = JSONUtil.getAppManageSettingParamList(appListJson);
-		ViewDTO<Boolean> view = childDetailService.applyChildSettingApp(childId,appList);
+		ViewDTO<Boolean> view = childDetailService.applyChildAppChanges(childId,appList);
 		
 		return view;
 	}

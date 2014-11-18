@@ -100,4 +100,21 @@ public class ChildSetting {
     public void setAppLockPassword(String appLockPassword) {
         this.appLockPassword = appLockPassword == null ? null : appLockPassword.trim();
     }
+
+	@Override
+	public String toString() {
+		return "ChildSetting [id=" + id + ", lockCallsSwitch="
+				+ lockCallsSwitch + ", lockTextMessageSwitch="
+				+ lockTextMessageSwitch + ", wifiOnlySwitch=" + wifiOnlySwitch
+				+ ", newAppNotificationSwitch=" + newAppNotificationSwitch
+				+ ", uninstallAppNotificationSwitch="
+				+ uninstallAppNotificationSwitch
+				+ ", speedingNotificationSwitch=" + speedingNotificationSwitch
+				+ ", speedingLimit=" + speedingLimit
+				+ ", appLockUnlockNotificationSwitch="
+				+ appLockUnlockNotificationSwitch + ", appLockPassword="
+				+ appLockPassword + "]";
+	}
+    
+    
 }

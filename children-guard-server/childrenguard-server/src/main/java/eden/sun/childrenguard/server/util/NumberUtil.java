@@ -37,7 +37,11 @@ public class NumberUtil {
 			return null;
 		}
 		
-		return Integer.parseInt(numStr);
+		try {
+			return Integer.parseInt(numStr);
+		} catch (NumberFormatException e) {
+			return null;
+		}
 	}
 
 	public static Double toDouble(String numStr) {

@@ -9,6 +9,7 @@ import eden.sun.childrenguard.fragment.ChildManageMoreFragment;
 
 public class AppSectionsPagerAdapter extends FragmentPagerAdapter {
 	public static final int FRAGMENT_INDEX_APP_MANAGE = 1;
+	public static final int FRAGMENT_INDEX_MORE_MANAGE = 2;
 	private Fragment[] fragments ;
 	
     public AppSectionsPagerAdapter(FragmentManager fm) {

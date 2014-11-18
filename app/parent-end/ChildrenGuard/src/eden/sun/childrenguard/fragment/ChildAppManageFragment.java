@@ -123,4 +123,11 @@ public class ChildAppManageFragment extends CommonFragment{
 		}
 		return null;
 	}
+
+
+	public void clearChangesApp() {
+		if( appListAdapter != null ){
+			appListAdapter.clearChangesData();
+		}
+	}
 }

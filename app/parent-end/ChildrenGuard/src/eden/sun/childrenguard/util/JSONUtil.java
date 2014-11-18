@@ -7,8 +7,10 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import eden.sun.childrenguard.dto.AppManageListItemView;
+import eden.sun.childrenguard.dto.MoreListItemView;
 import eden.sun.childrenguard.server.dto.AppViewDTO;
 import eden.sun.childrenguard.server.dto.ChildBasicInfoViewDTO;
+import eden.sun.childrenguard.server.dto.ChildSettingViewDTO;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.EmergencyContactViewDTO;
 import eden.sun.childrenguard.server.dto.IsFirstLoginViewDTO;
@@ -87,6 +89,20 @@ public class JSONUtil {
 	public static String transAppManageListItemViewList2String(
 			List<AppManageListItemView> appList) {
 		return gson.toJson(appList);
+	}
+
+	public static String transMoreListItemViewList2String(
+			List<MoreListItemView> settingList) {
+		return gson.toJson(settingList);
+	}
+
+	public static ViewDTO<Boolean> getApplySettingChangesView(String json) {
+		return gson.fromJson(json, new TypeToken<ViewDTO<Boolean>>(){}.getType());
+	}
+
+	public static ViewDTO<ChildSettingViewDTO> getLoadChildSettingView(
+			String json) {
+		return gson.fromJson(json, new TypeToken<ViewDTO<ChildSettingViewDTO>>(){}.getType());
 	}
 
 }

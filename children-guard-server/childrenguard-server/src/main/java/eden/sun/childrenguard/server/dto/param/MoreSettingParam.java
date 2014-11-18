@@ -1,25 +1,26 @@
 package eden.sun.childrenguard.server.dto.param;
 
 public class MoreSettingParam {
-	private Integer type;
-	private Boolean booleanVal;
-	private String strVal;
-	public Integer getType() {
-		return type;
+	private Integer settingType;
+	private Boolean switchOn;
+	private String inputText;
+
+	public Integer getSettingType() {
+		return settingType;
 	}
-	public void setType(Integer type) {
-		this.type = type;
+	public void setSettingType(Integer settingType) {
+		this.settingType = settingType;
 	}
-	public Boolean getBooleanVal() {
-		return booleanVal;
+	public Boolean getSwitchOn() {
+		return switchOn;
 	}
-	public void setBooleanVal(Boolean booleanVal) {
-		this.booleanVal = booleanVal;
+	public void setSwitchOn(Boolean switchOn) {
+		this.switchOn = switchOn;
 	}
-	public String getStrVal() {
-		return strVal;
+	public String getInputText() {
+		return inputText;
 	}
-	public void setStrVal(String strVal) {
-		this.strVal = strVal;
+	public void setInputText(String inputText) {
+		this.inputText = inputText;
 	}
 }

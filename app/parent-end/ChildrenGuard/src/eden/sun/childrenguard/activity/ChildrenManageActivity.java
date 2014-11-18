@@ -24,9 +24,10 @@ import com.android.volley.Response;
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.adapter.AppSectionsPagerAdapter;
 import eden.sun.childrenguard.dto.AppManageListItemView;
+import eden.sun.childrenguard.dto.MoreListItemView;
 import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
 import eden.sun.childrenguard.fragment.ChildAppManageFragment;
-import eden.sun.childrenguard.helper.DeviceHelper;
+import eden.sun.childrenguard.fragment.ChildManageMoreFragment;
 import eden.sun.childrenguard.server.dto.ChildBasicInfoViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Callback;
@@ -57,11 +58,13 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
     
     private boolean isConfigChanges;
     private Integer childId;
-    
+    private int changesRequestCnt;
+    private boolean saveAndExit;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_children_manage);
+        changesRequestCnt = 2;
         childId = getIntent().getIntExtra("childId", 0);
         
         isConfigChanges = false;
@@ -203,7 +206,7 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 		}
 		return true;
 	}
-
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
@@ -211,28 +214,20 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.apply) {
-			ChildAppManageFragment appManageFragment = (ChildAppManageFragment)mAppSectionsPagerAdapter.getItem(AppSectionsPagerAdapter.FRAGMENT_INDEX_APP_MANAGE);
-			
-			List<AppManageListItemView> itemList = appManageFragment.getChangesApp();
-			
-			String imei = DeviceHelper.getIMEI(ChildrenManageActivity.this);
-			applyAppChanges(childId,itemList);
-			
+			saveAndExit = false;
+			this.saveChanges();
 			
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void applyAppChanges(Integer childId,List<AppManageListItemView> itemList) {
-		if( childId != null && itemList != null && itemList.size() > 0 ){
-			String url = Config.BASE_URL_MVC + RequestURLConstants.URL_APPLY_APP_CHANGES;  
+	private void applyMoreSettingChanges(Integer childId,
+			List<MoreListItemView> settingList) {
+		if( childId != null && settingList != null && settingList.size() > 0 ){
+			String url = Config.BASE_URL_MVC + RequestURLConstants.URL_APPLY_SETTING_CHANGES;  
 
-			String title = "Apply Changes";
-			String msg = "Please wait...";
-			showProgressDialog(title,msg);	
-			
-			Map<String,String> params = this.getApplyAppChangesParams(childId,itemList);
+			Map<String,String> params = this.getApplySettingChangesParams(childId,settingList);
 			getRequestHelper().doPost(
 				url,
 				params,
@@ -240,14 +235,10 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 				new Response.Listener<String>() {
 					@Override
 					public void onResponse(String response) {
-						dismissProgressDialog();
-						
-						final ViewDTO<Boolean> view = JSONUtil.getApplyAppChangesView(response);
+						final ViewDTO<Boolean> view = JSONUtil.getApplySettingChangesView(response);
 								
 						if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
-							Toast.makeText(ChildrenManageActivity.this, "Apply changes success", 2000).show();
-							
-							//setConfigChanges(false);
+							changesFinish();
 						}else{
 							String title = "Error";
 							String msg = view.getInfo();
@@ -271,6 +262,67 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 					}
 				}, 
 				new DefaultVolleyErrorHandler(ChildrenManageActivity.this));
+		}else{
+			changesFinish();
+		}
+		
+	}
+
+
+
+	private Map<String, String> getApplySettingChangesParams(Integer childId2,
+			List<MoreListItemView> settingList) {
+		Map<String, String> param = new HashMap<String,String>();
+		
+		param.put("childId", childId.toString());
+		param.put("settingListJson", JSONUtil.transMoreListItemViewList2String(settingList));
+
+		return param;
+	}
+
+
+
+	private void applyAppChanges(Integer childId,List<AppManageListItemView> itemList) {
+		if( childId != null && itemList != null && itemList.size() > 0 ){
+			String url = Config.BASE_URL_MVC + RequestURLConstants.URL_APPLY_APP_CHANGES;  
+
+			Map<String,String> params = this.getApplyAppChangesParams(childId,itemList);
+			getRequestHelper().doPost(
+				url,
+				params,
+				ChildrenManageActivity.this.getClass(),
+				new Response.Listener<String>() {
+					@Override
+					public void onResponse(String response) {
+						final ViewDTO<Boolean> view = JSONUtil.getApplyAppChangesView(response);
+								
+						if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
+							changesFinish();
+						}else{
+							String title = "Error";
+							String msg = view.getInfo();
+							String btnText = "OK";
+							
+							AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
+								ChildrenManageActivity.this,
+								title,
+								msg,
+								btnText,
+								new DialogInterface.OnClickListener() {
+						            @Override
+						            public void onClick(DialogInterface dialog, int which) {
+						            	dialog.dismiss();
+						            }
+						        }
+							);
+							
+							dialog.show();
+						}
+					}
+				}, 
+				new DefaultVolleyErrorHandler(ChildrenManageActivity.this));
+		}else{
+			changesFinish();
 		}
 	}
 
@@ -314,12 +366,38 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 			if( applyChangeMenu != null ){
 				applyChangeMenu.setEnabled(false);
 			}
+			
+			clearAppChangesData();
+			clearSettingChangesData();
 		}
 	}
 
-	private void saveChanges(Callback callback) {
-		// TODO Auto-generated method stub
+	private void clearSettingChangesData() {
+		ChildManageMoreFragment moreFragment = (ChildManageMoreFragment)mAppSectionsPagerAdapter.getItem(AppSectionsPagerAdapter.FRAGMENT_INDEX_MORE_MANAGE);
+		moreFragment.clearChangesSetting();
+	}
+
+	private void clearAppChangesData() {
+		ChildAppManageFragment appManageFragment = (ChildAppManageFragment)mAppSectionsPagerAdapter.getItem(AppSectionsPagerAdapter.FRAGMENT_INDEX_APP_MANAGE);
+		appManageFragment.clearChangesApp();
+	}
+
+	private void saveChanges() {
+		String title = "Apply Changes";
+		String msg = "Please wait...";
+		showProgressDialog(title,msg);	
 		
+		// apply app changes
+		ChildAppManageFragment appManageFragment = (ChildAppManageFragment)mAppSectionsPagerAdapter.getItem(AppSectionsPagerAdapter.FRAGMENT_INDEX_APP_MANAGE);
+		List<AppManageListItemView> appList = appManageFragment.getChangesApp();
+
+		applyAppChanges(childId,appList);
+		
+		// apply more settings
+		ChildManageMoreFragment moreFragment = (ChildManageMoreFragment)mAppSectionsPagerAdapter.getItem(AppSectionsPagerAdapter.FRAGMENT_INDEX_MORE_MANAGE);
+		List<MoreListItemView> settingList = moreFragment.getChangesSetting();
+
+		applyMoreSettingChanges(childId,settingList);		
 	}
 
 
@@ -344,17 +422,8 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 		            @Override
 		            public void onClick(DialogInterface dialog, int which) {
 		            	dialog.dismiss();
-		            	saveChanges(new Callback(){
-
-							@Override
-							public void execute(CallbackResult result) {
-								if(result.isSuccess()){
-									ChildrenManageActivity.this.finish();								
-								}
-							}
-		            		
-		            	});
-		            	
+		            	saveAndExit = true;
+		            	saveChanges();
 		            }
 
 		        },
@@ -372,5 +441,17 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 	}
 	
 	
-	
+	private synchronized void changesFinish(){
+		changesRequestCnt --;
+		if( changesRequestCnt <= 0 ){
+			changesRequestCnt = 2;
+			Toast.makeText(ChildrenManageActivity.this, "Apply changes success", 2000).show();
+			this.setConfigChanges(false);
+			dismissProgressDialog();
+			
+			if( saveAndExit == true ){
+				ChildrenManageActivity.this.finish();
+			}
+		}
+	}
 }

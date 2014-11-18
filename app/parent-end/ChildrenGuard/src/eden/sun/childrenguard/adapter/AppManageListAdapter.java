@@ -69,6 +69,9 @@ public class AppManageListAdapter extends BaseAdapter{
 				AppManageListItemView curApp = data.get(finalPos);
 				curApp.setLock(isChecked);
 				
+				if( changesData.contains(curApp) ){
+					changesData.remove(curApp);
+				}
 				changesData.add(curApp);
 			}
 			
@@ -123,6 +126,12 @@ public class AppManageListAdapter extends BaseAdapter{
 
 	public List<AppManageListItemView> getChangesData() {
 		return changesData;
+	}
+
+	public void clearChangesData() {
+		if( changesData != null ){
+			changesData.clear();
+		}
 	}
 
 }

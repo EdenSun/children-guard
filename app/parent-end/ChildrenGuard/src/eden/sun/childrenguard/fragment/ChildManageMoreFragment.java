@@ -1,7 +1,8 @@
 package eden.sun.childrenguard.fragment;
 
-import java.util.ArrayList;
+import java.util.List;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,16 +10,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import com.android.volley.Response;
+
 import eden.sun.childrenguard.R;
-import eden.sun.childrenguard.activity.EmergencyContactManageActivity;
-import eden.sun.childrenguard.activity.ModifyLockPasswordActivity;
-import eden.sun.childrenguard.activity.NotifyMailManageActivity;
+import eden.sun.childrenguard.activity.ChildrenListActivity;
 import eden.sun.childrenguard.adapter.MoreListAdapter;
 import eden.sun.childrenguard.dto.MoreListItemView;
+import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
+import eden.sun.childrenguard.server.dto.ChildSettingViewDTO;
+import eden.sun.childrenguard.server.dto.ViewDTO;
+import eden.sun.childrenguard.util.Config;
+import eden.sun.childrenguard.util.JSONUtil;
+import eden.sun.childrenguard.util.RequestURLConstants;
 import eden.sun.childrenguard.util.ShareDataKey;
+import eden.sun.childrenguard.util.UIUtil;
 
 public class ChildManageMoreFragment extends CommonFragment{
 	private Integer childId;
@@ -39,7 +48,9 @@ public class ChildManageMoreFragment extends CommonFragment{
 		nicknameTextView = (TextView)v.findViewById(R.id.nicknameTextView);
 		
         moreList = (ListView)v.findViewById(R.id.list);
-        moreList.setAdapter(getMoreListAdapter());
+        
+        moreListAdapter = new MoreListAdapter(this.getActivity());
+        moreList.setAdapter(moreListAdapter);
         moreList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -55,7 +66,7 @@ public class ChildManageMoreFragment extends CommonFragment{
 					
 					intent.putExtra("childId", childId);
 					ChildManageMoreFragment.this.getActivity().startActivity(intent);
-				}else if( item.getType() == MoreListItemView.TYPE_SWITCH_ITEM ){
+				}/*else if( item.getType() == MoreListItemView.TYPE_SWITCH_ITEM ){
 					if( item.getTitle().equals(MoreListItemView.TITLE_SPEEDING_NOTIFICATION) ){
 						
 						String title = MoreListItemView.TITLE_MODITY_LOCK_PASSWORD;
@@ -69,85 +80,67 @@ public class ChildManageMoreFragment extends CommonFragment{
 						}
 						
 					}
-				}
+				}*/
 				
 			}
 			
 		});
 		
         nicknameTextView.setText(getStringShareData( ShareDataKey.CHILD_NICKNAME ));
+        
+        // load setting data
+        loadSettingData();
+        
 		return v;
     }
 
-	private MoreListAdapter getMoreListAdapter() {
-		ArrayList<MoreListItemView> list = new ArrayList<MoreListItemView>();
-		MoreListItemView view = null;
-		
-		String title = null;
-		int type = 0;
-		Boolean switchOn = null;
-		
-		title = MoreListItemView.TITLE_MODITY_LOCK_PASSWORD;
-		type = MoreListItemView.TYPE_ARROW_ITEM;
-		switchOn = null;
-		view = new MoreListItemView(title,type,ModifyLockPasswordActivity.class, switchOn);
-		list.add(view);
-		
-		title = MoreListItemView.TITLE_EMERGENCY_CONTACTS;
-		type = MoreListItemView.TYPE_ARROW_ITEM;
-		switchOn = null;
-		view = new MoreListItemView(title,type,EmergencyContactManageActivity.class,switchOn);
-		list.add(view);
-		
-		title = MoreListItemView.TITLE_LOCK_CALLS;
-		type = MoreListItemView.TYPE_SWITCH_ITEM;
-		switchOn = false;
-		view = new MoreListItemView(title,type,null,switchOn);
-		list.add(view);
-		
-		title = MoreListItemView.TITLE_LOCK_TEXT_MESSAGING;
-		type = MoreListItemView.TYPE_SWITCH_ITEM;
-		switchOn = false;
-		view = new MoreListItemView(title,type,null,switchOn);
-		list.add(view);
-		
-		title = MoreListItemView.TITLE_WIFI_ONLY;
-		type = MoreListItemView.TYPE_SWITCH_ITEM;
-		switchOn = false;
-		view = new MoreListItemView(title,type,null,switchOn);
-		list.add(view);
-		
-		title = MoreListItemView.TITLE_NEW_APP_NOTIFICATION;
-		type = MoreListItemView.TYPE_SWITCH_ITEM;
-		switchOn = false;
-		view = new MoreListItemView(title,type,NotifyMailManageActivity.class,switchOn);
-		list.add(view);
+	private void loadSettingData() {
+		String url = String.format(
+				Config.BASE_URL_MVC + RequestURLConstants.URL_LOAD_CHILD_SETTING + "?childId=%1$s",  
+				childId);  
 
-		title = MoreListItemView.TITLE_UNINSTALL_APP_NOTIFICATION;
-		type = MoreListItemView.TYPE_SWITCH_ITEM;
-		switchOn = false;
-		view = new MoreListItemView(title,type,NotifyMailManageActivity.class,switchOn);
-		list.add(view);
+		getRequestHelper().doGet(
+			url,
+			ChildrenListActivity.class,
+			new Response.Listener<String>() {
+				@Override
+				public void onResponse(String response) {
+			    	final ViewDTO<ChildSettingViewDTO> view = JSONUtil.getLoadChildSettingView(response);
+			    	
+			    	if( view != null && view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
+			    		if( view.getData() != null ){
+			    			ChildManageMoreFragment.this.getMoreListAdapter().initData(view.getData());
+			    		}
+						
+					}else{
+						AlertDialog.Builder dialog = UIUtil.getErrorDialog(getActivity(),view.getInfo());
+			    		
+						dialog.show();
+					}
+					
+				}
+			}, 
+			new DefaultVolleyErrorHandler(getActivity())
+		);
 		
-		/*title = "Exceed Monthly Data Usage Notification";
-		type = MoreListItemView.TYPE_ARROW_ITEM;
-		switchOn = null;
-		view = new MoreListItemView(title,type,NotifyMailManageActivity.class,switchOn);
-		list.add(view);*/
-		
-		title = MoreListItemView.TITLE_LOCK_UNLOCK_NOTIFICATION;
-		type = MoreListItemView.TYPE_SWITCH_ITEM;
-		switchOn = false;
-		view = new MoreListItemView(title,type,NotifyMailManageActivity.class,switchOn);
-		list.add(view);
-		
-		title = MoreListItemView.TITLE_SPEEDING_NOTIFICATION;
-		type = MoreListItemView.TYPE_SWITCH_ITEM;
-		switchOn = false;
-		view = new MoreListItemView(title,type,NotifyMailManageActivity.class,switchOn);
-		list.add(view);
-		
-		
-		return new MoreListAdapter(this.getActivity(),list);
 	}
+
+	public List<MoreListItemView> getChangesSetting() {
+		if( moreListAdapter != null ){
+			return moreListAdapter.getChangesData();
+		}
+		return null;
+	}
+
+	public void clearChangesSetting() {
+		if( moreListAdapter != null ){
+			moreListAdapter.clearChangesData();
+		}
+	}
+
+	public MoreListAdapter getMoreListAdapter() {
+		return moreListAdapter;
+	}
+	
+	
 }

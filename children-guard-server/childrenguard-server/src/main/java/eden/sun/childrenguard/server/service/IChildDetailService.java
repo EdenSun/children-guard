@@ -23,10 +23,10 @@ public interface IChildDetailService {
 
 	ViewDTO<ChildSettingViewDTO> loadChildSetting(Integer childId)throws ServiceException;
 
-	ViewDTO<Boolean> applyChildSettingMore(Integer childId,
+	ViewDTO<Boolean> applyChildSettingMoreChanges(Integer childId,
 			List<MoreSettingParam> moreSettingList)throws ServiceException;
 
-	ViewDTO<Boolean> applyChildSettingApp(Integer childId,
+	ViewDTO<Boolean> applyChildAppChanges(Integer childId,
 			List<AppManageSettingParam> appManageSettingList)throws ServiceException;
 
 
