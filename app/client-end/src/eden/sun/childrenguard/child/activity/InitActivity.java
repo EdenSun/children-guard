@@ -43,7 +43,18 @@ public class InitActivity extends CommonBindServiceActivity {
 		
 		isActivate();
 	}
+	
+/*	private void initJPush() {
+		JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);		
+	}*/
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+	}
 
+		
 	private void initComponent() {
 		text = (TextView)findViewById(R.id.text);
 	}

@@ -12,6 +12,7 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
+import cn.jpush.android.api.JPushInterface;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -84,6 +85,8 @@ public class MainActivity extends CommonActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		//initJPush();
+		
 		startServices();
 		
 		appDao = new AppDao(this);
@@ -97,6 +100,24 @@ public class MainActivity extends CommonActivity {
 		syncChildSettingFromServer();
 		syncAppFromServer();
 		
+	}
+
+	private void initJPush() {
+		JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);		
+	}
+	
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		//JPushInterface.onPause(this);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		//JPushInterface.onResume(this);
 	}
 
 	private void startServices() {

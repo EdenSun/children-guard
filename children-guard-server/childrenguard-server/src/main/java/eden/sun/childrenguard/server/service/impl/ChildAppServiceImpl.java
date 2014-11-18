@@ -65,7 +65,7 @@ public class ChildAppServiceImpl implements IChildAppService {
 			String title = "App installed notification";
 			String content = child.getNickname() + " installed app:" + appInfo.getAppName();
 			List<Parent> parentList = childService.getParentsByChildId(child.getId());
-			jpushService.pushMessageToParent(parentList,title,content);
+			jpushService.pushNotificationToParent(parentList,title,content);
 		}
 		return view;
 	}
@@ -97,7 +97,7 @@ public class ChildAppServiceImpl implements IChildAppService {
 			String title = "App uninstalled notification";
 			String message = child.getNickname() + " uninstalled app:" + appInfo.getAppName();
 			List<Parent> parentList = childService.getParentsByChildId(child.getId());
-			jpushService.pushMessageToParent(parentList,title,message);
+			jpushService.pushNotificationToParent(parentList,title,message);
 		}
 		
 		return view;

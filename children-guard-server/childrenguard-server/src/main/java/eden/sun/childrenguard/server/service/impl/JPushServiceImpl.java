@@ -2,6 +2,7 @@ package eden.sun.childrenguard.server.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,7 @@ import cn.jpush.api.JPushClient;
 import cn.jpush.api.common.resp.APIConnectionException;
 import cn.jpush.api.common.resp.APIRequestException;
 import cn.jpush.api.push.PushResult;
+import cn.jpush.api.push.model.Message;
 import cn.jpush.api.push.model.Platform;
 import cn.jpush.api.push.model.PushPayload;
 import cn.jpush.api.push.model.audience.Audience;
@@ -20,14 +22,16 @@ import eden.sun.childrenguard.server.util.JPushConfig;
 
 @Service
 public class JPushServiceImpl extends BaseServiceImpl implements IJPushService {
+	private static final int RETRY_TIMES = 5;
 	private JPushClient jpushClient ;
 	
 	public JPushServiceImpl() {
 		super();
+		jpushClient = new JPushClient(JPushConfig.PARENT_END_MASTER_SECRET, JPushConfig.PARENT_END_APP_KEY, RETRY_TIMES);
 	}
 
 	@Override
-	public void pushMessageToParent(List<Parent> parentList, String title,String content)
+	public void pushNotificationToParent(List<Parent> parentList, String title,String content)
 			throws ServiceException {
 		if( parentList == null || parentList.size() == 0 ){
 			return ;
@@ -36,8 +40,6 @@ public class JPushServiceImpl extends BaseServiceImpl implements IJPushService {
 		List<String> registrationIdList = getRegistionIdList(parentList);
 		
 		try {
-			jpushClient = new JPushClient(JPushConfig.PARENT_END_MASTER_SECRET, JPushConfig.PARENT_END_APP_KEY, 3);
-			
 			PushPayload payload = buildAndroidPushPayload(registrationIdList,title,content);
 			
             PushResult result = jpushClient.sendPush(payload);
@@ -82,5 +84,39 @@ public class JPushServiceImpl extends BaseServiceImpl implements IJPushService {
                 .build();
     }
 	
-	
+	public static PushPayload buildAndroidMessageWithExtras(List<String> registrationIds,String msgContent,Map<String,String> extra) {
+        return PushPayload.newBuilder()
+                .setPlatform(Platform.android())
+                .setAudience(Audience.registrationId(registrationIds))
+                .setMessage(Message.newBuilder()
+                        .setMsgContent(msgContent)
+                        .addExtras(extra)
+                        .build())
+                .build();
+    }
+
+	@Override
+	public void pushMessageByRegistionId(String registionId, String msgContent,
+			Map<String, String> extra) throws ServiceException {
+		try {
+			List<String> registionIds = new ArrayList<String>();
+			registionIds.add(registionId);
+			
+			PushPayload payload = buildAndroidMessageWithExtras(registionIds,msgContent,extra);
+			
+            PushResult result = jpushClient.sendPush(payload);
+            logger.info("Push done,Got result - " + result);
+
+        } catch (APIConnectionException e) {
+            // Connection error, should retry later
+        	logger.error("Connection error, should retry later", e);
+        } catch (APIRequestException e) {
+            // Should review the error, and fix the request
+        	logger.error("Should review the error, and fix the request", e);
+        	logger.info("HTTP Status: " + e.getStatus());
+        	logger.info("Error Code: " + e.getErrorCode());
+        	logger.info("Error Message: " + e.getErrorMessage());
+        }
+	}
+
 }

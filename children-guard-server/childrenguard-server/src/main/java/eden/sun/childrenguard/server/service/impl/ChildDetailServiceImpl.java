@@ -1,6 +1,8 @@
 package eden.sun.childrenguard.server.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ import eden.sun.childrenguard.server.service.IChildDetailService;
 import eden.sun.childrenguard.server.service.IChildExtraInfoService;
 import eden.sun.childrenguard.server.service.IChildService;
 import eden.sun.childrenguard.server.service.IChildSettingService;
+import eden.sun.childrenguard.server.service.IJPushService;
+import eden.sun.childrenguard.server.util.PushConstants;
 
 @Service
 public class ChildDetailServiceImpl implements IChildDetailService {
@@ -34,6 +38,9 @@ public class ChildDetailServiceImpl implements IChildDetailService {
 	private IAppService appService;
 	@Autowired
 	private IChildSettingService childSettingService;
+
+	@Autowired
+	private IJPushService pushService;
 	
 	@Override
 	public ViewDTO<List<AppViewDTO>> listChildApp(Integer childId)
@@ -169,6 +176,16 @@ public class ChildDetailServiceImpl implements IChildDetailService {
 			Integer settingId = childId;
 			childSettingService.updateChildSetting(settingId,moreSettingList);
 			
+			//push message to child
+			Child child = childService.getById(childId);
+			if( child != null ){
+				String registionId = child.getRegistionId();
+				if( registionId != null ){
+					Map<String,String> extra = new HashMap<String,String>();
+					pushService.pushMessageByRegistionId(registionId, PushConstants.MSG_CONTENT_APPLY_SETTING_CHANGES, extra);
+				}
+			}
+			
 			view.setData(true);
 		} catch (Exception e) {
 			view.setData(false);
@@ -188,6 +205,16 @@ public class ChildDetailServiceImpl implements IChildDetailService {
 		try {
 			
 			appService.updateApp(childId,appManageSettingList);
+			
+			//push message to child
+			Child child = childService.getById(childId);
+			if( child != null ){
+				String registionId = child.getRegistionId();
+				if( registionId != null ){
+					Map<String,String> extra = new HashMap<String,String>();
+					pushService.pushMessageByRegistionId(registionId, PushConstants.MSG_CONTENT_APPLY_APP_CHANGES, extra);
+				}
+			}
 			
 			view.setData(true);
 		} catch (Exception e) {
