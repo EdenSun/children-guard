@@ -2,22 +2,17 @@ package eden.sun.childrenguard.child.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.telephony.TelephonyManager;
-import android.widget.Toast;
+import cn.jpush.android.api.InstrumentedActivity;
 import eden.sun.childrenguard.child.service.LocationMonitorService;
 import eden.sun.childrenguard.child.util.RequestHelper;
 import eden.sun.childrenguard.child.util.ShareDataKey;
 
-public class CommonBindServiceActivity extends Activity{
-	private boolean mIsBound;
-	protected LocationMonitorService mainService; 
+public class CommonBindServiceActivity extends InstrumentedActivity{
 	protected ProgressDialog progress;
 	private static final String PREFS_NAME = "share-data";
 	private SharedPreferences settings ;  
@@ -92,7 +87,7 @@ public class CommonBindServiceActivity extends Activity{
                 LocationMonitorService.class));
 	}
 
-	public void bindMainService() {
+	/*public void bindMainService() {
 		// Establish a connection with the service.    We use an explicit 
         // class name because we want a specific service implementation that 
         // we know will be running in our own process (and thus won't be 
@@ -100,15 +95,15 @@ public class CommonBindServiceActivity extends Activity{
         bindService(new Intent(this,    
                         LocationMonitorService.class), mConnection, Context.BIND_AUTO_CREATE); 
         mIsBound = true; 		
-	}
+	}*/
 
-	public void unbindMainService(){
+	/*public void unbindMainService(){
 		if (mIsBound) { 
 			unbindService(mConnection); 
 			mIsBound = false;
 		} 
-	}
-	private ServiceConnection mConnection = new ServiceConnection() {
+	}*/
+	/*private ServiceConnection mConnection = new ServiceConnection() {
 		Context context = CommonBindServiceActivity.this;
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			// This is called when the connection with the service has been
@@ -134,5 +129,5 @@ public class CommonBindServiceActivity extends Activity{
 					"local service disconnected", Toast.LENGTH_SHORT)
 					.show();
 		}
-	};
+	};*/
 }

@@ -64,20 +64,24 @@ public class MainActivity extends CommonActivity {
 	
 	private ServiceConnection locationMonitorServiceConnection = new ServiceConnection() {
 		Context context = MainActivity.this;
-		public void onServiceConnected(ComponentName className, IBinder service) {
+		
+		@Override
+		public void onServiceConnected(ComponentName name, IBinder service) {
 			locationMonitorService = ((LocationMonitorService.LocalBinder) service).getService();
 
 			Toast.makeText(context,
 					"locationMonitorService connected", Toast.LENGTH_SHORT)
-					.show();
+					.show();			
 		}
 
-		public void onServiceDisconnected(ComponentName className) {
+		@Override
+		public void onServiceDisconnected(ComponentName name) {
 			locationMonitorService = null;
 			Toast.makeText(context,
 					"locationMonitorService disconnected", Toast.LENGTH_SHORT)
-					.show();
+					.show();			
 		}
+
 	};
 	
 	
@@ -107,18 +111,6 @@ public class MainActivity extends CommonActivity {
         JPushInterface.init(this);		
 	}
 	
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		//JPushInterface.onPause(this);
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		//JPushInterface.onResume(this);
-	}
 
 	private void startServices() {
 		startWatchDogService();

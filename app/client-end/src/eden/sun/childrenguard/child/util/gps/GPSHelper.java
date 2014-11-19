@@ -62,7 +62,8 @@ public class GPSHelper implements GPSCallback {
 		
 		Log.i(TAG, (latitude + "," + longitude) );
 		Log.i(TAG, speedString + " " + unitString);
-		Toast.makeText(context, "speed", 2000).show();
+		Toast.makeText(context, "location:" + latitude + "," + longitude , 1000).show();
+		Toast.makeText(context, "speed", 1000).show();
 	}
 	
 	private double convertSpeed(double speed) {

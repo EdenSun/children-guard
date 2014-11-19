@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import cn.jpush.android.api.JPushInterface;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -36,6 +37,8 @@ public class InitActivity extends CommonBindServiceActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_init);
 		timer = new Timer(true);
+
+		initJPush();
 		
 		initComponent();
 		
@@ -44,10 +47,10 @@ public class InitActivity extends CommonBindServiceActivity {
 		isActivate();
 	}
 	
-/*	private void initJPush() {
+	private void initJPush() {
 		JPushInterface.setDebugMode(true);
         JPushInterface.init(this);		
-	}*/
+	}
 	
 	@Override
 	protected void onPause() {
@@ -61,13 +64,7 @@ public class InitActivity extends CommonBindServiceActivity {
 
 	private void initService() {
 		startMainService();
-		bindMainService();		
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-		unbindMainService();
+		//bindMainService();		
 	}
 
 	@Override
