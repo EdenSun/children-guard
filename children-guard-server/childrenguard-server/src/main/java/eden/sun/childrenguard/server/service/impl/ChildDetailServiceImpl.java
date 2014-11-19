@@ -182,10 +182,10 @@ public class ChildDetailServiceImpl implements IChildDetailService {
 				String registionId = child.getRegistionId();
 				if( registionId != null ){
 					Map<String,String> extra = new HashMap<String,String>();
-					pushService.pushMessageByRegistionId(registionId, PushConstants.MSG_CONTENT_APPLY_SETTING_CHANGES, extra);
+					pushService.pushMessageToChildByRegistionId(registionId, PushConstants.MSG_CONTENT_APPLY_SETTING_CHANGES, extra);
 				}
 			}
-			
+
 			view.setData(true);
 		} catch (Exception e) {
 			view.setData(false);
@@ -203,8 +203,9 @@ public class ChildDetailServiceImpl implements IChildDetailService {
 		}
 		ViewDTO<Boolean> view = new ViewDTO<Boolean>();
 		try {
-			
 			appService.updateApp(childId,appManageSettingList);
+			
+			
 			
 			//push message to child
 			Child child = childService.getById(childId);
@@ -212,7 +213,7 @@ public class ChildDetailServiceImpl implements IChildDetailService {
 				String registionId = child.getRegistionId();
 				if( registionId != null ){
 					Map<String,String> extra = new HashMap<String,String>();
-					pushService.pushMessageByRegistionId(registionId, PushConstants.MSG_CONTENT_APPLY_APP_CHANGES, extra);
+					pushService.pushMessageToChildByRegistionId(registionId, PushConstants.MSG_CONTENT_APPLY_APP_CHANGES, extra);
 				}
 			}
 			

@@ -10,7 +10,7 @@ public interface IJPushService {
 
 	void pushNotificationToParent(List<Parent> parentList,String title, String content)throws ServiceException;
 
-	void pushMessageByRegistionId(String registionId,
+	void pushMessageToChildByRegistionId(String registionId,
 			String msgContent, Map<String, String> extra)throws ServiceException;
 
 }

@@ -23,11 +23,13 @@ import eden.sun.childrenguard.server.util.JPushConfig;
 @Service
 public class JPushServiceImpl extends BaseServiceImpl implements IJPushService {
 	private static final int RETRY_TIMES = 5;
-	private JPushClient jpushClient ;
+	private JPushClient parentJPushClient ;
+	private JPushClient childJPushClient ;
 	
 	public JPushServiceImpl() {
 		super();
-		jpushClient = new JPushClient(JPushConfig.PARENT_END_MASTER_SECRET, JPushConfig.PARENT_END_APP_KEY, RETRY_TIMES);
+		parentJPushClient = new JPushClient(JPushConfig.PARENT_END_MASTER_SECRET, JPushConfig.PARENT_END_APP_KEY, RETRY_TIMES);
+		childJPushClient = new JPushClient(JPushConfig.CHILD_END_MASTER_SECRET, JPushConfig.CHILD_END_APP_KEY, RETRY_TIMES);
 	}
 
 	@Override
@@ -42,7 +44,7 @@ public class JPushServiceImpl extends BaseServiceImpl implements IJPushService {
 		try {
 			PushPayload payload = buildAndroidPushPayload(registrationIdList,title,content);
 			
-            PushResult result = jpushClient.sendPush(payload);
+            PushResult result = parentJPushClient.sendPush(payload);
             logger.info("Push done,Got result - " + result);
 
         } catch (APIConnectionException e) {
@@ -96,7 +98,7 @@ public class JPushServiceImpl extends BaseServiceImpl implements IJPushService {
     }
 
 	@Override
-	public void pushMessageByRegistionId(String registionId, String msgContent,
+	public void pushMessageToChildByRegistionId(String registionId, String msgContent,
 			Map<String, String> extra) throws ServiceException {
 		try {
 			List<String> registionIds = new ArrayList<String>();
@@ -104,7 +106,7 @@ public class JPushServiceImpl extends BaseServiceImpl implements IJPushService {
 			
 			PushPayload payload = buildAndroidMessageWithExtras(registionIds,msgContent,extra);
 			
-            PushResult result = jpushClient.sendPush(payload);
+            PushResult result = childJPushClient.sendPush(payload);
             logger.info("Push done,Got result - " + result);
 
         } catch (APIConnectionException e) {

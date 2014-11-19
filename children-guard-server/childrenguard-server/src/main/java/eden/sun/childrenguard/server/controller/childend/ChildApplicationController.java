@@ -37,6 +37,7 @@ public class ChildApplicationController extends BaseController{
 	public ViewDTO<AppViewDTO> installApp(
 			String imei,
 			@ModelAttribute("appInfo")UploadApplicationInfoParam appInfo){
+		logger.info("installApp. imei:" + imei + "appInfo:" + appInfo);
 		ViewDTO<AppViewDTO> view = childAppService.installApp(imei,appInfo);
 		
 		return view;
@@ -47,6 +48,7 @@ public class ChildApplicationController extends BaseController{
 	public ViewDTO<AppViewDTO> uninstallApp(
 			String imei,
 			@ModelAttribute("appInfo")UploadApplicationInfoParam appInfo){
+		logger.info("uninstallApp. imei:" + imei + "appInfo:" + appInfo);
 		ViewDTO<AppViewDTO> view = childAppService.uninstallApp(imei,appInfo);
 		
 		return view;

@@ -1,8 +1,10 @@
 package eden.sun.childrenguard.child.receiver;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,11 +16,18 @@ import cn.jpush.android.api.JPushInterface;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import eden.sun.childrenguard.child.activity.MainActivity;
+import eden.sun.childrenguard.child.db.dao.AppDao;
+import eden.sun.childrenguard.child.db.dao.ChildSettingDao;
+import eden.sun.childrenguard.child.util.BroadcastActionConstants;
 import eden.sun.childrenguard.child.util.Config;
 import eden.sun.childrenguard.child.util.DeviceHelper;
 import eden.sun.childrenguard.child.util.JSONUtil;
 import eden.sun.childrenguard.child.util.RequestHelper;
 import eden.sun.childrenguard.child.util.RequestURLConstants;
+import eden.sun.childrenguard.child.util.UIUtil;
+import eden.sun.childrenguard.server.dto.AppViewDTO;
+import eden.sun.childrenguard.server.dto.ChildSettingViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 
 public class JPushCustomMsgReceiver extends BroadcastReceiver {
@@ -39,7 +48,19 @@ public class JPushCustomMsgReceiver extends BroadcastReceiver {
 				.getAction())) {
 			Log.d(TAG, "收到了自定义消息。消息内容是："
 					+ bundle.getString(JPushInterface.EXTRA_MESSAGE));
-			// 自定义消息不会展示在通知栏，完全要开发者写代码去处理
+			String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
+			if( message != null ){
+				if( message.equals("Apply App Changes") ){
+					// reload app lock/unlock setting
+
+					syncAppFromServer(context);
+					
+				}else if( message.equals("Apply Setting Changes")){
+					// reload settings
+					
+					syncChildSettingFromServer(context);
+				}
+			}
 			
 			Toast.makeText(context, bundle.getString(JPushInterface.EXTRA_MESSAGE) , 3000);
 		} else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent
@@ -87,5 +108,91 @@ public class JPushCustomMsgReceiver extends BroadcastReceiver {
 					Log.e(TAG, error.getMessage(), error);
 			}
 		});
+	}
+	
+	private void syncAppFromServer(final Context context) {
+		RequestHelper helper = RequestHelper.getInstance(context);
+		String imei = DeviceHelper.getIMEI(context);
+		String url = String.format(
+				Config.BASE_URL_MVC + RequestURLConstants.URL_LIST_CHILD_APP_INFO + "?imei=%1$s",  
+				imei);  
+
+		helper.doGet(
+			url,
+			new Response.Listener<String>() {
+				@Override
+				public void onResponse(String response) {
+					Log.d(TAG, response);
+					ViewDTO<List<AppViewDTO>> view = JSONUtil.getListChildAppInfoView(response);
+			    	
+			    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS)){
+			    		if( view.getData() != null ){
+			    			List<AppViewDTO> appList = view.getData();
+			    			AppDao appDao = new AppDao(context);
+			    			
+			    			appDao.clearAll();
+			    			appDao.batchAdd(appList);
+			    			
+			    			//init locked app list in watch dog service
+			    			//watchDogService.initAppData();
+			    			Intent intent = new Intent();
+			    			intent.setAction(BroadcastActionConstants.INIT_SERVICE_APP_DATA);
+		    			   
+			    			context.sendBroadcast(intent);
+			    		}
+			    		
+			    	}else{
+			    		Log.e(TAG, "Server error.");
+			    	}
+			    	
+				}
+
+			}, 
+			new Response.ErrorListener() {
+				@Override
+				public void onErrorResponse(VolleyError error) {
+					Log.e(TAG, error.getMessage());
+			}
+		});	
+	}
+	
+	
+	private void syncChildSettingFromServer(final Context context) {
+		RequestHelper helper = RequestHelper.getInstance(context);
+		String imei = DeviceHelper.getIMEI(context);
+		String url = String.format(
+				Config.BASE_URL_MVC + RequestURLConstants.URL_RETRIEVE_CHID_SETTING + "?imei=%1$s",  
+				imei);  
+		final ChildSettingDao childSettingDao = new ChildSettingDao(context);
+		helper.doGet(
+			url,
+			new Response.Listener<String>() {
+				@Override
+				public void onResponse(String response) {
+					Log.d(TAG, response);
+					ViewDTO<ChildSettingViewDTO> view = JSONUtil.getRetrieveChildSettingView(response);
+			    	
+			    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS)){
+			    		if( view.getData() != null ){
+			    			ChildSettingViewDTO childSettingView = view.getData();
+			    			
+			    			childSettingDao.addOrUpdate(childSettingView);
+			    			
+			    			Log.e(TAG, "update setting success." + childSettingDao.getLockCallSwitch());
+			    		}
+			    		
+			    	}else{
+			    		Log.e(TAG, "Server error.");
+			    	}
+			    	
+				}
+
+			}, 
+			new Response.ErrorListener() {
+				@Override
+				public void onErrorResponse(VolleyError error) {
+					Log.e(TAG, error.getMessage(), error);
+			}
+		});	
 	}
 }

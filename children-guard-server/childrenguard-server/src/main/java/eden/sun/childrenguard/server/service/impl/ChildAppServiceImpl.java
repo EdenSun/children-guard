@@ -62,8 +62,8 @@ public class ChildAppServiceImpl implements IChildAppService {
 		//if push install app switch is on , push install notification messages to parent 
 		boolean isInstallSwitchOn = childSettingService.isInstallSwitchOn(child.getId());
 		if( isInstallSwitchOn ){
-			String title = "App installed notification";
-			String content = child.getNickname() + " installed app:" + appInfo.getAppName();
+			String title = "App Installed";
+			String content = child.getNickname() + " installed:" + appInfo.getAppName();
 			List<Parent> parentList = childService.getParentsByChildId(child.getId());
 			jpushService.pushNotificationToParent(parentList,title,content);
 		}
@@ -87,6 +87,7 @@ public class ChildAppServiceImpl implements IChildAppService {
 			view.setData(null);
 		}
 		
+		AppViewDTO appView = appService.getViewByPackageName(appInfo.getPackageName());
 		appService.deleteApp(child.getId(),appInfo);
 
 		view.setData(appService.getViewByPackageName(appInfo.getPackageName()));
@@ -94,8 +95,8 @@ public class ChildAppServiceImpl implements IChildAppService {
 		// if push uninstall app switch is on ,push uninstall notification messages to parent 
 		boolean isUnInstallSwitchOn = childSettingService.isUnInstallSwitchOn(child.getId());
 		if( isUnInstallSwitchOn ){
-			String title = "App uninstalled notification";
-			String message = child.getNickname() + " uninstalled app:" + appInfo.getAppName();
+			String title = "App Uninstalled";
+			String message = child.getNickname() + " uninstalled:" + appView.getName();
 			List<Parent> parentList = childService.getParentsByChildId(child.getId());
 			jpushService.pushNotificationToParent(parentList,title,message);
 		}

@@ -38,8 +38,6 @@ public class InitActivity extends CommonBindServiceActivity {
 		setContentView(R.layout.activity_init);
 		timer = new Timer(true);
 
-		initJPush();
-		
 		initComponent();
 		
 		initService();
@@ -47,10 +45,10 @@ public class InitActivity extends CommonBindServiceActivity {
 		isActivate();
 	}
 	
-	private void initJPush() {
+	/*private void initJPush() {
 		JPushInterface.setDebugMode(true);
         JPushInterface.init(this);		
-	}
+	}*/
 	
 	@Override
 	protected void onPause() {

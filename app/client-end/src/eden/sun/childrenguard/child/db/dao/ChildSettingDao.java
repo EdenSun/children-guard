@@ -164,16 +164,16 @@ public class ChildSettingDao extends BaseDao{
 			
 			db.execSQL("update " + TABLE_NAME + " set LOCK_CALL_SWITCH=?,LOCK_TEXT_MESSAGE_SWITCH=?,WIFI_ONLY_SWITCH=?,NEW_APP_NOTIFICATION_SWITCH=?,UNINSTALL_APP_NOTIFICATION_SWITCH=?,SPEEDING_NOTIFICATION_SWITCH=?,SPEEDING_LIMIT=?,APP_LOCK_UNLOCK_NOTIFICATION=?,APP_LOCK_PASSWORD=? where ID = ?",
 						new Object[] { 
-							childSettingView.getLockCallsSwitch(),
-							childSettingView.getLockTextMessageSwitch(),
-							childSettingView.getWifiOnlySwitch(),
-							childSettingView.getNewAppNotificationSwitch(),
-							childSettingView.getUninstallAppNotificationSwitch(),
-							childSettingView.getSpeedingNotificationSwitch(),
-							childSettingView.getSpeedingLimit(),
-							childSettingView.getAppLockUnlockNotificationSwitch(),
-							childSettingView.getAppLockPassword(), 
-							childSettingView.getId()});
+							childSettingView.getLockCallsSwitch().toString(),
+							childSettingView.getLockTextMessageSwitch().toString(),
+							childSettingView.getWifiOnlySwitch().toString(),
+							childSettingView.getNewAppNotificationSwitch().toString(),
+							childSettingView.getUninstallAppNotificationSwitch().toString(),
+							childSettingView.getSpeedingNotificationSwitch().toString(),
+							childSettingView.getSpeedingLimit().toString(),
+							childSettingView.getAppLockUnlockNotificationSwitch().toString(),
+							childSettingView.getAppLockPassword().toString(), 
+							childSettingView.getId().toString()});
 			
 			db.close();
 			return true;

@@ -1,11 +1,11 @@
 package eden.sun.childrenguard.child.activity;
 
-import java.util.List;
-
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -23,13 +23,14 @@ import eden.sun.childrenguard.child.db.dao.ChildInfoDao;
 import eden.sun.childrenguard.child.db.dao.ChildSettingDao;
 import eden.sun.childrenguard.child.service.LocationMonitorService;
 import eden.sun.childrenguard.child.service.WatchDogService;
+import eden.sun.childrenguard.child.util.BroadcastActionConstants;
+import eden.sun.childrenguard.child.util.Callback;
 import eden.sun.childrenguard.child.util.Config;
 import eden.sun.childrenguard.child.util.DeviceHelper;
 import eden.sun.childrenguard.child.util.JSONUtil;
 import eden.sun.childrenguard.child.util.RequestHelper;
 import eden.sun.childrenguard.child.util.RequestURLConstants;
 import eden.sun.childrenguard.child.util.UIUtil;
-import eden.sun.childrenguard.server.dto.AppViewDTO;
 import eden.sun.childrenguard.server.dto.ChildInfoViewDTO;
 import eden.sun.childrenguard.server.dto.ChildSettingViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
@@ -49,9 +50,16 @@ public class MainActivity extends CommonActivity {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			watchDogService = ((WatchDogService.LocalBinder) service).getService();
 
-			Toast.makeText(context,
+			watchDogService.syncAppFromServer(new Callback(){
+				@Override
+				public void callback() {
+					syncFinished();
+				}
+			});
+			
+			/*Toast.makeText(context,
 					"watch dog service connected", Toast.LENGTH_SHORT)
-					.show();
+					.show();*/
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
@@ -84,12 +92,25 @@ public class MainActivity extends CommonActivity {
 
 	};
 	
+	private BroadcastReceiver initServiceAppDataReceiver;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		//initJPush();
+		IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BroadcastActionConstants.INIT_SERVICE_APP_DATA);
+        initServiceAppDataReceiver = new BroadcastReceiver() {
+        	 
+            @Override
+            public void onReceive(Context context, Intent intent) {
+            	String action = intent.getAction();
+                watchDogService.initAppData();
+            }
+        };
+        registerReceiver( initServiceAppDataReceiver, intentFilter);
+		
+		initJPush();
 		
 		startServices();
 		
@@ -102,7 +123,6 @@ public class MainActivity extends CommonActivity {
 		text.setText("Retrieve person infomation...");
 		syncChildInfoFromServer();
 		syncChildSettingFromServer();
-		syncAppFromServer();
 		
 	}
 
@@ -219,7 +239,7 @@ public class MainActivity extends CommonActivity {
 		});	
 	}
 
-	private void syncAppFromServer() {
+	/*private void syncAppFromServer() {
 		RequestHelper helper = getRequestHelper();
 		String imei = DeviceHelper.getIMEI(this);
 		String url = String.format(
@@ -264,7 +284,7 @@ public class MainActivity extends CommonActivity {
 					dialog.show();
 			}
 		});	
-	}
+	}*/
 
 	private synchronized void syncFinished(){
 		syncFinishCnt++;
@@ -292,6 +312,8 @@ public class MainActivity extends CommonActivity {
 	        unbindService(locationMonitorServiceConnection);  
 	        locationMonitorServiceConnection = null;  
 	    }
+		
+		unregisterReceiver(initServiceAppDataReceiver);
 	    super.onDestroy();  
 	}
 }
