@@ -127,7 +127,7 @@ public class MainActivity extends CommonActivity {
 	}
 
 	private void initJPush() {
-		JPushInterface.setDebugMode(true);
+		JPushInterface.setDebugMode(false);
         JPushInterface.init(this);		
 	}
 	

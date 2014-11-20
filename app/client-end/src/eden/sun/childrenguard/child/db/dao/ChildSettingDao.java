@@ -164,15 +164,15 @@ public class ChildSettingDao extends BaseDao{
 			
 			db.execSQL("update " + TABLE_NAME + " set LOCK_CALL_SWITCH=?,LOCK_TEXT_MESSAGE_SWITCH=?,WIFI_ONLY_SWITCH=?,NEW_APP_NOTIFICATION_SWITCH=?,UNINSTALL_APP_NOTIFICATION_SWITCH=?,SPEEDING_NOTIFICATION_SWITCH=?,SPEEDING_LIMIT=?,APP_LOCK_UNLOCK_NOTIFICATION=?,APP_LOCK_PASSWORD=? where ID = ?",
 						new Object[] { 
-							childSettingView.getLockCallsSwitch().toString(),
-							childSettingView.getLockTextMessageSwitch().toString(),
-							childSettingView.getWifiOnlySwitch().toString(),
-							childSettingView.getNewAppNotificationSwitch().toString(),
-							childSettingView.getUninstallAppNotificationSwitch().toString(),
-							childSettingView.getSpeedingNotificationSwitch().toString(),
-							childSettingView.getSpeedingLimit().toString(),
-							childSettingView.getAppLockUnlockNotificationSwitch().toString(),
-							childSettingView.getAppLockPassword().toString(), 
+							childSettingView.getLockCallsSwitch()==null? "false":childSettingView.getLockCallsSwitch().toString(),
+							childSettingView.getLockTextMessageSwitch()==null? "false":childSettingView.getLockTextMessageSwitch().toString(),
+							childSettingView.getWifiOnlySwitch().toString()==null? "false":childSettingView.getWifiOnlySwitch().toString(),
+							childSettingView.getNewAppNotificationSwitch() == null? "false": childSettingView.getNewAppNotificationSwitch().toString(),
+							childSettingView.getUninstallAppNotificationSwitch()==null?"false":childSettingView.getUninstallAppNotificationSwitch().toString(),
+							childSettingView.getSpeedingNotificationSwitch() == null ? "false":childSettingView.getSpeedingNotificationSwitch().toString(),
+							childSettingView.getSpeedingLimit() == null ? "" : childSettingView.getSpeedingLimit().toString(),
+							childSettingView.getAppLockUnlockNotificationSwitch()==null? "false":childSettingView.getAppLockUnlockNotificationSwitch().toString(),
+							childSettingView.getAppLockPassword()==null?"":childSettingView.getAppLockPassword().toString(), 
 							childSettingView.getId().toString()});
 			
 			db.close();

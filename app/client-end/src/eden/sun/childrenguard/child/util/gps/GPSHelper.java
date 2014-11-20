@@ -48,19 +48,21 @@ public class GPSHelper implements GPSCallback {
 		Date now = new Date();
 		
 		ChildInfo childInfo = dao.getChildInfo();
-		childInfo.setSpeed(Double.valueOf(speed));
-		childInfo.setSpeedUpdateTime(now);
-		
-		childInfo.setLatitude(latitude);
-		childInfo.setLongitude(longitude);
-		childInfo.setLocationUpdateTime(now);
-		
-		dao.update(childInfo);
+		if( childInfo != null ){
+			childInfo.setSpeed(Double.valueOf(speed));
+			childInfo.setSpeedUpdateTime(now);
+			
+			childInfo.setLatitude(latitude);
+			childInfo.setLongitude(longitude);
+			childInfo.setLocationUpdateTime(now);
+			
+			dao.update(childInfo);
+		}
 		
 		Log.i(TAG, (latitude + "," + longitude) );
 		Log.i(TAG, speedString + " " + unitString);
-		Toast.makeText(context, "location:" + latitude + "," + longitude , 1000).show();
-		Toast.makeText(context, "speed:" + speed, 1000).show();
+		//Toast.makeText(context, "location:" + latitude + "," + longitude , 1000).show();
+		//Toast.makeText(context, "speed:" + speed, 1000).show();
 	}
 	
 	private double convertSpeed(double speed) {
