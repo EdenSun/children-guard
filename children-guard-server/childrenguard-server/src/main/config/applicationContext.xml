@@ -34,7 +34,7 @@
 	</bean>
 
 	<!-- c3p0 datasource -->
-	<bean id="dataSource" 
+	<!-- <bean id="dataSource" 
 		class="com.mchange.v2.c3p0.ComboPooledDataSource">
 		<property name="driverClass" value="${db.driver}"></property>
 		<property name="jdbcUrl" value="${db.url}"></property>
@@ -53,7 +53,41 @@
 		<property name="numHelperThreads" value="${db.numHelperThreads}"></property>
 		<property name="preferredTestQuery" value="${db.preferredTestQuery}"></property>
 		<property name="maxAdministrativeTaskTime" value="${db.maxAdministrativeTaskTime}"></property>
-	</bean>
+	</bean> -->
+	
+	<!-- dbcp2 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"  
+        destroy-method="close">  
+        <!-- Connection Info -->  
+        <property name="driverClassName" value="${dbcp2.driver}" />  
+        <property name="url" value="${dbcp2.url}" />  
+        <property name="username" value="${dbcp2.username}" />  
+        <property name="password" value="${dbcp2.password}" />  
+  
+        <property name="maxIdle" value="${dbcp2.maxIdle}"/>        
+        <property name="minIdle" value="${dbcp2.minIdle}"/>        
+        <property name="initialSize" value="${dbcp2.initialSize}"/>        
+        <property name="timeBetweenEvictionRunsMillis" 
+                                        value="${dbcp2.timeBetweenEvictionRunsMillis}"/> 
+        
+        <property name="poolPreparedStatements" value="${dbcp2.poolPreparedStatements}"/>        
+        <property name="maxOpenPreparedStatements" value="${dbcp2.maxOpenPreparedStatements}"/>        
+        <property name="removeAbandonedTimeout" value="${dbcp2.removeAbandonedTimeout}"/>
+ 
+        <!-- 申请连接时执行validationQuery检测连接是否有效，配置为true会降低性能 -->        
+        <property name="testOnBorrow" value="${dbcp2.testOnBorrow}"/>
+ 
+        <!-- 归还连接时执行validationQuery检测连接是否有效，配置为true会降低性能  -->        
+        <property name="testOnReturn" value="${dbcp2.testOnReturn}"/>
+ 
+        <!-- 建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于
+             timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。  -->               
+        <property name="testWhileIdle" value="${dbcp2.testWhileIdle}"/>
+ 
+        <!-- 用来检测连接是否有效的sql，要求是一个查询语句,如果validationQuery为
+             null，testOnBorrow、testOnReturn、testWhileIdle都不起其作用。 -->            
+        <property name="validationQuery" value="${dbcp2.validationQuery}"/>   
+    </bean> 
 	
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage"
