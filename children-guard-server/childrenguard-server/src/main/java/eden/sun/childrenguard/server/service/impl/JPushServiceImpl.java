@@ -41,22 +41,25 @@ public class JPushServiceImpl extends BaseServiceImpl implements IJPushService {
 		
 		List<String> registrationIdList = getRegistionIdList(parentList);
 		
-		try {
-			PushPayload payload = buildAndroidPushPayload(registrationIdList,title,content);
-			
-            PushResult result = parentJPushClient.sendPush(payload);
-            logger.info("Push done,Got result - " + result);
+		if( registrationIdList != null && registrationIdList.size() > 0 ){
+			try {
+				PushPayload payload = buildAndroidPushPayload(registrationIdList,title,content);
+				
+	            PushResult result = parentJPushClient.sendPush(payload);
+	            logger.info("Push done,Got result - " + result);
 
-        } catch (APIConnectionException e) {
-            // Connection error, should retry later
-        	logger.error("Connection error, should retry later", e);
-        } catch (APIRequestException e) {
-            // Should review the error, and fix the request
-        	logger.error("Should review the error, and fix the request", e);
-        	logger.info("HTTP Status: " + e.getStatus());
-        	logger.info("Error Code: " + e.getErrorCode());
-        	logger.info("Error Message: " + e.getErrorMessage());
-        }
+	        } catch (APIConnectionException e) {
+	            // Connection error, should retry later
+	        	logger.error("Connection error, should retry later", e);
+	        } catch (APIRequestException e) {
+	            // Should review the error, and fix the request
+	        	logger.error("Should review the error, and fix the request", e);
+	        	logger.info("HTTP Status: " + e.getStatus());
+	        	logger.info("Error Code: " + e.getErrorCode());
+	        	logger.info("Error Message: " + e.getErrorMessage());
+	        }
+		}
+		
 	}
 	
 	private List<String> getRegistionIdList(List<Parent> parentList) {
@@ -64,7 +67,9 @@ public class JPushServiceImpl extends BaseServiceImpl implements IJPushService {
 		
 		if( parentList != null ){
 			for(Parent parent:parentList){
-				registionIdList.add(parent.getRegistionId());
+				if( parent.getRegistionId() != null ){
+					registionIdList.add(parent.getRegistionId());
+				}
 			}
 		}
 		return registionIdList;

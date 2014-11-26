@@ -1,5 +1,8 @@
 package eden.sun.childrenguard.server.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +15,7 @@ import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.exception.ServiceException;
 import eden.sun.childrenguard.server.model.generated.Parent;
 import eden.sun.childrenguard.server.service.IAuthService;
+import eden.sun.childrenguard.server.service.IJPushService;
 import eden.sun.childrenguard.server.service.IParentService;
 import eden.sun.childrenguard.server.util.Constants;
 import eden.sun.childrenguard.server.util.NumberUtil;
@@ -21,6 +25,9 @@ public class AuthServiceImpl implements IAuthService {
 	private Logger logger = Logger.getLogger(AuthServiceImpl.class);
 	@Autowired 
 	private IParentService parentService;
+	
+	@Autowired
+	private IJPushService jpushService;
 	
 	@Override
 	public ViewDTO<LoginViewDTO> login(String email, String password)
@@ -116,13 +123,13 @@ public class AuthServiceImpl implements IAuthService {
 		boolean isUpdateSuccess = parentService.update(parent);
 		
 		if( isUpdateSuccess ){
-			//TODO: send email
-			//...... send email code here
-			logger.info("Send reset password mail to " + email);
+			//send code to app
+			logger.info("Send reset code to " + email);
+			List<Parent> toList = new ArrayList<Parent>();
+			toList.add(parent);
+			jpushService.pushNotificationToParent(toList, "Reset Code", "Reset code is " + resetCode );
 			
-			//.......................
-			
-			view.setData("Reset code have been sent to your email.");
+			view.setData("Reset code have been sent to your app.");
 			return view;
 		}else{
 			view.setInfo("Server error,please try later.");
@@ -158,9 +165,40 @@ public class AuthServiceImpl implements IAuthService {
 		return view;
 	}
 
-	
-	
-	
-	
+	@Override
+	public ViewDTO<String> changePassword(String imei, String resetCode,
+			String password) throws ServiceException {
+		ViewDTO<String> view = new ViewDTO<String>();
+		if( imei == null || resetCode == null || password == null ){
+			view.setInfo("Server parameters error");
+			view.setMsg(ViewDTO.MSG_ERROR);
+			return view;
+		}
+		Parent parent = parentService.getByImei(imei);
+		
+		if( parent != null ){
+			String dbResetCode = parent.getResetCode();
+			if( dbResetCode != null ){
+				if( !dbResetCode.equals(resetCode) ){
+					view.setInfo("Reset code is incorrect, change password failure.");
+					view.setMsg(ViewDTO.MSG_ERROR);
+					return view;
+				}else{
+					parent.setPassword(password);
+					boolean isSuccess = parentService.update(parent);
+					
+					if( isSuccess ){
+						view.setInfo("Change password success.");
+						view.setMsg(ViewDTO.MSG_SUCCESS);
+						return view;
+					}
+				}
+			}
+		}
+		
+		view.setInfo("Unknow error, change password failure.");
+		view.setMsg(ViewDTO.MSG_ERROR);
+		return view;
+	}
 	
 }

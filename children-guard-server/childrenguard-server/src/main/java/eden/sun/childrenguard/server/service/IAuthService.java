@@ -17,5 +17,8 @@ public interface IAuthService {
 
 	ViewDTO<IsFirstLoginViewDTO> isFirstLogin(String email, String password)throws ServiceException;
 
+	ViewDTO<String> changePassword(String imei, String resetCode,
+			String password)throws ServiceException;
+
 	
 }

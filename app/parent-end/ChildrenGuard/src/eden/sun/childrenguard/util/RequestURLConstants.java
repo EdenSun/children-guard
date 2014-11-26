@@ -20,6 +20,7 @@ public class RequestURLConstants {
 	public static final String URL_APPLY_APP_CHANGES = "parent/childrenManage/applyAppChanges";
 	public static final String URL_APPLY_SETTING_CHANGES = "parent/childrenManage/applySettingChanges";
 	public static final String URL_LOAD_CHILD_SETTING = "parent/childrenManage/loadChildSetting";
+	public static final String URL_DO_CHANGE_PASSWORD = "parent/reset/doChangePassword";
 	
 	
 }

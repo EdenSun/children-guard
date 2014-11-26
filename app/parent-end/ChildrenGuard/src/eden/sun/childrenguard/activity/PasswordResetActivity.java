@@ -18,10 +18,10 @@ import com.android.volley.Response;
 
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
-import eden.sun.childrenguard.helper.RequestHelper;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
+import eden.sun.childrenguard.util.RegexHelper;
 import eden.sun.childrenguard.util.RequestURLConstants;
 import eden.sun.childrenguard.util.StringUtil;
 import eden.sun.childrenguard.util.UIUtil;
@@ -165,6 +165,28 @@ public class PasswordResetActivity extends CommonActivity {
 			
 			dialog.show();
 			return false;
+		}else{
+			if( !RegexHelper.isEmail(email) ){
+				String title = "Register";
+				String msg = "Email format is incorrect.";
+				String btnText = "OK";
+				
+				AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
+					PasswordResetActivity.this,
+					title,
+					msg,
+					btnText,
+					new DialogInterface.OnClickListener() {
+			            @Override
+			            public void onClick(DialogInterface dialog, int which) {
+			            	dialog.dismiss();
+			            }
+			        }
+				);
+				
+				dialog.show();
+				return false;
+			}
 		}
 		
 		return true;

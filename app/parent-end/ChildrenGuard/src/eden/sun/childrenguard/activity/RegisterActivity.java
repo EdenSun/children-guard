@@ -24,6 +24,7 @@ import eden.sun.childrenguard.server.dto.RegisterViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
+import eden.sun.childrenguard.util.RegexHelper;
 import eden.sun.childrenguard.util.RequestURLConstants;
 import eden.sun.childrenguard.util.StringUtil;
 import eden.sun.childrenguard.util.UIUtil;
@@ -247,6 +248,28 @@ public class RegisterActivity extends CommonActivity {
 			
 			dialog.show();
 			return false;
+		}else{
+			if( !RegexHelper.isEmail(email) ){
+				String title = "Register";
+				String msg = "Email format is incorrect.";
+				String btnText = "OK";
+				
+				AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
+					RegisterActivity.this,
+					title,
+					msg,
+					btnText,
+					new DialogInterface.OnClickListener() {
+			            @Override
+			            public void onClick(DialogInterface dialog, int which) {
+			            	dialog.dismiss();
+			            }
+			        }
+				);
+				
+				dialog.show();
+				return false;
+			}
 		}
 		
 		if( StringUtil.isBlank(password) ){
@@ -269,6 +292,28 @@ public class RegisterActivity extends CommonActivity {
 			
 			dialog.show();
 			return false;
+		}else{
+			if( !RegexHelper.isValidPassword(password) ){
+				String title = "Register";
+				String msg = "Password can only contain 6-8 letters or numbers.";
+				String btnText = "OK";
+				
+				AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
+					RegisterActivity.this,
+					title,
+					msg,
+					btnText,
+					new DialogInterface.OnClickListener() {
+			            @Override
+			            public void onClick(DialogInterface dialog, int which) {
+			            	dialog.dismiss();
+			            }
+			        }
+				);
+				
+				dialog.show();
+				return false;
+			}
 		}
 		
 		if( StringUtil.isBlank(confirmPassword) ){
@@ -291,6 +336,28 @@ public class RegisterActivity extends CommonActivity {
 			
 			dialog.show();
 			return false;
+		}else{
+			if( !RegexHelper.isValidPassword(confirmPassword) ){
+				String title = "Register";
+				String msg = "Confirm password can only contain 6-8 letters or numbers.";
+				String btnText = "OK";
+				
+				AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
+					RegisterActivity.this,
+					title,
+					msg,
+					btnText,
+					new DialogInterface.OnClickListener() {
+			            @Override
+			            public void onClick(DialogInterface dialog, int which) {
+			            	dialog.dismiss();
+			            }
+			        }
+				);
+				
+				dialog.show();
+				return false;
+			}
 		}
 		
 		if( !password.equals(confirmPassword) ){

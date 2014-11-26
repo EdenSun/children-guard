@@ -25,4 +25,15 @@ public class ResetPasswordController extends BaseController{
 		return view;
 	}
 	
+	
+	@RequestMapping("/doChangePassword")
+	@ResponseBody
+	public ViewDTO<String> doChangePassword(String imei,String resetCode,String password){
+		logger.info("doChangePassword called. imei:" + imei + ", resetCode:" + resetCode + ", password:" + password);
+		
+		ViewDTO<String> view = authService.changePassword(imei,resetCode,password);
+		
+		return view;
+	}
+	
 }
