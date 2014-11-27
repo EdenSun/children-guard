@@ -14,6 +14,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        
+        <LinearLayout
+            android:id="@+id/photoLine"
+	        android:layout_width="match_parent"
+	        android:layout_height="80dp"
+	        android:orientation="horizontal"
+	        style="@style/photoUploadLineStyle">
+	        <TextView 
+	            android:layout_width="wrap_content"
+	            android:layout_height="match_parent"
+	            android:text="Photo"
+	            android:gravity="center_vertical"
+	            android:textColor="#888"
+	            android:layout_weight="1"
+	            />
+	        <ImageView
+	            android:id="@+id/photoImageView"
+	            android:layout_width="80dp"
+	            android:layout_height="match_parent"
+	            android:layout_weight="0"
+	            android:scaleType="fitXY"
+	            />
+        </LinearLayout>
 	    <EditText
 	        android:id="@+id/mobileEditText"
 	        android:hint="Mobile"

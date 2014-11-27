@@ -4,3 +4,5 @@ app/client-end/bin/*
 app/parent-end/ChildrenGuard/bin/*
 children-guard-server/childrenguard-server/target/*
 .classpath
+*.prefs
+*.properties
