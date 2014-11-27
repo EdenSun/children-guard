@@ -25,6 +25,7 @@ import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
 import eden.sun.childrenguard.util.RequestURLConstants;
+import eden.sun.childrenguard.util.ShareDataKey;
 import eden.sun.childrenguard.util.UIUtil;
 
 public class ChildrenListActivity extends CommonActionBarActivity {
@@ -160,11 +161,23 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 			int requestCode = 0;
 			this.startActivityForResult(intent,requestCode);
 			return true;
+		} else if( id == R.id.action_children_list_out ){
+			Intent intent = new Intent(ChildrenListActivity.this,LoginActivity.class);
+			removeLoginData();
+			
+			startActivity(intent);
+			ChildrenListActivity.this.finish();
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 	
 	
+	private void removeLoginData() {
+		removeFromShareData(ShareDataKey.LOGIN_ACCOUNT);
+		removeFromShareData(ShareDataKey.LOGIN_PASSWORD);
+	}
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {  

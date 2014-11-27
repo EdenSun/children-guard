@@ -19,14 +19,13 @@ import android.widget.Toast;
 import cn.jpush.android.api.JPushInterface;
 
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
-import eden.sun.childrenguard.helper.RequestHelper;
 import eden.sun.childrenguard.server.dto.IsFirstLoginViewDTO;
 import eden.sun.childrenguard.server.dto.LoginViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
+import eden.sun.childrenguard.util.Callback;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
 import eden.sun.childrenguard.util.RequestURLConstants;
@@ -92,11 +91,28 @@ public class LoginActivity extends CommonActivity {
 						    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS)){
 						    		if( view.getData().isFirstLogin() ){
 						    			
-						    			AlertDialog.Builder dialog = UIUtil.getLegalInfoDialog(LoginActivity.this,view.getData().getLegalInfo());
+						    			AlertDialog.Builder dialog = UIUtil.getLegalInfoDialog(
+						    					LoginActivity.this,
+						    					view.getData().getLegalInfo(),
+						    					new Callback(){
+
+													@Override
+													public void execute(
+															CallbackResult result) {
+														String email = UIUtil.getEditTextValue(emailEditText);
+										    			String password = UIUtil.getEditTextValue(passwordEditText);
+										    			
+														doLogin(email,password);
+													}
+						    						
+						    					});
 										
 										dialog.show();
 						    		}else{
-						    			LoginActivity.this.doLogin();
+						    			String email = UIUtil.getEditTextValue(emailEditText);
+						    			String password = UIUtil.getEditTextValue(passwordEditText);
+						    			
+						    			LoginActivity.this.doLogin(email,password);
 						    		}
 						    	}else{
 						    		AlertDialog.Builder dialog = UIUtil.getErrorDialog(LoginActivity.this,view.getInfo());
@@ -137,29 +153,24 @@ public class LoginActivity extends CommonActivity {
         	
         });
     	
-        /*registerBtn = (Button)findViewById(R.id.registerBtn);
-        registerBtn.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View arg0) {
-				Intent it = new Intent(LoginActivity.this, RegisterActivity.class);
-				startActivity(it);   
-			}
-        	
-        });
-        
-        forgetPasswordBtn = (Button)findViewById(R.id.forgetPasswordBtn);
-        forgetPasswordBtn.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View arg0) {
-				Intent it = new Intent(LoginActivity.this, PasswordResetActivity.class);
-				startActivity(it);   
-			}
-        	
-        });*/
+        autoLogin();
     }
 
+
+	private void autoLogin() {
+		String loginAccount = this.getStringShareData(ShareDataKey.LOGIN_ACCOUNT);
+		String loginPassword = this.getStringShareData(ShareDataKey.LOGIN_PASSWORD);
+		
+		if( loginAccount != null && loginPassword != null ){
+			//do login
+			this.doLogin(loginAccount,loginPassword);
+		}
+	}
+	
+	private void saveAutoLoginData(String account, String password) {
+		this.putStringShareData(ShareDataKey.LOGIN_ACCOUNT, account);
+		this.putStringShareData(ShareDataKey.LOGIN_PASSWORD, password);
+	}
 
 	private boolean doValidation() {
     	String email = UIUtil.getEditTextValue(emailEditText);
@@ -243,16 +254,12 @@ public class LoginActivity extends CommonActivity {
 		return data;
 	}
 	
-	public void doLogin(){
+	public void doLogin(final String account ,final String password){
 		// do login
     	//runtime.publish(getLoginParam(), CometdConfig.LOGIN_CHANNEL,new LoginListener(LoginActivity.this));
-
-		String email = UIUtil.getEditTextValue(emailEditText);
-		String password = UIUtil.getEditTextValue(passwordEditText);
-		
 		String url = String.format(
 				Config.BASE_URL_MVC + RequestURLConstants.URL_LOGIN + "?email=%1$s&password=%2$s",  
-				email,  
+				account,  
 				password);  
 
 		getRequestHelper().doGet(
@@ -263,6 +270,7 @@ public class LoginActivity extends CommonActivity {
 				public void onResponse(String response) {
 					Log.d(TAG, "response");
 					dismissProgressDialog();
+					saveAutoLoginData(account,password);
 					ViewDTO<LoginViewDTO> view = JSONUtil.getLoginView(response);
 					
 					if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
@@ -283,6 +291,7 @@ public class LoginActivity extends CommonActivity {
 					}
 					
 				}
+
 			}, 
 			new DefaultVolleyErrorHandler(LoginActivity.this)
 		);

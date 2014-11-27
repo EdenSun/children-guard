@@ -48,6 +48,13 @@ public class CommonActionBarActivity extends ActionBarActivity implements Dialog
 		editor.commit();  
 	}
 	
+	public void removeFromShareData(String key) {
+		initSharedPreferences();
+		SharedPreferences.Editor editor = settings.edit();  
+		editor.remove(key);
+		editor.commit();  
+	}
+	
 	public String getStringShareData(String key) {
 		initSharedPreferences();
 		return settings.getString(key, null);

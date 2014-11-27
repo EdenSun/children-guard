@@ -111,7 +111,7 @@ public class UIUtil {
 	}
 
 
-	public static Builder getLegalInfoDialog(Activity context, String legalInfo) {
+	public static Builder getLegalInfoDialog(Activity context, String legalInfo,final Callback loginSuccessCallback) {
 		String title = "Legal Infomation";
 		String msg = legalInfo;
 		String leftBtnText = "Agree";
@@ -129,7 +129,7 @@ public class UIUtil {
 	            public void onClick(DialogInterface dialog, int which) {
 	            	dialog.dismiss();
 	            	
-	            	finalContext.doLogin();
+	            	loginSuccessCallback.execute(null);
 	            }
 	        },
 	        new DialogInterface.OnClickListener() {
