@@ -110,4 +110,8 @@ public class JSONUtil {
 		
 	}
 
+	public static ViewDTO<String> getUploadPhotoDTO(String json) {
+		return gson.fromJson(json, new TypeToken<ViewDTO<String>>(){}.getType());
+	}
+
 }

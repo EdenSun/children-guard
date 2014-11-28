@@ -11,12 +11,12 @@ import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,6 +38,7 @@ import eden.sun.childrenguard.server.dto.RelationshipViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
+import eden.sun.childrenguard.util.RealPathUtil;
 import eden.sun.childrenguard.util.RequestURLConstants;
 import eden.sun.childrenguard.util.StringUtil;
 import eden.sun.childrenguard.util.UIUtil;
@@ -400,12 +401,27 @@ public class ChildrenListAddActivity extends CommonActivity {
             Log.i(TAG, "uri = " + uri);
             try {
             	ContentResolver cr = this.getContentResolver();
-                
-                 Bitmap bitmap = BitmapFactory.decodeStream(cr
-                         .openInputStream(uri));
-                 photoImageView.setImageBitmap(bitmap);
-                 
-                 doUploadImage();
+            	if(Build.VERSION.SDK_INT < 11){
+            		picPath = RealPathUtil.getRealPathFromURI_BelowAPI11(this, data.getData());
+            	}
+            	// SDK >= 11 && SDK < 19
+                else if (Build.VERSION.SDK_INT < 19){
+                	picPath = RealPathUtil.getRealPathFromURI_API11to18(this, data.getData());
+                }
+                 // SDK > 19 (Android 4.4)
+                else{
+                	picPath = RealPathUtil.getRealPathFromURI_API19(this, data.getData());
+                }
+            	 
+				if (picPath.endsWith("jpg") || picPath.endsWith("png")) {
+					Bitmap bitmap = BitmapFactory.decodeStream(cr
+							.openInputStream(uri));
+					photoImageView.setImageBitmap(bitmap);
+
+					doUploadImage();
+				}else {
+                	showNotValidImageDialog();
+                }
  
             } catch (Exception e) {
             }
@@ -414,27 +430,6 @@ public class ChildrenListAddActivity extends CommonActivity {
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 	
-	public String getImagePath(Uri uri) {
-	    String selectedImagePath;
-	    // 1:MEDIA GALLERY --- query from MediaStore.Images.Media.DATA
-	    String[] projection = { MediaStore.Images.Media.DATA };
-	    Cursor cursor = managedQuery(uri, projection, null, null, null);
-	    if (cursor != null) {
-	        int column_index = cursor
-	                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-	        cursor.moveToFirst();
-	        selectedImagePath = cursor.getString(column_index);
-	    } else {
-	        selectedImagePath = null;
-	    }
-
-	    if (selectedImagePath == null) {
-	        // 2:OI FILE Manager --- call method: uri.getPath()
-	        selectedImagePath = uri.getPath();
-	    }
-	    return selectedImagePath;
-	}
-
 	private void showNotValidImageDialog() {
 		String title = "Add Person";
 		String msg = "Selected file is not valid image.";
@@ -465,8 +460,25 @@ public class ChildrenListAddActivity extends CommonActivity {
             final File file = new File(picPath);
 
             if (file != null) {
-            	String uploadUrl = Config.BASE_URL_MVC + RequestURLConstants.URL_UPLOAD_PHOTO;
-                int responseCode = UploadUtil.uploadFile(file, uploadUrl);
+            	final String uploadUrl = Config.BASE_URL_MVC + RequestURLConstants.URL_UPLOAD_PHOTO;
+            	
+            	new AsyncTask<Void,Integer,String>(){
+
+					@Override
+					protected String doInBackground(Void... params) {
+						ViewDTO<String> view = UploadUtil.uploadFile(file, uploadUrl);
+						
+						if( view != null && view.getMsg() != null && view.getMsg().equals(ViewDTO.MSG_SUCCESS)){
+							String photoRemotePath = Config.BASE_URL + "upload/" + view.getData();
+							
+							Log.i(TAG, "Upload finish, photo url:" + photoRemotePath);
+						}else{
+							Toast.makeText(ChildrenListAddActivity.this, "Upload photo fail,please try later.", 2000);
+						}
+						return null;
+					}
+            	}.execute();
+                
             }
         }
 	}

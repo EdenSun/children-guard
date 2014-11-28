@@ -145,32 +145,37 @@ public class ChildrenManageController extends BaseController{
 	
 	@RequestMapping(value="/uploadPhoto", method=RequestMethod.POST)  
 	@ResponseBody
-    public ViewDTO<String> uploadPhoto(@RequestParam MultipartFile file, HttpServletRequest request) throws IOException{  
+    public ViewDTO<String> uploadPhoto(@RequestParam MultipartFile file, HttpServletRequest request) throws Exception{  
 		logger.info("uploadPhoto called. ");
 		
 		ViewDTO<String> view = new ViewDTO<String>();
 		if( file.isEmpty() ){  
             System.out.println("文件未上传");  
         }else{  
-            logger.debug("file size: " + file.getSize());  
-            logger.debug("file type: " + file.getContentType());  
-            logger.debug("file name: " + file.getName());  
-            logger.debug("file original name: " + file.getOriginalFilename());  
+            logger.info("file size: " + file.getSize());  
+            logger.info("file type: " + file.getContentType());  
+            logger.info("file name: " + file.getName());  
+            logger.info("file original name: " + file.getOriginalFilename());  
             //如果用的是Tomcat服务器，则文件会上传到\\%TOMCAT_HOME%\\webapps\\YourWebProject\\WEB-INF\\upload\\文件夹中  
             String realPath = request.getSession().getServletContext().getRealPath("/");  
             DateFormat df = new SimpleDateFormat("yyMMdd");
             File uplaodDir = new File(realPath + "/upload/" + df.format(new Date()));
             if( !uplaodDir.exists() ){
             	boolean isSuccess = uplaodDir.mkdirs();
-            	if( isSuccess ){
-	        		String photoFileName = "photo" + new Date().getTime();
-	        		//这里不必处理IO流关闭的问题，因为FileUtils.copyInputStreamToFile()方法内部会自动把用到的IO流关掉，我是看它的源码才知道的  
-	        		
-	        		File uploadFile = new File(realPath, photoFileName);
-	        		FileUtils.copyInputStreamToFile(file.getInputStream(), uploadFile);  
-	        		view.setData(photoFileName);
+            	if( !isSuccess ){
+            		view.setMsg(ViewDTO.MSG_ERROR);
+            		view.setData(null);
+            		view.setInfo("Server error , upload fail.");
+            		return view;
             	}
             }
+            
+            String photoFileName = "photo" + new Date().getTime();
+    		//这里不必处理IO流关闭的问题，因为FileUtils.copyInputStreamToFile()方法内部会自动把用到的IO流关掉，我是看它的源码才知道的  
+    		
+    		File uploadFile = new File(realPath, photoFileName);
+    		FileUtils.copyInputStreamToFile(file.getInputStream(), uploadFile);  
+    		view.setData(photoFileName);
         }  
 		
         return view;  
