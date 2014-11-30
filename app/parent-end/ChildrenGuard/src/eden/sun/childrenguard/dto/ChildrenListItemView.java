@@ -6,6 +6,7 @@ public class ChildrenListItemView {
     private String mobile;
     private String firstName;
     private String lastName;
+    private String photoImage;
     
     private String onlineStatus;
 
@@ -56,6 +57,13 @@ public class ChildrenListItemView {
 	public void setOnlineStatus(String onlineStatus) {
 		this.onlineStatus = onlineStatus;
 	}
-    
+
+	public String getPhotoImage() {
+		return photoImage;
+	}
+
+	public void setPhotoImage(String photoImage) {
+		this.photoImage = photoImage;
+	}
     
 }

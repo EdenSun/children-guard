@@ -445,6 +445,76 @@ public class ChildExample {
             return (Criteria) this;
         }
 
+        public Criteria andPhotoImageIsNull() {
+            addCriterion("PHOTO_IMAGE is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoImageIsNotNull() {
+            addCriterion("PHOTO_IMAGE is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoImageEqualTo(String value) {
+            addCriterion("PHOTO_IMAGE =", value, "photoImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoImageNotEqualTo(String value) {
+            addCriterion("PHOTO_IMAGE <>", value, "photoImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoImageGreaterThan(String value) {
+            addCriterion("PHOTO_IMAGE >", value, "photoImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoImageGreaterThanOrEqualTo(String value) {
+            addCriterion("PHOTO_IMAGE >=", value, "photoImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoImageLessThan(String value) {
+            addCriterion("PHOTO_IMAGE <", value, "photoImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoImageLessThanOrEqualTo(String value) {
+            addCriterion("PHOTO_IMAGE <=", value, "photoImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoImageLike(String value) {
+            addCriterion("PHOTO_IMAGE like", value, "photoImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoImageNotLike(String value) {
+            addCriterion("PHOTO_IMAGE not like", value, "photoImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoImageIn(List<String> values) {
+            addCriterion("PHOTO_IMAGE in", values, "photoImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoImageNotIn(List<String> values) {
+            addCriterion("PHOTO_IMAGE not in", values, "photoImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoImageBetween(String value1, String value2) {
+            addCriterion("PHOTO_IMAGE between", value1, value2, "photoImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoImageNotBetween(String value1, String value2) {
+            addCriterion("PHOTO_IMAGE not between", value1, value2, "photoImage");
+            return (Criteria) this;
+        }
+
         public Criteria andActivateTimeIsNull() {
             addCriterion("ACTIVATE_TIME is null");
             return (Criteria) this;

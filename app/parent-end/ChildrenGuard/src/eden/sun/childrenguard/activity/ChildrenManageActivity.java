@@ -100,7 +100,7 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
             		moreTabText.setTextColor(Color.WHITE);
             	}
             	
-            	
+            	initMenu();
             }
 
         });
@@ -181,6 +181,7 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 			settingTabText.setTextColor(R.color.tab_text_selected);*/
 			mViewPager.setCurrentItem(2);
 		}
+		
 	}
 
 
@@ -195,18 +196,56 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 	}
 
 	private MenuItem applyChangeMenu;
+	private MenuItem deletePersonMenu;
+	private MenuItem lockAllAppMenu;
+	private MenuItem unlockAllAppMenu;
+	private MenuItem presetLockMenu;
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.children_manage, menu);
-		if( menu.getItem(0) != null ){
-			applyChangeMenu = menu.getItem(0);
+		applyChangeMenu = menu.getItem(0);
+		deletePersonMenu = menu.getItem(1);
+		lockAllAppMenu = menu.getItem(2);
+		unlockAllAppMenu = menu.getItem(3);
+		presetLockMenu = menu.getItem(4);
+		
+		if( applyChangeMenu != null ){
 			applyChangeMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 			applyChangeMenu.setEnabled(false);
 		}
+		
+		initMenu();
+		
 		return true;
 	}
 	
+	private void initMenu() {
+		if(  mViewPager != null ){
+			if( mViewPager.getCurrentItem() == 0 ){
+				deletePersonMenu.setVisible(true);
+			}else{
+				deletePersonMenu.setVisible(false);
+			}
+			
+			if( mViewPager.getCurrentItem() == 1 ){
+				lockAllAppMenu.setVisible(true);
+				unlockAllAppMenu.setVisible(true);
+			}else{
+				lockAllAppMenu.setVisible(false);
+				unlockAllAppMenu.setVisible(false);
+			}
+			
+			if( mViewPager.getCurrentItem() == 2 ){
+				presetLockMenu.setVisible(true);
+			}else{
+				presetLockMenu.setVisible(false);
+			}
+		}
+	}
+
+
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
@@ -214,12 +253,44 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.apply) {
+			Log.d(TAG, "apply person menu click.");
+			
 			saveAndExit = false;
 			this.saveChanges();
 			
 			return true;
+		}else if( id == R.id.deletePerson ){
+			Log.d(TAG, "delete person menu click.");
+			
+			return true;
+		}else if( id == R.id.lockAllApp ){
+			Log.d(TAG, "lock all app menu click.");
+			doLockAllApp();
+			
+			return true;
+		}else if( id == R.id.unlockAllApp ){
+			Log.d(TAG, "unlock all app menu click.");
+			doUnlockAllApp();			
+			
+			return true;
+		}else if( id == R.id.presetLock ){
+			Log.d(TAG, "preset lock menu click.");
+			
+			return true;
 		}
+		
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void doLockAllApp() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+	private void doUnlockAllApp() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private void applyMoreSettingChanges(Integer childId,

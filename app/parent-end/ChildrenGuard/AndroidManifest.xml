@@ -176,6 +176,8 @@
 		        <category android:name="eden.sun.childrenguard" />
 		    </intent-filter>
 		</receiver>
+		
+		<activity android:name="com.soundcloud.android.crop.CropImageActivity" />
     </application>
 
 </manifest>

@@ -12,7 +12,6 @@ import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -28,6 +27,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.Response;
+import com.soundcloud.android.crop.Crop;
 
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.adapter.RelationshipSpinnerAdapter;
@@ -36,6 +36,7 @@ import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.RelationshipViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
+import eden.sun.childrenguard.util.BitmapUtil;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
 import eden.sun.childrenguard.util.RealPathUtil;
@@ -46,6 +47,7 @@ import eden.sun.childrenguard.util.UploadUtil;
 
 public class ChildrenListAddActivity extends CommonActivity {
 	private static final String TAG = "ChildrenListAddActivity";
+	protected static final int REQUEST_CODE_SELECT_PIC = 2;
 	private Button addChildBtn;
 	private Button cancelBtn;
 	private EditText mobileEditText;
@@ -60,6 +62,7 @@ public class ChildrenListAddActivity extends CommonActivity {
 	private ImageView photoImageView;
 	
 	private String picPath = null;
+	private String remotePhotoPath = null;
 	 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +80,7 @@ public class ChildrenListAddActivity extends CommonActivity {
 				Intent intent = new Intent();  
                 intent.setType("image/*");  
                 intent.setAction(Intent.ACTION_GET_CONTENT);   
-                startActivityForResult(intent, 1); 
+                startActivityForResult(intent, REQUEST_CODE_SELECT_PIC); 
 			}
 		});
 		
@@ -330,6 +333,7 @@ public class ChildrenListAddActivity extends CommonActivity {
 		param.put("relationshipId", relationshipId);
 		param.put("nickname", nickname);
 		param.put("parentAccessToken", parentAccessToken);
+		param.put("photoImage", remotePhotoPath);
 		
 		return param;
 	}
@@ -396,11 +400,10 @@ public class ChildrenListAddActivity extends CommonActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == Activity.RESULT_OK) {
+		if (requestCode == REQUEST_CODE_SELECT_PIC) {
             Uri uri = data.getData();
             Log.i(TAG, "uri = " + uri);
             try {
-            	ContentResolver cr = this.getContentResolver();
             	if(Build.VERSION.SDK_INT < 11){
             		picPath = RealPathUtil.getRealPathFromURI_BelowAPI11(this, data.getData());
             	}
@@ -414,21 +417,50 @@ public class ChildrenListAddActivity extends CommonActivity {
                 }
             	 
 				if (picPath.endsWith("jpg") || picPath.endsWith("png")) {
-					Bitmap bitmap = BitmapFactory.decodeStream(cr
-							.openInputStream(uri));
-					photoImageView.setImageBitmap(bitmap);
+					
+					Uri outputUri = Uri.fromFile(new File(getCacheDir(), "cropped"));
+			        new Crop(uri).output(outputUri).asSquare().start(this);
+			        
+					/*
+					 * int wid = 60;
+					int hei = 60;
+					Bitmap bitmap = BitmapUtil.resizeBitmap(picPath, wid, hei);
+					 * photoImageView.setImageBitmap(bitmap);
 
-					doUploadImage();
+					doUploadImage();*/
 				}else {
                 	showNotValidImageDialog();
                 }
  
             } catch (Exception e) {
             }
+        }else if (requestCode == Crop.REQUEST_CROP) {
+        	Uri cripedPhotoUri = Crop.getOutput(data);
+        	
+        	/*if(Build.VERSION.SDK_INT < 11){
+        		picPath = RealPathUtil.getRealPathFromURI_BelowAPI11(this, cripedPhotoUri);
+        	}
+        	// SDK >= 11 && SDK < 19
+            else if (Build.VERSION.SDK_INT < 19){
+            	picPath = RealPathUtil.getRealPathFromURI_API11to18(this, cripedPhotoUri);
+            }
+             // SDK > 19 (Android 4.4)
+            else{
+            	picPath = RealPathUtil.getRealPathFromURI_API19(this, cripedPhotoUri);
+            }*/
+        	
+        	picPath = cripedPhotoUri.getPath();
+        	int wid = 60;
+			int hei = 60;
+			Bitmap bitmap = BitmapUtil.resizeBitmap(picPath, wid, hei);
+			photoImageView.setImageBitmap(bitmap);
+
+			doUploadImage();
         }
 	        
 		super.onActivityResult(requestCode, resultCode, data);
 	}
+	
 	
 	private void showNotValidImageDialog() {
 		String title = "Add Person";
@@ -462,6 +494,10 @@ public class ChildrenListAddActivity extends CommonActivity {
             if (file != null) {
             	final String uploadUrl = Config.BASE_URL_MVC + RequestURLConstants.URL_UPLOAD_PHOTO;
             	
+            	String title = "Uploading photo";
+        		String msg = "Please wait...";
+        		showProgressDialog(title, msg);
+        		
             	new AsyncTask<Void,Integer,String>(){
 
 					@Override
@@ -469,14 +505,24 @@ public class ChildrenListAddActivity extends CommonActivity {
 						ViewDTO<String> view = UploadUtil.uploadFile(file, uploadUrl);
 						
 						if( view != null && view.getMsg() != null && view.getMsg().equals(ViewDTO.MSG_SUCCESS)){
-							String photoRemotePath = Config.BASE_URL + "upload/" + view.getData();
+							remotePhotoPath = view.getData();
 							
-							Log.i(TAG, "Upload finish, photo url:" + photoRemotePath);
+							Log.i(TAG, "Upload finish, photo url:" + remotePhotoPath);
+							
+							return "success";
 						}else{
 							Toast.makeText(ChildrenListAddActivity.this, "Upload photo fail,please try later.", 2000);
 						}
 						return null;
 					}
+
+					@Override
+					protected void onPostExecute(String result) {
+						dismissProgressDialog();
+						super.onPostExecute(result);
+					}
+					
+					
             	}.execute();
                 
             }

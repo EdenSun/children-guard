@@ -20,6 +20,7 @@ import com.android.volley.toolbox.Volley;
 public class RequestHelper {
 	private static final String TAG = "RequestHelper";
 	private RequestQueue mQueue ;  
+	private RequestQueue imageQueue ;  
 	private volatile static RequestHelper requestHelper;
 
 	private RequestHelper() {
@@ -31,11 +32,13 @@ public class RequestHelper {
 			synchronized (RequestHelper.class) {
 				if (requestHelper == null) {
 					requestHelper = new RequestHelper();
+					
+					requestHelper.mQueue = Volley.newRequestQueue(context);
+					requestHelper.imageQueue = Volley.newRequestQueue(context);
 				}
 			}
 		}
 
-		requestHelper.mQueue = Volley.newRequestQueue(context);
 		return requestHelper;
 	}
 	
@@ -115,11 +118,19 @@ public class RequestHelper {
 		if (tag == null) {  
 	        throw new IllegalArgumentException("Cannot cancelAll with a null tag");  
 	    }  
-		mQueue.cancelAll(new RequestFilter() {  
-	        @Override  
-	        public boolean apply(Request<?> request) {  
-	            return request.getTag().equals(tag);  
-	        }  
-	    }); 
+		if( mQueue != null ){
+			mQueue.cancelAll(new RequestFilter() {  
+				@Override  
+				public boolean apply(Request<?> request) {  
+					//return request.getTag().equals(tag);  
+					return true;
+				}  
+			}); 
+		}
 	}
+
+	public RequestQueue getImageQueue() {
+		return imageQueue;
+	}
+
 }

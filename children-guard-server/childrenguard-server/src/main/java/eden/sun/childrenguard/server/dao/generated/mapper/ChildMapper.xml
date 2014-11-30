@@ -7,6 +7,7 @@
     <result column="FIRST_NAME" property="firstName" jdbcType="VARCHAR" />
     <result column="LAST_NAME" property="lastName" jdbcType="VARCHAR" />
     <result column="NICKNAME" property="nickname" jdbcType="VARCHAR" />
+    <result column="PHOTO_IMAGE" property="photoImage" jdbcType="VARCHAR" />
     <result column="ACTIVATE_TIME" property="activateTime" jdbcType="TIMESTAMP" />
     <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
     <result column="ACCESS_TOKEN" property="accessToken" jdbcType="VARCHAR" />
@@ -72,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    ID, MOBILE, FIRST_NAME, LAST_NAME, NICKNAME, ACTIVATE_TIME, CREATE_TIME, ACCESS_TOKEN, 
-    IMEI, REGISTION_ID
+    ID, MOBILE, FIRST_NAME, LAST_NAME, NICKNAME, PHOTO_IMAGE, ACTIVATE_TIME, CREATE_TIME, 
+    ACCESS_TOKEN, IMEI, REGISTION_ID
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="eden.sun.childrenguard.server.model.generated.ChildExample" >
     select
@@ -110,13 +111,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tbl_child (MOBILE, FIRST_NAME, LAST_NAME, 
-      NICKNAME, ACTIVATE_TIME, CREATE_TIME, 
-      ACCESS_TOKEN, IMEI, REGISTION_ID
-      )
+      NICKNAME, PHOTO_IMAGE, ACTIVATE_TIME, 
+      CREATE_TIME, ACCESS_TOKEN, IMEI, 
+      REGISTION_ID)
     values (#{mobile,jdbcType=VARCHAR}, #{firstName,jdbcType=VARCHAR}, #{lastName,jdbcType=VARCHAR}, 
-      #{nickname,jdbcType=VARCHAR}, #{activateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{accessToken,jdbcType=VARCHAR}, #{imei,jdbcType=VARCHAR}, #{registionId,jdbcType=VARCHAR}
-      )
+      #{nickname,jdbcType=VARCHAR}, #{photoImage,jdbcType=VARCHAR}, #{activateTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{accessToken,jdbcType=VARCHAR}, #{imei,jdbcType=VARCHAR}, 
+      #{registionId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="eden.sun.childrenguard.server.model.generated.Child" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -135,6 +136,9 @@
       </if>
       <if test="nickname != null" >
         NICKNAME,
+      </if>
+      <if test="photoImage != null" >
+        PHOTO_IMAGE,
       </if>
       <if test="activateTime != null" >
         ACTIVATE_TIME,
@@ -164,6 +168,9 @@
       </if>
       <if test="nickname != null" >
         #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="photoImage != null" >
+        #{photoImage,jdbcType=VARCHAR},
       </if>
       <if test="activateTime != null" >
         #{activateTime,jdbcType=TIMESTAMP},
@@ -206,6 +213,9 @@
       <if test="record.nickname != null" >
         NICKNAME = #{record.nickname,jdbcType=VARCHAR},
       </if>
+      <if test="record.photoImage != null" >
+        PHOTO_IMAGE = #{record.photoImage,jdbcType=VARCHAR},
+      </if>
       <if test="record.activateTime != null" >
         ACTIVATE_TIME = #{record.activateTime,jdbcType=TIMESTAMP},
       </if>
@@ -233,6 +243,7 @@
       FIRST_NAME = #{record.firstName,jdbcType=VARCHAR},
       LAST_NAME = #{record.lastName,jdbcType=VARCHAR},
       NICKNAME = #{record.nickname,jdbcType=VARCHAR},
+      PHOTO_IMAGE = #{record.photoImage,jdbcType=VARCHAR},
       ACTIVATE_TIME = #{record.activateTime,jdbcType=TIMESTAMP},
       CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
       ACCESS_TOKEN = #{record.accessToken,jdbcType=VARCHAR},
@@ -256,6 +267,9 @@
       </if>
       <if test="nickname != null" >
         NICKNAME = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="photoImage != null" >
+        PHOTO_IMAGE = #{photoImage,jdbcType=VARCHAR},
       </if>
       <if test="activateTime != null" >
         ACTIVATE_TIME = #{activateTime,jdbcType=TIMESTAMP},
@@ -281,6 +295,7 @@
       FIRST_NAME = #{firstName,jdbcType=VARCHAR},
       LAST_NAME = #{lastName,jdbcType=VARCHAR},
       NICKNAME = #{nickname,jdbcType=VARCHAR},
+      PHOTO_IMAGE = #{photoImage,jdbcType=VARCHAR},
       ACTIVATE_TIME = #{activateTime,jdbcType=TIMESTAMP},
       CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       ACCESS_TOKEN = #{accessToken,jdbcType=VARCHAR},

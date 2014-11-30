@@ -13,6 +13,8 @@ public class Child {
 
     private String nickname;
 
+    private String photoImage;
+
     private Date activateTime;
 
     private Date createTime;
@@ -61,6 +63,14 @@ public class Child {
 
     public void setNickname(String nickname) {
         this.nickname = nickname == null ? null : nickname.trim();
+    }
+
+    public String getPhotoImage() {
+        return photoImage;
+    }
+
+    public void setPhotoImage(String photoImage) {
+        this.photoImage = photoImage == null ? null : photoImage.trim();
     }
 
     public Date getActivateTime() {

@@ -7,6 +7,8 @@ public class ChildAddParam {
 	String nickname ;
 	Integer relationshipId ;
 	String parentAccessToken;
+	String photoImage;
+	
 	public String getMobile() {
 		return mobile;
 	}
@@ -42,5 +44,11 @@ public class ChildAddParam {
 	}
 	public void setParentAccessToken(String parentAccessToken) {
 		this.parentAccessToken = parentAccessToken;
+	}
+	public String getPhotoImage() {
+		return photoImage;
+	}
+	public void setPhotoImage(String photoImage) {
+		this.photoImage = photoImage;
 	}
 }

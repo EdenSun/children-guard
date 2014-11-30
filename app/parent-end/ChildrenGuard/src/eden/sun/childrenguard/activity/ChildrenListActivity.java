@@ -64,6 +64,9 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 	        }
 	    });
 	    
+	    // load person list
+	    loadChildrenList();
+	    
 	    /*AsyncTask<Map<String, Object>,Integer,String> task = new LoadMyChildrenTask(ChildrenListActivity.this);
 		Map<String, Object> data = getLoadMyChildrenParam();
 		task.execute(data);*/
@@ -73,8 +76,6 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 	protected void onStart() {
 		super.onStart();
 		
-		 // load person list
-	    loadChildrenList();
 	}
 
 	private void loadChildrenList() {

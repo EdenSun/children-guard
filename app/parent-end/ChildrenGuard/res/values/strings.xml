@@ -50,5 +50,8 @@
 	<string name="notifyMailAdd.cancelBtn">Cancel</string>
 	
 	<string name="action_apply">Apply</string>
-	
+	<string name="action_delete_person">Delete Person</string>
+	<string name="action_lock_all_app">Lock All App</string>
+	<string name="action_unlock_all_app">Unlock All app</string>
+	<string name="action_preset_lock">Preset Lock</string>
 </resources>

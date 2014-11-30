@@ -43,7 +43,7 @@ public class ChildrenManageController extends BaseController{
 	@RequestMapping("/listMyChildren")
 	@ResponseBody
 	public ViewDTO<List<ChildViewDTO>> listMyChildren(String accessToken){
-		
+		logger.info("listMyChildren called. accessToken:" + accessToken);
 		ViewDTO<List<ChildViewDTO>> view = childrenManageService.listChildrenByParentAccessToken(accessToken);
 		
 		return view;
@@ -52,7 +52,10 @@ public class ChildrenManageController extends BaseController{
 	
 	@RequestMapping("/addChild")
 	@ResponseBody
-	public ViewDTO<ChildViewDTO> addChild(String mobile,String firstName,String lastName,String nickname,String relationshipId,String parentAccessToken){
+	public ViewDTO<ChildViewDTO> addChild(
+			String mobile,String firstName,String lastName,
+			String nickname,String relationshipId,String parentAccessToken,
+			String photoImage){
 		ChildAddParam param = new ChildAddParam();
 		param.setMobile(mobile);
 		param.setFirstName(firstName);
@@ -60,6 +63,7 @@ public class ChildrenManageController extends BaseController{
 		param.setNickname(nickname);
 		param.setRelationshipId(NumberUtil.toInteger(relationshipId));
 		param.setParentAccessToken(parentAccessToken);
+		param.setPhotoImage(photoImage);
 		
 		ViewDTO<ChildViewDTO> view = childrenManageService.addChild(param);
 	
@@ -159,7 +163,8 @@ public class ChildrenManageController extends BaseController{
             //如果用的是Tomcat服务器，则文件会上传到\\%TOMCAT_HOME%\\webapps\\YourWebProject\\WEB-INF\\upload\\文件夹中  
             String realPath = request.getSession().getServletContext().getRealPath("/");  
             DateFormat df = new SimpleDateFormat("yyMMdd");
-            File uplaodDir = new File(realPath + "/upload/" + df.format(new Date()));
+            String preDir = "upload/" + df.format(new Date());
+            File uplaodDir = new File(realPath + "/" + preDir);
             if( !uplaodDir.exists() ){
             	boolean isSuccess = uplaodDir.mkdirs();
             	if( !isSuccess ){
@@ -173,10 +178,10 @@ public class ChildrenManageController extends BaseController{
             String photoFileName = "photo" + new Date().getTime();
     		//这里不必处理IO流关闭的问题，因为FileUtils.copyInputStreamToFile()方法内部会自动把用到的IO流关掉，我是看它的源码才知道的  
     		
-    		File uploadFile = new File(realPath, photoFileName);
+    		File uploadFile = new File(uplaodDir.getAbsolutePath(), photoFileName);
     		FileUtils.copyInputStreamToFile(file.getInputStream(), uploadFile);  
-    		view.setData(photoFileName);
-        }  
+    		view.setData(preDir + "/" +photoFileName);
+        }
 		
         return view;  
     }  

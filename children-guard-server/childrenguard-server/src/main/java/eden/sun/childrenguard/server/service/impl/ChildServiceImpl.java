@@ -153,6 +153,7 @@ public class ChildServiceImpl extends BaseServiceImpl implements IChildService {
 		child.setLastName(param.getLastName());
 		child.setMobile(param.getMobile());
 		child.setNickname(param.getNickname());
+		child.setPhotoImage(param.getPhotoImage());
 		
 		return child;
 	}

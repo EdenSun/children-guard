@@ -9,6 +9,7 @@
 		<result column="NICKNAME" property="nickname" jdbcType="VARCHAR" />
 		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="ACCESS_TOKEN" property="accessToken" jdbcType="VARCHAR" />
+		<result column="PHOTO_IMAGE" property="photoImage" jdbcType="VARCHAR" />
 		<result column="PARENT_ID" property="parentId" jdbcType="INTEGER" />
 	</resultMap>
 

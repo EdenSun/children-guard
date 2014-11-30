@@ -11,9 +11,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.toolbox.Volley;
+
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.dto.ChildrenListItemView;
+import eden.sun.childrenguard.helper.RequestHelper;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
+import eden.sun.childrenguard.util.BitmapCache;
+import eden.sun.childrenguard.util.Config;
 
 public class ChildrenListAdapter extends BaseAdapter {
     private Activity context;
@@ -49,6 +58,7 @@ public class ChildrenListAdapter extends BaseAdapter {
         TextView childNameTextView = (TextView)vi.findViewById(R.id.childName);
         TextView mobileTextView = (TextView)vi.findViewById(R.id.mobile);
         TextView emailTextView = (TextView)vi.findViewById(R.id.email);
+        NetworkImageView photoImageView = (NetworkImageView)vi.findViewById(R.id.list_image);
         
         ChildrenListItemView child = data.get(position);
  
@@ -56,6 +66,13 @@ public class ChildrenListAdapter extends BaseAdapter {
         childNameTextView.setText(child.getNickname());
         mobileTextView.setText(child.getMobile());
         emailTextView.setText("");
+        
+        photoImageView.setDefaultImageResId(R.drawable.default_head);
+        photoImageView.setErrorImageResId(R.drawable.default_head);
+        RequestQueue mQueue = RequestHelper.getInstance(context).getImageQueue();
+        ImageLoader imageLoader = new ImageLoader(mQueue, new BitmapCache());
+        photoImageView.setImageUrl(Config.BASE_URL + child.getPhotoImage(),imageLoader);
+        
         return vi;
     }
 
@@ -80,6 +97,7 @@ public class ChildrenListAdapter extends BaseAdapter {
 		view.setMobile(child.getMobile());
 		view.setNickname(child.getNickname());
 		view.setOnlineStatus("Online");
+		view.setPhotoImage(child.getPhotoImage());
 		
 		data.add(view);
 	}

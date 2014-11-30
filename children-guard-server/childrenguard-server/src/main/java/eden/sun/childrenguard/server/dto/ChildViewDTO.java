@@ -15,6 +15,8 @@ public class ChildViewDTO {
     private String nickname;
     
     private Date activateTime;
+    
+    private String photoImage;
 
 	public Integer getId() {
 		return id;
@@ -62,6 +64,14 @@ public class ChildViewDTO {
 
 	public void setActivateTime(Date activateTime) {
 		this.activateTime = activateTime;
+	}
+
+	public String getPhotoImage() {
+		return photoImage;
+	}
+
+	public void setPhotoImage(String photoImage) {
+		this.photoImage = photoImage;
 	}
 
 }

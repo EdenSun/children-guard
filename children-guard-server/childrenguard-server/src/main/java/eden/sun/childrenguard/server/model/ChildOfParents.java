@@ -18,6 +18,8 @@ public class ChildOfParents {
     private String accessToken;
     
     private Integer parentId;
+    
+    private String photoImage;
 
 	public Integer getId() {
 		return id;
@@ -82,4 +84,13 @@ public class ChildOfParents {
 	public void setParentId(Integer parentId) {
 		this.parentId = parentId;
 	}
+
+	public String getPhotoImage() {
+		return photoImage;
+	}
+
+	public void setPhotoImage(String photoImage) {
+		this.photoImage = photoImage;
+	}
+	
 }

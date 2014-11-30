@@ -13,12 +13,18 @@
         android:layout_weight="0"
         >
  
-        <ImageView
+        <!-- <ImageView
             android:id="@+id/list_image"
             android:layout_width="50dip"
             android:layout_height="50dip"
-            android:src="@drawable/rihanna"/>
+            android:src="@drawable/rihanna"/> -->
  
+ 		<com.android.volley.toolbox.NetworkImageView 
+		    android:id="@+id/list_image"
+		    android:layout_width="50dp"
+		    android:layout_height="50dp"
+		    android:layout_gravity="center_horizontal"
+		    />
     </LinearLayout>
  
     
