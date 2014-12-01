@@ -6,7 +6,7 @@
     <string name="action_add">Add</string>
     <string name="action_settings">Settings</string>
     <string name="action_children_list_add">Add</string>
-	<string name="action_children_list_logout">Log out</string>
+    <string name="action_children_list_logout">Log out</string>
     <string name="title_activity_register">Register</string>
     <string name="title_activity_children_list">Person List</string>
     <string name="title_activity_password_reset">PasswordResetActivity</string>
@@ -54,4 +54,6 @@
 	<string name="action_lock_all_app">Lock All App</string>
 	<string name="action_unlock_all_app">Unlock All app</string>
 	<string name="action_preset_lock">Preset Lock</string>
+	<string name="title_activity_preset_lock">PresetLockActivity</string>
+	
 </resources>
