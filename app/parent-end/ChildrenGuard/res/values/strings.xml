@@ -6,7 +6,7 @@
     <string name="action_add">Add</string>
     <string name="action_settings">Settings</string>
     <string name="action_children_list_add">Add</string>
-	<string name="action_children_list_logout">Log out</string>
+    <string name="action_children_list_logout">Log out</string>
     <string name="title_activity_register">Register</string>
     <string name="title_activity_children_list">Person List</string>
     <string name="title_activity_password_reset">PasswordResetActivity</string>
@@ -34,21 +34,20 @@
     <string name="modifyLockPassword.cancelBtn">Cancel</string>
     <string name="title_activity_exception_phone_add">Add Emergency Contacts</string>
     <string name="title_activity_emergency_contact_manage">Emergency Contacts</string>
-	<string name="exceptionPhoneAdd.nameTextView">Name</string>
-	<string name="exceptionPhoneAdd.phoneTextView">Phone</string>
-	<string name="exceptionPhoneAdd.nameEditTextHint">Name</string>
-	<string name="exceptionPhoneAdd.phoneEditTextHint">Phone</string>
-	<string name="exceptionPhoneAdd.addBtn">Add</string>
-	<string name="exceptionPhoneAdd.cancelBtn">Cancel</string>
-	<string name="notifyMailAdd.title">Add Notify Mail</string>
-	
-	<string name="notifyMailAdd.nameTextView">Name</string>
-	<string name="notifyMailAdd.mailTextView">Mail</string>
-	<string name="notifyMailAdd.nameEditTextHint">input name here</string>
-	<string name="notifyMailAdd.mailEditTextHint">input mail here</string>
-	<string name="notifyMailAdd.addBtn">Add</string>
-	<string name="notifyMailAdd.cancelBtn">Cancel</string>
-	
-	<string name="action_apply">Apply</string>
-	
+    <string name="exceptionPhoneAdd.nameTextView">Name</string>
+    <string name="exceptionPhoneAdd.phoneTextView">Phone</string>
+    <string name="exceptionPhoneAdd.nameEditTextHint">Name</string>
+    <string name="exceptionPhoneAdd.phoneEditTextHint">Phone</string>
+    <string name="exceptionPhoneAdd.addBtn">Add</string>
+    <string name="exceptionPhoneAdd.cancelBtn">Cancel</string>
+    <string name="notifyMailAdd.title">Add Notify Mail</string>
+    <string name="notifyMailAdd.nameTextView">Name</string>
+    <string name="notifyMailAdd.mailTextView">Mail</string>
+    <string name="notifyMailAdd.nameEditTextHint">input name here</string>
+    <string name="notifyMailAdd.mailEditTextHint">input mail here</string>
+    <string name="notifyMailAdd.addBtn">Add</string>
+    <string name="notifyMailAdd.cancelBtn">Cancel</string>
+    <string name="action_apply">Apply</string>
+    <string name="title_activity_preset_lock">PresetLockActivity</string>
+
 </resources>

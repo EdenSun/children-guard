@@ -1,0 +1,147 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/commonPageStyle"
+    android:padding="0dp"
+    tools:context="eden.sun.childrenguard.PresetLockActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/startTimeItem"
+                style="@style/presetLockItemStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" 
+                android:background="@drawable/list_selector"
+                android:clickable="true"
+                >
+
+                <TextView
+                    style="@style/label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Start Time" 
+                    android:layout_marginBottom="2dp"/>
+
+                <TextView
+                    android:id="@+id/startTimeTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Click to set start time"
+                    android:textColor="@color/text_gray" />
+            </LinearLayout>
+            
+            
+            <LinearLayout
+                android:id="@+id/endTimeItem"
+                style="@style/presetLockItemStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" 
+                android:background="@drawable/list_selector"
+                android:clickable="true">
+
+                <TextView
+                    style="@style/label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="End Time" 
+                    android:layout_marginBottom="2dp"/>
+
+                <TextView
+                    android:id="@+id/endTimeTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Click to set end time"
+                    android:textColor="@color/text_gray" />
+            </LinearLayout>
+            
+            <LinearLayout
+                android:id="@+id/repeatItem"
+                style="@style/presetLockItemStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" 
+                android:background="@drawable/list_selector"
+                android:clickable="true">
+
+                <TextView
+                    style="@style/label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Repeat" 
+                    android:layout_marginBottom="2dp"/>
+
+                <TextView
+                    android:id="@+id/repeatTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Click to set repeat"
+                    android:textColor="@color/text_gray" />
+            </LinearLayout>
+            
+            <LinearLayout
+                android:id="@+id/lockAppSettingItem"
+                style="@style/presetLockItemStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" 
+                android:background="@drawable/list_selector"
+                android:clickable="true">
+
+                <TextView
+                    style="@style/label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Lock App Setting" 
+                    android:layout_marginBottom="2dp"/>
+
+                <TextView
+                    android:id="@+id/lockAppSettingTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Click to set locked/unlocked applications"
+                    android:textColor="@color/text_gray" />
+            </LinearLayout>
+            
+            <LinearLayout
+                android:id="@+id/lockCallsItem"
+                style="@style/presetLockItemStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Lock Outgoing Calls" 
+                    android:layout_marginBottom="2dp"/>
+
+                <org.jraf.android.backport.switchwidget.Switch
+		 	        android:id="@+id/lockCallSwitch"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content" 
+				    android:layout_marginEnd="5dp"
+				    android:layout_marginRight="5dp"
+				    android:layout_weight="0"/>
+            </LinearLayout>
+            
+        </LinearLayout>
+    </ScrollView>
+
