@@ -31,7 +31,7 @@
         </CheckBox>
         
         <CheckBox 
-            android:id="@+id/thurday Checkbox"
+            android:id="@+id/thurdayCheckbox"
             android:text="Thurday "  
             android:layout_weight="1"
             style="@style/checkboxItem">

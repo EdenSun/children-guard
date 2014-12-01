@@ -8,6 +8,7 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 
+import eden.sun.childrenguard.PresetLockActivity;
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.adapter.AppSectionsPagerAdapter;
 import eden.sun.childrenguard.dto.AppManageListItemView;
@@ -31,6 +33,7 @@ import eden.sun.childrenguard.fragment.ChildManageMoreFragment;
 import eden.sun.childrenguard.server.dto.ChildBasicInfoViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Callback;
+import eden.sun.childrenguard.util.Callback.CallbackResult;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
 import eden.sun.childrenguard.util.RequestURLConstants;
@@ -261,7 +264,18 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 			return true;
 		}else if( id == R.id.deletePerson ){
 			Log.d(TAG, "delete person menu click.");
-			
+			doDeletePerson(new Callback(){
+
+				@Override
+				public void execute(CallbackResult result) {
+					if( result != null && result.isSuccess() ){
+						//delete success
+						finish();
+					}
+					
+				}
+				
+			});
 			return true;
 		}else if( id == R.id.lockAllApp ){
 			Log.d(TAG, "lock all app menu click.");
@@ -275,12 +289,20 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 			return true;
 		}else if( id == R.id.presetLock ){
 			Log.d(TAG, "preset lock menu click.");
-			
+			Intent intent = new Intent(this,PresetLockActivity.class);
+			startActivity(intent);
 			return true;
 		}
 		
 		return super.onOptionsItemSelected(item);
 	}
+
+	private void doDeletePerson(Callback callback) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
 	private void doLockAllApp() {
 		// TODO Auto-generated method stub
