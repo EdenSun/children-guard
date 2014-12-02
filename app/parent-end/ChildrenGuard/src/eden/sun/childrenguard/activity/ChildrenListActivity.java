@@ -60,7 +60,7 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 	        	ChildrenListItemView child = (ChildrenListItemView)childrenListAdapter.getItem(position);
 	        	
 	        	intent.putExtra("childId", child.getId());
-	        	startActivity(intent);
+	        	startActivityForResult(intent, 1);
 	        }
 	    });
 	    
@@ -187,7 +187,12 @@ public class ChildrenListActivity extends CommonActionBarActivity {
         	if( result != null && result.equals("success") ){
         		this.loadChildrenList();
         	}
-            break;  
+            break; 
+        case 1:
+        	if( resultCode == ChildrenManageActivity.RESULT_CODE_DELETE_PERSON ){
+        		this.loadChildrenList();
+        	}
+        	break;
         default:  
             break;  
         }  

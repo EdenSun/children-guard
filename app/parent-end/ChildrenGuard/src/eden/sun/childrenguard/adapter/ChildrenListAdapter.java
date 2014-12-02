@@ -77,7 +77,7 @@ public class ChildrenListAdapter extends BaseAdapter {
     }
 
 	public void reloadData(List<ChildViewDTO> childList) {
-		if( childList == null || childList.size() == 0){
+		if( childList == null ){
 			return ;
 		}
 		this.data.clear();

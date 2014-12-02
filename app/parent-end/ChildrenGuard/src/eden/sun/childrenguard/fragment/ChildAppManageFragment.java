@@ -166,6 +166,8 @@ public class ChildAppManageFragment extends CommonFragment{
 						result.setSuccess(true);
 						result.setData(view.getData());
 						successCallback.execute(result);
+						
+						reloadApplications();
 					}else{
 						String title = "Error";
 						String msg = view.getInfo();
@@ -212,6 +214,8 @@ public class ChildAppManageFragment extends CommonFragment{
 						result.setSuccess(true);
 						result.setData(view.getData());
 						successCallback.execute(result);
+						
+						reloadApplications();
 					}else{
 						String title = "Error";
 						String msg = view.getInfo();

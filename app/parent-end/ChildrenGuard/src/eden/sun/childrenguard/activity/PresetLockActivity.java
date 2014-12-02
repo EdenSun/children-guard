@@ -1,4 +1,6 @@
-package eden.sun.childrenguard;
+package eden.sun.childrenguard.activity;
+
+import java.util.List;
 
 import org.jraf.android.backport.switchwidget.Switch;
 
@@ -12,9 +14,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
+import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.fragment.TimePickerFragment;
 import eden.sun.childrenguard.fragment.WeekdayChooserFragment;
 import eden.sun.childrenguard.util.Callback;
+import eden.sun.childrenguard.util.WeekConstants;
 
 public class PresetLockActivity extends Activity {
 	protected static final String TAG = "PresetLockActivity";
@@ -139,18 +143,49 @@ public class PresetLockActivity extends Activity {
 	private void showWeekdayChooserDialog() {
 		FragmentTransaction ft = getFragmentManager().beginTransaction();  
         // Create and show the dialog.  
-		WeekdayChooserFragment newFragment  = new WeekdayChooserFragment(new Callback(){
+		WeekdayChooserFragment newFragment  = new WeekdayChooserFragment(new Callback<List<String>>(){
 
 			@Override
-			public void execute(CallbackResult result) {
+			public void execute(CallbackResult<List<String>> result) {
 				if( result != null && result.isSuccess() == true ){
-					repeatTextView.setText(result.getInfo());
+					List<String> weekdayList = result.getData();
+					
+					String selectedWeekday = getWeekdays(weekdayList);
+					repeatTextView.setText(selectedWeekday);
+					
 					Toast.makeText(PresetLockActivity.this, "Set repeat:"+ result.getInfo(), Toast.LENGTH_SHORT).show();
 				}
 			}
-        		
+
         });
         
         newFragment.show(ft, "weekdayChooserDialog");  		
+	}
+	
+	private String getWeekdays(List<String> weekdayList) {
+		if( weekdayList == null || weekdayList.size() == 0 ){
+			return "";
+		}
+		
+		StringBuffer weekdays = new StringBuffer();
+		for( String weekday: weekdayList ){
+			if( weekday.equals(WeekConstants.MONDAY[1]) ){
+				weekdays.append(WeekConstants.MONDAY[0]).append(" ");
+			}else if( weekday.equals(WeekConstants.TUESDAY[1]) ){
+				weekdays.append(WeekConstants.TUESDAY[0]).append(" ");
+			}else if( weekday.equals(WeekConstants.WEDNESDAY[1]) ){
+				weekdays.append(WeekConstants.WEDNESDAY[0]).append(" ");
+			}else if( weekday.equals(WeekConstants.THURDAY[1]) ){
+				weekdays.append(WeekConstants.THURDAY[0]).append(" ");
+			}else if( weekday.equals(WeekConstants.FRIDAY[1]) ){
+				weekdays.append(WeekConstants.FRIDAY[0]).append(" ");
+			}else if( weekday.equals(WeekConstants.SATURDAY[1]) ){
+				weekdays.append(WeekConstants.SATURDAY[0]).append(" ");
+			}else if( weekday.equals(WeekConstants.SUNDAY[1]) ){
+				weekdays.append(WeekConstants.SUNDAY[0]).append(" ");
+			}
+		}
+		
+		return weekdays.toString().trim();
 	}
 }

@@ -20,7 +20,6 @@ import cn.jpush.android.api.JPushInterface;
 
 import com.android.volley.Response;
 
-import eden.sun.childrenguard.PresetLockActivity;
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
 import eden.sun.childrenguard.server.dto.IsFirstLoginViewDTO;

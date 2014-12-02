@@ -22,7 +22,6 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 
-import eden.sun.childrenguard.PresetLockActivity;
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.adapter.AppSectionsPagerAdapter;
 import eden.sun.childrenguard.dto.AppManageListItemView;
@@ -42,6 +41,7 @@ import eden.sun.childrenguard.util.UIUtil;
 
 public class ChildrenManageActivity extends CommonFragmentActivity implements ActionBar.TabListener,View.OnClickListener{
 	public static final String TAG = "ChildrenManageActivity";
+	public static final int RESULT_CODE_DELETE_PERSON = 1;
 
     private AppSectionsPagerAdapter mAppSectionsPagerAdapter;
 
@@ -275,7 +275,8 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 						ChildViewDTO deletedChild = result.getData();
 						Toast.makeText(ChildrenManageActivity.this, "Person " + deletedChild.getNickname() + " have been deleted." , Toast.LENGTH_LONG).show();
 						
-						finish();
+						ChildrenManageActivity.this.setResult(RESULT_CODE_DELETE_PERSON);
+						ChildrenManageActivity.this.finish();
 					}
 					
 				}
