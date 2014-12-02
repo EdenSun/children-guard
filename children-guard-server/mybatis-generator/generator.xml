@@ -76,5 +76,12 @@
 		<table tableName="tbl_emergency_contacts" domainObjectName="EmergencyContacts">
 			<generatedKey column="ID" sqlStatement="MySql" identity="true"/>
 		</table>
+		
+		<table tableName="tbl_preset_lock" domainObjectName="PresetLock">
+		</table>
+		
+		<table tableName="tbl_preset_lock_app" domainObjectName="PresetLockApp">
+			<generatedKey column="ID" sqlStatement="MySql" identity="true"/>
+		</table>
 	</context>
 </generatorConfiguration>

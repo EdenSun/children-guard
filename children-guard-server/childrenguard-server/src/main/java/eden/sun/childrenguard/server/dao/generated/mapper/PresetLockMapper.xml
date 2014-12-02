@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="eden.sun.childrenguard.server.dao.generated.PresetLockMapper" >
+  <resultMap id="BaseResultMap" type="eden.sun.childrenguard.server.model.generated.PresetLock" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="PRESET_ON_OFF" property="presetOnOff" jdbcType="BIT" />
+    <result column="START_TIME" property="startTime" jdbcType="TIME" />
+    <result column="END_TIME" property="endTime" jdbcType="TIME" />
+    <result column="REPEAT_MONDAY" property="repeatMonday" jdbcType="BIT" />
+    <result column="REPEAT_TUESDAY" property="repeatTuesday" jdbcType="BIT" />
+    <result column="REPEAT_WEDNESDAY" property="repeatWednesday" jdbcType="BIT" />
+    <result column="REPEAT_THURDAY" property="repeatThurday" jdbcType="BIT" />
+    <result column="REPEAT_FRIDAY" property="repeatFriday" jdbcType="BIT" />
+    <result column="REPEAT_SATURDAY" property="repeatSaturday" jdbcType="BIT" />
+    <result column="REPEAT_SUNDAY" property="repeatSunday" jdbcType="BIT" />
+    <result column="LOCK_CALL_STATUS" property="lockCallStatus" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, PRESET_ON_OFF, START_TIME, END_TIME, REPEAT_MONDAY, REPEAT_TUESDAY, REPEAT_WEDNESDAY, 
+    REPEAT_THURDAY, REPEAT_FRIDAY, REPEAT_SATURDAY, REPEAT_SUNDAY, LOCK_CALL_STATUS
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="eden.sun.childrenguard.server.model.generated.PresetLockExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tbl_preset_lock
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_preset_lock
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tbl_preset_lock
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="eden.sun.childrenguard.server.model.generated.PresetLockExample" >
+    delete from tbl_preset_lock
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="eden.sun.childrenguard.server.model.generated.PresetLock" >
+    insert into tbl_preset_lock (ID, PRESET_ON_OFF, START_TIME, 
+      END_TIME, REPEAT_MONDAY, REPEAT_TUESDAY, 
+      REPEAT_WEDNESDAY, REPEAT_THURDAY, REPEAT_FRIDAY, 
+      REPEAT_SATURDAY, REPEAT_SUNDAY, LOCK_CALL_STATUS
+      )
+    values (#{id,jdbcType=INTEGER}, #{presetOnOff,jdbcType=BIT}, #{startTime,jdbcType=TIME}, 
+      #{endTime,jdbcType=TIME}, #{repeatMonday,jdbcType=BIT}, #{repeatTuesday,jdbcType=BIT}, 
+      #{repeatWednesday,jdbcType=BIT}, #{repeatThurday,jdbcType=BIT}, #{repeatFriday,jdbcType=BIT}, 
+      #{repeatSaturday,jdbcType=BIT}, #{repeatSunday,jdbcType=BIT}, #{lockCallStatus,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="eden.sun.childrenguard.server.model.generated.PresetLock" >
+    insert into tbl_preset_lock
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="presetOnOff != null" >
+        PRESET_ON_OFF,
+      </if>
+      <if test="startTime != null" >
+        START_TIME,
+      </if>
+      <if test="endTime != null" >
+        END_TIME,
+      </if>
+      <if test="repeatMonday != null" >
+        REPEAT_MONDAY,
+      </if>
+      <if test="repeatTuesday != null" >
+        REPEAT_TUESDAY,
+      </if>
+      <if test="repeatWednesday != null" >
+        REPEAT_WEDNESDAY,
+      </if>
+      <if test="repeatThurday != null" >
+        REPEAT_THURDAY,
+      </if>
+      <if test="repeatFriday != null" >
+        REPEAT_FRIDAY,
+      </if>
+      <if test="repeatSaturday != null" >
+        REPEAT_SATURDAY,
+      </if>
+      <if test="repeatSunday != null" >
+        REPEAT_SUNDAY,
+      </if>
+      <if test="lockCallStatus != null" >
+        LOCK_CALL_STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="presetOnOff != null" >
+        #{presetOnOff,jdbcType=BIT},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIME},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIME},
+      </if>
+      <if test="repeatMonday != null" >
+        #{repeatMonday,jdbcType=BIT},
+      </if>
+      <if test="repeatTuesday != null" >
+        #{repeatTuesday,jdbcType=BIT},
+      </if>
+      <if test="repeatWednesday != null" >
+        #{repeatWednesday,jdbcType=BIT},
+      </if>
+      <if test="repeatThurday != null" >
+        #{repeatThurday,jdbcType=BIT},
+      </if>
+      <if test="repeatFriday != null" >
+        #{repeatFriday,jdbcType=BIT},
+      </if>
+      <if test="repeatSaturday != null" >
+        #{repeatSaturday,jdbcType=BIT},
+      </if>
+      <if test="repeatSunday != null" >
+        #{repeatSunday,jdbcType=BIT},
+      </if>
+      <if test="lockCallStatus != null" >
+        #{lockCallStatus,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="eden.sun.childrenguard.server.model.generated.PresetLockExample" resultType="java.lang.Integer" >
+    select count(*) from tbl_preset_lock
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tbl_preset_lock
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.presetOnOff != null" >
+        PRESET_ON_OFF = #{record.presetOnOff,jdbcType=BIT},
+      </if>
+      <if test="record.startTime != null" >
+        START_TIME = #{record.startTime,jdbcType=TIME},
+      </if>
+      <if test="record.endTime != null" >
+        END_TIME = #{record.endTime,jdbcType=TIME},
+      </if>
+      <if test="record.repeatMonday != null" >
+        REPEAT_MONDAY = #{record.repeatMonday,jdbcType=BIT},
+      </if>
+      <if test="record.repeatTuesday != null" >
+        REPEAT_TUESDAY = #{record.repeatTuesday,jdbcType=BIT},
+      </if>
+      <if test="record.repeatWednesday != null" >
+        REPEAT_WEDNESDAY = #{record.repeatWednesday,jdbcType=BIT},
+      </if>
+      <if test="record.repeatThurday != null" >
+        REPEAT_THURDAY = #{record.repeatThurday,jdbcType=BIT},
+      </if>
+      <if test="record.repeatFriday != null" >
+        REPEAT_FRIDAY = #{record.repeatFriday,jdbcType=BIT},
+      </if>
+      <if test="record.repeatSaturday != null" >
+        REPEAT_SATURDAY = #{record.repeatSaturday,jdbcType=BIT},
+      </if>
+      <if test="record.repeatSunday != null" >
+        REPEAT_SUNDAY = #{record.repeatSunday,jdbcType=BIT},
+      </if>
+      <if test="record.lockCallStatus != null" >
+        LOCK_CALL_STATUS = #{record.lockCallStatus,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tbl_preset_lock
+    set ID = #{record.id,jdbcType=INTEGER},
+      PRESET_ON_OFF = #{record.presetOnOff,jdbcType=BIT},
+      START_TIME = #{record.startTime,jdbcType=TIME},
+      END_TIME = #{record.endTime,jdbcType=TIME},
+      REPEAT_MONDAY = #{record.repeatMonday,jdbcType=BIT},
+      REPEAT_TUESDAY = #{record.repeatTuesday,jdbcType=BIT},
+      REPEAT_WEDNESDAY = #{record.repeatWednesday,jdbcType=BIT},
+      REPEAT_THURDAY = #{record.repeatThurday,jdbcType=BIT},
+      REPEAT_FRIDAY = #{record.repeatFriday,jdbcType=BIT},
+      REPEAT_SATURDAY = #{record.repeatSaturday,jdbcType=BIT},
+      REPEAT_SUNDAY = #{record.repeatSunday,jdbcType=BIT},
+      LOCK_CALL_STATUS = #{record.lockCallStatus,jdbcType=BIT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="eden.sun.childrenguard.server.model.generated.PresetLock" >
+    update tbl_preset_lock
+    <set >
+      <if test="presetOnOff != null" >
+        PRESET_ON_OFF = #{presetOnOff,jdbcType=BIT},
+      </if>
+      <if test="startTime != null" >
+        START_TIME = #{startTime,jdbcType=TIME},
+      </if>
+      <if test="endTime != null" >
+        END_TIME = #{endTime,jdbcType=TIME},
+      </if>
+      <if test="repeatMonday != null" >
+        REPEAT_MONDAY = #{repeatMonday,jdbcType=BIT},
+      </if>
+      <if test="repeatTuesday != null" >
+        REPEAT_TUESDAY = #{repeatTuesday,jdbcType=BIT},
+      </if>
+      <if test="repeatWednesday != null" >
+        REPEAT_WEDNESDAY = #{repeatWednesday,jdbcType=BIT},
+      </if>
+      <if test="repeatThurday != null" >
+        REPEAT_THURDAY = #{repeatThurday,jdbcType=BIT},
+      </if>
+      <if test="repeatFriday != null" >
+        REPEAT_FRIDAY = #{repeatFriday,jdbcType=BIT},
+      </if>
+      <if test="repeatSaturday != null" >
+        REPEAT_SATURDAY = #{repeatSaturday,jdbcType=BIT},
+      </if>
+      <if test="repeatSunday != null" >
+        REPEAT_SUNDAY = #{repeatSunday,jdbcType=BIT},
+      </if>
+      <if test="lockCallStatus != null" >
+        LOCK_CALL_STATUS = #{lockCallStatus,jdbcType=BIT},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="eden.sun.childrenguard.server.model.generated.PresetLock" >
+    update tbl_preset_lock
+    set PRESET_ON_OFF = #{presetOnOff,jdbcType=BIT},
+      START_TIME = #{startTime,jdbcType=TIME},
+      END_TIME = #{endTime,jdbcType=TIME},
+      REPEAT_MONDAY = #{repeatMonday,jdbcType=BIT},
+      REPEAT_TUESDAY = #{repeatTuesday,jdbcType=BIT},
+      REPEAT_WEDNESDAY = #{repeatWednesday,jdbcType=BIT},
+      REPEAT_THURDAY = #{repeatThurday,jdbcType=BIT},
+      REPEAT_FRIDAY = #{repeatFriday,jdbcType=BIT},
+      REPEAT_SATURDAY = #{repeatSaturday,jdbcType=BIT},
+      REPEAT_SUNDAY = #{repeatSunday,jdbcType=BIT},
+      LOCK_CALL_STATUS = #{lockCallStatus,jdbcType=BIT}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <select resultMap="BaseResultMap" parameterType="eden.sun.childrenguard.server.model.generated.PresetLockExample" id="selectByExampleWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tbl_preset_lock
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>
