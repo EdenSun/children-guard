@@ -215,6 +215,47 @@ public class AppServiceImpl extends BaseServiceImpl implements IAppService{
 		
 		return view;
 	}
-	
+
+	@Override
+	public boolean lockAllAppByChild(Integer childId) throws ServiceException {
+		if( childId == null ){
+			return false;
+		}
+		try {
+			AppExample example = new AppExample();
+			Criteria criteria = example.createCriteria();
+			criteria.andChildIdEqualTo(childId);
+			
+			App app = new App();
+			app.setLockStatus(true);
+			appMapper.updateByExampleSelective(app, example);
+			
+			return true;
+		} catch (Exception e) {
+			logger.error("lock all app error.", e);
+			return false;
+		}
+	}
+
+	@Override
+	public boolean unlockAllAppByChild(Integer childId) throws ServiceException {
+		if( childId == null ){
+			return false;
+		}
+		try {
+			AppExample example = new AppExample();
+			Criteria criteria = example.createCriteria();
+			criteria.andChildIdEqualTo(childId);
+			
+			App app = new App();
+			app.setLockStatus(false);
+			appMapper.updateByExampleSelective(app, example);
+			
+			return true;
+		} catch (Exception e) {
+			logger.error("unlock all app error.", e);
+			return false;
+		}
+	}
 	
 }

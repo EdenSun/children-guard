@@ -29,11 +29,12 @@ import eden.sun.childrenguard.dto.AppManageListItemView;
 import eden.sun.childrenguard.dto.MoreListItemView;
 import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
 import eden.sun.childrenguard.fragment.ChildAppManageFragment;
+import eden.sun.childrenguard.fragment.ChildBasicInfoFragment;
 import eden.sun.childrenguard.fragment.ChildManageMoreFragment;
 import eden.sun.childrenguard.server.dto.ChildBasicInfoViewDTO;
+import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Callback;
-import eden.sun.childrenguard.util.Callback.CallbackResult;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
 import eden.sun.childrenguard.util.RequestURLConstants;
@@ -264,12 +265,16 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 			return true;
 		}else if( id == R.id.deletePerson ){
 			Log.d(TAG, "delete person menu click.");
-			doDeletePerson(new Callback(){
+			ChildBasicInfoFragment childBasicInfoFragment = (ChildBasicInfoFragment)mAppSectionsPagerAdapter.getItem(AppSectionsPagerAdapter.FRAGMENT_INDEX_BASIC_INFO);
+			childBasicInfoFragment.doDeletePerson(new Callback<ChildViewDTO>(){
 
 				@Override
-				public void execute(CallbackResult result) {
+				public void execute(CallbackResult<ChildViewDTO> result) {
 					if( result != null && result.isSuccess() ){
 						//delete success
+						ChildViewDTO deletedChild = result.getData();
+						Toast.makeText(ChildrenManageActivity.this, "Person " + deletedChild.getNickname() + " have been deleted." , Toast.LENGTH_LONG).show();
+						
 						finish();
 					}
 					
@@ -279,12 +284,36 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 			return true;
 		}else if( id == R.id.lockAllApp ){
 			Log.d(TAG, "lock all app menu click.");
-			doLockAllApp();
+			
+			ChildAppManageFragment appManageFragment = (ChildAppManageFragment)mAppSectionsPagerAdapter.getItem(AppSectionsPagerAdapter.FRAGMENT_INDEX_APP_MANAGE);
+			
+			appManageFragment.doLockAllApp(new Callback<Boolean>(){
+				@Override
+				public void execute(CallbackResult<Boolean> result) {
+					if( result != null && result.isSuccess() ){
+						// lock all app success, refresh app list
+						Toast.makeText(ChildrenManageActivity.this, "All applications have been locked." , Toast.LENGTH_LONG).show();
+					}
+					
+				}
+			});
 			
 			return true;
 		}else if( id == R.id.unlockAllApp ){
 			Log.d(TAG, "unlock all app menu click.");
-			doUnlockAllApp();			
+			ChildAppManageFragment appManageFragment = (ChildAppManageFragment)mAppSectionsPagerAdapter.getItem(AppSectionsPagerAdapter.FRAGMENT_INDEX_APP_MANAGE);
+			
+			
+			appManageFragment.doUnlockAllApp(new Callback<Boolean>(){
+				@Override
+				public void execute(CallbackResult<Boolean> result) {
+					if( result != null && result.isSuccess() ){
+						// lock all app success, refresh app list
+						Toast.makeText(ChildrenManageActivity.this, "All applications have been unlocked." , Toast.LENGTH_LONG).show();
+					}
+					
+				}
+			});			
 			
 			return true;
 		}else if( id == R.id.presetLock ){
@@ -295,24 +324,6 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 		}
 		
 		return super.onOptionsItemSelected(item);
-	}
-
-	private void doDeletePerson(Callback callback) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-	private void doLockAllApp() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	
-	private void doUnlockAllApp() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	private void applyMoreSettingChanges(Integer childId,

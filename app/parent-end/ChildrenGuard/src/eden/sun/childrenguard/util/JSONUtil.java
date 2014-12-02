@@ -114,4 +114,12 @@ public class JSONUtil {
 		return gson.fromJson(json, new TypeToken<ViewDTO<String>>(){}.getType());
 	}
 
+	public static ViewDTO<ChildViewDTO> getDeleteChildView(String json) {
+		return gson.fromJson(json, new TypeToken<ViewDTO<ChildViewDTO>>(){}.getType());
+	}
+
+	public static ViewDTO<Boolean> getLockAllAppView(String json) {
+		return gson.fromJson(json, new TypeToken<ViewDTO<Boolean>>(){}.getType());
+	}
+
 }

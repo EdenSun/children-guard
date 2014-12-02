@@ -6,7 +6,7 @@ public class RequestURLConstants {
 	public static final String URL_IS_FIRST_LOGIN = "parent/auth/isFirstLogin";
 	public static final String URL_LIST_MY_CHILDREN = "parent/childrenManage/listMyChildren";
 	public static final String URL_LIST_ADD_CHILD = "parent/childrenManage/addChild";
-	public static final String URL_LIST_DELETE_CHILD = "parent/childrenManage/deleteChild";
+	public static final String URL_DELETE_CHILD = "parent/childrenManage/deleteChild";
 	public static final String URL_REGISTER = "parent/reg/register";
 	public static final String URL_RESET_PASSWORD = "parent/reset/passwordReset";
 	public static final String URL_LIST_ALL_RELATIONSHIP = "parent/relationship/listAll";
@@ -22,6 +22,8 @@ public class RequestURLConstants {
 	public static final String URL_LOAD_CHILD_SETTING = "parent/childrenManage/loadChildSetting";
 	public static final String URL_DO_CHANGE_PASSWORD = "parent/reset/doChangePassword";
 	public static final String URL_UPLOAD_PHOTO = "parent/childrenManage/uploadPhoto";
+	public static final String URL_LOCK_ALL_APP = "parent/childrenManage/lockAllAppByChild";
+	public static final String URL_UNLOCK_ALL_APP = "parent/childrenManage/unlockAllAppByChild";
 	
 	
 }

@@ -190,12 +190,16 @@
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity
             android:name=".PresetLockActivity"
+            android:label="@string/title_activity_preset_lock" />
+        <!-- <activity
+            android:name=".PresetLockActivity"
             android:label="@string/title_activity_preset_lock"
             android:parentActivityName=".activity.CommonActionBarActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="eden.sun.childrenguard.activity.CommonActionBarActivity" />
-        </activity>
+        </activity> -->
+        
     </application>
 
 </manifest>

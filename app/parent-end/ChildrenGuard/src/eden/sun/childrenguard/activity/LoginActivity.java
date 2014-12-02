@@ -20,6 +20,7 @@ import cn.jpush.android.api.JPushInterface;
 
 import com.android.volley.Response;
 
+import eden.sun.childrenguard.PresetLockActivity;
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
 import eden.sun.childrenguard.server.dto.IsFirstLoginViewDTO;
@@ -54,6 +55,16 @@ public class LoginActivity extends CommonActivity {
         passwordEditText = (EditText)findViewById(R.id.passwordEditText);
 
         loginBtn = (Button)findViewById(R.id.loginBtn);
+        /*loginBtn.setOnClickListener(new OnClickListener(){
+        	
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent(LoginActivity.this,PresetLockActivity.class);
+				
+				startActivity(intent);
+			}
+		});*/
+
         loginBtn.setOnClickListener(new OnClickListener(){
         	
 			@Override
@@ -61,13 +72,6 @@ public class LoginActivity extends CommonActivity {
 				boolean valid = doValidation();
 				
 				if( valid ){
-					/*AsyncTask<Map<String, Object>,Integer,String> task = new LoginTask(LoginActivity.this);
-					
-					
-					Map<String, Object> data = getLoginParam();
-					
-					task.execute(data);*/
-					
 					String title = "Login";
 					String msg = "Please wait...";
 					showProgressDialog(title,msg);

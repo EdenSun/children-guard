@@ -1,12 +1,13 @@
 package eden.sun.childrenguard.util;
 
-public interface Callback {
+public interface Callback<T> {
 
-	void execute(CallbackResult result);
+	void execute(CallbackResult<T> result);
 	
-	class CallbackResult{
+	class CallbackResult<T>{
 		private boolean isSuccess;
 		private String info;
+		private T data;
 		public boolean isSuccess() {
 			return isSuccess;
 		}
@@ -18,6 +19,12 @@ public interface Callback {
 		}
 		public void setInfo(String info) {
 			this.info = info;
+		}
+		public T getData() {
+			return data;
+		}
+		public void setData(T data) {
+			this.data = data;
 		}
 	}
 }

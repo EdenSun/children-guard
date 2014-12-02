@@ -185,4 +185,25 @@ public class ChildrenManageController extends BaseController{
 		
         return view;  
     }  
+	
+	@RequestMapping("/lockAllAppByChild")
+	@ResponseBody
+	public ViewDTO<Boolean> lockAllAppByChild(Integer childId) {
+		logger.info("lockAllAppByChild called. childId:" + childId );
+		
+		ViewDTO<Boolean> view = childDetailService.lockAllAppByChild(childId);
+		
+		return view;
+	}
+	
+	@RequestMapping("/unlockAllAppByChild")
+	@ResponseBody
+	public ViewDTO<Boolean> unlockAllAppByChild(Integer childId) {
+		logger.info("unlockAllAppByChild called. childId:" + childId );
+		
+		ViewDTO<Boolean> view = childDetailService.unlockAllAppByChild(childId);
+		
+		return view;
+	}
+	
 }

@@ -29,6 +29,10 @@ public interface IChildDetailService {
 	ViewDTO<Boolean> applyChildAppChanges(Integer childId,
 			List<AppManageSettingParam> appManageSettingList)throws ServiceException;
 
+	ViewDTO<Boolean> lockAllAppByChild(Integer childId)throws ServiceException;
+
+	ViewDTO<Boolean> unlockAllAppByChild(Integer childId)throws ServiceException;
+
 
 
 }

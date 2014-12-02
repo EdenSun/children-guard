@@ -400,7 +400,7 @@ public class ChildrenListAddActivity extends CommonActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == REQUEST_CODE_SELECT_PIC) {
+		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_SELECT_PIC) {
             Uri uri = data.getData();
             Log.i(TAG, "uri = " + uri);
             try {
@@ -434,7 +434,7 @@ public class ChildrenListAddActivity extends CommonActivity {
  
             } catch (Exception e) {
             }
-        }else if (requestCode == Crop.REQUEST_CROP) {
+        }else if (resultCode == RESULT_OK && requestCode == Crop.REQUEST_CROP) {
         	Uri cripedPhotoUri = Crop.getOutput(data);
         	
         	/*if(Build.VERSION.SDK_INT < 11){
@@ -456,6 +456,8 @@ public class ChildrenListAddActivity extends CommonActivity {
 			photoImageView.setImageBitmap(bitmap);
 
 			doUploadImage();
+        }else if (resultCode != RESULT_OK && requestCode == Crop.REQUEST_CROP ){
+        	Toast.makeText(this, "cancel crop", 1000).show();
         }
 	        
 		super.onActivityResult(requestCode, resultCode, data);

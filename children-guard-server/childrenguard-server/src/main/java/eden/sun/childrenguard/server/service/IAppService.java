@@ -24,4 +24,8 @@ public interface IAppService {
 
 	AppViewDTO getViewByPackageName(String packageName)throws ServiceException;
 
+	boolean lockAllAppByChild(Integer childId)throws ServiceException;
+
+	boolean unlockAllAppByChild(Integer childId)throws ServiceException;
+
 }

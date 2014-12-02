@@ -1,6 +1,10 @@
 package eden.sun.childrenguard.fragment;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,12 +17,14 @@ import android.widget.TextView;
 import com.android.volley.Response;
 
 import eden.sun.childrenguard.R;
+import eden.sun.childrenguard.activity.ChildrenManageActivity;
 import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
 import eden.sun.childrenguard.helper.RequestHelper;
 import eden.sun.childrenguard.server.dto.ChildBasicInfoViewDTO;
 import eden.sun.childrenguard.server.dto.ChildExtraInfoViewDTO;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
+import eden.sun.childrenguard.util.Callback;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
 import eden.sun.childrenguard.util.RequestURLConstants;
@@ -122,6 +128,52 @@ public class ChildBasicInfoFragment extends CommonFragment{
 			    	}
 			    	
 			    	dismissProgressDialog();
+				}
+			}, 
+			new DefaultVolleyErrorHandler(getActivity()));
+	}
+	
+	
+	public void doDeletePerson(final Callback successCallback) {
+		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_DELETE_CHILD;  
+
+		Map<String,String> params = new HashMap<String,String>();
+		params.put("childId", childId.toString());
+		
+		getRequestHelper().doPost(
+			url,
+			params,
+			ChildBasicInfoFragment.this.getClass(),
+			new Response.Listener<String>() {
+				@Override
+				public void onResponse(String response) {
+					final ViewDTO<ChildViewDTO> view = JSONUtil.getDeleteChildView(response);
+							
+					if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
+						Callback.CallbackResult<ChildViewDTO> result = new Callback.CallbackResult<ChildViewDTO>();
+						result.setSuccess(true);
+						result.setData(view.getData());
+						successCallback.execute(result);
+					}else{
+						String title = "Error";
+						String msg = view.getInfo();
+						String btnText = "OK";
+						
+						AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
+							getActivity(),
+							title,
+							msg,
+							btnText,
+							new DialogInterface.OnClickListener() {
+					            @Override
+					            public void onClick(DialogInterface dialog, int which) {
+					            	dialog.dismiss();
+					            }
+					        }
+						);
+						
+						dialog.show();
+					}
 				}
 			}, 
 			new DefaultVolleyErrorHandler(getActivity()));

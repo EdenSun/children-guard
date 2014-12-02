@@ -1,9 +1,12 @@
 package eden.sun.childrenguard.fragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,7 +24,9 @@ import eden.sun.childrenguard.adapter.AppManageListAdapter;
 import eden.sun.childrenguard.dto.AppManageListItemView;
 import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
 import eden.sun.childrenguard.server.dto.AppViewDTO;
+import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
+import eden.sun.childrenguard.util.Callback;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
 import eden.sun.childrenguard.util.RequestURLConstants;
@@ -71,6 +76,10 @@ public class ChildAppManageFragment extends CommonFragment{
 	}
 
 	private void loadAppList() {
+		String title = "App Manage";
+		String msg = "Loading applications, please wait...";
+		showProgressDialog(title,msg);
+		
 		String url = String.format(
 				Config.BASE_URL_MVC + RequestURLConstants.URL_LIST_CHILD_APP + "?childId=%1$s",  
 				childId
@@ -82,6 +91,7 @@ public class ChildAppManageFragment extends CommonFragment{
 			new Response.Listener<String>() {
 				@Override
 				public void onResponse(String response) {
+					dismissProgressDialog();
 					ViewDTO<List<AppViewDTO>> view = JSONUtil.getListChildAppView(response);
 			    	
 			    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS)){
@@ -129,5 +139,101 @@ public class ChildAppManageFragment extends CommonFragment{
 		if( appListAdapter != null ){
 			appListAdapter.clearChangesData();
 		}
+	}
+
+
+	public void reloadApplications() {
+		loadAppList();
+	}
+
+	public void doLockAllApp(final Callback<Boolean> successCallback) {
+		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_LOCK_ALL_APP;  
+
+		Map<String,String> params = new HashMap<String,String>();
+		params.put("childId", childId.toString());
+		
+		getRequestHelper().doPost(
+			url,
+			params,
+			ChildAppManageFragment.this.getClass(),
+			new Response.Listener<String>() {
+				@Override
+				public void onResponse(String response) {
+					final ViewDTO<Boolean> view = JSONUtil.getLockAllAppView(response);
+							
+					if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
+						Callback.CallbackResult<Boolean> result = new Callback.CallbackResult<Boolean>();
+						result.setSuccess(true);
+						result.setData(view.getData());
+						successCallback.execute(result);
+					}else{
+						String title = "Error";
+						String msg = view.getInfo();
+						String btnText = "OK";
+						
+						AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
+							getActivity(),
+							title,
+							msg,
+							btnText,
+							new DialogInterface.OnClickListener() {
+					            @Override
+					            public void onClick(DialogInterface dialog, int which) {
+					            	dialog.dismiss();
+					            }
+					        }
+						);
+						
+						dialog.show();
+					}
+				}
+			}, 
+			new DefaultVolleyErrorHandler(getActivity()));		
+	}
+
+
+	public void doUnlockAllApp(final Callback<Boolean> successCallback) {
+		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_UNLOCK_ALL_APP;  
+
+		Map<String,String> params = new HashMap<String,String>();
+		params.put("childId", childId.toString());
+		
+		getRequestHelper().doPost(
+			url,
+			params,
+			ChildAppManageFragment.this.getClass(),
+			new Response.Listener<String>() {
+				@Override
+				public void onResponse(String response) {
+					final ViewDTO<Boolean> view = JSONUtil.getLockAllAppView(response);
+							
+					if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
+						Callback.CallbackResult<Boolean> result = new Callback.CallbackResult<Boolean>();
+						result.setSuccess(true);
+						result.setData(view.getData());
+						successCallback.execute(result);
+					}else{
+						String title = "Error";
+						String msg = view.getInfo();
+						String btnText = "OK";
+						
+						AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
+							getActivity(),
+							title,
+							msg,
+							btnText,
+							new DialogInterface.OnClickListener() {
+					            @Override
+					            public void onClick(DialogInterface dialog, int which) {
+					            	dialog.dismiss();
+					            }
+					        }
+						);
+						
+						dialog.show();
+					}
+				}
+			}, 
+			new DefaultVolleyErrorHandler(getActivity()));		
 	}
 }

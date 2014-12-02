@@ -17,9 +17,12 @@ import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.AppManageSettingParam;
 import eden.sun.childrenguard.server.dto.param.MoreSettingParam;
 import eden.sun.childrenguard.server.exception.ServiceException;
+import eden.sun.childrenguard.server.model.generated.App;
+import eden.sun.childrenguard.server.model.generated.AppExample;
 import eden.sun.childrenguard.server.model.generated.Child;
 import eden.sun.childrenguard.server.model.generated.ChildExtraInfo;
 import eden.sun.childrenguard.server.model.generated.ChildSetting;
+import eden.sun.childrenguard.server.model.generated.AppExample.Criteria;
 import eden.sun.childrenguard.server.service.IAppService;
 import eden.sun.childrenguard.server.service.IChildDetailService;
 import eden.sun.childrenguard.server.service.IChildExtraInfoService;
@@ -225,4 +228,25 @@ public class ChildDetailServiceImpl implements IChildDetailService {
 		return view;
 	}
 
+	@Override
+	public ViewDTO<Boolean> lockAllAppByChild(Integer childId)
+			throws ServiceException {
+		ViewDTO<Boolean> view = new ViewDTO<Boolean>();
+		
+		boolean success = appService.lockAllAppByChild(childId);
+		view.setData(success);
+		return view;
+	}
+
+	@Override
+	public ViewDTO<Boolean> unlockAllAppByChild(Integer childId)
+			throws ServiceException {
+		ViewDTO<Boolean> view = new ViewDTO<Boolean>();
+		
+		boolean success = appService.unlockAllAppByChild(childId);
+		view.setData(success);
+		return view;
+	}
+
+	
 }

@@ -26,8 +26,16 @@ public class CommonFragment extends Fragment {
 
 
 	public void showProgressDialog(String title, String msg){
-		this.progress = ProgressDialog.show(this.getActivity(), title,
-			    msg, true);
+		if( this.progress != null ){
+			this.progress.setTitle(title);
+			this.progress.setMessage(msg);
+			if( !this.progress.isShowing() ){
+				this.progress.show();
+			}
+		}else{
+			this.progress = ProgressDialog.show(this.getActivity(), title,
+					msg, true);
+		}
 	}
 	
 	public void dismissProgressDialog(){
