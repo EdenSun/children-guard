@@ -5,10 +5,11 @@ import java.util.List;
 import eden.sun.childrenguard.server.dto.AppViewDTO;
 import eden.sun.childrenguard.server.dto.ChildBasicInfoViewDTO;
 import eden.sun.childrenguard.server.dto.ChildSettingViewDTO;
+import eden.sun.childrenguard.server.dto.PresetLockViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.AppManageSettingParam;
+import eden.sun.childrenguard.server.dto.param.ApplyPresetLockParam;
 import eden.sun.childrenguard.server.dto.param.MoreSettingParam;
-import eden.sun.childrenguard.server.dto.param.SyncAppSettingParam;
 import eden.sun.childrenguard.server.exception.ServiceException;
 
 public interface IChildDetailService {
@@ -32,6 +33,11 @@ public interface IChildDetailService {
 	ViewDTO<Boolean> lockAllAppByChild(Integer childId)throws ServiceException;
 
 	ViewDTO<Boolean> unlockAllAppByChild(Integer childId)throws ServiceException;
+
+	ViewDTO<PresetLockViewDTO> loadPresetLockData(Integer childId)throws ServiceException;
+
+	ViewDTO<Boolean> applyPresetLock(Integer childId,
+			ApplyPresetLockParam applyPresetLockParam)throws ServiceException;
 
 
 

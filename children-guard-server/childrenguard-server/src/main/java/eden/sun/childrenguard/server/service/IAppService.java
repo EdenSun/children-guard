@@ -28,4 +28,6 @@ public interface IAppService {
 
 	boolean unlockAllAppByChild(Integer childId)throws ServiceException;
 
+	List<AppViewDTO> getApps(List<Integer> appIdList)throws ServiceException;
+
 }

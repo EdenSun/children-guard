@@ -257,5 +257,31 @@ public class AppServiceImpl extends BaseServiceImpl implements IAppService{
 			return false;
 		}
 	}
+
+	@Override
+	public List<AppViewDTO> getApps(List<Integer> appIdList)
+			throws ServiceException {
+		if( appIdList == null || appIdList.size() == 0 ){
+			return null;
+		}
+		
+		List<AppViewDTO> appViewDTOList = new ArrayList<AppViewDTO>();
+		AppViewDTO appViewDTO = null;
+		for(Integer appId : appIdList ){
+			appViewDTO = this.getViewById(appId);
+			appViewDTOList.add(appViewDTO);
+		}
+		
+		return appViewDTOList;
+	}
+
+	private AppViewDTO getViewById(Integer appId) {
+		App app = this.getById(appId);
+		return trans2AppViewDTO(app);
+	}
+
+	private App getById(Integer appId) {
+		return appMapper.selectByPrimaryKey(appId);
+	}
 	
 }

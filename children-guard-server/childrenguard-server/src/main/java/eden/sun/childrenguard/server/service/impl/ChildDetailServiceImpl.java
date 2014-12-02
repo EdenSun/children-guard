@@ -13,22 +13,21 @@ import eden.sun.childrenguard.server.dto.ChildBasicInfoViewDTO;
 import eden.sun.childrenguard.server.dto.ChildExtraInfoViewDTO;
 import eden.sun.childrenguard.server.dto.ChildSettingViewDTO;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
+import eden.sun.childrenguard.server.dto.PresetLockViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.AppManageSettingParam;
 import eden.sun.childrenguard.server.dto.param.MoreSettingParam;
 import eden.sun.childrenguard.server.exception.ServiceException;
-import eden.sun.childrenguard.server.model.generated.App;
-import eden.sun.childrenguard.server.model.generated.AppExample;
 import eden.sun.childrenguard.server.model.generated.Child;
 import eden.sun.childrenguard.server.model.generated.ChildExtraInfo;
 import eden.sun.childrenguard.server.model.generated.ChildSetting;
-import eden.sun.childrenguard.server.model.generated.AppExample.Criteria;
 import eden.sun.childrenguard.server.service.IAppService;
 import eden.sun.childrenguard.server.service.IChildDetailService;
 import eden.sun.childrenguard.server.service.IChildExtraInfoService;
 import eden.sun.childrenguard.server.service.IChildService;
 import eden.sun.childrenguard.server.service.IChildSettingService;
 import eden.sun.childrenguard.server.service.IJPushService;
+import eden.sun.childrenguard.server.service.IPresetLockService;
 import eden.sun.childrenguard.server.util.PushConstants;
 
 @Service
@@ -41,6 +40,9 @@ public class ChildDetailServiceImpl implements IChildDetailService {
 	private IAppService appService;
 	@Autowired
 	private IChildSettingService childSettingService;
+	
+	@Autowired
+	private IPresetLockService presetLockService;
 
 	@Autowired
 	private IJPushService pushService;
@@ -248,5 +250,17 @@ public class ChildDetailServiceImpl implements IChildDetailService {
 		return view;
 	}
 
+	@Override
+	public ViewDTO<PresetLockViewDTO> loadPresetLockData(Integer childId)
+			throws ServiceException {
+		ViewDTO<PresetLockViewDTO> view = new ViewDTO<PresetLockViewDTO>();
+		if( childId == null ){
+			throw new ServiceException("Parameter childId can not be null.");
+		}
+		
+		view = presetLockService.loadPresetLockData(childId);
+		
+		return view;
+	}
 	
 }

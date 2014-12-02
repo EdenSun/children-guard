@@ -1,6 +1,5 @@
 package eden.sun.childrenguard.util;
 
-import android.widget.CheckBox;
 
 public class WeekConstants {
 

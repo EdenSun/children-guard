@@ -1,7 +1,6 @@
 package eden.sun.childrenguard.server.controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,8 +21,10 @@ import eden.sun.childrenguard.server.dto.AppViewDTO;
 import eden.sun.childrenguard.server.dto.ChildBasicInfoViewDTO;
 import eden.sun.childrenguard.server.dto.ChildSettingViewDTO;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
+import eden.sun.childrenguard.server.dto.PresetLockViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.AppManageSettingParam;
+import eden.sun.childrenguard.server.dto.param.ApplyPresetLockParam;
 import eden.sun.childrenguard.server.dto.param.ChildAddParam;
 import eden.sun.childrenguard.server.dto.param.MoreSettingParam;
 import eden.sun.childrenguard.server.service.IChildDetailService;
@@ -204,6 +205,29 @@ public class ChildrenManageController extends BaseController{
 		ViewDTO<Boolean> view = childDetailService.unlockAllAppByChild(childId);
 		
 		return view;
+	}
+	
+	@RequestMapping("/loadPresetLockData")
+	@ResponseBody
+	public ViewDTO<PresetLockViewDTO> loadPresetLockData(Integer childId){
+		logger.info("loadPresetLockData called. childId:" + childId );
+		
+		ViewDTO<PresetLockViewDTO> view = childDetailService.loadPresetLockData(childId);
+		
+		return view;
+		
+	}
+	
+	@RequestMapping("/applyPresetLock")
+	@ResponseBody
+	public ViewDTO<Boolean> applyPresetLock(Integer childId,String applyPresetLockParamJson){
+		logger.info("applyPresetLock called. childId:" + childId + " ,applyPresetLockParam:" + applyPresetLockParamJson );
+		
+		ApplyPresetLockParam applyPresetLockParam = JSONUtil.getApplyPresetLockParam(applyPresetLockParamJson);
+		ViewDTO<Boolean> view = childDetailService.applyPresetLock(childId,applyPresetLockParam);
+		
+		return view;
+		
 	}
 	
 }
