@@ -320,6 +320,7 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 		}else if( id == R.id.presetLock ){
 			Log.d(TAG, "preset lock menu click.");
 			Intent intent = new Intent(this,PresetLockActivity.class);
+			intent.putExtra("childId", childId);
 			startActivity(intent);
 			return true;
 		}

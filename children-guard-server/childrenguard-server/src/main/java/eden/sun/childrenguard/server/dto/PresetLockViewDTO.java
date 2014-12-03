@@ -13,6 +13,7 @@ public class PresetLockViewDTO {
 	private String repeatSummary;
     private Boolean lockCallStatus;
     private List<AppViewDTO> appList;
+    private String appLockSummary;
 	public Boolean getPresetOnOff() {
 		return presetOnOff;
 	}
@@ -67,5 +68,10 @@ public class PresetLockViewDTO {
 	public void setAppList(List<AppViewDTO> appList) {
 		this.appList = appList;
 	}
-    
+	public String getAppLockSummary() {
+		return appLockSummary;
+	}
+	public void setAppLockSummary(String appLockSummary) {
+		this.appLockSummary = appLockSummary;
+	}
 }

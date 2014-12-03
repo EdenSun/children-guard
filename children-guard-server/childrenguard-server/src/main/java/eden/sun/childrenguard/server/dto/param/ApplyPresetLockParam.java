@@ -6,7 +6,7 @@ import java.util.List;
 public class ApplyPresetLockParam {
 	private Boolean presetOnOff;
 	private Date startTime;
-	private Date endTiime;
+	private Date endTime;
 	private List<Integer> appIdList;
 	private List<Boolean> reapeat;
 	private Boolean lockCallStatus;
@@ -22,11 +22,11 @@ public class ApplyPresetLockParam {
 	public void setStartTime(Date startTime) {
 		this.startTime = startTime;
 	}
-	public Date getEndTiime() {
-		return endTiime;
+	public Date getEndTime() {
+		return endTime;
 	}
-	public void setEndTiime(Date endTiime) {
-		this.endTiime = endTiime;
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
 	}
 	public List<Integer> getAppIdList() {
 		return appIdList;

@@ -54,6 +54,13 @@
 	<string name="action_lock_all_app">Lock All App</string>
 	<string name="action_unlock_all_app">Unlock All app</string>
 	<string name="action_preset_lock">Preset Lock</string>
-	<string name="title_activity_preset_lock">PresetLockActivity</string>
+	<string name="title_activity_preset_lock">Preset Lock</string>
+	
+	<string name="default_text_perset_lock_start_time">Click to set start time</string>
+	<string name="default_text_perset_lock_end_time">Click to set end time</string>
+	<string name="default_text_perset_lock_repeat">Click to set repeat</string>
+	<string name="default_text_perset_lock_lock_app_setting">"Click to set locked/unlocked applications</string>
+	
+	
 	
 </resources>

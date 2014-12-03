@@ -3,7 +3,7 @@
     tools:context="eden.sun.childrenguard.PresetLockActivity" >
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/presetLockOnOffMenuItem"
         android:orderInCategory="100"
         android:showAsAction="always"
         android:title="@string/action_settings"

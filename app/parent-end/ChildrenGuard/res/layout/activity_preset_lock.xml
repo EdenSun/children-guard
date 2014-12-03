@@ -35,7 +35,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Click to set start time"
+                    android:text="@string/default_text_perset_lock_start_time"
                     android:textColor="@color/text_gray" />
             </LinearLayout>
             
@@ -62,7 +62,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Click to set end time"
+                    android:text="@string/default_text_perset_lock_end_time"
                     android:textColor="@color/text_gray" />
             </LinearLayout>
             
@@ -88,7 +88,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Click to set repeat"
+                    android:text="@string/default_text_perset_lock_repeat"
                     android:textColor="@color/text_gray" />
             </LinearLayout>
             
@@ -114,7 +114,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Click to set locked/unlocked applications"
+                    android:text="@string/default_text_perset_lock_lock_app_setting"
                     android:textColor="@color/text_gray" />
             </LinearLayout>
             

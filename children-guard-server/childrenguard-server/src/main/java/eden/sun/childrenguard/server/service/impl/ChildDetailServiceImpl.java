@@ -307,7 +307,7 @@ public class ChildDetailServiceImpl extends BaseServiceImpl implements IChildDet
 		}
 		
 		presetLock.setStartTime(applyPresetLockParam.getStartTime());
-		presetLock.setEndTime(applyPresetLockParam.getEndTiime());
+		presetLock.setEndTime(applyPresetLockParam.getEndTime());
 		presetLock.setLockCallStatus(applyPresetLockParam.getLockCallStatus());
 		presetLock.setPresetOnOff(applyPresetLockParam.getPresetOnOff());
 		

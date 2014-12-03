@@ -87,6 +87,9 @@ public class PresetLockServiceImpl implements IPresetLockService {
 		dto.setRepeatSummary(repeatSummary);
 		
 		dto.setAppList(appList);
+		if( appList != null && appList.size() > 0 ){
+			dto.setAppLockSummary( appList.size() + " applications is locked");
+		}
 		return dto;
 	}
 

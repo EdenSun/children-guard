@@ -15,6 +15,7 @@ import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.EmergencyContactViewDTO;
 import eden.sun.childrenguard.server.dto.IsFirstLoginViewDTO;
 import eden.sun.childrenguard.server.dto.LoginViewDTO;
+import eden.sun.childrenguard.server.dto.PresetLockViewDTO;
 import eden.sun.childrenguard.server.dto.RegisterViewDTO;
 import eden.sun.childrenguard.server.dto.RelationshipViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
@@ -119,6 +120,15 @@ public class JSONUtil {
 	}
 
 	public static ViewDTO<Boolean> getLockAllAppView(String json) {
+		return gson.fromJson(json, new TypeToken<ViewDTO<Boolean>>(){}.getType());
+	}
+
+	public static ViewDTO<PresetLockViewDTO> getLoadPresetLockDataView(
+			String json) {
+		return gson.fromJson(json, new TypeToken<ViewDTO<PresetLockViewDTO>>(){}.getType());
+	}
+
+	public static ViewDTO<Boolean> getApplyPresetLockView(String json) {
 		return gson.fromJson(json, new TypeToken<ViewDTO<Boolean>>(){}.getType());
 	}
 

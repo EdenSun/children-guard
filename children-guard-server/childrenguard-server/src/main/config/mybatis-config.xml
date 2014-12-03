@@ -17,6 +17,8 @@
 		<mapper resource="eden/sun/childrenguard/server/dao/generated/mapper/ParentMapper.xml"/>
 		<mapper resource="eden/sun/childrenguard/server/dao/generated/mapper/RelationshipMapper.xml"/>
 		<mapper resource="eden/sun/childrenguard/server/dao/mapper/ChildOfParentsMapper.xml"/>
+		<mapper resource="eden/sun/childrenguard/server/dao/generated/mapper/PresetLockMapper.xml"/>
+		<mapper resource="eden/sun/childrenguard/server/dao/generated/mapper/PresetLockAppMapper.xml"/>
 		
 	</mappers>
 </configuration>   

@@ -29,6 +29,7 @@ public class CommonActivity extends Activity implements DialogHolder{
 	public void showProgressDialog(String title, String msg){
 		this.progress = ProgressDialog.show(this, title,
 			    msg, true);
+		this.progress.setCancelable(true);
 	}
 	
 	@Override
