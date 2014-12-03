@@ -14,5 +14,7 @@ public interface IPresetLockService {
 	PresetLock saveOrUpdate(PresetLock presetLock)throws ServiceException;
 	
 	PresetLock createIfNotExists(Integer presetLockId)throws ServiceException;
+
+	ViewDTO<PresetLockViewDTO> retrievePresetLockData(String imei)throws ServiceException;
 	
 }

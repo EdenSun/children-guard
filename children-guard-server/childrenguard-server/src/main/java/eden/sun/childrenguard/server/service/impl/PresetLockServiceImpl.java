@@ -221,6 +221,20 @@ public class PresetLockServiceImpl implements IPresetLockService {
 		return getById(presetLock.getId());
 	}
 
+	@Override
+	public ViewDTO<PresetLockViewDTO> retrievePresetLockData(String imei)
+			throws ServiceException {
+		if(imei == null ){
+			throw new ServiceException("Parameter imei can not be null.");
+		}
+		Child child = childService.getChildByImei(imei);
+		if( child == null ){
+			throw new ServiceException("Child is not exists.");
+		}
+		
+		return this.loadPresetLockData(child.getId());
+	}
+
 	
 	/*private PresetLock getById(Integer presetLockId) {
 		if( presetLockId == null ){
