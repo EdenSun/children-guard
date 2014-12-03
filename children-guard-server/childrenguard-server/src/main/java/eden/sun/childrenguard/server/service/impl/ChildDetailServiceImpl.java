@@ -16,22 +16,25 @@ import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.PresetLockViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.AppManageSettingParam;
+import eden.sun.childrenguard.server.dto.param.ApplyPresetLockParam;
 import eden.sun.childrenguard.server.dto.param.MoreSettingParam;
 import eden.sun.childrenguard.server.exception.ServiceException;
 import eden.sun.childrenguard.server.model.generated.Child;
 import eden.sun.childrenguard.server.model.generated.ChildExtraInfo;
 import eden.sun.childrenguard.server.model.generated.ChildSetting;
+import eden.sun.childrenguard.server.model.generated.PresetLock;
 import eden.sun.childrenguard.server.service.IAppService;
 import eden.sun.childrenguard.server.service.IChildDetailService;
 import eden.sun.childrenguard.server.service.IChildExtraInfoService;
 import eden.sun.childrenguard.server.service.IChildService;
 import eden.sun.childrenguard.server.service.IChildSettingService;
 import eden.sun.childrenguard.server.service.IJPushService;
+import eden.sun.childrenguard.server.service.IPresetLockAppService;
 import eden.sun.childrenguard.server.service.IPresetLockService;
 import eden.sun.childrenguard.server.util.PushConstants;
 
 @Service
-public class ChildDetailServiceImpl implements IChildDetailService {
+public class ChildDetailServiceImpl extends BaseServiceImpl implements IChildDetailService {
 	@Autowired
 	private IChildExtraInfoService childExtraInfoService;
 	@Autowired
@@ -43,6 +46,9 @@ public class ChildDetailServiceImpl implements IChildDetailService {
 	
 	@Autowired
 	private IPresetLockService presetLockService;
+	
+	@Autowired
+	private IPresetLockAppService presetLockAppService;
 
 	@Autowired
 	private IJPushService pushService;
@@ -262,5 +268,61 @@ public class ChildDetailServiceImpl implements IChildDetailService {
 		
 		return view;
 	}
+
+	@Override
+	public ViewDTO<Boolean> applyPresetLock(Integer childId,
+			ApplyPresetLockParam applyPresetLockParam) throws ServiceException {
+		if( childId == null || applyPresetLockParam == null ){
+			throw new ServiceException("Parameter childId or applyPresetLockParam can not be null.");
+		}
+		
+		ViewDTO<Boolean> view = new ViewDTO<Boolean>();
+		
+		try {
+			Integer presetLockId = childId;
+			
+			PresetLock presetLock = new PresetLock(presetLockId);
+			fillData(presetLock,applyPresetLockParam);
+			presetLockService.saveOrUpdate(presetLock);
+			
+			// update locked app
+			presetLockAppService.updatePresetLockApp(presetLock.getId(),applyPresetLockParam.getAppIdList());
+			
+			//TODO: if preset lock switch is on , send message to child end app 
+			
+			view.setData(true);
+			return view;
+		} catch (Exception e) {
+			logger.error("apply preset lock error.",e);
+			view.setData(false);
+			view.setMsg(ViewDTO.MSG_ERROR);
+			return view;
+		}
+	}
+
+	private void fillData(PresetLock presetLock,
+			ApplyPresetLockParam applyPresetLockParam)throws ServiceException {
+		if( presetLock == null || applyPresetLockParam == null ){
+			return ;
+		}
+		
+		presetLock.setStartTime(applyPresetLockParam.getStartTime());
+		presetLock.setEndTime(applyPresetLockParam.getEndTiime());
+		presetLock.setLockCallStatus(applyPresetLockParam.getLockCallStatus());
+		presetLock.setPresetOnOff(applyPresetLockParam.getPresetOnOff());
+		
+		List<Boolean> repeatList = applyPresetLockParam.getReapeat();
+		if( repeatList != null && repeatList.size() == 7 ){
+			presetLock.setRepeatMonday(repeatList.get(0));
+			presetLock.setRepeatTuesday(repeatList.get(1));
+			presetLock.setRepeatWednesday(repeatList.get(2));
+			presetLock.setRepeatThurday(repeatList.get(3));
+			presetLock.setRepeatFriday(repeatList.get(4));
+			presetLock.setRepeatSaturday(repeatList.get(5));
+			presetLock.setRepeatSunday(repeatList.get(6));
+		}
+	}
+	
+	
 	
 }

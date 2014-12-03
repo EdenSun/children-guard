@@ -65,4 +65,37 @@ public class PresetLockAppServiceImpl implements IPresetLockAppService {
 		return presetLockAppList;
 	}
 
+	@Override
+	public void updatePresetLockApp(Integer presetId, List<Integer> appIdList)
+			throws ServiceException {
+		if( presetId == null ){
+			throw new ServiceException("Parameter preset id can not be null.");
+		}
+		
+		if( appIdList == null || appIdList.size() == 0 ){
+			return ;
+		}
+		
+		//clear data related to preset id
+		deleteByPresetId(presetId);
+		
+		//insert preset lock app
+		PresetLockApp presetLockApp = null;
+		for(Integer appId: appIdList ){
+			presetLockApp = new PresetLockApp();
+			presetLockApp.setAppId(appId);
+			presetLockApp.setPresetLockId(presetId);
+			
+			presetLockAppMapper.insert(presetLockApp);
+		}
+	}
+
+	private void deleteByPresetId(Integer presetId) {
+		PresetLockAppExample example = new PresetLockAppExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andPresetLockIdEqualTo(presetId);
+		
+		presetLockAppMapper.deleteByExample(example);
+	}
+
 }

@@ -162,7 +162,8 @@ public class PresetLockServiceImpl implements IPresetLockService {
 		return repeatList;
 	}
 
-	private PresetLock createIfNotExists(Integer presetLockId) {
+	@Override
+	public PresetLock createIfNotExists(Integer presetLockId)throws ServiceException {
 		if( presetLockId == null ){
 			return null;
 		}
