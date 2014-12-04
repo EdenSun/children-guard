@@ -1,5 +1,6 @@
 package eden.sun.childrenguard.activity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +27,7 @@ import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
 import eden.sun.childrenguard.fragment.PresetLockAppDialogFragment;
 import eden.sun.childrenguard.fragment.TimePickerDialogFragment;
 import eden.sun.childrenguard.fragment.WeekdayChooserDialogFragment;
+import eden.sun.childrenguard.server.dto.AppViewDTO;
 import eden.sun.childrenguard.server.dto.PresetLockViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.ApplyPresetLockParam;
@@ -57,7 +59,7 @@ public class PresetLockActivity extends CommonActivity {
 	private Date startTime;
 	private Date endTime;
 	private List<Boolean> reapeat;
-	private List<Integer> appIdList;
+	private List<Integer> checkedAppIdList;
 	
 	
 	
@@ -291,20 +293,44 @@ public class PresetLockActivity extends CommonActivity {
         newFragment.show(ft, "endTimePickerDialog");  
     }
 	
-	
+	PresetLockAppDialogFragment presetLockAppDialogFragment ;
 	private void showPresetLockAppDialog() {
-		FragmentTransaction ft = getFragmentManager().beginTransaction();  
-        // Create and show the dialog.  
-		PresetLockAppDialogFragment newFragment  = new PresetLockAppDialogFragment(new Callback<List<Integer>>(){
+		final FragmentTransaction ft = getFragmentManager().beginTransaction();
+		if( presetLockAppDialogFragment == null ){
+			loadAppList(new Callback<List<AppViewDTO>>(){
 
-			@Override
-			public void execute(CallbackResult<List<Integer>> result) {
-				Toast.makeText(PresetLockActivity.this, "App Lock Setting", Toast.LENGTH_SHORT).show();
-			}
+				@Override
+				public void execute(CallbackResult<List<AppViewDTO>> result) {
+					
+					if( result.getData() != null && result.getData().size() > 0){
+				        // Create and show the dialog.  
+						presetLockAppDialogFragment  = new PresetLockAppDialogFragment(result.getData(),new Callback<List<Integer>>(){
 
-        });
-        
-        newFragment.show(ft, "presetLockAppDialogFragment");  		
+							@Override
+							public void execute(CallbackResult<List<Integer>> result) {
+								checkedAppIdList = result.getData();
+								Toast.makeText(PresetLockActivity.this, "App Lock Setting", Toast.LENGTH_SHORT).show();
+							}
+
+				        });
+				        
+				        presetLockAppDialogFragment.show(ft, "presetLockAppDialogFragment");  	
+		    			
+		    		}else{
+		    			String msg = "Person account is not activate,please activate first.";
+		    			
+		    			AlertDialog.Builder dialog = UIUtil.getErrorDialog(PresetLockActivity.this,msg);
+			    		
+		    			dialog.show();	
+		    		}
+					
+				}
+				
+			});
+		}else{
+			presetLockAppDialogFragment.show(ft, "presetLockAppDialogFragment");  
+		}
+		
 	}
 	
 	private void showWeekdayChooserDialog() {
@@ -449,7 +475,7 @@ public class PresetLockActivity extends CommonActivity {
 		boolean presetOnOff = UIUtil.getSwitchValue( presetOnOffSwitch );
 		applyPresetLockParam.setPresetOnOff(presetOnOff);
 		
-		applyPresetLockParam.setAppIdList(appIdList);
+		applyPresetLockParam.setAppIdList(checkedAppIdList);
 		applyPresetLockParam.setEndTime(endTime);
 		applyPresetLockParam.setReapeat(reapeat);
 		applyPresetLockParam.setStartTime(startTime);
@@ -457,6 +483,43 @@ public class PresetLockActivity extends CommonActivity {
 		String applyPresetLockParamJson = JSONUtil.transApplyPresetLockParam2String(applyPresetLockParam);
 		param.put("applyPresetLockParamJson", applyPresetLockParamJson);
 		return param;
+	}
+	
+	
+	private void loadAppList(final Callback<List<AppViewDTO>> successCallback) {
+		String title = "Preset Lock";
+		String msg = "Loading applications, please wait...";
+		showProgressDialog(title,msg);
+		
+		String url = String.format(
+				Config.BASE_URL_MVC + RequestURLConstants.URL_LIST_CHILD_APP + "?childId=%1$s",  
+				childId
+				);  
+		
+		getRequestHelper().doGet(
+			url,
+			PresetLockActivity.this.getClass(),
+			new Response.Listener<String>() {
+				@Override
+				public void onResponse(String response) {
+					dismissProgressDialog();
+					ViewDTO<List<AppViewDTO>> view = JSONUtil.getListChildAppView(response);
+			    	
+			    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS)){
+			    		Callback.CallbackResult<List<AppViewDTO>> result = new Callback.CallbackResult<List<AppViewDTO>>();
+			    		result.setData(view.getData());
+			    		successCallback.execute(result);;
+			    		
+			    	}else{
+			    		AlertDialog.Builder dialog = UIUtil.getErrorDialog(PresetLockActivity.this,view.getInfo());
+			    		
+						dialog.show();
+			    	}
+			    	
+				}
+			}, 
+			new DefaultVolleyErrorHandler(PresetLockActivity.this)
+		);		
 	}
 	
 	

@@ -11,11 +11,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
+import android.widget.CheckBox;
 import eden.sun.childrenguard.R;
+import eden.sun.childrenguard.activity.PresetLockActivity;
 import eden.sun.childrenguard.dto.AppManageListItemView;
 import eden.sun.childrenguard.server.dto.AppViewDTO;
-import android.widget.CheckBox;
 
 public class PresetLockAppListAdapter extends BaseAdapter{
 	private Activity context;
@@ -23,6 +23,7 @@ public class PresetLockAppListAdapter extends BaseAdapter{
     private static LayoutInflater inflater=null;
     //public ImageLoader imageLoader; 
     private List<AppManageListItemView> changesData;
+    private List<Integer> appIdList;
  
     public PresetLockAppListAdapter(Activity context, ArrayList<AppManageListItemView> data) {
         this.context = context;
@@ -60,10 +61,17 @@ public class PresetLockAppListAdapter extends BaseAdapter{
 
 			@Override
 			public void onClick(View v) {
+				CheckBox curCheckbox = (CheckBox)v;
+				boolean isChecked = curCheckbox.isChecked();
+				app.setLock(isChecked);
 				
+				if( isChecked ){
+					onAppChecked(app.getAppId());
+				}else{
+					onAppUnchecked(app.getAppId());
+				}
 			}
 			
-		
 		});
         return vi;
     }
@@ -100,5 +108,31 @@ public class PresetLockAppListAdapter extends BaseAdapter{
 			changesData.clear();
 		}
 	}
+	
+	public void onAppChecked(Integer appId){
+		initAppIdList();
+		if( !appIdList.contains(appId) ){
+			appIdList.add(appId);
+		}
+	}
+	
+	public void onAppUnchecked(Integer appId) {
+		initAppIdList();
+		if( appIdList.contains(appId) ){
+			appIdList.remove(appId);
+		}
+	}
+
+
+	private void initAppIdList(){
+		if( appIdList == null ){
+			appIdList = new ArrayList<Integer>();
+		}
+	}
+
+	public List<Integer> getAppIdList() {
+		return appIdList;
+	}
+	
 
 }

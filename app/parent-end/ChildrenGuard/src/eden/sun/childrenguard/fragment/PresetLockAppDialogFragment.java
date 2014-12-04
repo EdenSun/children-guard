@@ -3,31 +3,44 @@ package eden.sun.childrenguard.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
+
+import com.android.volley.Response;
+
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.adapter.PresetLockAppListAdapter;
 import eden.sun.childrenguard.dto.AppManageListItemView;
+import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
+import eden.sun.childrenguard.helper.RequestHelper;
+import eden.sun.childrenguard.server.dto.AppViewDTO;
+import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Callback;
+import eden.sun.childrenguard.util.Config;
+import eden.sun.childrenguard.util.JSONUtil;
+import eden.sun.childrenguard.util.RequestURLConstants;
+import eden.sun.childrenguard.util.UIUtil;
 
 public class PresetLockAppDialogFragment extends DialogFragment{
 	private Callback<List<Integer>> callback;
-	
 	private ListView appListView;
 	private PresetLockAppListAdapter appListAdapter;
 	
+	List<AppViewDTO> appList ;
 	
-	public PresetLockAppDialogFragment(Callback<List<Integer>> callback) {
+	public PresetLockAppDialogFragment(List<AppViewDTO> appList,Callback<List<Integer>> callback) {
 		super();
 		this.callback = callback;
+		this.appList = appList;
 	}
-
     
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,20 +49,12 @@ public class PresetLockAppDialogFragment extends DialogFragment{
 	}
 
 	private PresetLockAppListAdapter getAppListAdapter() {
-		ArrayList<AppManageListItemView> list = new ArrayList<AppManageListItemView>();
-		AppManageListItemView view = null;
-		
-		for(int i=1;i<=20 ;i++){
-			view = new AppManageListItemView();
-			view.setAppName("App-000" + i);
-			if( i%3 == 0 ){
-				view.setLock(true);
-			}else{
-				view.setLock(false);
-			}
-			list.add(view);
+		if( appListAdapter == null ){
+			ArrayList<AppManageListItemView> list = new ArrayList<AppManageListItemView>();
+			appListAdapter = new PresetLockAppListAdapter(this.getActivity(),list);
+			appListAdapter.reloadData(appList);
 		}
-		appListAdapter = new PresetLockAppListAdapter(this.getActivity(),list);
+		
 		return appListAdapter;
 	}
 	
@@ -75,8 +80,7 @@ public class PresetLockAppDialogFragment extends DialogFragment{
                         public void onClick(DialogInterface dialog, int whichButton) { 
                         	Callback.CallbackResult<List<Integer>> result = new Callback.CallbackResult<List<Integer>>();
                         	result.setSuccess(true);
-                        	List<Integer> appIdList = getAppIdList();
-                        	result.setData(appIdList);
+                        	result.setData(appListAdapter.getAppIdList());
                         	callback.execute(result);
                         }
 
@@ -98,6 +102,20 @@ public class PresetLockAppDialogFragment extends DialogFragment{
 		
 		// TODO Auto-generated method stub
 		return appIdList;
+	}
+	
+	
+	private ProgressDialog progress;
+	public void showProgressDialog(String title, String msg){
+		this.progress = ProgressDialog.show(getActivity(), title,
+			    msg, true);
+		this.progress.setCancelable(true);
+	}
+	
+	public void dismissProgressDialog(){
+		if( progress != null ){
+			progress.dismiss();
+		}
 	}
 	
 }
