@@ -1,5 +1,7 @@
 package eden.sun.childrenguard.util;
 
+import org.jraf.android.backport.switchwidget.Switch;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -168,5 +170,14 @@ public class UIUtil {
 		}
 		
 		return value;
+	}
+
+
+	public static boolean getSwitchValue(Switch lockCallSwitch) {
+		if( lockCallSwitch == null ){
+			return false;
+		}
+		
+		return lockCallSwitch.isChecked();
 	}
 }

@@ -195,8 +195,8 @@
     <style name="checkboxItem">
         <item name="android:paddingTop">15dp</item>
         <item name="android:paddingBottom">15dp</item>
-        <item name="android:paddingLeft">10dp </item>
-        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">15dp</item>
         <item name="android:textSize">14sp</item>
         <item name="android:background">@drawable/gradient_bg</item>
         <item name="android:layout_width">match_parent</item>

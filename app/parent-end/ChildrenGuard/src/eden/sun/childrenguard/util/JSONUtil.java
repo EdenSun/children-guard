@@ -19,6 +19,7 @@ import eden.sun.childrenguard.server.dto.PresetLockViewDTO;
 import eden.sun.childrenguard.server.dto.RegisterViewDTO;
 import eden.sun.childrenguard.server.dto.RelationshipViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
+import eden.sun.childrenguard.server.dto.param.ApplyPresetLockParam;
 
 
 public class JSONUtil {
@@ -130,6 +131,11 @@ public class JSONUtil {
 
 	public static ViewDTO<Boolean> getApplyPresetLockView(String json) {
 		return gson.fromJson(json, new TypeToken<ViewDTO<Boolean>>(){}.getType());
+	}
+
+	public static String transApplyPresetLockParam2String(
+			ApplyPresetLockParam applyPresetLockParam) {
+		return gson.toJson(applyPresetLockParam);
 	}
 
 }
