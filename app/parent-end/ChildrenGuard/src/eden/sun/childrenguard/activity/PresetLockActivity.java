@@ -23,8 +23,9 @@ import com.android.volley.VolleyError;
 
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
-import eden.sun.childrenguard.fragment.TimePickerFragment;
-import eden.sun.childrenguard.fragment.WeekdayChooserFragment;
+import eden.sun.childrenguard.fragment.PresetLockAppDialogFragment;
+import eden.sun.childrenguard.fragment.TimePickerDialogFragment;
+import eden.sun.childrenguard.fragment.WeekdayChooserDialogFragment;
 import eden.sun.childrenguard.server.dto.PresetLockViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.ApplyPresetLockParam;
@@ -37,6 +38,7 @@ import eden.sun.childrenguard.util.WeekConstants;
 
 public class PresetLockActivity extends CommonActivity {
 	protected static final String TAG = "PresetLockActivity";
+	/******* Component ******/
 	private Switch presetOnOffSwitch;
 	private View startTimeItem;
 	private TextView startTimeTextView;
@@ -47,9 +49,19 @@ public class PresetLockActivity extends CommonActivity {
 	private View lockAppSettingItem;
 	private TextView lockAppSettingTextView;
 	private Switch lockCallSwitch;
-	private Integer childId;
+	/********************/
 	
+	/******* data *******/
 	private PresetLockViewDTO presetLockView;
+	private Integer childId;
+	private Date startTime;
+	private Date endTime;
+	private List<Boolean> reapeat;
+	private List<Integer> appIdList;
+	
+	
+	
+	/***************************/
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -180,6 +192,16 @@ public class PresetLockActivity extends CommonActivity {
 		});
 		
 		lockAppSettingItem = (View)findViewById(R.id.lockAppSettingItem);
+		lockAppSettingItem.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				Log.d(TAG, "app lock setting item click.");
+				showPresetLockAppDialog();
+			}
+
+		});
+		
 		lockCallSwitch = (Switch)findViewById(R.id.lockCallSwitch);
 		startTimeTextView = (TextView)findViewById(R.id.startTimeTextView);
 		endTimeTextView = (TextView)findViewById(R.id.endTimeTextView);
@@ -226,13 +248,16 @@ public class PresetLockActivity extends CommonActivity {
 	private void showSetStartTimeDialog() {  
         FragmentTransaction ft = getFragmentManager().beginTransaction();  
         // Create and show the dialog.  
-        TimePickerFragment newFragment  = new TimePickerFragment(new Callback(){
+        
+        TimePickerDialogFragment newFragment  = new TimePickerDialogFragment(startTime,new Callback<Date>(){
 
 			@Override
-			public void execute(CallbackResult result) {
+			public void execute(CallbackResult<Date> result) {
 				if( result != null && result.isSuccess() == true ){
 					startTimeTextView.setText(result.getInfo());
 					Toast.makeText(PresetLockActivity.this, "Set time:"+ result.getInfo(), Toast.LENGTH_SHORT).show();
+					
+					startTime = result.getData();
 				}
 			}
         		
@@ -249,13 +274,15 @@ public class PresetLockActivity extends CommonActivity {
 	private void showSetEndTimeDialog() {  
         FragmentTransaction ft = getFragmentManager().beginTransaction();  
         // Create and show the dialog.  
-        TimePickerFragment newFragment  = new TimePickerFragment(new Callback(){
+        TimePickerDialogFragment newFragment  = new TimePickerDialogFragment(endTime,new Callback<Date>(){
 
 			@Override
-			public void execute(CallbackResult result) {
+			public void execute(CallbackResult<Date> result) {
 				if( result != null && result.isSuccess() == true ){
 					endTimeTextView.setText(result.getInfo());
 					Toast.makeText(PresetLockActivity.this, "Set time:"+ result.getInfo(), Toast.LENGTH_SHORT).show();
+					
+					endTime = result.getData();
 				}
 			}
         		
@@ -264,20 +291,36 @@ public class PresetLockActivity extends CommonActivity {
         newFragment.show(ft, "endTimePickerDialog");  
     }
 	
+	
+	private void showPresetLockAppDialog() {
+		FragmentTransaction ft = getFragmentManager().beginTransaction();  
+        // Create and show the dialog.  
+		PresetLockAppDialogFragment newFragment  = new PresetLockAppDialogFragment(new Callback<List<Integer>>(){
+
+			@Override
+			public void execute(CallbackResult<List<Integer>> result) {
+				Toast.makeText(PresetLockActivity.this, "App Lock Setting", Toast.LENGTH_SHORT).show();
+			}
+
+        });
+        
+        newFragment.show(ft, "presetLockAppDialogFragment");  		
+	}
+	
 	private void showWeekdayChooserDialog() {
 		FragmentTransaction ft = getFragmentManager().beginTransaction();  
         // Create and show the dialog.  
-		WeekdayChooserFragment newFragment  = new WeekdayChooserFragment(new Callback<List<String>>(){
+		WeekdayChooserDialogFragment newFragment  = new WeekdayChooserDialogFragment(new Callback<List<Boolean>>(){
 
 			@Override
-			public void execute(CallbackResult<List<String>> result) {
+			public void execute(CallbackResult<List<Boolean>> result) {
 				if( result != null && result.isSuccess() == true ){
-					List<String> weekdayList = result.getData();
+					reapeat = result.getData();
 					
-					String selectedWeekday = getWeekdays(weekdayList);
+					String selectedWeekday = getWeekdays(reapeat);
 					repeatTextView.setText(selectedWeekday);
 					
-					Toast.makeText(PresetLockActivity.this, "Set repeat:"+ result.getInfo(), Toast.LENGTH_SHORT).show();
+					Toast.makeText(PresetLockActivity.this, "Set repeat:"+ selectedWeekday, Toast.LENGTH_SHORT).show();
 				}
 			}
 
@@ -286,28 +329,32 @@ public class PresetLockActivity extends CommonActivity {
         newFragment.show(ft, "weekdayChooserDialog");  		
 	}
 	
-	private String getWeekdays(List<String> weekdayList) {
+	private String getWeekdays(List<Boolean> weekdayList) {
 		if( weekdayList == null || weekdayList.size() == 0 ){
 			return "";
 		}
 		
 		StringBuffer weekdays = new StringBuffer();
-		for( String weekday: weekdayList ){
-			if( weekday.equals(WeekConstants.MONDAY[1]) ){
-				weekdays.append(WeekConstants.MONDAY[0]).append(" ");
-			}else if( weekday.equals(WeekConstants.TUESDAY[1]) ){
-				weekdays.append(WeekConstants.TUESDAY[0]).append(" ");
-			}else if( weekday.equals(WeekConstants.WEDNESDAY[1]) ){
-				weekdays.append(WeekConstants.WEDNESDAY[0]).append(" ");
-			}else if( weekday.equals(WeekConstants.THURDAY[1]) ){
-				weekdays.append(WeekConstants.THURDAY[0]).append(" ");
-			}else if( weekday.equals(WeekConstants.FRIDAY[1]) ){
-				weekdays.append(WeekConstants.FRIDAY[0]).append(" ");
-			}else if( weekday.equals(WeekConstants.SATURDAY[1]) ){
-				weekdays.append(WeekConstants.SATURDAY[0]).append(" ");
-			}else if( weekday.equals(WeekConstants.SUNDAY[1]) ){
-				weekdays.append(WeekConstants.SUNDAY[0]).append(" ");
-			}
+		if( weekdayList.get(0).equals(true) ){
+			weekdays.append(WeekConstants.MONDAY[0]).append(" ");
+		}
+		if( weekdayList.get(1).equals(true) ){
+			weekdays.append(WeekConstants.TUESDAY[0]).append(" ");
+		}
+		if( weekdayList.get(2).equals(true) ){
+			weekdays.append(WeekConstants.WEDNESDAY[0]).append(" ");
+		}
+		if( weekdayList.get(3).equals(true) ){
+			weekdays.append(WeekConstants.THURDAY[0]).append(" ");
+		}
+		if( weekdayList.get(4).equals(true) ){
+			weekdays.append(WeekConstants.FRIDAY[0]).append(" ");
+		}
+		if( weekdayList.get(5).equals(true) ){
+			weekdays.append(WeekConstants.SATURDAY[0]).append(" ");
+		}
+		if( weekdayList.get(6).equals(true) ){
+			weekdays.append(WeekConstants.SUNDAY[0]).append(" ");
 		}
 		
 		return weekdays.toString().trim();
@@ -395,14 +442,20 @@ public class PresetLockActivity extends CommonActivity {
 		param.put("childId", childId.toString());
 		
 		ApplyPresetLockParam applyPresetLockParam = new ApplyPresetLockParam();
-		applyPresetLockParam.setAppIdList(appIdList);
-		applyPresetLockParam.setEndTime(endTiime);
+		
+		boolean lockCallStatus = UIUtil.getSwitchValue( lockCallSwitch );
 		applyPresetLockParam.setLockCallStatus(lockCallStatus);
-		applyPresetLockParam.setLockCallStatus(lockCallStatus);
+		
+		boolean presetOnOff = UIUtil.getSwitchValue( presetOnOffSwitch );
 		applyPresetLockParam.setPresetOnOff(presetOnOff);
+		
+		applyPresetLockParam.setAppIdList(appIdList);
+		applyPresetLockParam.setEndTime(endTime);
 		applyPresetLockParam.setReapeat(reapeat);
 		applyPresetLockParam.setStartTime(startTime);
 		
+		String applyPresetLockParamJson = JSONUtil.transApplyPresetLockParam2String(applyPresetLockParam);
+		param.put("applyPresetLockParamJson", applyPresetLockParamJson);
 		return param;
 	}
 	
