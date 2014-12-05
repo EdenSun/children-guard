@@ -17,13 +17,13 @@ public class TimePickerDialogFragment extends DialogFragment /*implements
 	
 	private Callback<Date> onTimeSelected;
 	
-	public TimePickerDialogFragment(Date startTime,Callback<Date> onTimeSelected) {
+	public TimePickerDialogFragment(Date time,Callback<Date> onTimeSelected) {
 		super();
 		this.onTimeSelected = onTimeSelected;
 		
-		if( startTime != null ){
+		if( time != null ){
 			Calendar cal = Calendar.getInstance();
-			cal.setTime(startTime);
+			cal.setTime(time);
 			pHour = cal.get(Calendar.HOUR_OF_DAY);
 			pMinute = cal.get(Calendar.MINUTE);
 		}

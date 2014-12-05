@@ -16,21 +16,19 @@ import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.activity.PresetLockActivity;
 import eden.sun.childrenguard.dto.AppManageListItemView;
 import eden.sun.childrenguard.server.dto.AppViewDTO;
+import eden.sun.childrenguard.util.DataTypeUtil;
 
 public class PresetLockAppListAdapter extends BaseAdapter{
 	private Activity context;
     private ArrayList<AppManageListItemView> data;
     private static LayoutInflater inflater=null;
     //public ImageLoader imageLoader; 
-    private List<AppManageListItemView> changesData;
     private List<Integer> appIdList;
  
     public PresetLockAppListAdapter(Activity context, ArrayList<AppManageListItemView> data) {
         this.context = context;
         this.data=data;
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        changesData = new ArrayList<AppManageListItemView>();
-        //imageLoader=new ImageLoader(context.getApplicationContext());
     }
  
     public int getCount() {
@@ -82,9 +80,15 @@ public class PresetLockAppListAdapter extends BaseAdapter{
 			return ;
 		}
 		this.data.clear();
+		
+		initAppIdList();
+		appIdList.clear();
 		for(Iterator<AppViewDTO> it = appList.iterator();it.hasNext();){
 			AppViewDTO app = it.next();
 			addAppItem(app);
+			if( DataTypeUtil.getNonNullBoolean(app.getLockStatus()) == true ){
+				this.onAppChecked(app.getId());
+			}
 		}
 		
 		this.notifyDataSetChanged();
@@ -99,16 +103,6 @@ public class PresetLockAppListAdapter extends BaseAdapter{
 		data.add(view);
 	}
 
-	public List<AppManageListItemView> getChangesData() {
-		return changesData;
-	}
-
-	public void clearChangesData() {
-		if( changesData != null ){
-			changesData.clear();
-		}
-	}
-	
 	public void onAppChecked(Integer appId){
 		initAppIdList();
 		if( !appIdList.contains(appId) ){

@@ -1,6 +1,5 @@
 package eden.sun.childrenguard.activity;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +51,9 @@ public class PresetLockActivity extends CommonActivity {
 	private View lockAppSettingItem;
 	private TextView lockAppSettingTextView;
 	private Switch lockCallSwitch;
+	
+	private Button applyBtn;
+	private Button cancelBtn;
 	/********************/
 	
 	/******* data *******/
@@ -58,7 +61,7 @@ public class PresetLockActivity extends CommonActivity {
 	private Integer childId;
 	private Date startTime;
 	private Date endTime;
-	private List<Boolean> reapeat;
+	private List<Boolean> repeat;
 	private List<Integer> checkedAppIdList;
 	
 	
@@ -209,6 +212,52 @@ public class PresetLockActivity extends CommonActivity {
 		endTimeTextView = (TextView)findViewById(R.id.endTimeTextView);
 		repeatTextView = (TextView)findViewById(R.id.repeatTextView);
 		lockAppSettingTextView = (TextView)findViewById(R.id.lockAppSettingTextView);
+		
+		applyBtn = (Button) findViewById(R.id.applyBtn);
+		applyBtn.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				
+				applyPresetLock(new Callback<ViewDTO<Boolean>>(){
+
+					@Override
+					public void execute(CallbackResult<ViewDTO<Boolean>> result) {
+						if( result.getData().getMsg().equals(ViewDTO.MSG_SUCCESS) ){
+							Toast.makeText(PresetLockActivity.this, "Success to apply preset lock.", Toast.LENGTH_SHORT).show();
+							
+							// TODO: save preset lock setting to local db
+							//..................
+							
+							
+							finish();
+						}
+					}
+					
+				},
+				new Callback(){
+					@Override
+					public void execute(CallbackResult result) {
+						Toast.makeText(PresetLockActivity.this, "Sever error,failure to apply preset lock.", Toast.LENGTH_SHORT).show();
+						
+						finish();			
+					}
+					
+				});
+				
+			}
+			
+		});
+		
+		cancelBtn = (Button) findViewById(R.id.cancelBtn);
+		cancelBtn.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				finish();
+			}
+			
+		});
 	}
 
 	@Override
@@ -226,6 +275,9 @@ public class PresetLockActivity extends CommonActivity {
 			public void execute(CallbackResult<PresetLockViewDTO> result) {
 				presetLockView = result.getData();
 				
+				startTime = presetLockView.getStartTime();
+				endTime = presetLockView.getEndTime();
+				repeat = presetLockView.getRepeat();
 				initPresetLock(presetLockView);
 			}
 
@@ -336,14 +388,14 @@ public class PresetLockActivity extends CommonActivity {
 	private void showWeekdayChooserDialog() {
 		FragmentTransaction ft = getFragmentManager().beginTransaction();  
         // Create and show the dialog.  
-		WeekdayChooserDialogFragment newFragment  = new WeekdayChooserDialogFragment(new Callback<List<Boolean>>(){
+		WeekdayChooserDialogFragment newFragment  = new WeekdayChooserDialogFragment(repeat,new Callback<List<Boolean>>(){
 
 			@Override
 			public void execute(CallbackResult<List<Boolean>> result) {
 				if( result != null && result.isSuccess() == true ){
-					reapeat = result.getData();
+					repeat = result.getData();
 					
-					String selectedWeekday = getWeekdays(reapeat);
+					String selectedWeekday = getWeekdays(repeat);
 					repeatTextView.setText(selectedWeekday);
 					
 					Toast.makeText(PresetLockActivity.this, "Set repeat:"+ selectedWeekday, Toast.LENGTH_SHORT).show();
@@ -393,7 +445,7 @@ public class PresetLockActivity extends CommonActivity {
 	}
 
 
-	@Override
+	/*@Override
 	public void onBackPressed() {
 		applyPresetLock(new Callback<ViewDTO<Boolean>>(){
 
@@ -406,7 +458,7 @@ public class PresetLockActivity extends CommonActivity {
 					//..................
 					
 					
-					PresetLockActivity.super.onBackPressed();
+					PresetLockActivity.this.finish();
 				}
 			}
 			
@@ -416,13 +468,13 @@ public class PresetLockActivity extends CommonActivity {
 			public void execute(CallbackResult result) {
 				Toast.makeText(PresetLockActivity.this, "Sever error,failure to apply preset lock.", Toast.LENGTH_SHORT).show();
 				
-				PresetLockActivity.super.onBackPressed();				
+				PresetLockActivity.this.finish();			
 			}
 			
 		});
 		
 //		super.onBackPressed();
-	}
+	}*/
 
 
 	private void applyPresetLock(final Callback<ViewDTO<Boolean>> successCallback, final Callback errorCallback) {
@@ -477,7 +529,7 @@ public class PresetLockActivity extends CommonActivity {
 		
 		applyPresetLockParam.setAppIdList(checkedAppIdList);
 		applyPresetLockParam.setEndTime(endTime);
-		applyPresetLockParam.setReapeat(reapeat);
+		applyPresetLockParam.setReapeat(repeat);
 		applyPresetLockParam.setStartTime(startTime);
 		
 		String applyPresetLockParamJson = JSONUtil.transApplyPresetLockParam2String(applyPresetLockParam);
@@ -492,7 +544,7 @@ public class PresetLockActivity extends CommonActivity {
 		showProgressDialog(title,msg);
 		
 		String url = String.format(
-				Config.BASE_URL_MVC + RequestURLConstants.URL_LIST_CHILD_APP + "?childId=%1$s",  
+				Config.BASE_URL_MVC + RequestURLConstants.URL_LIST_CHILD_PRESET_LOCK_APP + "?childId=%1$s",  
 				childId
 				);  
 		
@@ -521,6 +573,12 @@ public class PresetLockActivity extends CommonActivity {
 			new DefaultVolleyErrorHandler(PresetLockActivity.this)
 		);		
 	}
-	
+
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		this.dismissProgressDialog();
+	}
 	
 }

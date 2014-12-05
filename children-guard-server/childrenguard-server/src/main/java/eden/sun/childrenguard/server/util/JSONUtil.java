@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import eden.sun.childrenguard.server.dto.ViewDTO;
@@ -16,7 +17,13 @@ import eden.sun.childrenguard.server.dto.param.UploadApplicationInfoParam;
 
 public class JSONUtil {
 	private static Logger logger = Logger.getLogger(JSONUtil.class);
-
+	private static Gson gson = buildGson();
+	
+	private static Gson buildGson() {
+		return new GsonBuilder()
+					.setDateFormat("yyyy-MM-dd HH:mm:ss")
+					.create();	
+	}
 	public static String toJson(ViewDTO view) {
 		ObjectMapper mapper = new ObjectMapper();
 		String json = null;
@@ -40,22 +47,22 @@ public class JSONUtil {
 
 	public static List<UploadApplicationInfoParam> getUploadApplicationInfoParamList(
 			String appListJson) {
-		return new Gson().fromJson(appListJson, new TypeToken<List<UploadApplicationInfoParam>>(){}.getType());
+		return gson.fromJson(appListJson, new TypeToken<List<UploadApplicationInfoParam>>(){}.getType());
 	}
 
 	public static List<MoreSettingParam> getMoreSettingParamList(
 			String settingInfoJson) {
-		return new Gson().fromJson(settingInfoJson, new TypeToken<List<MoreSettingParam>>(){}.getType());
+		return gson.fromJson(settingInfoJson, new TypeToken<List<MoreSettingParam>>(){}.getType());
 	}
 
 	public static List<AppManageSettingParam> getAppManageSettingParamList(
 			String settingInfoJson) {
-		return new Gson().fromJson(settingInfoJson, new TypeToken<List<AppManageSettingParam>>(){}.getType());
+		return gson.fromJson(settingInfoJson, new TypeToken<List<AppManageSettingParam>>(){}.getType());
 	}
 
 	public static ApplyPresetLockParam getApplyPresetLockParam(
 			String json) {
-		return new Gson().fromJson(json, new TypeToken<ApplyPresetLockParam>(){}.getType());
+		return gson.fromJson(json, new TypeToken<ApplyPresetLockParam>(){}.getType());
 	}
 	
 }

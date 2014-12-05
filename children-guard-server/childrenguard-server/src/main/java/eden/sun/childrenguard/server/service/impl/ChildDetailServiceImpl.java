@@ -325,4 +325,28 @@ public class ChildDetailServiceImpl extends BaseServiceImpl implements IChildDet
 	
 	
 	
+	@Override
+	public ViewDTO<List<AppViewDTO>> listChildPresetLockApp(Integer childId)
+			throws ServiceException {
+		if( childId == null ){
+			throw new ServiceException("Parameter childId can not be null.");
+		}
+		ViewDTO<List<AppViewDTO>> view = new ViewDTO<List<AppViewDTO>>();
+		
+		List<AppViewDTO> appViewDTOList = appService.listViewByChildId(childId);
+		
+		Integer presetLockId = childId;
+		List<AppViewDTO> presetLockAppViewDTOList = presetLockAppService.listAppListByPresetLockId(childId);
+		
+		if( appViewDTOList != null && presetLockAppViewDTOList != null){
+			for(AppViewDTO presetLockAppViewDTO : presetLockAppViewDTOList ){
+				if( appViewDTOList.contains(presetLockAppViewDTO) ){
+					appViewDTOList.get( appViewDTOList.indexOf(presetLockAppViewDTO) ).setLockStatus(true);
+				}
+			}
+		}
+		view.setData(appViewDTOList);
+		return view;
+	}
+
 }

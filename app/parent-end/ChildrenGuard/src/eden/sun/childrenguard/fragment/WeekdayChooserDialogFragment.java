@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.util.Callback;
+import eden.sun.childrenguard.util.DataTypeUtil;
 
 public class WeekdayChooserDialogFragment extends DialogFragment {
 	private Callback<List<Boolean>> onWeekdayChoosed;
@@ -25,12 +26,29 @@ public class WeekdayChooserDialogFragment extends DialogFragment {
 	private CheckBox saturdayCheckbox;
 	private CheckBox sundayCheckbox;
 	
-	public WeekdayChooserDialogFragment(Callback<List<Boolean>> onWeekdayChoosed) {
+	private List<Boolean> repeat;
+	
+	public WeekdayChooserDialogFragment(List<Boolean> repeat,Callback<List<Boolean>> onWeekdayChoosed) {
 		super();
 		this.onWeekdayChoosed = onWeekdayChoosed;
+		
+		this.repeat = repeat;
 	}
 
     
+	private void initWeekdayCheckbox(List<Boolean> repeat) {
+		if( repeat != null && repeat.size() == 7 ){
+			mondayCheckbox.setChecked(DataTypeUtil.getNonNullBoolean(repeat.get(0)));
+			tuesdayCheckbox.setChecked(DataTypeUtil.getNonNullBoolean(repeat.get(1)));
+			wednesdayCheckbox.setChecked(DataTypeUtil.getNonNullBoolean(repeat.get(2)));
+			thurdayCheckbox.setChecked(DataTypeUtil.getNonNullBoolean(repeat.get(3)));
+			fridayCheckbox.setChecked(DataTypeUtil.getNonNullBoolean(repeat.get(4)));
+			saturdayCheckbox.setChecked(DataTypeUtil.getNonNullBoolean(repeat.get(5)));
+			sundayCheckbox.setChecked(DataTypeUtil.getNonNullBoolean(repeat.get(6)));
+		}
+	}
+
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,6 +73,8 @@ public class WeekdayChooserDialogFragment extends DialogFragment {
         View v = mInflater.inflate(R.layout.fragment_weekday_chooser,null);  
         
         initComponent(v);
+        initWeekdayCheckbox(repeat);
+        
         return new AlertDialog.Builder(getActivity())  
                 .setTitle("Repeat")  
                 .setView(v)  

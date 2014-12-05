@@ -230,4 +230,13 @@ public class ChildrenManageController extends BaseController{
 		
 	}
 	
+	@RequestMapping("/listChildPresetLockApp")
+	@ResponseBody
+	public ViewDTO<List<AppViewDTO>> listChildPresetLockApp(Integer childId) {
+		logger.info("listChildPresetLockApp called. childId:" + childId);
+		ViewDTO<List<AppViewDTO>> view = childDetailService.listChildPresetLockApp(childId);
+		
+		return view;
+	}
+	
 }

@@ -29,4 +29,5 @@ public class RequestURLConstants {
 	public static final String URL_LOAD_PRESET_LOCK_DATA = "parent/childrenManage/loadPresetLockData";
 	public static final String URL_APPLY_PRESET_LOCK = "parent/childrenManage/applyPresetLock";
 	/**************************/
+	public static final String URL_LIST_CHILD_PRESET_LOCK_APP = "parent/childrenManage/listChildPresetLockApp";
 }
