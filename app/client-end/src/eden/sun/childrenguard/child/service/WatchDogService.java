@@ -1,11 +1,12 @@
 package eden.sun.childrenguard.child.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
-import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
@@ -16,16 +17,18 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import eden.sun.childrenguard.child.activity.AppPasswordActivity;
-import eden.sun.childrenguard.child.activity.MainActivity;
 import eden.sun.childrenguard.child.db.dao.AppDao;
+import eden.sun.childrenguard.child.db.dao.PresetLockAppDao;
+import eden.sun.childrenguard.child.db.dao.PresetLockDao;
 import eden.sun.childrenguard.child.db.model.App;
+import eden.sun.childrenguard.child.db.model.PresetLock;
 import eden.sun.childrenguard.child.util.Callback;
 import eden.sun.childrenguard.child.util.Config;
+import eden.sun.childrenguard.child.util.DataTypeUtil;
 import eden.sun.childrenguard.child.util.DeviceHelper;
 import eden.sun.childrenguard.child.util.JSONUtil;
 import eden.sun.childrenguard.child.util.RequestHelper;
 import eden.sun.childrenguard.child.util.RequestURLConstants;
-import eden.sun.childrenguard.child.util.UIUtil;
 import eden.sun.childrenguard.server.dto.AppViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 
@@ -39,6 +42,12 @@ public class WatchDogService extends Service{
     private boolean flag = true;  
     private LocalBinder binder = new LocalBinder();
   
+    private Date presetLockStartTime;
+    private Date presetLockEndTime;
+    private boolean presetLockOnOff;
+    private List<Integer> presetLockApp;
+    private boolean[] repeat;
+    
     @Override  
     public IBinder onBind(Intent intent)  
     {  
@@ -51,6 +60,7 @@ public class WatchDogService extends Service{
         super.onCreate();  
   
         initAppData();
+        initPresetlockData();
         
         activityManager = (ActivityManager) getSystemService(Service.ACTIVITY_SERVICE);  
   
@@ -72,7 +82,8 @@ public class WatchDogService extends Service{
                                 .get(0);  
                         String packageName = runningTaskInfo.topActivity  
                                 .getPackageName();
-                        if( appList.contains(new App(packageName)) && !unlockedAppList.contains(new App(packageName)) )  
+                        
+                        if( isAppLocked(packageName) && !unlockedAppList.contains(new App(packageName)) )  
                         {  
                             intent.putExtra("packageName", packageName);  
                             startActivity(intent);  
@@ -88,11 +99,149 @@ public class WatchDogService extends Service{
                         e.printStackTrace();  
                     }  
                 }  
-            }  
+            }
+
+			
+
         }.start();  
     }  
   
-    public void initAppData() {
+    
+    public void initPresetlockData() {
+    	PresetLockDao presetLockDao = new PresetLockDao(this);
+    	PresetLockAppDao presetLockAppDao = new PresetLockAppDao(this);
+    	
+    	PresetLock presetLock = presetLockDao.getPresetLock();
+    	if( presetLock != null ){
+    		presetLockStartTime = presetLock.getStartTime();
+    		presetLockEndTime = presetLock.getEndTime();
+    		presetLockOnOff = presetLock.getPresetOnOff();
+    		
+    		repeat = new boolean[]{
+    				DataTypeUtil.getNonNullBoolean(presetLock.getRepeatMonday()),
+    				DataTypeUtil.getNonNullBoolean(presetLock.getRepeatTuesday()),
+    				DataTypeUtil.getNonNullBoolean(presetLock.getRepeatWednesday()),
+    				DataTypeUtil.getNonNullBoolean(presetLock.getRepeatThurday()),
+    				DataTypeUtil.getNonNullBoolean(presetLock.getRepeatFriday()),
+    				DataTypeUtil.getNonNullBoolean(presetLock.getRepeatSaturday()),
+    				DataTypeUtil.getNonNullBoolean(presetLock.getRepeatSunday())	
+    		};
+    		presetLockApp = presetLockAppDao.getPresetLockAppIdList();		
+    	}
+	}
+
+	private boolean isAppLocked(String packageName) {
+		App app = getAppDao().getByPackageName(packageName);
+		
+		if( app == null ){
+			return false;
+		}
+		
+    	if( appList.contains(new App(packageName)) || 
+    			( presetLockOnOff == true && inPresetLockPeriod() &&  presetLockApp.contains(app.getId()) )){
+			return true;
+		}
+		return false;
+	}
+    
+    
+    private boolean inPresetLockPeriod() {
+    	if( presetLockStartTime == null || presetLockEndTime == null ){
+    		return false;
+    	}
+    	Date now = new Date();
+    	Calendar cal = Calendar.getInstance();
+    	cal.setTime(now);
+  
+    	int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+    	
+    	if( inRepeatWeekdays(dayOfWeek,repeat) && betweenStartTimeAndEndTime(now,presetLockStartTime,presetLockEndTime) ){
+    		return true;
+    	}
+    	
+		return false;
+	}
+
+	private boolean betweenStartTimeAndEndTime(Date now,
+			Date startTime, Date endTime) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(now);
+		cal.set(Calendar.YEAR, 2000);
+		cal.set(Calendar.MONTH, Calendar.JANUARY);
+		cal.set(Calendar.DAY_OF_MONTH, 1);
+		Date _now = cal.getTime();
+		
+		cal.setTime(startTime);
+		cal.set(Calendar.YEAR, 2000);
+		cal.set(Calendar.MONTH, Calendar.JANUARY);
+		cal.set(Calendar.DAY_OF_MONTH, 1);
+		Date _startTime = cal.getTime();
+		
+		cal.setTime(endTime);
+		cal.set(Calendar.YEAR, 2000);
+		cal.set(Calendar.MONTH, Calendar.JANUARY);
+		cal.set(Calendar.DAY_OF_MONTH, 1);
+		Date _endTime = cal.getTime();
+		
+		if( _now.after(_startTime)&& _now.before(_endTime) ){
+			return true;
+		}
+		
+		return false;
+	}
+
+	private boolean inRepeatWeekdays(int dayOfWeek, boolean[] repeat) {
+		switch(dayOfWeek){
+		case Calendar.MONDAY:
+			if( repeat[0] == true ){
+				return true;
+			}
+			break;
+		case Calendar.TUESDAY:
+			if( repeat[1] == true ){
+				return true;
+			}
+			break;
+		case Calendar.WEDNESDAY:
+			if( repeat[2] == true ){
+				return true;
+			}
+			break;
+		case Calendar.THURSDAY:
+			if( repeat[3] == true ){
+				return true;
+			}
+			break;
+		case Calendar.FRIDAY:
+			if( repeat[4] == true ){
+				return true;
+			}
+			break;
+		case Calendar.SATURDAY:
+			if( repeat[5] == true ){
+				return true;
+			}
+			break;
+		case Calendar.SUNDAY:
+			if( repeat[6] == true ){
+				return true;
+			}
+			break;
+		}
+		
+		return false;
+	}
+
+	private AppDao getAppDao() {
+    	if( dao == null){
+    		dao = new AppDao(this);
+    		return dao;
+    	}
+    	
+		return dao;
+	}
+
+	public void initAppData() {
     	dao = new AppDao(this);  
         appList = dao.listLockedApp();
         
@@ -164,4 +313,5 @@ public class WatchDogService extends Service{
 		});	
 		
 	}
+
 }

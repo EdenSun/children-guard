@@ -122,8 +122,8 @@ public class RequestHelper {
 			mQueue.cancelAll(new RequestFilter() {  
 				@Override  
 				public boolean apply(Request<?> request) {  
-					//return request.getTag().equals(tag);  
-					return true;
+					return request.getTag().equals(tag);  
+//					return true;
 				}  
 			}); 
 		}

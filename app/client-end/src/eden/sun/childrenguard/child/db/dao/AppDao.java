@@ -130,6 +130,44 @@ public class AppDao extends BaseDao{
 		
 		return null;
 	}
+	
+	
+	public App getByPackageName(String packageName){
+		if( packageName == null ){
+			return null;
+		}
+		
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		if ( db != null && db.isOpen() ) {
+			App app = null;
+			Cursor cursor = db.rawQuery("select ID,NAME,PACKAGE_NAME,LOCK_STATUS from TBL_APP where PACKAGE_NAME = ?",
+										new String[] { packageName });
+			
+			if(cursor.moveToNext()) { 
+				app = new App();
+			    int id = cursor.getInt(0);
+			    String name = cursor.getString(1);
+			    //String packageName = cursor.getString(2);
+			    String lockStatus = cursor.getString(3);//获取第三列的值 
+			
+			    app.setId(id);
+			    app.setName(name);
+			    app.setPackageName(packageName);
+			    if( lockStatus != null && lockStatus.equals("true") ){
+			    	app.setLockStatus(true);
+			    }else{
+			    	app.setLockStatus(false);
+			    }
+			} 
+			
+			cursor.close();
+			db.close();
+			return app;
+		}
+		
+		return null;
+	}
+	
 
 	public void clearAll() {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();

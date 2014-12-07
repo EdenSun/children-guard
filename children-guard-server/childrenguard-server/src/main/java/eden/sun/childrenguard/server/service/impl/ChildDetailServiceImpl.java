@@ -288,7 +288,19 @@ public class ChildDetailServiceImpl extends BaseServiceImpl implements IChildDet
 			// update locked app
 			presetLockAppService.updatePresetLockApp(presetLock.getId(),applyPresetLockParam.getAppIdList());
 			
-			//TODO: if preset lock switch is on , send message to child end app 
+			if( applyPresetLockParam.getPresetOnOff() != null && applyPresetLockParam.getPresetOnOff().booleanValue() == true ){
+				//if preset lock switch is on , send message to child end app 
+				//push message to child
+				Child child = childService.getById(childId);
+				if( child != null ){
+					String registionId = child.getRegistionId();
+					if( registionId != null ){
+						Map<String,String> extra = new HashMap<String,String>();
+						pushService.pushMessageToChildByRegistionId(registionId, PushConstants.MSG_CONTENT_PRESET_LOCK_SWITCH_ON, extra);
+					}
+				}
+			}
+			
 			
 			view.setData(true);
 			return view;
@@ -339,7 +351,11 @@ public class ChildDetailServiceImpl extends BaseServiceImpl implements IChildDet
 		List<AppViewDTO> presetLockAppViewDTOList = presetLockAppService.listAppListByPresetLockId(childId);
 		
 		if( appViewDTOList != null && presetLockAppViewDTOList != null){
+			for(AppViewDTO appViewDTO:appViewDTOList){
+				appViewDTO.setLockStatus(false);
+			}
 			for(AppViewDTO presetLockAppViewDTO : presetLockAppViewDTOList ){
+				presetLockAppViewDTO.setLockStatus(false);
 				if( appViewDTOList.contains(presetLockAppViewDTO) ){
 					appViewDTOList.get( appViewDTOList.indexOf(presetLockAppViewDTO) ).setLockStatus(true);
 				}

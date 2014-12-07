@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 public class PresetLockViewDTO {
+	private Integer id;
 	private Boolean presetOnOff;
 	private Date startTime;
 	private String startTimeSummary;
@@ -14,6 +15,12 @@ public class PresetLockViewDTO {
     private Boolean lockCallStatus;
     private List<AppViewDTO> appList;
     private String appLockSummary;
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public Boolean getPresetOnOff() {
 		return presetOnOff;
 	}

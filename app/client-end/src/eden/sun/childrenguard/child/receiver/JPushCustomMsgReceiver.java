@@ -1,33 +1,34 @@
 package eden.sun.childrenguard.child.receiver;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 import cn.jpush.android.api.JPushInterface;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
-import eden.sun.childrenguard.child.activity.MainActivity;
 import eden.sun.childrenguard.child.db.dao.AppDao;
 import eden.sun.childrenguard.child.db.dao.ChildSettingDao;
+import eden.sun.childrenguard.child.db.dao.PresetLockAppDao;
+import eden.sun.childrenguard.child.db.dao.PresetLockDao;
+import eden.sun.childrenguard.child.db.model.PresetLockApp;
 import eden.sun.childrenguard.child.util.BroadcastActionConstants;
 import eden.sun.childrenguard.child.util.Config;
 import eden.sun.childrenguard.child.util.DeviceHelper;
 import eden.sun.childrenguard.child.util.JSONUtil;
 import eden.sun.childrenguard.child.util.RequestHelper;
 import eden.sun.childrenguard.child.util.RequestURLConstants;
-import eden.sun.childrenguard.child.util.UIUtil;
 import eden.sun.childrenguard.server.dto.AppViewDTO;
 import eden.sun.childrenguard.server.dto.ChildSettingViewDTO;
+import eden.sun.childrenguard.server.dto.PresetLockViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 
 public class JPushCustomMsgReceiver extends BroadcastReceiver {
@@ -59,10 +60,14 @@ public class JPushCustomMsgReceiver extends BroadcastReceiver {
 					// reload settings
 					
 					syncChildSettingFromServer(context);
+				}else if( message.equals("Preset Lock Switch On")){
+					// reload preset lock setting
+					
+					syncPresetLockSettingFromServer(context);
 				}
 			}
 			
-			Toast.makeText(context, bundle.getString(JPushInterface.EXTRA_MESSAGE) , 3000);
+			//Toast.makeText(context, bundle.getString(JPushInterface.EXTRA_MESSAGE) , 3000);
 		} else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent
 				.getAction())) {
 			System.out.println("收到了通知");
@@ -78,6 +83,70 @@ public class JPushCustomMsgReceiver extends BroadcastReceiver {
 		} else {
 			Log.d(TAG, "Unhandled intent - " + intent.getAction());
 		}
+	}
+
+	private void syncPresetLockSettingFromServer(final Context context) {
+		RequestHelper helper = RequestHelper.getInstance(context);
+		String imei = DeviceHelper.getIMEI(context);
+		String url = String.format(
+				Config.BASE_URL_MVC + RequestURLConstants.URL_RETRIEVE_PRESET_LOCK_DATA + "?imei=%1$s",  
+				imei);  
+
+		helper.doGet(
+			url,
+			new Response.Listener<String>() {
+				@Override
+				public void onResponse(String response) {
+					Log.d(TAG, response);
+					ViewDTO<PresetLockViewDTO> view = JSONUtil.getRetrievePresetLockDataView(response);
+			    	
+			    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS)){
+			    		if( view.getData() != null ){
+			    			PresetLockViewDTO presetLockData = view.getData();
+			    			
+			    			// save preset lock
+			    			PresetLockDao presetLockDao = new PresetLockDao(context);
+			    			presetLockDao.clearAll();
+			    			presetLockDao.add(presetLockData);
+			    			
+			    			// save preset lock app
+			    			PresetLockAppDao presetLockAppDao = new PresetLockAppDao(context);
+			    			List<AppViewDTO> appList = presetLockData.getAppList();
+			    			
+			    			if( appList != null ){
+			    				List<PresetLockApp> presetLockAppList = new ArrayList<PresetLockApp>();
+			    				presetLockAppDao.clearAll();
+			    				
+			    				int id = 1;
+			    				for( AppViewDTO appViewDTO: appList){
+			    					PresetLockApp presetLockApp = new PresetLockApp();
+			    					presetLockApp.setAppId(appViewDTO.getId());
+			    					presetLockApp.setId(id++);
+			    					presetLockApp.setPresetLockId(presetLockData.getId());
+			    					presetLockAppList.add(presetLockApp);
+			    				}
+			    				presetLockAppDao.batchAdd(presetLockAppList);
+			    			}
+			    			
+			    			Intent intent = new Intent();
+			    			intent.setAction(BroadcastActionConstants.INIT_SERVICE_PRESET_LOCK_APP_DATA);
+			    			context.sendBroadcast(intent);
+			    		}
+			    		
+			    	}else{
+			    		Log.e(TAG, "Server error.");
+			    	}
+			    	
+				}
+
+			}, 
+			new Response.ErrorListener() {
+				@Override
+				public void onErrorResponse(VolleyError error) {
+					Log.e(TAG, error.getMessage());
+			}
+		});	
+		
 	}
 
 	private void saveRegistionId(Context context,String imei, String registionId) {

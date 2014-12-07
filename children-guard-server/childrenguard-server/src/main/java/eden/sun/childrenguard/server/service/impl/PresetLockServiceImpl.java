@@ -67,6 +67,7 @@ public class PresetLockServiceImpl implements IPresetLockService {
 		}
 		
 		PresetLockViewDTO dto = new PresetLockViewDTO();
+		dto.setId(presetLock.getId());
 		DateFormat df = new SimpleDateFormat("HH:mm");
 		Date startTime = presetLock.getStartTime();
 		if( startTime != null ){

@@ -10,6 +10,7 @@ import eden.sun.childrenguard.server.dto.AppViewDTO;
 import eden.sun.childrenguard.server.dto.ChildInfoViewDTO;
 import eden.sun.childrenguard.server.dto.ChildSettingViewDTO;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
+import eden.sun.childrenguard.server.dto.PresetLockViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.UploadApplicationInfoParam;
 
@@ -68,6 +69,11 @@ public class JSONUtil {
 	public static ViewDTO<ChildSettingViewDTO> getRetrieveChildSettingView(
 			String json) {
 		return gson.fromJson(json, new TypeToken<ViewDTO<ChildSettingViewDTO>>(){}.getType());
+	}
+
+	public static ViewDTO<PresetLockViewDTO> getRetrievePresetLockDataView(
+			String json ) {
+		return gson.fromJson(json, new TypeToken<ViewDTO<PresetLockViewDTO>>(){}.getType());
 	}
 	
 	

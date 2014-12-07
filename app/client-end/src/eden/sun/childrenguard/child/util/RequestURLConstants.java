@@ -14,5 +14,6 @@ public class RequestURLConstants {
 	public static final String URL_RETRIEVE_CHID_INFO = "app/child/childinfo/retrieveChildInfo";
 	public static final String URL_RETRIEVE_CHID_SETTING = "app/child/childinfo/retrieveChildSetting";
 	public static final String URL_UPLOAD_LOCATION = "app/child/childinfo/uploadLocation";
+	public static final String URL_RETRIEVE_PRESET_LOCK_DATA = "app/child/presetlock/retrievePresetLockData";
 	
 }

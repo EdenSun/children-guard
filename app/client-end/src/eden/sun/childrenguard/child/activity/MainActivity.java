@@ -93,6 +93,7 @@ public class MainActivity extends CommonActivity {
 	};
 	
 	private BroadcastReceiver initServiceAppDataReceiver;
+	private BroadcastReceiver initServicePresetLockAppDataReceiver;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +110,21 @@ public class MainActivity extends CommonActivity {
             }
         };
         registerReceiver( initServiceAppDataReceiver, intentFilter);
+        
+        
+        IntentFilter presetLockAppIntentFilter = new IntentFilter();
+        presetLockAppIntentFilter.addAction(BroadcastActionConstants.INIT_SERVICE_PRESET_LOCK_APP_DATA);
+        initServicePresetLockAppDataReceiver = new BroadcastReceiver() {
+        	 
+            @Override
+            public void onReceive(Context context, Intent intent) {
+            	String action = intent.getAction();
+                watchDogService.initPresetlockData();
+            }
+        };
+        registerReceiver( initServicePresetLockAppDataReceiver, presetLockAppIntentFilter);
+        
+        
 		
 		initJPush();
 		

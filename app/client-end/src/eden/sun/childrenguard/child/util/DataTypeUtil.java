@@ -30,4 +30,23 @@ public class DataTypeUtil {
 		}
 	}
 	
+	public static Boolean getNonNullBoolean(Boolean booleanVal) {
+		if( booleanVal == null ){
+			return false;
+		}
+		
+		return booleanVal.booleanValue();
+	}
+
+	public static Boolean str2NonNullBoolean(String booleanStr) {
+		try {
+			if( booleanStr != null && (Boolean.parseBoolean(booleanStr) == true || "1".equals(booleanStr) )){
+				return true;
+			}
+			return false;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
 }

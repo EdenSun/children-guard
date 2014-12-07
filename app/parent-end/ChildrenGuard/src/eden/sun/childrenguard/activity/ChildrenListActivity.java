@@ -93,7 +93,7 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 			new Response.Listener<String>() {
 				@Override
 				public void onResponse(String response) {
-					ChildrenListActivity.this.dismissProgressDialog();
+					dismissProgressDialog();
 					
 			    	final ViewDTO<List<ChildViewDTO>> view = JSONUtil.getListMyChildrenView(response);
 			    	
