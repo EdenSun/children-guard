@@ -7,36 +7,35 @@
         android:id="@+id/apply"
         android:orderInCategory="100"
         android:title="@string/action_apply"
-        app:showAsAction=""
+        app:showAsAction="ifRoom"
         />
-    
     
      <item
         android:id="@+id/deletePerson"
         android:orderInCategory="100"
         android:title="@string/action_delete_person"
-        app:showAsAction="never"
+        app:showAsAction="ifRoom"
         />
      
     <item
         android:id="@+id/lockAllApp"
         android:orderInCategory="100"
         android:title="@string/action_lock_all_app"
-        app:showAsAction="never"
+        app:showAsAction="ifRoom"
         />
     
     <item
         android:id="@+id/unlockAllApp"
         android:orderInCategory="100"
         android:title="@string/action_unlock_all_app"
-        app:showAsAction="never"
+        app:showAsAction="ifRoom"
         />
 
     <item
         android:id="@+id/presetLock"
         android:orderInCategory="100"
         android:title="@string/action_preset_lock"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         />
     
 </menu>

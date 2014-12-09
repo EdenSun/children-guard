@@ -215,7 +215,7 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 		presetLockMenu = menu.getItem(4);
 		
 		if( applyChangeMenu != null ){
-			applyChangeMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+			applyChangeMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 			applyChangeMenu.setEnabled(false);
 		}
 		
@@ -226,6 +226,11 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 	
 	private void initMenu() {
 		if(  mViewPager != null ){
+			deletePersonMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+			lockAllAppMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+			unlockAllAppMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+			presetLockMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+			
 			if( mViewPager.getCurrentItem() == 0 ){
 				deletePersonMenu.setVisible(true);
 			}else{

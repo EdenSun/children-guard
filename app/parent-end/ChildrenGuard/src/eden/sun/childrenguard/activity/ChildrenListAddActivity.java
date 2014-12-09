@@ -333,7 +333,9 @@ public class ChildrenListAddActivity extends CommonActivity {
 		param.put("relationshipId", relationshipId);
 		param.put("nickname", nickname);
 		param.put("parentAccessToken", parentAccessToken);
-		param.put("photoImage", remotePhotoPath);
+		if( remotePhotoPath != null ){
+			param.put("photoImage", remotePhotoPath);
+		}
 		
 		return param;
 	}

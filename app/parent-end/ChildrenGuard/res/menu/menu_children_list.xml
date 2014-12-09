@@ -13,6 +13,6 @@
         android:id="@+id/action_children_list_out"
         android:orderInCategory="100"
         android:title="@string/action_children_list_logout"
-        app:showAsAction="never"/>
+        app:showAsAction="ifRoom"/>
 
 </menu>

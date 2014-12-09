@@ -67,11 +67,16 @@ public class ChildrenListAdapter extends BaseAdapter {
         mobileTextView.setText(child.getMobile());
         emailTextView.setText("");
         
-        photoImageView.setDefaultImageResId(R.drawable.default_head);
-        photoImageView.setErrorImageResId(R.drawable.default_head);
         RequestQueue mQueue = RequestHelper.getInstance(context).getImageQueue();
         ImageLoader imageLoader = new ImageLoader(mQueue, new BitmapCache());
-        photoImageView.setImageUrl(Config.BASE_URL + child.getPhotoImage(),imageLoader);
+    	if( child.getPhotoImage() != null ){
+    		photoImageView.setImageUrl(Config.BASE_URL + child.getPhotoImage(),imageLoader);
+    	}else{
+    		photoImageView.setImageUrl(null,imageLoader);
+    	}
+    	
+    	photoImageView.setDefaultImageResId(R.drawable.default_head);
+    	photoImageView.setErrorImageResId(R.drawable.default_head);
         
         return vi;
     }
