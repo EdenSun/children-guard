@@ -16,6 +16,16 @@ public class RegisterController extends BaseController{
 	@Autowired
 	private IAuthService authService;
 	
+	/**
+	 * /parent/reg/register
+	 * parent 注册
+	 * @param imei parent手机的imei
+	 * @param firstName first name
+	 * @param lastName last name
+	 * @param email parent 邮箱
+	 * @param password 密码
+	 * @return 返回注册对象RegisterViewDTO
+	 */
 	@RequestMapping("/register")
 	@ResponseBody
 	public ViewDTO<RegisterViewDTO> register(String imei,String firstName,String lastName,String email,String password){

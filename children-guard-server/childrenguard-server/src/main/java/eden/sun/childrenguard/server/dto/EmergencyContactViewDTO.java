@@ -1,10 +1,19 @@
 package eden.sun.childrenguard.server.dto;
 
 public class EmergencyContactViewDTO {
+	/**
+	 * 紧急联系人ID
+	 */
 	private Integer id;
 
+	/**
+	 * 紧急联系人姓名
+	 */
     private String name;
 
+    /**
+     * 紧急联系人电话
+     */
     private String phone;
 
 	public Integer getId() {

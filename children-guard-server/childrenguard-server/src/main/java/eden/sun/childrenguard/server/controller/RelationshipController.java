@@ -18,6 +18,11 @@ public class RelationshipController extends BaseController{
 	@Autowired
 	private IRelationshipService relationshipService;
 	
+	/**
+	 * /parent/relationship/listAll
+	 * 查询所有关系列表（person 与 parent 的关系）
+	 * @return 返回关系列表(List<RelationshipViewDTO>)
+	 */
 	@RequestMapping("/listAll")
 	@ResponseBody
 	public ViewDTO<List<RelationshipViewDTO>> listAll(){

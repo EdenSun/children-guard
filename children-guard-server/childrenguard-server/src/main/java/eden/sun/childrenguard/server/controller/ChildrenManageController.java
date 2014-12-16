@@ -41,6 +41,12 @@ public class ChildrenManageController extends BaseController{
 	@Autowired
 	private IChildDetailService childDetailService;
 	
+	/**
+	 * /parent/childrenManage/listMyChildren
+	 * 查询 Person 列表
+	 * @param accessToken 登录获取的 parent的access token
+	 * @return 返回ChildViewDTO列表
+	 */
 	@RequestMapping("/listMyChildren")
 	@ResponseBody
 	public ViewDTO<List<ChildViewDTO>> listMyChildren(String accessToken){
@@ -50,7 +56,18 @@ public class ChildrenManageController extends BaseController{
 		return view;
 	}
 	
-	
+	/**
+	 * /parent/childrenManage/addChild
+	 * 添加 person
+	 * @param mobile 移动电话
+	 * @param firstName first name
+	 * @param lastName last name
+	 * @param nickname 昵称
+	 * @param relationshipId 关系对象ID
+	 * @param parentAccessToken parent的 access token
+	 * @param photoImage 头像(optional)
+	 * @return 返回添加的ChildViewDTO对象
+	 */
 	@RequestMapping("/addChild")
 	@ResponseBody
 	public ViewDTO<ChildViewDTO> addChild(
@@ -71,6 +88,12 @@ public class ChildrenManageController extends BaseController{
 		return view;
 	}
 	
+	/**
+	 * /parent/childrenManage/deleteChild
+	 * 删除 person 
+	 * @param childId person id
+	 * @return 返回被删除的person对象ChildViewDTO
+	 */
 	@RequestMapping("/deleteChild")
 	@ResponseBody
 	public ViewDTO<ChildViewDTO> deleteChild(Integer childId) {
@@ -78,7 +101,12 @@ public class ChildrenManageController extends BaseController{
 		return view;
 	}
 
-	
+	/**
+	 * /parent/childrenManage/basicInfo
+	 * 获取 person 基本信息
+	 * @param childId person id
+	 * @return 返回person基本信息对象ChildBasicInfoViewDTO
+	 */
 	@RequestMapping("/basicInfo")
 	@ResponseBody
 	public ViewDTO<ChildBasicInfoViewDTO> basicInfo(Integer childId) {
@@ -88,6 +116,12 @@ public class ChildrenManageController extends BaseController{
 		return view;
 	}
 	
+	/**
+	 * /parent/childrenManage/listChildApp
+	 * 查询person的app列表 
+	 * @param childId person id
+	 * @return 返回person的app列表(AppViewDTO列表) 
+	 */
 	@RequestMapping("/listChildApp")
 	@ResponseBody
 	public ViewDTO<List<AppViewDTO>> listChildApp(Integer childId) {
@@ -97,6 +131,12 @@ public class ChildrenManageController extends BaseController{
 		return view;
 	}
 	
+	/**
+	 * /parent/childrenManage/loadChildSetting
+	 * 查询person设置信息
+	 * @param childId person id
+	 * @return 返回ChildSettingViewDTO对象
+	 */
 	@RequestMapping("/loadChildSetting")
 	@ResponseBody
 	public ViewDTO<ChildSettingViewDTO> loadChildSetting(Integer childId) {
@@ -106,7 +146,13 @@ public class ChildrenManageController extends BaseController{
 		return view;
 	}
 	
-	
+	/**
+	 * /parent/childrenManage/modifyLockPassword
+	 * 修改person app锁定密码 
+	 * @param childId person id
+	 * @param password 新密码
+	 * @return 成功返回true，否则返回false
+	 */
 	@RequestMapping("/modifyLockPassword")
 	@ResponseBody
 	public ViewDTO<Boolean> modifyLockPassword(Integer childId,String password) {
@@ -116,6 +162,13 @@ public class ChildrenManageController extends BaseController{
 		return view;
 	}
 	
+	/**
+	 * /parent/childrenManage/modifySpeedLimit
+	 * 修改person的speed limit值
+	 * @param childId person id
+	 * @param speed 速度值
+	 * @return 成功返回true，否则返回false
+	 */
 	@RequestMapping("/modifySpeedLimit")
 	@ResponseBody
 	public ViewDTO<Boolean> modifySpeedLimit(Integer childId,Integer speed) {
@@ -125,6 +178,13 @@ public class ChildrenManageController extends BaseController{
 		return view;
 	}
 	
+	/**
+	 * /parent/childrenManage/applySettingChanges
+	 * 应用 person 设置
+	 * @param childId person id
+	 * @param settingListJson 设置json对象(List<MoreSettingParam>)
+	 * @return 成功返回true，否则返回false
+	 */
 	@RequestMapping("/applySettingChanges")
 	@ResponseBody
 	public ViewDTO<Boolean> applySettingChanges(Integer childId,String settingListJson) {
@@ -136,6 +196,13 @@ public class ChildrenManageController extends BaseController{
 		return view;
 	}
 	
+	/**
+	 * /parent/childrenManage/applyAppChanges
+	 * 应用person的app设置
+	 * @param childId person id
+	 * @param appListJson 需要更新的app列表json对象(List<AppManageSettingParam>)
+	 * @return 成功返回true，否则返回false
+	 */
 	@RequestMapping("/applyAppChanges")
 	@ResponseBody
 	public ViewDTO<Boolean> applyAppChanges(Integer childId,String appListJson) {
@@ -147,7 +214,14 @@ public class ChildrenManageController extends BaseController{
 		return view;
 	}
 
-	
+	/**
+	 * /parent/childrenManage/uploadPhoto
+	 * 上传person头像
+	 * @param file
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value="/uploadPhoto", method=RequestMethod.POST)  
 	@ResponseBody
     public ViewDTO<String> uploadPhoto(@RequestParam MultipartFile file, HttpServletRequest request) throws Exception{  
@@ -187,6 +261,13 @@ public class ChildrenManageController extends BaseController{
         return view;  
     }  
 	
+	
+	/**
+	 * /parent/childrenManage/lockAllAppByChild
+	 * 锁定person 的所有app
+	 * @param childId person id
+	 * @return 成功返回true，否则返回false
+	 */
 	@RequestMapping("/lockAllAppByChild")
 	@ResponseBody
 	public ViewDTO<Boolean> lockAllAppByChild(Integer childId) {
@@ -197,6 +278,12 @@ public class ChildrenManageController extends BaseController{
 		return view;
 	}
 	
+	/**
+	 * /parent/childrenManage/unlockAllAppByChild
+	 * 解锁person的所有app
+	 * @param childId person id
+	 * @return 成功返回true，否则返回false
+	 */
 	@RequestMapping("/unlockAllAppByChild")
 	@ResponseBody
 	public ViewDTO<Boolean> unlockAllAppByChild(Integer childId) {
@@ -207,6 +294,12 @@ public class ChildrenManageController extends BaseController{
 		return view;
 	}
 	
+	/**
+	 * /parent/childrenManage/loadPresetLockData
+	 * 获取person 预设锁定的数据
+	 * @param childId person id
+	 * @return 返回预设锁定对象 PresetLockViewDTO
+	 */
 	@RequestMapping("/loadPresetLockData")
 	@ResponseBody
 	public ViewDTO<PresetLockViewDTO> loadPresetLockData(Integer childId){
@@ -218,6 +311,13 @@ public class ChildrenManageController extends BaseController{
 		
 	}
 	
+	/**
+	 * /parent/childrenManage/applyPresetLock
+	 * 应用预设锁定
+	 * @param childId person id
+	 * @param applyPresetLockParamJson 预设锁定设置json(ApplyPresetLockParam)
+	 * @return 成功返回true，否则返回false
+	 */
 	@RequestMapping("/applyPresetLock")
 	@ResponseBody
 	public ViewDTO<Boolean> applyPresetLock(Integer childId,String applyPresetLockParamJson){
@@ -230,6 +330,12 @@ public class ChildrenManageController extends BaseController{
 		
 	}
 	
+	/**
+	 * /parent/childrenManage/listChildPresetLockApp
+	 * 获取person的预设锁定中的app列表()
+	 * @param childId person id
+	 * @return 返回预设锁定app列表（List<AppViewDTO>）
+	 */
 	@RequestMapping("/listChildPresetLockApp")
 	@ResponseBody
 	public ViewDTO<List<AppViewDTO>> listChildPresetLockApp(Integer childId) {

@@ -15,6 +15,12 @@ public class ResetPasswordController extends BaseController{
 	@Autowired
 	private IAuthService authService;
 	
+	/**
+	 * /parent/reset/passwordReset
+	 * 重置密码： 传入parent email，reset code会被推送到手机端，reset code 用于下一步的重置操作
+	 * @param email parent的email
+	 * @return 若出错，返回错误信息
+	 */
 	@RequestMapping("/passwordReset")
 	@ResponseBody
 	public ViewDTO<String> passwordReset(String email){
@@ -25,7 +31,14 @@ public class ResetPasswordController extends BaseController{
 		return view;
 	}
 	
-	
+	/**
+	 * /parent/reset/doChangePassword
+	 * 修改密码 
+	 * @param imei parent的imei
+	 * @param resetCode reset code
+	 * @param password 新密码
+	 * @return 若出错返回错误信息
+	 */
 	@RequestMapping("/doChangePassword")
 	@ResponseBody
 	public ViewDTO<String> doChangePassword(String imei,String resetCode,String password){

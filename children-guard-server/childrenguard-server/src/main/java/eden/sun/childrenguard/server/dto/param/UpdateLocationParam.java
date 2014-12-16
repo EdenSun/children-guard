@@ -5,11 +5,29 @@ import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class UpdateLocationParam {
+	/**
+	 * 纬度
+	 */
 	private Double latitude;
+	/**
+	 * 经度
+	 */
 	private Double longitude;
+	
+	/**
+	 * 位置更新时间(yyyy-MM-dd HH:mm:ss)
+	 */
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date LocationUpdateTime;
+	
+	/**
+	 * 速度
+	 */
 	private Double speed;
+	
+	/**
+	 * 速度更新时间(yyyy-MM-dd HH:mm:ss)
+	 */
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date speedUpdateTime;
 	public Double getLatitude() {

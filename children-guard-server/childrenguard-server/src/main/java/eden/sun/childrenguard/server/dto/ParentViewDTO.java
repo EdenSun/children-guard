@@ -3,20 +3,44 @@ package eden.sun.childrenguard.server.dto;
 import java.util.Date;
 
 public class ParentViewDTO {
+	/**
+	 * parent对象ID
+	 */
 	 private Integer id;
 
+	 /**
+	  * parent的email
+	  */
     private String email;
 
+    /**
+     * parent的first name
+     */
     private String firstName;
 
+    /**
+     * parent的 last name
+     */
     private String lastName;
 
+    /**
+     * 登录密码
+     */
     private String password;
 
+    /**
+     * 注册时间
+     */
     private Date createTime;
 
+    /**
+     * 最后登录时间
+     */
     private Date lastLoginTime;
 
+    /**
+     * access token
+     */
     private String accessToken;
 
 	public Integer getId() {

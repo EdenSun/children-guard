@@ -14,6 +14,13 @@ public class PushController extends BaseController{
 	@Autowired
 	private IParentService parentService;
 	
+	/**
+	 * /parent/push/saveRegistionId
+	 * 保存parent的register id
+	 * @param imei parent手机的imei
+	 * @param registionId jpush 的 registion id
+	 * @return 成功返回true，否则返回false
+	 */
 	@RequestMapping("/saveRegistionId")
 	@ResponseBody
 	public ViewDTO<Boolean> saveRegistionId(String imei ,String registionId){

@@ -3,7 +3,14 @@ package eden.sun.childrenguard.server.dto.param;
 import java.util.List;
 
 public class SyncAppSettingParam {
+	/**
+	 * person id
+	 */
 	private Integer childId;
+	
+	/**
+	 * app …Ë÷√¡–±Ì
+	 */
 	private List<AppSettingParam> appSettings;
 	public Integer getChildId() {
 		return childId;

@@ -4,16 +4,59 @@ import java.util.Date;
 import java.util.List;
 
 public class PresetLockViewDTO {
+	/**
+	 * 预设锁定ID（同 person id )
+	 */
 	private Integer id;
+	/**
+	 * 预设锁定开关
+	 */
 	private Boolean presetOnOff;
+	/**
+	 * 锁定开始时间
+	 */
 	private Date startTime;
+
+	/**
+	 * 开始时间描述
+	 */
 	private String startTimeSummary;
+	
+	/**
+	 * 锁定结束时间
+	 */
 	private Date endTime;
+	
+	/**
+	 * 结束时间描述
+	 */
 	private String endTimeSummary;
+	
+	/**
+	 * 锁定repeat设置
+	 * 格式: [true,true,true,false,false,false,false]
+	 * 七个值分别表示周一到周日是否进行锁定 (若在锁定开关打开情况下，示例中表示周一，周二，周三时进行锁定（开始到结束时间断）)
+	 */
 	private List<Boolean> repeat;
+	
+	/**
+	 * repeat 描述
+	 */
 	private String repeatSummary;
+	
+	/**
+	 * 拨出电话锁定开关
+	 */
     private Boolean lockCallStatus;
+    
+    /**
+     * 预设锁定的app列表
+     */
     private List<AppViewDTO> appList;
+    
+    /**
+     * app锁定 描述
+     */
     private String appLockSummary;
 	public Integer getId() {
 		return id;

@@ -2,8 +2,14 @@ package eden.sun.childrenguard.server.dto;
 
 
 public class ChildBasicInfoViewDTO {
+	/**
+	 * person对象数据
+	 */
 	private ChildViewDTO child;
 	
+	/**
+	 * 额外信息
+	 */
 	private ChildExtraInfoViewDTO extraInfo;
 
 	public ChildViewDTO getChild() {

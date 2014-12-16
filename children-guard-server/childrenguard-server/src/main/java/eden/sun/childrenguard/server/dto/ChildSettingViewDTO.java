@@ -1,24 +1,55 @@
 package eden.sun.childrenguard.server.dto;
 
 public class ChildSettingViewDTO {
+	/**
+	 * person 的设置对象ID（同person id）
+	 */
 	private Integer id;
 
+	/**
+	 * 电话功能锁定开关
+	 */
     private Boolean lockCallsSwitch;
 
+    /**
+     * 未使用
+     */
     private Boolean lockTextMessageSwitch;
 
+    
+    /**
+     * 仅适用wifi开关
+     */
     private Boolean wifiOnlySwitch;
 
+    /**
+     * 新安装app通知开关
+     */
     private Boolean newAppNotificationSwitch;
 
+    /**
+     * 卸载app通知开关
+     */
     private Boolean uninstallAppNotificationSwitch;
 
+    /**
+     * 速度超限制通知开关
+     */
     private Boolean speedingNotificationSwitch;
 
+    /**
+     * 速度限制
+     */
     private Integer speedingLimit;
 
+    /**
+     * app锁定/解锁通知开关
+     */
     private Boolean appLockUnlockNotificationSwitch;
 
+    /**
+     * app 锁定密码
+     */
     private String appLockPassword;
 
 	public Integer getId() {

@@ -18,6 +18,12 @@ public class EmergencyContactController extends BaseController{
 	@Autowired
 	private IEmergencyContactsService emergencyContactsService;
 	
+	/**
+	 * /parent/emergencyContact/listByChild
+	 * 查询person的emergency contacts
+	 * @param childId person id
+	 * @return 返回emergency contact 列表（List<EmergencyContactViewDTO>）
+	 */
 	@RequestMapping("/listByChild")
 	@ResponseBody
 	public ViewDTO<List<EmergencyContactViewDTO>> listByChild(Integer childId){
@@ -27,6 +33,14 @@ public class EmergencyContactController extends BaseController{
 		return view;
 	}
 	
+	/**
+	 * /parent/emergencyContact/add
+	 * 添加emergency contact
+	 * @param childId emergency contact 所属的 person 的 id
+	 * @param name 紧急联系人姓名
+	 * @param phone 紧急联系人电话
+	 * @return 返回添加的紧急联系人对象EmergencyContactViewDTO
+	 */
 	@RequestMapping("/add")
 	@ResponseBody
 	public ViewDTO<EmergencyContactViewDTO> add(Integer childId,String name,String phone){
@@ -36,7 +50,13 @@ public class EmergencyContactController extends BaseController{
 		return view;
 	}
 	
-	
+	/**
+	 * /parent/emergencyContact/delete
+	 * 删除紧急联系人
+	 * @param childId 紧急联系人所属的person 的 id
+	 * @param phone 紧急联系人电话
+	 * @return 成功返回true，否则返回false
+	 */
 	@RequestMapping("/delete")
 	@ResponseBody
 	public ViewDTO<Boolean> delete(Integer childId,String phone){

@@ -3,24 +3,54 @@ package eden.sun.childrenguard.server.dto;
 import java.util.Date;
 
 public class ChildExtraInfoViewDTO {
+	/**
+	 * 额外数据对象id(与person id对象一样)
+	 */
 	private Integer id;
 
+	/**
+	 * 经度
+	 */
     private Double longitude;
 
+    /**
+     * 纬度
+     */
     private Double latitude;
 
+    /**
+     * 坐标最后更新时间
+     */
     private Date locationUpdateTime;
 
+    /**
+     * 最新速度
+     */
     private Double speed;
 
+    /**
+     * 速度最后更新时间
+     */
     private Date speedUpdateTime;
 
+    /**
+     * **未使用
+     */
     private Double networkTrafficUsed;
 
+    /**
+     * **未使用
+     */
     private Date networkTrafficUpdateTime;
 
+    /**
+     * **未使用
+     */
     private String onlineStatus;
 	
+    /**
+     * **未使用
+     */
     private String location;
 
 	public Integer getId() {

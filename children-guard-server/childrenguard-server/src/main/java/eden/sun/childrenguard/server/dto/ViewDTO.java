@@ -3,8 +3,17 @@ package eden.sun.childrenguard.server.dto;
 public class ViewDTO<T>{
 	public final static String MSG_SUCCESS = "success";
 	public final static String MSG_ERROR = "error";
+	/**
+	 * "success" 表示成功 ，"error" 表示失败
+	 */
 	private String msg;
+	/**
+	 * 若失败，info表示失败的原因
+	 */
 	private String info;
+	/**
+	 * 返回的数据
+	 */
 	private T data;
 	
 	public ViewDTO() {

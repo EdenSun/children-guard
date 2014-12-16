@@ -1,7 +1,14 @@
 package eden.sun.childrenguard.server.dto;
 
 public class LoginViewDTO {
+	/**
+	 * µÇÂ¼email 
+	 */
 	private String email;
+	
+	/**
+	 * access token
+	 */
 	private String accessToken;
 	
 	public String getEmail() {

@@ -17,6 +17,13 @@ public class LoginController extends BaseController{
 	@Autowired
 	private IAuthService authService;
 	
+	/**
+	 * /parent/auth/login
+	 * parent µÇÂ¼ 
+	 * @param email ÓÊÏä
+	 * @param password µÇÂ¼ÃÜÂë
+	 * @return ·µ»ØµÇÂ¼¶ÔÏóLoginViewDTO
+	 */
 	@RequestMapping("/login")
 	@ResponseBody
 	public ViewDTO<LoginViewDTO> login(String email,String password){
@@ -26,6 +33,12 @@ public class LoginController extends BaseController{
 		return view;
 	}
 	
+	/**
+	 * /parent/auth/isFirstLogin
+	 * @param email µÇÂ¼ÓÊÏä
+	 * @param password µÇÂ¼ÃÜÂë
+	 * @return ·µ»ØÊÇ·ñÊÇµÚÒ»´ÎµÇÂ¼IsFirstLoginViewDTO
+	 */
 	@RequestMapping("/isFirstLogin")
 	@ResponseBody
 	public ViewDTO<IsFirstLoginViewDTO> isFristLogin(String email,String password) {

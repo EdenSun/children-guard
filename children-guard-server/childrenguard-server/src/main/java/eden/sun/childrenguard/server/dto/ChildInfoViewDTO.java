@@ -3,30 +3,69 @@ package eden.sun.childrenguard.server.dto;
 import java.util.Date;
 
 public class ChildInfoViewDTO {
+	/**
+	 * person id
+	 */
 	private Integer id;
 
+	/**
+	 * 移动电话
+	 */
     private String mobile;
 
+    /**
+     * person first name
+     */
     private String firstName;
 
+    /**
+     * person last name
+     */
     private String lastName;
 
+    /**
+     * person 昵称
+     */
     private String nickname;
 
+    /**
+     * 激活时间
+     */
     private Date activateTime;
 
+    /**
+     * 经度
+     */
     private Double longitude;
 
+    /**
+     * 纬度
+     */
     private Double latitude;
 
+    /**
+     * 坐标最后更新时间
+     */
     private Date locationUpdateTime;
 
+    /**
+     * 速度
+     */
     private Double speed;
 
+    /**
+     * 素对最后更新时间
+     */
     private Date speedUpdateTime;
 
+    /**
+     * 未使用
+     */
     private Double networkTrafficUsed;
 
+    /**
+     * 未使用
+     */
     private Date networkTrafficUpdateTime;
 
 	public Integer getId() {

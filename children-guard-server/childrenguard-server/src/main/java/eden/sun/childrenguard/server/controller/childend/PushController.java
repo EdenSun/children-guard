@@ -15,6 +15,13 @@ public class PushController extends BaseController{
 	@Autowired
 	private IChildService childService;
 	
+	/**
+	 * /child/push/saveRegistionId
+	 * ±£´æpersonµÄ registion id
+	 * @param imei
+	 * @param registionId
+	 * @return
+	 */
 	@RequestMapping("/saveRegistionId")
 	@ResponseBody
 	public ViewDTO<Boolean> saveRegistionId(String imei ,String registionId){

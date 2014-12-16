@@ -4,18 +4,39 @@ import java.util.Date;
 
 
 public class ChildViewDTO {
+	/**
+	 * person id
+	 */
 	private Integer id;
 
+	/**
+	 * person 移动电话
+	 */
     private String mobile;
 
+    /**
+     * person first name
+     */
     private String firstName;
 
+    /**
+     * person last name
+     */
     private String lastName;
     
+    /**
+     * person 昵称
+     */
     private String nickname;
     
+    /**
+     * 激活时间
+     */
     private Date activateTime;
     
+    /**
+     * 用户头像
+     */
     private String photoImage;
 
 	public Integer getId() {

@@ -1,7 +1,13 @@
 package eden.sun.childrenguard.server.dto;
 
 public class ChildLoginViewDTO {
+	/**
+	 * person µç»°
+	 */
 	private String mobile;
+	/**
+	 * person µÄ access token
+	 */
 	private String accessToken;
 	public String getMobile() {
 		return mobile;

@@ -1,12 +1,24 @@
 package eden.sun.childrenguard.server.dto;
 
 public class AppViewDTO {
+	/**
+	 * app id
+	 */
 	private Integer id;
 
+	/**
+	 * app name
+	 */
     private String name;
 
+    /**
+     * 锁定状态 ( true: 锁定，  false：解锁)
+     */
     private Boolean lockStatus;
     
+    /**
+     * app的包名
+     */
     private String packageName;
 
 	public Integer getId() {

@@ -2,8 +2,14 @@ package eden.sun.childrenguard.server.dto;
 
 
 public class RelationshipViewDTO {
+	/**
+	 * 关系ID
+	 */
 	private Integer id;
 
+	/**
+	 * 关系名称(如 Father， Mother ...)
+	 */
 	private String relationName;
 
 	public Integer getId() {
