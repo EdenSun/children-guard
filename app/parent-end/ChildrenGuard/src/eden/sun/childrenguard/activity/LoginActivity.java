@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import cn.jpush.android.api.JPushInterface;
 
 import com.android.volley.Response;
 
@@ -45,8 +44,6 @@ public class LoginActivity extends CommonActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        JPushInterface.setDebugMode(false);
-        JPushInterface.init(this);
         
         setContentView(R.layout.activity_login);
 
@@ -156,7 +153,7 @@ public class LoginActivity extends CommonActivity {
         	
         });
     	
-        autoLogin();
+        //autoLogin();
     }
 
 
@@ -301,19 +298,4 @@ public class LoginActivity extends CommonActivity {
 	}
 
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		JPushInterface.onResume(this);
-	}
-
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		JPushInterface.onPause(this);
-	}
-	
-	
-	
 }
