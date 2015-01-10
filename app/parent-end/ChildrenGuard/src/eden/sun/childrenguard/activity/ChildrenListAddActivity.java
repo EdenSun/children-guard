@@ -6,16 +6,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -48,6 +49,9 @@ import eden.sun.childrenguard.util.UploadUtil;
 public class ChildrenListAddActivity extends CommonActivity {
 	private static final String TAG = "ChildrenListAddActivity";
 	protected static final int REQUEST_CODE_SELECT_PIC = 2;
+	protected static final int REQUEST_CODE_SELECT_CONTACT = 3;
+	private Button addFromContactsBtn;
+	
 	private Button addChildBtn;
 	private Button cancelBtn;
 	private EditText mobileEditText;
@@ -73,6 +77,16 @@ public class ChildrenListAddActivity extends CommonActivity {
 		
 		initComponent();
 
+		addFromContactsBtn.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				startActivityForResult(new Intent(
+		                Intent.ACTION_PICK,ContactsContract.Contacts.CONTENT_URI), REQUEST_CODE_SELECT_CONTACT);
+			}
+			
+		});
+		
 		photoLine.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -341,6 +355,7 @@ public class ChildrenListAddActivity extends CommonActivity {
 	}
 
 	private void initComponent() {
+		addFromContactsBtn = (Button) findViewById(R.id.addFromContactsBtn);
 		addChildBtn = (Button) findViewById(R.id.addBtn);
 		cancelBtn = (Button) findViewById(R.id.cancelBtn);
 		mobileEditText = (EditText) findViewById(R.id.mobileEditText);
@@ -460,6 +475,25 @@ public class ChildrenListAddActivity extends CommonActivity {
 			doUploadImage();
         }else if (resultCode != RESULT_OK && requestCode == Crop.REQUEST_CROP ){
         	Toast.makeText(this, "cancel crop", 1000).show();
+        }else if( requestCode == REQUEST_CODE_SELECT_CONTACT && resultCode == RESULT_OK){
+        	ContentResolver reContentResolverol = getContentResolver();
+            Uri contactData = data.getData();
+            @SuppressWarnings("deprecation")
+            Cursor cursor = getContentResolver().query(contactData, null, null, null, null);
+            cursor.moveToFirst();
+            
+            String username = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+            String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+            Cursor phone = reContentResolverol.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, 
+                    null, 
+                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, 
+                    null, 
+                    null);
+            
+            while (phone.moveToNext()) {
+                String usernumber = phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+               	Toast.makeText(ChildrenListAddActivity.this, usernumber+" ("+username+")", Toast.LENGTH_SHORT).show();
+            }
         }
 	        
 		super.onActivityResult(requestCode, resultCode, data);

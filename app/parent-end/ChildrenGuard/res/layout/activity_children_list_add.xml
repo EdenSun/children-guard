@@ -1,86 +1,93 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-	android:orientation="vertical"
     style="@style/commonPageStyle"
+    android:orientation="vertical"
     tools:context="eden.sun.childrenguard.activity.ChildrenListAddActivity" >
 
+    <Button
+        android:id="@+id/addFromContactsBtn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="right"
+        android:text="+" />
+
     <TextView
- 	    android:id="@+id/titleTextView"
- 	    android:text="Add Person"
- 	    style="@style/commonPageTitle"
- 	    />
+        android:id="@+id/titleTextView"
+        style="@style/commonPageTitle"
+        android:paddingTop="20dp"
+        android:text="Add Person" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        
+        android:orientation="vertical" >
+
         <LinearLayout
             android:id="@+id/photoLine"
-	        android:layout_width="match_parent"
-	        android:layout_height="80dp"
-	        android:orientation="horizontal"
-	        style="@style/photoUploadLineStyle">
-	        <TextView 
-	            android:layout_width="wrap_content"
-	            android:layout_height="match_parent"
-	            android:text="Photo"
-	            android:gravity="center_vertical"
-	            android:textColor="#888"
-	            android:layout_weight="1"
-	            />
-	        <ImageView
-	            android:id="@+id/photoImageView"
-	            android:layout_width="80dp"
-	            android:layout_height="match_parent"
-	            android:layout_weight="0"
-	            android:scaleType="fitXY"
-	            />
+            style="@style/photoUploadLineStyle"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Photo"
+                android:textColor="#888" />
+
+            <ImageView
+                android:id="@+id/photoImageView"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:scaleType="fitXY" />
         </LinearLayout>
-	    <EditText
-	        android:id="@+id/mobileEditText"
-	        android:hint="Mobile"
-	        style="@style/textOnLeftInputStyle"/>
-	
-	    <EditText
-	        android:id="@+id/firstNameEditText"
-	        android:hint="First Name"
-	        style="@style/textOnLeftInputStyle"/>
-    
-	    <EditText
-	        android:id="@+id/lastNameEditText"
-	        android:hint="Last Name"
-	        style="@style/textOnLeftInputStyle"
-	        />
-        
-	    <EditText
-	        android:id="@+id/nicknameEditText"
-	        android:hint="Nickname"
-	        style="@style/textOnLeftInputStyle"/>
-    	
-        <Spinner 
+
+        <EditText
+            android:id="@+id/mobileEditText"
+            style="@style/textOnLeftInputStyle"
+            android:hint="Mobile" />
+
+        <EditText
+            android:id="@+id/firstNameEditText"
+            style="@style/textOnLeftInputStyle"
+            android:hint="First Name" />
+
+        <EditText
+            android:id="@+id/lastNameEditText"
+            style="@style/textOnLeftInputStyle"
+            android:hint="Last Name" />
+
+        <EditText
+            android:id="@+id/nicknameEditText"
+            style="@style/textOnLeftInputStyle"
+            android:hint="Nickname" />
+
+        <Spinner
             android:id="@+id/relationshipSpinner"
-	        style="@style/textOnLeftInputStyle"
-            />
+            style="@style/textOnLeftInputStyle" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
-	    <Button
-	        android:id="@+id/addBtn"
-	        android:text="Add Person" 
-	        android:layout_weight="1"
-	        android:layout_marginRight="5dp"
-            style="@style/commonBtn"/>
-	
-	    <Button
-	        android:id="@+id/cancelBtn"
-	        android:text="Cancel"
-	        android:layout_weight="1" 
-	        android:layout_marginLeft="5dp"
-            style="@style/commonBtn"/>
-	</LinearLayout>
-    
+        android:layout_marginTop="10dp" >
+
+        <Button
+            android:id="@+id/addBtn"
+            style="@style/commonBtn"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:text="Add Person" />
+
+        <Button
+            android:id="@+id/cancelBtn"
+            style="@style/commonBtn"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:text="Cancel" />
+    </LinearLayout>
 
 </LinearLayout>

@@ -26,6 +26,7 @@ import eden.sun.childrenguard.util.UIUtil;
 public class SplashActivity extends CommonActivity {
 	private final String TAG = "SplashActivity";
 	private TextView textView;
+	private Timer timer;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +39,7 @@ public class SplashActivity extends CommonActivity {
         textView = (TextView)findViewById(R.id.textView);
         
         
-        Timer timer = new Timer();
-        timer.schedule(new PendingTask(), 5*1000);
-        
+        startTimer();
     }
 
     
@@ -108,17 +107,37 @@ public class SplashActivity extends CommonActivity {
 		);
 	}
     
+    private void startTimer() {
+    	if( timer == null ){
+    		timer = new Timer();
+    	}
+        timer.schedule(new PendingTask(), 5*1000);
+    }
+    
+    private void cancelTimer() {
+    	if( timer != null ){
+    		timer.cancel();
+    		timer = null;
+    	}
+    }
+    
 	@Override
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		
+		startTimer();
 	}
+
+
 
 
 	@Override
 	protected void onPause() {
 		super.onPause();
 		JPushInterface.onPause(this);
+		
+		cancelTimer();
 	}
 	
 	
