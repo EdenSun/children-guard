@@ -13,7 +13,9 @@ public class RegexHelper {
 	}
 	
 	public static boolean isValidPassword(String password) {
-		String str = "^[A-Za-z0-9]{6,8}$";
+		//String str = "^[A-Za-z0-9]{6,8}$";
+		
+		String str = "^[A-Za-z0-9]{4}$";
 		Pattern p = Pattern.compile(str);
 		Matcher m = p.matcher(password);
 

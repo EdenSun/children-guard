@@ -38,7 +38,7 @@ public class LoginActivity extends CommonActivity {
 	private Button loginBtn;
 	private TextView registerLinkBtn;
 	private TextView forgotYourPasswordLinkBtn;
-	private EditText emailEditText;
+	private EditText mobileEditText;
 	private EditText passwordEditText;
 	
     @Override
@@ -47,7 +47,7 @@ public class LoginActivity extends CommonActivity {
         
         setContentView(R.layout.activity_login);
 
-        emailEditText = (EditText)findViewById(R.id.emailEditText);
+        mobileEditText = (EditText)findViewById(R.id.mobileEditText);
         passwordEditText = (EditText)findViewById(R.id.passwordEditText);
 
         loginBtn = (Button)findViewById(R.id.loginBtn);
@@ -72,11 +72,11 @@ public class LoginActivity extends CommonActivity {
 					String msg = "Please wait...";
 					showProgressDialog(title,msg);
 					
-					final String finalEmail = emailEditText.getText().toString();
+					final String finalMobile = mobileEditText.getText().toString();
 					final String finalPassword = passwordEditText.getText().toString();
 					String url = String.format(
-							Config.BASE_URL_MVC + RequestURLConstants.URL_IS_FIRST_LOGIN + "?email=%1$s&password=%2$s",  
-							finalEmail,  
+							Config.BASE_URL_MVC + RequestURLConstants.URL_IS_FIRST_LOGIN + "?mobile=%1$s&password=%2$s",  
+							finalMobile,  
 							finalPassword);  
 	  
 					getRequestHelper().doGet(
@@ -99,20 +99,20 @@ public class LoginActivity extends CommonActivity {
 													@Override
 													public void execute(
 															CallbackResult result) {
-														String email = UIUtil.getEditTextValue(emailEditText);
+														String mobile = UIUtil.getEditTextValue(mobileEditText);
 										    			String password = UIUtil.getEditTextValue(passwordEditText);
 										    			
-														doLogin(email,password);
+														doLogin(mobile,password);
 													}
 						    						
 						    					});
 										
 										dialog.show();
 						    		}else{
-						    			String email = UIUtil.getEditTextValue(emailEditText);
+						    			String mobile = UIUtil.getEditTextValue(mobileEditText);
 						    			String password = UIUtil.getEditTextValue(passwordEditText);
 						    			
-						    			LoginActivity.this.doLogin(email,password);
+						    			LoginActivity.this.doLogin(mobile,password);
 						    		}
 						    	}else{
 						    		AlertDialog.Builder dialog = UIUtil.getErrorDialog(LoginActivity.this,view.getInfo());
@@ -173,12 +173,12 @@ public class LoginActivity extends CommonActivity {
 	}
 
 	private boolean doValidation() {
-    	String email = UIUtil.getEditTextValue(emailEditText);
+    	String mobile = UIUtil.getEditTextValue(mobileEditText);
 		String password = UIUtil.getEditTextValue(passwordEditText);
 				
-		if( StringUtil.isBlank(email) ){
+		if( StringUtil.isBlank(mobile) ){
 			String title = "Login";
-			String msg = "Email can not be blank.";
+			String msg = "Mobile can not be blank.";
 			String btnText = "OK";
 			
 			AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
@@ -246,10 +246,10 @@ public class LoginActivity extends CommonActivity {
 	private Map<String, Object> getLoginParam() {
 		Map<String, Object> data = new HashMap<String,Object>();
 		
-		String email = UIUtil.getEditTextValue(emailEditText);
+		String mobile = UIUtil.getEditTextValue(mobileEditText);
 		String password = UIUtil.getEditTextValue(passwordEditText);
 		
-		data.put("email", email);
+		data.put("mobile", mobile);
 		data.put("password", password);
 		return data;
 	}
@@ -258,7 +258,7 @@ public class LoginActivity extends CommonActivity {
 		// do login
     	//runtime.publish(getLoginParam(), CometdConfig.LOGIN_CHANNEL,new LoginListener(LoginActivity.this));
 		String url = String.format(
-				Config.BASE_URL_MVC + RequestURLConstants.URL_LOGIN + "?email=%1$s&password=%2$s",  
+				Config.BASE_URL_MVC + RequestURLConstants.URL_LOGIN + "?mobile=%1$s&password=%2$s",  
 				account,  
 				password);  
 

@@ -1,9 +1,7 @@
 package eden.sun.childrenguard.activity;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import android.app.AlertDialog;
@@ -24,18 +22,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.soundcloud.android.crop.Crop;
 
 import eden.sun.childrenguard.R;
-import eden.sun.childrenguard.adapter.RelationshipSpinnerAdapter;
-import eden.sun.childrenguard.dto.RelationshipItemView;
 import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
-import eden.sun.childrenguard.server.dto.RelationshipViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.BitmapUtil;
 import eden.sun.childrenguard.util.Config;
@@ -55,11 +49,13 @@ public class ChildrenListAddActivity extends CommonActivity {
 	private Button addChildBtn;
 	private Button cancelBtn;
 	private EditText mobileEditText;
-	private EditText firstNameEditText;
+	private EditText nameEditText;
+	private EditText passwordEditText;
+	/*private EditText firstNameEditText;
 	private EditText lastNameEditText;
 	private EditText nicknameEditText;
 	private Spinner relationshipSpinner;
-	private RelationshipSpinnerAdapter relationshipSpinnerAdapter;
+	private RelationshipSpinnerAdapter relationshipSpinnerAdapter;*/
 	private Intent resultIntent;
 	
 	private LinearLayout photoLine;
@@ -114,7 +110,6 @@ public class ChildrenListAddActivity extends CommonActivity {
 			}
 		});
 
-		initData();
 	}
 
 	
@@ -123,7 +118,7 @@ public class ChildrenListAddActivity extends CommonActivity {
 		setResult(0,resultIntent);		
 	}
 
-
+	/*
 	private void initData() {
 		loadRelationship();
 
@@ -150,7 +145,7 @@ public class ChildrenListAddActivity extends CommonActivity {
 
 			}
 		}, new DefaultVolleyErrorHandler(ChildrenListAddActivity.this));
-	}
+	}*/
 
 	private void doAddChild() {
 		boolean isPassed = doValidation();
@@ -210,11 +205,9 @@ public class ChildrenListAddActivity extends CommonActivity {
 	}
 
 	private boolean doValidation() {
-		String firstName = UIUtil.getEditTextValue(firstNameEditText);
-		String lastName = UIUtil.getEditTextValue(lastNameEditText);
 		String mobile = UIUtil.getEditTextValue(mobileEditText);
-		String relationship = UIUtil.getSpinnerValue(relationshipSpinner);
-		String nickname = UIUtil.getEditTextValue(nicknameEditText);
+		String name = UIUtil.getEditTextValue(nameEditText);
+		String password = UIUtil.getEditTextValue(passwordEditText);
 				
 
 		if( StringUtil.isBlank(mobile) ){
@@ -239,9 +232,9 @@ public class ChildrenListAddActivity extends CommonActivity {
 			return false;
 		}
 		
-		if( StringUtil.isBlank(firstName) ){
+		if( StringUtil.isBlank(name) ){
 			String title = "Add Person";
-			String msg = "First Name can not be blank.";
+			String msg = "Name can not be blank.";
 			String btnText = "OK";
 			
 			AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
@@ -261,54 +254,9 @@ public class ChildrenListAddActivity extends CommonActivity {
 			return false;
 		}
 		
-		if( StringUtil.isBlank(lastName) ){
+		if( StringUtil.isBlank(password) ){
 			String title = "Add Person";
-			String msg = "Last Name can not be blank.";
-			String btnText = "OK";
-			
-			AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
-				ChildrenListAddActivity.this,
-				title,
-				msg,
-				btnText,
-				new DialogInterface.OnClickListener() {
-		            @Override
-		            public void onClick(DialogInterface dialog, int which) {
-		            	dialog.dismiss();
-		            }
-		        }
-			);
-			
-			dialog.show();
-			return false;
-		}
-		
-		if( StringUtil.isBlank(nickname) ){
-			String title = "Add Person";
-			String msg = "Nickname can not be blank.";
-			String btnText = "OK";
-			
-			AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
-				ChildrenListAddActivity.this,
-				title,
-				msg,
-				btnText,
-				new DialogInterface.OnClickListener() {
-		            @Override
-		            public void onClick(DialogInterface dialog, int which) {
-		            	dialog.dismiss();
-		            }
-		        }
-			);
-			
-			dialog.show();
-			return false;
-		}
-		
-		
-		if( StringUtil.isBlank(relationship) ){
-			String title = "Add Person";
-			String msg = "Relationship can not be blank.";
+			String msg = "Password can not be blank.";
 			String btnText = "OK";
 			
 			AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
@@ -332,20 +280,16 @@ public class ChildrenListAddActivity extends CommonActivity {
 	}
 
 	private Map<String, String> getAddChildParams() {
-		String firstName = UIUtil.getEditTextValue(firstNameEditText);
-		String lastName = UIUtil.getEditTextValue(lastNameEditText);
+		String name = UIUtil.getEditTextValue(nameEditText);
 		String mobile = UIUtil.getEditTextValue(mobileEditText);
-		String relationshipId = UIUtil.getSpinnerValue(relationshipSpinner);
-		String nickname = UIUtil.getEditTextValue(nicknameEditText);
+		String password = UIUtil.getEditTextValue(passwordEditText);
 		String parentAccessToken = getAccessToken();
 		
 		Map<String, String> param = new HashMap<String, String>();
 
-		param.put("firstName", firstName);
-		param.put("lastName", lastName);
+		param.put("name", name);
 		param.put("mobile", mobile);
-		param.put("relationshipId", relationshipId);
-		param.put("nickname", nickname);
+		param.put("password", password);
 		param.put("parentAccessToken", parentAccessToken);
 		if( remotePhotoPath != null ){
 			param.put("photoImage", remotePhotoPath);
@@ -359,16 +303,9 @@ public class ChildrenListAddActivity extends CommonActivity {
 		addChildBtn = (Button) findViewById(R.id.addBtn);
 		cancelBtn = (Button) findViewById(R.id.cancelBtn);
 		mobileEditText = (EditText) findViewById(R.id.mobileEditText);
-		firstNameEditText = (EditText) findViewById(R.id.firstNameEditText);
-		lastNameEditText = (EditText) findViewById(R.id.lastNameEditText);
-		nicknameEditText = (EditText) findViewById(R.id.nicknameEditText);
-		relationshipSpinner = (Spinner) findViewById(R.id.relationshipSpinner);
+		nameEditText = (EditText) findViewById(R.id.nameEditText);
+		passwordEditText = (EditText) findViewById(R.id.passwordEditText);
 
-		List<RelationshipItemView> data = new ArrayList<RelationshipItemView>();
-		relationshipSpinnerAdapter = new RelationshipSpinnerAdapter(
-				ChildrenListAddActivity.this, data);
-		relationshipSpinner.setAdapter(relationshipSpinnerAdapter);
-		
 		photoLine = (LinearLayout)findViewById(R.id.photoLine);
 		photoImageView = (ImageView)findViewById(R.id.photoImageView);
 	}
@@ -476,24 +413,30 @@ public class ChildrenListAddActivity extends CommonActivity {
         }else if (resultCode != RESULT_OK && requestCode == Crop.REQUEST_CROP ){
         	Toast.makeText(this, "cancel crop", 1000).show();
         }else if( requestCode == REQUEST_CODE_SELECT_CONTACT && resultCode == RESULT_OK){
-        	ContentResolver reContentResolverol = getContentResolver();
-            Uri contactData = data.getData();
-            @SuppressWarnings("deprecation")
-            Cursor cursor = getContentResolver().query(contactData, null, null, null, null);
-            cursor.moveToFirst();
-            
-            String username = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-            String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-            Cursor phone = reContentResolverol.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, 
-                    null, 
-                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, 
-                    null, 
-                    null);
-            
-            while (phone.moveToNext()) {
-                String usernumber = phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-               	Toast.makeText(ChildrenListAddActivity.this, usernumber+" ("+username+")", Toast.LENGTH_SHORT).show();
-            }
+        	try {
+				ContentResolver reContentResolverol = getContentResolver();
+				Uri contactData = data.getData();
+				@SuppressWarnings("deprecation")
+				Cursor cursor = getContentResolver().query(contactData, null, null, null, null);
+				cursor.moveToFirst();
+				
+				String username = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+				String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+				Cursor phone = reContentResolverol.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, 
+				        null, 
+				        ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, 
+				        null, 
+				        null);
+				
+				while (phone.moveToNext()) {
+				    String mobile = phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+				    
+				    mobileEditText.setText(mobile);
+				    nameEditText.setText(username);
+				}
+			} catch (Exception e) {
+				Toast.makeText(ChildrenListAddActivity.this, "error", Toast.LENGTH_SHORT);
+			}
         }
 	        
 		super.onActivityResult(requestCode, resultCode, data);

@@ -106,6 +106,11 @@ public class ChildrenListAdapter extends BaseAdapter {
 		
 		data.add(view);
 	}
+
+	public void removeAll() {
+		data.clear();
+		notifyDataSetChanged();
+	}
     
     
  

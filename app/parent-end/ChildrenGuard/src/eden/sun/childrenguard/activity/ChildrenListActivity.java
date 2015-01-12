@@ -149,6 +149,8 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 							
 					if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
 						Toast.makeText(ChildrenListActivity.this, "Person deleted", Toast.LENGTH_SHORT).show();
+						
+						loadChildrenList();
 						/*String title = "Register";
 						String msg = "Register Success.Press OK to login.";
 						String btnText = "OK";
@@ -213,6 +215,7 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 			new Response.Listener<String>() {
 				@Override
 				public void onResponse(String response) {
+					childrenListAdapter.removeAll();
 					dismissProgressDialog();
 					
 			    	final ViewDTO<List<ChildViewDTO>> view = JSONUtil.getListMyChildrenView(response);

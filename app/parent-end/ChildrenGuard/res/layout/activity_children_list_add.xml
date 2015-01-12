@@ -47,6 +47,96 @@
 
         <EditText
             android:id="@+id/mobileEditText"
+            android:inputType="phone"
+            style="@style/textOnLeftInputStyle"
+            android:hint="Mobile" />
+        <EditText
+            android:id="@+id/nameEditText"
+            android:inputType="textPersonName"
+            style="@style/textOnLeftInputStyle"
+            android:hint="Name" />
+
+        <EditText
+            android:id="@+id/passwordEditText"
+            android:inputType="numberPassword"
+            style="@style/textOnLeftInputStyle"
+            android:hint="Password"
+            android:maxLength="4"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" >
+
+        <Button
+            android:id="@+id/addBtn"
+            style="@style/commonBtn"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:text="Add Person" />
+
+        <Button
+            android:id="@+id/cancelBtn"
+            style="@style/commonBtn"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:text="Cancel" />
+    </LinearLayout>
+
+</LinearLayout>
+
+
+<!-- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/commonPageStyle"
+    android:orientation="vertical"
+    tools:context="eden.sun.childrenguard.activity.ChildrenListAddActivity" >
+
+    <Button
+        android:id="@+id/addFromContactsBtn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="right"
+        android:text="+" />
+
+    <TextView
+        android:id="@+id/titleTextView"
+        style="@style/commonPageTitle"
+        android:paddingTop="20dp"
+        android:text="Add Person" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/photoLine"
+            style="@style/photoUploadLineStyle"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Photo"
+                android:textColor="#888" />
+
+            <ImageView
+                android:id="@+id/photoImageView"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:scaleType="fitXY" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/mobileEditText"
             style="@style/textOnLeftInputStyle"
             android:hint="Mobile" />
 
@@ -90,4 +180,6 @@
             android:text="Cancel" />
     </LinearLayout>
 
-</LinearLayout>
+</LinearLayout> -->
+
+

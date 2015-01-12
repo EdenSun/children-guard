@@ -111,7 +111,7 @@ public class SplashActivity extends CommonActivity {
     	if( timer == null ){
     		timer = new Timer();
     	}
-        timer.schedule(new PendingTask(), 5*1000);
+        timer.schedule(new PendingTask(), 3*1000);
     }
     
     private void cancelTimer() {

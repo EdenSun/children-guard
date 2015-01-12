@@ -19,7 +19,6 @@ import com.android.volley.Response;
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
 import eden.sun.childrenguard.helper.DeviceHelper;
-import eden.sun.childrenguard.helper.RequestHelper;
 import eden.sun.childrenguard.server.dto.RegisterViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Config;
@@ -35,9 +34,8 @@ public class RegisterActivity extends CommonActivity {
 	/* ui components */
 	private Button registerBtn;
 	private Button backBtn;
-	private EditText firstNameEditText;
-	private EditText lastNameEditText;
-	private EditText emailEditText;
+	
+	private EditText mobileEditText;
 	private EditText passwordEditText;
 	private EditText confirmPasswordEditText;
 	
@@ -48,9 +46,7 @@ public class RegisterActivity extends CommonActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
 		
-		firstNameEditText = (EditText)findViewById(R.id.firstNameEditText);
-		lastNameEditText = (EditText)findViewById(R.id.lastNameEditText);
-		emailEditText = (EditText)findViewById(R.id.emailEditText);
+		mobileEditText = (EditText)findViewById(R.id.mobileEditText);
 		passwordEditText = (EditText)findViewById(R.id.passwordEditText);
 		confirmPasswordEditText = (EditText)findViewById(R.id.confirmPasswordEditText);
 		
@@ -160,17 +156,13 @@ public class RegisterActivity extends CommonActivity {
 	}
 	
 	private Map<String, String> getRegisterParams() {
-		String firstName = UIUtil.getEditTextValue(firstNameEditText);
-		String lastName = UIUtil.getEditTextValue(lastNameEditText);
-		String email = UIUtil.getEditTextValue(emailEditText);
+		String mobile = UIUtil.getEditTextValue(mobileEditText);
 		String password = UIUtil.getEditTextValue(passwordEditText);
 		String imei = DeviceHelper.getIMEI(this);
 		
 		Map<String, String> param = new HashMap<String,String>();
 		
-		param.put("firstName", firstName);
-		param.put("lastName", lastName);
-		param.put("email", email);
+		param.put("mobile", mobile);
 		param.put("password", password);
 		param.put("imei", imei);
 		
@@ -178,15 +170,13 @@ public class RegisterActivity extends CommonActivity {
 	}
 
 	private boolean doValidation() {
-		String firstName = UIUtil.getEditTextValue(firstNameEditText);
-		String lastName = UIUtil.getEditTextValue(lastNameEditText);
-		String email = UIUtil.getEditTextValue(emailEditText);
+		String mobile = UIUtil.getEditTextValue(mobileEditText);
 		String password = UIUtil.getEditTextValue(passwordEditText);
 		String confirmPassword = UIUtil.getEditTextValue(confirmPasswordEditText);
 				
-		if( StringUtil.isBlank(firstName) ){
+		if( StringUtil.isBlank(mobile) ){
 			String title = "Register";
-			String msg = "First name can not be blank.";
+			String msg = "Mobile can not be blank.";
 			String btnText = "OK";
 			
 			AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
@@ -204,72 +194,6 @@ public class RegisterActivity extends CommonActivity {
 			
 			dialog.show();
 			return false;
-		}
-
-		if( StringUtil.isBlank(lastName) ){
-			String title = "Register";
-			String msg = "Last name can not be blank.";
-			String btnText = "OK";
-			
-			AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
-				RegisterActivity.this,
-				title,
-				msg,
-				btnText,
-				new DialogInterface.OnClickListener() {
-		            @Override
-		            public void onClick(DialogInterface dialog, int which) {
-		            	dialog.dismiss();
-		            }
-		        }
-			);
-			
-			dialog.show();
-			return false;
-		}
-		
-		if( StringUtil.isBlank(email) ){
-			String title = "Register";
-			String msg = "Email can not be blank.";
-			String btnText = "OK";
-			
-			AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
-				RegisterActivity.this,
-				title,
-				msg,
-				btnText,
-				new DialogInterface.OnClickListener() {
-		            @Override
-		            public void onClick(DialogInterface dialog, int which) {
-		            	dialog.dismiss();
-		            }
-		        }
-			);
-			
-			dialog.show();
-			return false;
-		}else{
-			if( !RegexHelper.isEmail(email) ){
-				String title = "Register";
-				String msg = "Email format is incorrect.";
-				String btnText = "OK";
-				
-				AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
-					RegisterActivity.this,
-					title,
-					msg,
-					btnText,
-					new DialogInterface.OnClickListener() {
-			            @Override
-			            public void onClick(DialogInterface dialog, int which) {
-			            	dialog.dismiss();
-			            }
-			        }
-				);
-				
-				dialog.show();
-				return false;
-			}
 		}
 		
 		if( StringUtil.isBlank(password) ){
@@ -295,7 +219,7 @@ public class RegisterActivity extends CommonActivity {
 		}else{
 			if( !RegexHelper.isValidPassword(password) ){
 				String title = "Register";
-				String msg = "Password can only contain 6-8 letters or numbers.";
+				String msg = "Password can only contain 4 numbers.";
 				String btnText = "OK";
 				
 				AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
@@ -339,7 +263,7 @@ public class RegisterActivity extends CommonActivity {
 		}else{
 			if( !RegexHelper.isValidPassword(confirmPassword) ){
 				String title = "Register";
-				String msg = "Confirm password can only contain 6-8 letters or numbers.";
+				String msg = "Confirm password can only contain 4 numbers.";
 				String btnText = "OK";
 				
 				AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
