@@ -87,7 +87,8 @@ public class ChildrenManageServiceImpl implements IChildrenManageService{
 			throw new ServiceException("Data error,parent is not exists.");
 		}
 		
-		parentChildService.addRelationship(parent.getId(),childViewDTO.getId(),param.getRelationshipId());
+		parentChildService.addRelationship(parent.getId(),childViewDTO.getId());
+		
 		
 		view.setData(childViewDTO);
 		return view;

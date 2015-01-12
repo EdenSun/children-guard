@@ -3,6 +3,7 @@
 <mapper namespace="eden.sun.childrenguard.server.dao.generated.ParentMapper" >
   <resultMap id="BaseResultMap" type="eden.sun.childrenguard.server.model.generated.Parent" >
     <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
     <result column="EMAIL" property="email" jdbcType="VARCHAR" />
     <result column="FIRST_NAME" property="firstName" jdbcType="VARCHAR" />
     <result column="LAST_NAME" property="lastName" jdbcType="VARCHAR" />
@@ -73,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    ID, EMAIL, FIRST_NAME, LAST_NAME, PASSWORD, CREATE_TIME, LAST_LOGIN_TIME, ACCESS_TOKEN, 
-    RESET_CODE, IMEI, REGISTION_ID
+    ID, MOBILE, EMAIL, FIRST_NAME, LAST_NAME, PASSWORD, CREATE_TIME, LAST_LOGIN_TIME, 
+    ACCESS_TOKEN, RESET_CODE, IMEI, REGISTION_ID
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="eden.sun.childrenguard.server.model.generated.ParentExample" >
     select
@@ -110,14 +111,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tbl_parent (EMAIL, FIRST_NAME, LAST_NAME, 
-      PASSWORD, CREATE_TIME, LAST_LOGIN_TIME, 
-      ACCESS_TOKEN, RESET_CODE, IMEI, 
-      REGISTION_ID)
-    values (#{email,jdbcType=VARCHAR}, #{firstName,jdbcType=VARCHAR}, #{lastName,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastLoginTime,jdbcType=TIMESTAMP}, 
-      #{accessToken,jdbcType=VARCHAR}, #{resetCode,jdbcType=VARCHAR}, #{imei,jdbcType=VARCHAR}, 
-      #{registionId,jdbcType=VARCHAR})
+    insert into tbl_parent (MOBILE, EMAIL, FIRST_NAME, 
+      LAST_NAME, PASSWORD, CREATE_TIME, 
+      LAST_LOGIN_TIME, ACCESS_TOKEN, RESET_CODE, 
+      IMEI, REGISTION_ID)
+    values (#{mobile,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{firstName,jdbcType=VARCHAR}, 
+      #{lastName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{lastLoginTime,jdbcType=TIMESTAMP}, #{accessToken,jdbcType=VARCHAR}, #{resetCode,jdbcType=VARCHAR}, 
+      #{imei,jdbcType=VARCHAR}, #{registionId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="eden.sun.childrenguard.server.model.generated.Parent" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -125,6 +126,9 @@
     </selectKey>
     insert into tbl_parent
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="mobile != null" >
+        MOBILE,
+      </if>
       <if test="email != null" >
         EMAIL,
       </if>
@@ -157,6 +161,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
       <if test="email != null" >
         #{email,jdbcType=VARCHAR},
       </if>
@@ -201,6 +208,9 @@
       <if test="record.id != null" >
         ID = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.mobile != null" >
+        MOBILE = #{record.mobile,jdbcType=VARCHAR},
+      </if>
       <if test="record.email != null" >
         EMAIL = #{record.email,jdbcType=VARCHAR},
       </if>
@@ -239,6 +249,7 @@
   <update id="updateByExample" parameterType="map" >
     update tbl_parent
     set ID = #{record.id,jdbcType=INTEGER},
+      MOBILE = #{record.mobile,jdbcType=VARCHAR},
       EMAIL = #{record.email,jdbcType=VARCHAR},
       FIRST_NAME = #{record.firstName,jdbcType=VARCHAR},
       LAST_NAME = #{record.lastName,jdbcType=VARCHAR},
@@ -256,6 +267,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="eden.sun.childrenguard.server.model.generated.Parent" >
     update tbl_parent
     <set >
+      <if test="mobile != null" >
+        MOBILE = #{mobile,jdbcType=VARCHAR},
+      </if>
       <if test="email != null" >
         EMAIL = #{email,jdbcType=VARCHAR},
       </if>
@@ -291,7 +305,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="eden.sun.childrenguard.server.model.generated.Parent" >
     update tbl_parent
-    set EMAIL = #{email,jdbcType=VARCHAR},
+    set MOBILE = #{mobile,jdbcType=VARCHAR},
+      EMAIL = #{email,jdbcType=VARCHAR},
       FIRST_NAME = #{firstName,jdbcType=VARCHAR},
       LAST_NAME = #{lastName,jdbcType=VARCHAR},
       PASSWORD = #{password,jdbcType=VARCHAR},

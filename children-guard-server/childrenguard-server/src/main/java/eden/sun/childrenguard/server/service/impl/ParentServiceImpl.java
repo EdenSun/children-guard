@@ -40,8 +40,16 @@ public class ParentServiceImpl implements IParentService {
 
 
 	@Override
-	public boolean doLogin(String email,String password) throws ServiceException {
-		Parent parent = this.getByEmailAndPassword(email, password);
+	public ParentViewDTO getViewByMobile(String mobile) throws ServiceException {
+		Parent parent = getByMobile(mobile);
+		ParentViewDTO parentView = trans2ParentViewDTO(parent);
+		return parentView;
+	}
+
+
+	@Override
+	public boolean doLogin(String mobile,String password) throws ServiceException {
+		Parent parent = this.getByMobileAndPassword(mobile, password);
 		if( parent == null ){
 			return false;
 		}
@@ -61,6 +69,24 @@ public class ParentServiceImpl implements IParentService {
 		ParentExample example = new ParentExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andEmailEqualTo(email);
+		criteria.andPasswordEqualTo(password);
+		
+		List<Parent> parentList = parentMapper.selectByExample(example);
+	
+		if( parentList != null && parentList.size() > 0 ){
+			Parent parent = parentList.get(0);
+			return parent;
+		}
+		return null;
+	}
+
+	
+
+	public Parent getByMobileAndPassword(String mobile,
+			String password) throws ServiceException {
+		ParentExample example = new ParentExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andMobileEqualTo(mobile);
 		criteria.andPasswordEqualTo(password);
 		
 		List<Parent> parentList = parentMapper.selectByExample(example);
@@ -137,6 +163,14 @@ public class ParentServiceImpl implements IParentService {
 
 
 	@Override
+	public ParentViewDTO getViewByMobileAndPassword(String mobile,
+			String password) throws ServiceException {
+		Parent parent = getByMobileAndPassword(mobile,password);
+		return trans2ParentViewDTO(parent);
+	}
+
+
+	@Override
 	public boolean update(Parent parent) throws ServiceException {
 		int cnt = parentMapper.updateByPrimaryKey(parent);
 		if( cnt == 0 ){
@@ -200,5 +234,47 @@ public class ParentServiceImpl implements IParentService {
 		return null;
 	}
 
+
+	@Override
+	public Parent getByMobile(String mobile) throws ServiceException {
+		ParentExample example = new ParentExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andMobileEqualTo(mobile);
+		
+		List<Parent> parentList = parentMapper.selectByExample(example);
+	
+		if( parentList != null && parentList.size() > 0 ){
+			Parent parent = parentList.get(0);
+			return parent;
+		}
+		return null;
+	}
+
+
+	@Override
+	public ParentViewDTO save(String imei, String mobile, String password)
+			throws ServiceException {
+		Date now = new Date();
+		Parent parent = new Parent();
+		String accessToken = UUIDUtil.generateUUID();
+		parent.setAccessToken(accessToken);
+		parent.setCreateTime(now);
+		parent.setMobile(mobile);
+		parent.setLastLoginTime(now);
+		parent.setPassword(password);
+		parent.setImei(imei);
+		
+		int cnt = parentMapper.insert(parent);
+		
+		if( cnt == 0 ){
+			return null;
+		}
+		
+		return trans2ParentViewDTO(parent);
+	}
+
+	
+	
+	
 
 }

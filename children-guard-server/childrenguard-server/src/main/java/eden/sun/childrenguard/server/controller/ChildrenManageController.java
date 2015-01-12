@@ -56,6 +56,36 @@ public class ChildrenManageController extends BaseController{
 		return view;
 	}
 	
+	
+	/**
+	 * /parent/childrenManage/addChild
+	 * 添加 person
+	 * @param mobile 移动电话
+	 * @param name name
+	 * @param password 锁定密码
+	 * @param parentAccessToken parent的 access token
+	 * @param photoImage 头像(optional)
+	 * @return 返回添加的ChildViewDTO对象
+	 */
+	@RequestMapping("/addChild")
+	@ResponseBody
+	public ViewDTO<ChildViewDTO> addChild(
+			String mobile,String name,
+			String password,
+			String parentAccessToken,
+			String photoImage){
+		ChildAddParam param = new ChildAddParam();
+		param.setMobile(mobile);
+		param.setName(name);
+		param.setPassword(password);
+		param.setParentAccessToken(parentAccessToken);
+		param.setPhotoImage(photoImage);
+		
+		ViewDTO<ChildViewDTO> view = childrenManageService.addChild(param);
+	
+		return view;
+	}
+	
 	/**
 	 * /parent/childrenManage/addChild
 	 * 添加 person
@@ -67,7 +97,7 @@ public class ChildrenManageController extends BaseController{
 	 * @param parentAccessToken parent的 access token
 	 * @param photoImage 头像(optional)
 	 * @return 返回添加的ChildViewDTO对象
-	 */
+	 *//*
 	@RequestMapping("/addChild")
 	@ResponseBody
 	public ViewDTO<ChildViewDTO> addChild(
@@ -86,7 +116,7 @@ public class ChildrenManageController extends BaseController{
 		ViewDTO<ChildViewDTO> view = childrenManageService.addChild(param);
 	
 		return view;
-	}
+	}*/
 	
 	/**
 	 * /parent/childrenManage/deleteChild

@@ -30,10 +30,10 @@ public class AuthServiceImpl implements IAuthService {
 	private IJPushService jpushService;
 	
 	@Override
-	public ViewDTO<LoginViewDTO> login(String email, String password)
+	public ViewDTO<LoginViewDTO> login(String mobile, String password)
 			throws ServiceException {
 		ViewDTO<LoginViewDTO> view = new ViewDTO<LoginViewDTO>();
-		boolean isSuccess = parentService.doLogin(email,password);
+		boolean isSuccess = parentService.doLogin(mobile,password);
 
 		if( !isSuccess ){
 			view.setInfo("Email or password is incorrect.");
@@ -41,7 +41,7 @@ public class AuthServiceImpl implements IAuthService {
 			return view;
 		}
 		
-		ParentViewDTO parentView = parentService.getViewByEmail(email);
+		ParentViewDTO parentView = parentService.getViewByMobile(mobile);
 		
 		LoginViewDTO loginView = trans2LoginViewDTO(parentView);
 		
@@ -139,10 +139,10 @@ public class AuthServiceImpl implements IAuthService {
 	}
 
 	@Override
-	public ViewDTO<IsFirstLoginViewDTO> isFirstLogin(String email, String password)
+	public ViewDTO<IsFirstLoginViewDTO> isFirstLogin(String mobile, String password)
 			throws ServiceException {
 		ViewDTO<IsFirstLoginViewDTO> view = new ViewDTO<IsFirstLoginViewDTO>();
-		ParentViewDTO parentView = parentService.getViewByEmailAndPassword(email, password);
+		ParentViewDTO parentView = parentService.getViewByMobileAndPassword(mobile, password);
 		
 		if( parentView == null ){
 			view.setInfo("Email or password is incorrect.");
@@ -151,7 +151,7 @@ public class AuthServiceImpl implements IAuthService {
 		}
 		
 		IsFirstLoginViewDTO isFirstLoginViewDTO = new IsFirstLoginViewDTO();
-		isFirstLoginViewDTO.setEmail(email);
+		isFirstLoginViewDTO.setMobile(mobile);
 		if( parentView.getLastLoginTime() == null ){
 			logger.info("First login.");
 			isFirstLoginViewDTO.setFirstLogin(true);
@@ -199,6 +199,31 @@ public class AuthServiceImpl implements IAuthService {
 		view.setInfo("Unknow error, change password failure.");
 		view.setMsg(ViewDTO.MSG_ERROR);
 		return view;
+	}
+
+	@Override
+	public ViewDTO<RegisterViewDTO> register(String imei, String mobile,
+			String password) throws ServiceException {
+		ViewDTO<RegisterViewDTO> view = new ViewDTO<RegisterViewDTO>();
+		if( imei == null || mobile == null || password == null ){
+			view.setInfo("Server parameters error");
+			view.setMsg(ViewDTO.MSG_ERROR);
+			return view;
+		}
+		
+		Parent parent = parentService.getByMobile(mobile);
+		if( parent != null ){
+			view.setInfo("Email has been registered.");
+			view.setMsg(ViewDTO.MSG_ERROR);
+			return view;
+		}else{
+			// do register
+			ParentViewDTO parentView = parentService.save(imei,mobile,password);
+			RegisterViewDTO registerView = trans2RegisterViewDTO(parentView);
+			
+			view.setData(registerView);
+			return view;
+		}
 	}
 	
 }

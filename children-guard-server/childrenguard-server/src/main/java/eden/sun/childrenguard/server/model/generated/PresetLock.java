@@ -27,16 +27,7 @@ public class PresetLock {
 
     private Boolean lockCallStatus;
 
-    public PresetLock() {
-		super();
-	}
-    
-	public PresetLock(Integer id) {
-		super();
-		this.id = id;
-	}
-
-	public Integer getId() {
+    public Integer getId() {
         return id;
     }
 

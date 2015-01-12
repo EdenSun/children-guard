@@ -10,7 +10,7 @@ public interface IParentService {
 
 	ParentViewDTO getViewByEmail(String email)throws ServiceException;
 
-	boolean doLogin(String email, String password)throws ServiceException;
+	boolean doLogin(String mobile, String password)throws ServiceException;
 
 	ParentViewDTO save(String imei,String firstName, String lastName, String email,
 			String password)throws ServiceException;
@@ -28,4 +28,12 @@ public interface IParentService {
 	ViewDTO<Boolean> saveOrUpdateRegistionId(String imei, String registionId)throws ServiceException;
 
 	Parent getByImei(String imei)throws ServiceException;
+
+	Parent getByMobile(String mobile)throws ServiceException;
+
+	ParentViewDTO save(String imei, String mobile, String password)throws ServiceException;
+
+	ParentViewDTO getViewByMobileAndPassword(String mobile, String password)throws ServiceException;
+
+	ParentViewDTO getViewByMobile(String mobile)throws ServiceException;
 }

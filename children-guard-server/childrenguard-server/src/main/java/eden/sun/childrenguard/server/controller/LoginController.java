@@ -20,31 +20,31 @@ public class LoginController extends BaseController{
 	/**
 	 * /parent/auth/login
 	 * parent µÇÂ¼ 
-	 * @param email ÓÊÏä
+	 * @param mobile ÓÊÏä
 	 * @param password µÇÂ¼ÃÜÂë
 	 * @return ·µ»ØµÇÂ¼¶ÔÏóLoginViewDTO
 	 */
 	@RequestMapping("/login")
 	@ResponseBody
-	public ViewDTO<LoginViewDTO> login(String email,String password){
+	public ViewDTO<LoginViewDTO> login(String mobile,String password){
 		//logger.info("user login:" + email );
-		ViewDTO<LoginViewDTO> view = authService.login(email,password);
+		ViewDTO<LoginViewDTO> view = authService.login(mobile,password);
 		
 		return view;
 	}
 	
 	/**
 	 * /parent/auth/isFirstLogin
-	 * @param email µÇÂ¼ÓÊÏä
+	 * @param mobile µÇÂ¼ÊÖ»ú
 	 * @param password µÇÂ¼ÃÜÂë
 	 * @return ·µ»ØÊÇ·ñÊÇµÚÒ»´ÎµÇÂ¼IsFirstLoginViewDTO
 	 */
 	@RequestMapping("/isFirstLogin")
 	@ResponseBody
-	public ViewDTO<IsFirstLoginViewDTO> isFristLogin(String email,String password) {
+	public ViewDTO<IsFirstLoginViewDTO> isFristLogin(String mobile,String password) {
 		//logger.info("user email:" + email );
 		
-		ViewDTO<IsFirstLoginViewDTO> view = authService.isFirstLogin(email,password);
+		ViewDTO<IsFirstLoginViewDTO> view = authService.isFirstLogin(mobile,password);
 		
 		return view;
 	}

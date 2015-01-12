@@ -57,6 +57,30 @@ public class ParentChildServiceImpl extends BaseServiceImpl implements IParentCh
 		}
 		
 	}
+	
+
+	@Override
+	public void addRelationship(Integer parentId, Integer childId)
+			throws ServiceException {
+		/* check whether relationship between parent and child has been created
+		 * if created: only update their relationship
+		 * if not created : create relationship
+		 */
+		
+		ParentChild parentChild = getRelationship(parentId,childId);
+		
+		if( parentChild == null ){
+			// has not created, create one for them
+			parentChild = new ParentChild();
+			parentChild.setChildId(childId);
+			parentChild.setParentId(parentId);
+			parentChild.setCreateTime(new Date());
+			
+			parentChildMapper.insert(parentChild);
+		}		
+	}
+
+
 
 	private ParentChild getRelationship(Integer parentId, Integer childId) {
 		ParentChildExample example = new ParentChildExample();

@@ -2,9 +2,9 @@ package eden.sun.childrenguard.server.dto;
 
 public class IsFirstLoginViewDTO {
 	/**
-	 * parent 登录 email
+	 * parent 登录 mobile
 	 */
-	private String email;
+	private String mobile;
 	/**
 	 * 是否是第一次登录
 	 */
@@ -15,11 +15,11 @@ public class IsFirstLoginViewDTO {
 	 */
 	private String legalInfo;
 	
-	public String getEmail() {
-		return email;
+	public String getMobile() {
+		return mobile;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
 	}
 	public boolean isFirstLogin() {
 		return firstLogin;

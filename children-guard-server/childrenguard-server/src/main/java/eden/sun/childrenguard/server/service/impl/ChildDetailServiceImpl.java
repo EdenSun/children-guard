@@ -281,7 +281,8 @@ public class ChildDetailServiceImpl extends BaseServiceImpl implements IChildDet
 		try {
 			Integer presetLockId = childId;
 			
-			PresetLock presetLock = new PresetLock(presetLockId);
+			PresetLock presetLock = new PresetLock();
+			presetLock.setId(presetLockId);
 			fillData(presetLock,applyPresetLockParam);
 			presetLockService.saveOrUpdate(presetLock);
 			

@@ -8,16 +8,19 @@ import eden.sun.childrenguard.server.exception.ServiceException;
 
 public interface IAuthService {
 
-	ViewDTO<LoginViewDTO> login(String email, String password)throws ServiceException;
+	ViewDTO<LoginViewDTO> login(String mobile, String password)throws ServiceException;
 
 	ViewDTO<RegisterViewDTO> register(String imei,String firstName, String lastName,
 			String email, String password)throws ServiceException;
 
 	ViewDTO<String> resetPasswordByMail(String email)throws ServiceException;
 
-	ViewDTO<IsFirstLoginViewDTO> isFirstLogin(String email, String password)throws ServiceException;
+	ViewDTO<IsFirstLoginViewDTO> isFirstLogin(String mobile, String password)throws ServiceException;
 
 	ViewDTO<String> changePassword(String imei, String resetCode,
+			String password)throws ServiceException;
+
+	ViewDTO<RegisterViewDTO> register(String imei, String mobile,
 			String password)throws ServiceException;
 
 	

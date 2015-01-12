@@ -15,4 +15,6 @@ public interface IParentChildService {
 
 	List<Parent> getParentByChildId(Integer childId)throws ServiceException;
 
+	void addRelationship(Integer parentId, Integer childId)throws ServiceException;
+
 }
