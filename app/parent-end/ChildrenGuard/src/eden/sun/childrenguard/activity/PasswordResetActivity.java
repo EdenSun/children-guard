@@ -70,7 +70,7 @@ public class PasswordResetActivity extends CommonActivity {
 						    	
 								if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
 									String title = "Find Your Password";
-									String msg = "Password has been sent to your mobile.");
+									String msg = "Password has been sent to your mobile.";
 									String btnText = "Ok";
 									
 									AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(

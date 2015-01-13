@@ -116,7 +116,7 @@ public class PushMessageManageActivity extends CommonActionBarActivity  {
 		        switch (index) {
 			        case 0:
 			            // delete
-			        	PushMessageListItemView selected = (PushMessageListItemView)pushMsgListAdapter.getItem(index);
+			        	PushMessageListItemView selected = (PushMessageListItemView)pushMsgListAdapter.getItem(position);
 			        	
 			        	doDeletePushMessage(selected.getId());
 			            break;

@@ -210,6 +210,11 @@
                 android:value="eden.sun.childrenguard.activity.CommonActionBarActivity" />
         </activity> -->
         
+        <activity
+            android:name=".activity.PushMessageManageActivity"
+            android:label="@string/actionbar_title_messages">
+        </activity>
+        
     </application>
 
 </manifest>

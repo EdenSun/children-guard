@@ -87,7 +87,7 @@ public class PushMessageServiceImpl extends BaseServiceImpl implements IPushMess
 		Criteria criteria = example.createCriteria();
 		criteria.andOwnerIdEqualTo(ownerId);
 		
-		return pushMessageMapper.selectByExample(example);
+		return pushMessageMapper.selectByExampleWithBLOBs(example);
 	}
 	
 	@Override

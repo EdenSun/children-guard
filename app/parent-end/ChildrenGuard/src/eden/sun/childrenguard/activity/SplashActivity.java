@@ -64,7 +64,7 @@ public class SplashActivity extends CommonActivity {
     public void doLogin(final String account ,final String password){
 		// do login
 		String url = String.format(
-				Config.BASE_URL_MVC + RequestURLConstants.URL_LOGIN + "?email=%1$s&password=%2$s",  
+				Config.BASE_URL_MVC + RequestURLConstants.URL_LOGIN + "?mobile=%1$s&password=%2$s",  
 				account,  
 				password);  
 

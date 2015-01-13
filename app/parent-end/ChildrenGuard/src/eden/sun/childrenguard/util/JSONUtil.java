@@ -153,4 +153,8 @@ public class JSONUtil {
 		return gson.fromJson(json, new TypeToken<ViewDTO<PushMessageViewDTO>>(){}.getType());
 	}
 
+	public static ViewDTO<Boolean> getSendPwdToMobileView(String json) {
+		return gson.fromJson(json, new TypeToken<ViewDTO<Boolean>>(){}.getType());
+	}
+
 }

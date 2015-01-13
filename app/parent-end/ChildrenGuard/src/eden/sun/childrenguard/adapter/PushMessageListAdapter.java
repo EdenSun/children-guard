@@ -45,12 +45,13 @@ public class PushMessageListAdapter extends BaseAdapter {
         	vi = inflater.inflate(R.layout.list_row_push_message_list, null);
         }
  
-        
+        TextView titleTv = (TextView)vi.findViewById(R.id.titleTv);
         TextView contentTv = (TextView)vi.findViewById(R.id.contentTv);
         TextView timeTv = (TextView)vi.findViewById(R.id.timeTv);
         
         PushMessageListItemView pushMsg = data.get(position);
  
+        titleTv.setText(pushMsg.getTitle());
         contentTv.setText(pushMsg.getContent());
         timeTv.setText(pushMsg.getCreateTime());
         
