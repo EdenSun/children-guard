@@ -8,7 +8,12 @@ public class RequestURLConstants {
 	public static final String URL_LIST_ADD_CHILD = "parent/childrenManage/addChild";
 	public static final String URL_DELETE_CHILD = "parent/childrenManage/deleteChild";
 	public static final String URL_REGISTER = "parent/reg/register";
+	
+	/********* Reset password ***************/
 	public static final String URL_RESET_PASSWORD = "parent/reset/passwordReset";
+	public static final String URL_RESET_SEND_PWD_TO_MOBILE = "parent/reset/sendPwdToMobile";
+	/****************************************/
+	
 	public static final String URL_LIST_ALL_RELATIONSHIP = "parent/relationship/listAll";
 	public static final String URL_GET_CHILD_BASIC_INFO = "parent/childrenManage/basicInfo";
 	public static final String URL_LIST_CHILD_APP = "parent/childrenManage/listChildApp";

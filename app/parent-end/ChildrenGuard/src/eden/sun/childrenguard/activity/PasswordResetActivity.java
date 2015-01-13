@@ -7,8 +7,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -21,17 +19,16 @@ import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
-import eden.sun.childrenguard.util.RegexHelper;
 import eden.sun.childrenguard.util.RequestURLConstants;
 import eden.sun.childrenguard.util.StringUtil;
 import eden.sun.childrenguard.util.UIUtil;
 
 public class PasswordResetActivity extends CommonActivity {
 	/* UI Components */
-	private Button resetBtn;
+	private Button getPasswordBtn;
 	private Button backBtn;
 	
-	private EditText emailEditText;
+	private EditText mobileEditText;
 	/* END - UI Components */
 	
 	@Override
@@ -39,27 +36,24 @@ public class PasswordResetActivity extends CommonActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_password_reset);
 		
-		emailEditText = (EditText)findViewById(R.id.emailEditText);
+		mobileEditText = (EditText)findViewById(R.id.mobileEditText);
 		
-		resetBtn = (Button)findViewById(R.id.resetBtn);
-		resetBtn.setOnClickListener(new OnClickListener(){
+		getPasswordBtn = (Button)findViewById(R.id.getPasswordBtn);
+		getPasswordBtn.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View arg0) {
 				boolean isPassed = doValidation();
 				
 				if( isPassed ){
-					String email = UIUtil.getEditTextValue(emailEditText);
+					String mobile = UIUtil.getEditTextValue(mobileEditText);
 					
 					Map<String, String> data = new HashMap<String,String>();
-					data.put("email", email);
+					data.put("mobile", mobile);
 					
-					/*AsyncTask<Map<String, Object>,Integer,Boolean> task = new PasswordResetTask(PasswordResetActivity.this);
-					task.execute(data);*/
-					
-					String url = Config.BASE_URL_MVC + RequestURLConstants.URL_RESET_PASSWORD;
+					String url = Config.BASE_URL_MVC + RequestURLConstants.URL_RESET_SEND_PWD_TO_MOBILE;
 	  
-					String title = "Reset Password";
+					String title = "Find Your Password";
 					String msg = "Please wait...";
 					showProgressDialog(title,msg);
 					
@@ -72,12 +66,12 @@ public class PasswordResetActivity extends CommonActivity {
 							public void onResponse(String response) {
 								dismissProgressDialog();
 								
-								final ViewDTO<String> view = JSONUtil.getPasswordResetView(response);
+								final ViewDTO<Boolean> view = JSONUtil.getSendPwdToMobileView(response);
 						    	
 								if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
-									String title = "Reset Password";
-									String msg = view.getData();
-									String btnText = "Go Reset Password";
+									String title = "Find Your Password";
+									String msg = "Password has been sent to your mobile.");
+									String btnText = "Ok";
 									
 									AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
 										PasswordResetActivity.this,
@@ -89,8 +83,6 @@ public class PasswordResetActivity extends CommonActivity {
 								            public void onClick(DialogInterface dialog, int which) {
 								            	dialog.dismiss();
 								            	
-								            	Intent it = new Intent(PasswordResetActivity.this, ChangePasswordActivity.class);
-								            	PasswordResetActivity.this.startActivity(it);   
 												PasswordResetActivity.this.finish();
 								            }
 								        }
@@ -143,11 +135,11 @@ public class PasswordResetActivity extends CommonActivity {
 	}
 
 	private boolean doValidation() {
-		String email = emailEditText.getText().toString().trim();
+		String mobile = UIUtil.getEditTextValue(mobileEditText);
 		
-		if( StringUtil.isBlank(email) ){
+		if( StringUtil.isBlank(mobile) ){
 			String title = "Reset Password";
-			String msg = "Please input your email.";
+			String msg = "Please input your mobile.";
 			String btnText = "OK";
 			
 			AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
@@ -165,71 +157,9 @@ public class PasswordResetActivity extends CommonActivity {
 			
 			dialog.show();
 			return false;
-		}else{
-			if( !RegexHelper.isEmail(email) ){
-				String title = "Register";
-				String msg = "Email format is incorrect.";
-				String btnText = "OK";
-				
-				AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
-					PasswordResetActivity.this,
-					title,
-					msg,
-					btnText,
-					new DialogInterface.OnClickListener() {
-			            @Override
-			            public void onClick(DialogInterface dialog, int which) {
-			            	dialog.dismiss();
-			            }
-			        }
-				);
-				
-				dialog.show();
-				return false;
-			}
 		}
 		
 		return true;
 	}
 	
-	/*@Override
-	protected void onStart() {
-		super.onStart();
-		
-		runtime.subscribe(CometdConfig.PASSWORD_RESET_CHANNEL,new PasswordResetListener(PasswordResetActivity.this));
-	}*/
-	
-	/*class PasswordResetTask extends AsyncTask<Map<String, Object>,Integer,Boolean>{
-		private Activity context;
-		
-		public PasswordResetTask(Activity context) {
-			super();
-			this.context = context;
-		}
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			String title = "Login";
-			String msg = "Please wait...";
-			showProgressDialog(title,msg);
-		}
-
-		@Override
-		protected Boolean doInBackground(
-				Map<String, Object>... params) {
-			Map<String, Object> data = params[0];
-			
-			runtime.publish(data, CometdConfig.PASSWORD_RESET_CHANNEL,new PasswordResetListener(PasswordResetActivity.this));
-			return true;
-		}
-
-		@Override
-		protected void onPostExecute(Boolean result) {
-			super.onPostExecute(result);
-			
-			dismissProgressDialog();
-		}
-		
-	}*/
 }
