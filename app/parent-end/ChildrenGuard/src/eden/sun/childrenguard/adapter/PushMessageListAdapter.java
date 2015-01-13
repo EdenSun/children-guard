@@ -72,6 +72,7 @@ public class PushMessageListAdapter extends BaseAdapter {
 
 	private void addPushMessageItem(PushMessageViewDTO viewDto) {
 		PushMessageListItemView itemView = new PushMessageListItemView();
+		itemView.setTitle(viewDto.getTitle());
 		itemView.setContent(viewDto.getContent());
 		itemView.setCreateTime(DateUtil.dateToString( viewDto.getCreateTime() ) );
 		itemView.setId(viewDto.getId());

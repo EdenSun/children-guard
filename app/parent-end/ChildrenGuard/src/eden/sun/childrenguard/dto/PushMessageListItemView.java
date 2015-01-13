@@ -2,6 +2,7 @@ package eden.sun.childrenguard.dto;
 
 public class PushMessageListItemView {
 	private Integer id;
+	private String title;
 	private String content;
 	private String createTime;
 	public Integer getId() {
@@ -9,6 +10,13 @@ public class PushMessageListItemView {
 	}
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	public String getContent() {
 		return content;

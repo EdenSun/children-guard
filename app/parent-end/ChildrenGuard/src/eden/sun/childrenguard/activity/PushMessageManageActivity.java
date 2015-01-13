@@ -59,7 +59,7 @@ public class PushMessageManageActivity extends CommonActionBarActivity  {
 	                int position, long id) {
 	        	PushMessageListItemView msg = (PushMessageListItemView)pushMsgListAdapter.getItem(position);
 	        	
-	        	String title = "Message";
+	        	String title = msg.getTitle();
 	        	String content = msg.getContent() + "(" + msg.getCreateTime() + ")";
 	        	String leftBtnText = "Close";
 	        	AlertDialog.Builder builder = 
@@ -82,7 +82,6 @@ public class PushMessageManageActivity extends CommonActionBarActivity  {
 	    
 	    // load message list
 	    loadPushMessageList();
-	    
 	}
 	
 	private void initSwipeList() {
@@ -137,7 +136,8 @@ public class PushMessageManageActivity extends CommonActionBarActivity  {
 		showProgressDialog(title,msg);	
 		
 		Map<String, String> params = new HashMap<String,String>();
-		params.put("messageId", messageId.toString());
+		params.put("accessToken", getAccessToken());
+		params.put("pushMessageId", messageId.toString());
 		
 		getRequestHelper().doPost(
 			url,
@@ -213,8 +213,7 @@ public class PushMessageManageActivity extends CommonActionBarActivity  {
 				    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
 							List<PushMessageViewDTO> pushMessageList = view.getData();
 							
-							PushMessageListAdapter pushMessageListAdapter = PushMessageManageActivity.this.getPushMsgListAdapter();
-							pushMessageListAdapter.reloadData(pushMessageList);
+							pushMsgListAdapter.reloadData(pushMessageList);
 							
 						}else{
 							AlertDialog.Builder dialog = UIUtil.getErrorDialog(PushMessageManageActivity.this,view.getInfo());
@@ -236,8 +235,5 @@ public class PushMessageManageActivity extends CommonActionBarActivity  {
 		return list;
 	}
 
-	public PushMessageListAdapter getPushMsgListAdapter() {
-		return pushMsgListAdapter;
-	}
 
 }
