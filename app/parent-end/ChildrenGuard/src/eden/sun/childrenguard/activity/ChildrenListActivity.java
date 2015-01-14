@@ -65,7 +65,7 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 	        @Override
 	        public void onItemClick(AdapterView<?> parent, View view,
 	                int position, long id) {
-	        	Intent intent = new Intent(ChildrenListActivity.this,ChildrenManageActivity.class);
+	        	Intent intent = new Intent(ChildrenListActivity.this,PersonManageActivity.class);
 	        	
 	        	ChildrenListItemView child = (ChildrenListItemView)childrenListAdapter.getItem(position);
 	        	
@@ -292,12 +292,12 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 			startActivity(intent);
 			ChildrenListActivity.this.finish();
 			return true;
-		} else if( id == R.id.action_children_list_messages ){
+		}/* else if( id == R.id.action_children_list_messages ){
 			Intent intent = new Intent(ChildrenListActivity.this,PushMessageManageActivity.class);
 			startActivity(intent);
 			
 			return true;
-		}
+		}*/
 		return super.onOptionsItemSelected(item);
 	}
 	

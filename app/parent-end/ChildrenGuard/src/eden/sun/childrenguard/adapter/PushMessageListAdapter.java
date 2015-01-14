@@ -98,4 +98,22 @@ public class PushMessageListAdapter extends BaseAdapter {
 		this.notifyDataSetChanged();
 	}
  
+	
+	public void toggleSelection(int position) {
+		selectView(position, !mSelectedItemsIds.get(position));
+	}
+ 
+	public void removeSelection() {
+		mSelectedItemsIds = new SparseBooleanArray();
+		notifyDataSetChanged();
+	}
+ 
+	public void selectView(int position, boolean value) {
+		if (value)
+			mSelectedItemsIds.put(position, value);
+		else
+			mSelectedItemsIds.delete(position);
+		notifyDataSetChanged();
+	}
+	
 }

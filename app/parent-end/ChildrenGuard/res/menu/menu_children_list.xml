@@ -15,10 +15,10 @@
         android:title="@string/action_children_list_logout"
         app:showAsAction="ifRoom"/>
     
-    <item
+    <!-- <item
         android:id="@+id/action_children_list_messages"
         android:orderInCategory="100"
         android:title="@string/action_children_list_messages"
-        app:showAsAction="never"/>
+        app:showAsAction="never"/> -->
 
 </menu>

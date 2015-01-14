@@ -215,6 +215,11 @@
             android:label="@string/actionbar_title_messages">
         </activity>
         
+        <activity
+            android:name=".activity.PersonManageActivity"
+            android:label="@string/app_name">
+        </activity>
+        
     </application>
 
 </manifest>
