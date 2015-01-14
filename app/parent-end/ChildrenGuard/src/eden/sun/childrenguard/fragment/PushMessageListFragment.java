@@ -49,7 +49,7 @@ public class PushMessageListFragment extends CommonFragment{
 	    initList(vi);
 
 	    // Getting adapter by passing xml data ArrayList
-	    pushMsgListAdapter = new PushMessageListAdapter(getActivity(), pushMsgList);
+	    pushMsgListAdapter = new PushMessageListAdapter(getActivity(),R.layout.list_row_push_message_list, pushMsgList);
 	    list.setAdapter(pushMsgListAdapter);
 
 	    // Click event for single list row
@@ -114,7 +114,7 @@ public class PushMessageListFragment extends CommonFragment{
 					// Captures all selected ids with a loop
 					for (int i = (selected.size() - 1); i >= 0; i--) {
 						if (selected.valueAt(i)) {
-							WorldPopulation selecteditem = pushMsgListAdapter
+							PushMessageListItemView selecteditem = pushMsgListAdapter
 									.getItem(selected.keyAt(i));
 							// Remove selected items following the ids
 							pushMsgListAdapter.remove(selecteditem);
@@ -130,19 +130,17 @@ public class PushMessageListFragment extends CommonFragment{
  
 			@Override
 			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-				mode.getMenuInflater().inflate(R.menu.activity_main, menu);
+				mode.getMenuInflater().inflate(R.menu.fragment_push_message_list,menu);
 				return true;
 			}
  
 			@Override
 			public void onDestroyActionMode(ActionMode mode) {
-				// TODO Auto-generated method stub
 				pushMsgListAdapter.removeSelection();
 			}
  
 			@Override
 			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-				// TODO Auto-generated method stub
 				return false;
 			}
 		});

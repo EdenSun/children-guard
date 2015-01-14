@@ -1,8 +1,13 @@
 package eden.sun.childrenguard.adapter;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
+import org.jraf.android.backport.switchwidget.Switch;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,17 +18,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import eden.sun.childrenguard.R;
-import eden.sun.childrenguard.dto.PushMessageListItemView;
-import eden.sun.childrenguard.server.dto.PushMessageViewDTO;
+import eden.sun.childrenguard.dto.ScheduleLockListItemView;
+import eden.sun.childrenguard.server.dto.ScheduleLockListItemViewDTO;
 import eden.sun.childrenguard.util.DateUtil;
 
-public class PushMessageListAdapter extends ArrayAdapter<PushMessageListItemView> {
+public class ScheduleLockListAdapter  extends ArrayAdapter<ScheduleLockListItemView> {
     private Activity context;
-    private ArrayList<PushMessageListItemView> data;
+    private ArrayList<ScheduleLockListItemView> data;
     private static LayoutInflater inflater=null;
     private SparseBooleanArray mSelectedItemsIds;
     
-    public PushMessageListAdapter(Activity context, int resourceId,ArrayList<PushMessageListItemView> data) {
+    public ScheduleLockListAdapter(Activity context, int resourceId,ArrayList<ScheduleLockListItemView> data) {
     	super(context, resourceId, data);
         this.context = context;
         this.data=data;
@@ -35,7 +40,7 @@ public class PushMessageListAdapter extends ArrayAdapter<PushMessageListItemView
         return data.size();
     }
  
-    public PushMessageListItemView getItem(int position) {
+    public ScheduleLockListItemView getItem(int position) {
         return data.get(position);
     }
  
@@ -44,74 +49,68 @@ public class PushMessageListAdapter extends ArrayAdapter<PushMessageListItemView
     }
     
     private class ViewHolder {
-		TextView titleTv;
-		TextView contentTv;
-		TextView timeTv;
+    	TextView periodTv;
+    	TextView repeatTv;
+    	Switch switchBtn;
 	}
     
     public View getView(int position, View view, ViewGroup parent) {
     	final ViewHolder holder;
         if(view==null){
         	holder = new ViewHolder();
-        	view = inflater.inflate(R.layout.list_row_push_message_list, null);
+        	view = inflater.inflate(R.layout.list_row_schedule_lock_list, null);
         	
-			holder.titleTv = (TextView) view.findViewById(R.id.titleTv);
-			holder.contentTv = (TextView) view.findViewById(R.id.contentTv);
-			holder.timeTv = (TextView) view.findViewById(R.id.timeTv);
+			holder.periodTv = (TextView) view.findViewById(R.id.periodTv);
+			holder.repeatTv = (TextView) view.findViewById(R.id.repeatTv);
+			holder.switchBtn = (Switch) view.findViewById(R.id.switchBtn);
 			view.setTag(holder);
         } else {
 			holder = (ViewHolder) view.getTag();
 		}
  
-        PushMessageListItemView pushMsg = data.get(position);
+        ScheduleLockListItemView item = data.get(position);
  
-        holder.titleTv.setText(pushMsg.getTitle());
-        holder.contentTv.setText(pushMsg.getContent());
-        holder.timeTv.setText(pushMsg.getCreateTime());
+        holder.periodTv.setText(getPeriodTimeSummary(item.getStartTime(),item.getEndTime()));
+        holder.repeatTv.setText(item.getRepeatSummary());
+        holder.switchBtn.setChecked(item.getPresetOnOff());
         
         return view;
     }
 
-	public void reloadData(List<PushMessageViewDTO> msgList) {
+	private CharSequence getPeriodTimeSummary(Date startTime, Date endTime) {
+		if( startTime == null || endTime == null ){
+			return "";
+		}
+		
+		DateFormat df = new SimpleDateFormat("HH:mm");
+		
+		return df.format(startTime) + "-" + df.format(endTime);
+	}
+
+	public void reloadData(List<ScheduleLockListItemViewDTO> msgList) {
 		if( msgList == null ){
 			return ;
 		}
 		this.data.clear();
-		for(Iterator<PushMessageViewDTO> it = msgList.iterator();it.hasNext();){
-			PushMessageViewDTO msg = it.next();
-			addPushMessageItem(msg);
+		for(Iterator<ScheduleLockListItemViewDTO> it = msgList.iterator();it.hasNext();){
+			ScheduleLockListItemViewDTO msg = it.next();
+			addScheduleLockListItem(msg);
 		}
 		
 		this.notifyDataSetChanged();
 	}
 
-	private void addPushMessageItem(PushMessageViewDTO viewDto) {
-		PushMessageListItemView itemView = new PushMessageListItemView();
-		itemView.setTitle(viewDto.getTitle());
-		itemView.setContent(viewDto.getContent());
-		itemView.setCreateTime(DateUtil.dateToString( viewDto.getCreateTime() ) );
+	private void addScheduleLockListItem(ScheduleLockListItemViewDTO viewDto) {
+		ScheduleLockListItemView itemView = new ScheduleLockListItemView();
 		itemView.setId(viewDto.getId());
+		itemView.setPresetOnOff(viewDto.getPresetOnOff());
+		itemView.setRepeatSummary(viewDto.getRepeatSummary());
+		itemView.setStartTime(viewDto.getStartTime());
+		itemView.setEndTime(viewDto.getEndTime());
 		
 		data.add(itemView);
 	}
 
-	public void delete(PushMessageViewDTO deletedMsg) {
-		if( deletedMsg != null && data != null && data.size() > 0){
-			for(Iterator<PushMessageListItemView> it=data.iterator();it.hasNext();){
-				PushMessageListItemView item = (PushMessageListItemView)it.next();
-				if( item.getId() != null && item.getId().equals(deletedMsg.getId())){
-					it.remove();
-				}
-			}
-			
-			refresh();
-		}
-	}
-
-	public void refresh() {
-		this.notifyDataSetChanged();
-	}
- 
 	
 	public void toggleSelection(int position) {
 		selectView(position, !mSelectedItemsIds.get(position));
