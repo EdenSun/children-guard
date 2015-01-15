@@ -82,7 +82,7 @@ public class PushMessageListFragment extends CommonFragment{
 	    });
 	    
 	    // load message list
-	    loadPushMessageList();
+	    //loadPushMessageList();
 	    
 		return vi;
     }
@@ -250,9 +250,9 @@ public class PushMessageListFragment extends CommonFragment{
 				Config.BASE_URL_MVC + RequestURLConstants.URL_LIST_PUSH_MESSAGE + "?accessToken=%1$s",  
 				getAccessToken());  
 
-	    String title = "Message List";
+	   /* String title = "Message List";
 		String msg = "Loading messages,please wait...";
-		showProgressDialog(title,msg);
+		showProgressDialog(title,msg);*/
 		
 		getRequestHelper().doGet(
 				url,
@@ -260,7 +260,7 @@ public class PushMessageListFragment extends CommonFragment{
 				new Response.Listener<String>() {
 					@Override
 					public void onResponse(String response) {
-						dismissProgressDialog();
+						//dismissProgressDialog();
 						
 				    	final ViewDTO<List<PushMessageViewDTO>> view = JSONUtil.getListPushMessageView(response);
 				    	
@@ -289,5 +289,13 @@ public class PushMessageListFragment extends CommonFragment{
 		return list;
 	}
 
+
+	@Override
+	public void onResume() {
+		loadPushMessageList();
+		super.onResume();
+	}
+
+	
 
 }

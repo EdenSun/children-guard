@@ -58,7 +58,7 @@ public class PresetLockActivity extends CommonActivity {
 	
 	/******* data *******/
 	private PresetLockViewDTO presetLockView;
-	private Integer childId;
+	private Integer presetLockId;
 	private Date startTime;
 	private Date endTime;
 	private List<Boolean> repeat;
@@ -72,7 +72,7 @@ public class PresetLockActivity extends CommonActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_preset_lock);
-		childId = getIntent().getIntExtra("childId", 0);
+		presetLockId = getIntent().getIntExtra("presetLockId", 0);
 	    
 		initComponent();
 	}
@@ -133,8 +133,8 @@ public class PresetLockActivity extends CommonActivity {
 		showProgressDialog(title,msg);
 		
 		String url = String.format(
-				Config.BASE_URL_MVC + RequestURLConstants.URL_LOAD_PRESET_LOCK_DATA + "?childId=%1$s",  
-				childId);
+				Config.BASE_URL_MVC + RequestURLConstants.URL_LOAD_PRESET_LOCK_BY_ID + "?presetLockId=%1$s",  
+				presetLockId);
 
 		getRequestHelper().doGet(
 			url,
@@ -517,7 +517,7 @@ public class PresetLockActivity extends CommonActivity {
 
 	private Map<String, String> getApplyPresetLockParams() {
 		Map<String, String> param = new HashMap<String,String>();
-		param.put("childId", childId.toString());
+		param.put("presetLockId", presetLockId.toString());
 		
 		ApplyPresetLockParam applyPresetLockParam = new ApplyPresetLockParam();
 		
@@ -544,8 +544,8 @@ public class PresetLockActivity extends CommonActivity {
 		showProgressDialog(title,msg);
 		
 		String url = String.format(
-				Config.BASE_URL_MVC + RequestURLConstants.URL_LIST_CHILD_PRESET_LOCK_APP + "?childId=%1$s",  
-				childId
+				Config.BASE_URL_MVC + RequestURLConstants.URL_LIST_CHILD_PRESET_LOCK_APP + "?presetLockId=%1$s",  
+				presetLockId
 				);  
 		
 		getRequestHelper().doGet(

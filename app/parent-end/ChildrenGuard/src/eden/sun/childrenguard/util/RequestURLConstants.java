@@ -33,15 +33,18 @@ public class RequestURLConstants {
 	/*****Preset Lock**********/
 	public static final String URL_LOAD_PRESET_LOCK_DATA = "parent/childrenManage/loadPresetLockData";
 	public static final String URL_APPLY_PRESET_LOCK = "parent/childrenManage/applyPresetLock";
+	
+	public static final String URL_LOAD_PRESET_LOCK_BY_ID = "parent/presetlock/loadPresetLockById";
+	public static final String URL_LIST_CHILD_PRESET_LOCK_APP = "parent/presetlock/listChildPresetLockAppByPresetLockId";
 	/**************************/
-	public static final String URL_LIST_CHILD_PRESET_LOCK_APP = "parent/childrenManage/listChildPresetLockApp";
 	
 	/***** Push Message ***********/
 	public static final String URL_LIST_PUSH_MESSAGE = "/parent/pushmsg/list";
 	public static final String URL_DELETE_PUSH_MESSAGE = "/parent/pushmsg/delete";
 	/******************************/
 	/***** Schedule Lock ***********/
-	public static final String URL_LIST_SCHEDULE_LOCK = "/parent/schedulelock/list";
-	public static final String URL_BATCH_DELETE_SCHEDULE_LOCK = "/parent/schedulelock/batchdelete";
+	public static final String URL_LIST_PRESET_LOCK = "/parent/presetlock/list";
+	public static final String URL_BATCH_DELETE_SCHEDULE_LOCK = "/parent/presetlock/batchdelete";
+	
 	
 }

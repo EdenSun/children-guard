@@ -15,11 +15,11 @@ import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.EmergencyContactViewDTO;
 import eden.sun.childrenguard.server.dto.IsFirstLoginViewDTO;
 import eden.sun.childrenguard.server.dto.LoginViewDTO;
+import eden.sun.childrenguard.server.dto.PresetLockListItemViewDTO;
 import eden.sun.childrenguard.server.dto.PresetLockViewDTO;
 import eden.sun.childrenguard.server.dto.PushMessageViewDTO;
 import eden.sun.childrenguard.server.dto.RegisterViewDTO;
 import eden.sun.childrenguard.server.dto.RelationshipViewDTO;
-import eden.sun.childrenguard.server.dto.ScheduleLockListItemViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.ApplyPresetLockParam;
 
@@ -158,9 +158,9 @@ public class JSONUtil {
 		return gson.fromJson(json, new TypeToken<ViewDTO<Boolean>>(){}.getType());
 	}
 
-	public static ViewDTO<List<ScheduleLockListItemViewDTO>> getListScheduleLockView(
+	public static ViewDTO<List<PresetLockListItemViewDTO>> getListPresetLockView(
 			String json) {
-		return gson.fromJson(json, new TypeToken<ViewDTO<List<ScheduleLockListItemViewDTO>>>(){}.getType());
+		return gson.fromJson(json, new TypeToken<ViewDTO<List<PresetLockListItemViewDTO>>>(){}.getType());
 	}
 
 }

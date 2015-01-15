@@ -79,16 +79,12 @@ public class SplashActivity extends CommonActivity {
 					ViewDTO<LoginViewDTO> view = JSONUtil.getLoginView(response);
 					
 					if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
-						Intent it = new Intent(SplashActivity.this, ChildrenListActivity.class);
-						startActivity(it);
-						
-						// finish splash activity
-						finish();
-
 						putStringShareData(ShareDataKey.PARENT_ACCESS_TOKEN,view.getData().getAccessToken());
 						
-						Toast toast = UIUtil.getToast(SplashActivity.this,"Login Success!");
-						toast.show();
+						Intent it = new Intent(SplashActivity.this, ChildrenListActivity.class);
+						startActivity(it);
+						// finish splash activity
+						finish();
 					}else{
 						toLoginActivity();
 					}

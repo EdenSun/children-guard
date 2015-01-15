@@ -8,7 +8,7 @@ import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.fragment.ChildBasicInfoFragment;
 import eden.sun.childrenguard.fragment.ChildManageMoreFragment;
 import eden.sun.childrenguard.fragment.PushMessageListFragment;
-import eden.sun.childrenguard.fragment.ScheduleLockListFragment;
+import eden.sun.childrenguard.fragment.PresetLockListFragment;
 
 public class PersonManageActivity extends CommonFragmentActivity {
 	public static final String TAG = "PersonManageActivity";
@@ -45,7 +45,7 @@ public class PersonManageActivity extends CommonFragmentActivity {
 	    	case 1:
 	    		return new ChildBasicInfoFragment();
 	    	case 2:
-	    		return new ScheduleLockListFragment();
+	    		return new PresetLockListFragment();
 	    	case 3:
 	    		return new ChildManageMoreFragment();
 	    	case 4:

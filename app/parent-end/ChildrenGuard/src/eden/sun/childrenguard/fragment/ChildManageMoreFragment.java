@@ -89,7 +89,7 @@ public class ChildManageMoreFragment extends CommonFragment{
         nicknameTextView.setText(getStringShareData( ShareDataKey.CHILD_NICKNAME ));
         
         // load setting data
-        loadSettingData();
+        //loadSettingData();
         
 		return v;
     }
@@ -140,6 +140,13 @@ public class ChildManageMoreFragment extends CommonFragment{
 
 	public MoreListAdapter getMoreListAdapter() {
 		return moreListAdapter;
+	}
+
+	@Override
+	public void onResume() {
+		// load setting data
+        loadSettingData();
+		super.onResume();
 	}
 	
 	
