@@ -37,4 +37,13 @@ public class PushMessageController extends BaseController{
 		return view;
 	}
 	
+	@RequestMapping("/batchdelete")
+	@ResponseBody
+	public ViewDTO<Boolean> batchdelete(String accessToken,Integer[] ids){
+		logger.info("delete called. accessToken:" + accessToken + " , ids:" + ids );
+		
+		ViewDTO<Boolean> view = pushMessageService.batchdelete(accessToken,ids);
+		return view;
+	}
+	
 }

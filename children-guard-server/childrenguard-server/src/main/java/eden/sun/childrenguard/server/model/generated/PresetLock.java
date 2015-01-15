@@ -27,6 +27,8 @@ public class PresetLock {
 
     private Boolean lockCallStatus;
 
+    private Integer childId;
+
     public Integer getId() {
         return id;
     }
@@ -121,5 +123,13 @@ public class PresetLock {
 
     public void setLockCallStatus(Boolean lockCallStatus) {
         this.lockCallStatus = lockCallStatus;
+    }
+
+    public Integer getChildId() {
+        return childId;
+    }
+
+    public void setChildId(Integer childId) {
+        this.childId = childId;
     }
 }

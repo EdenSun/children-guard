@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import eden.sun.childrenguard.server.dao.generated.PresetLockMapper;
 import eden.sun.childrenguard.server.dto.AppViewDTO;
+import eden.sun.childrenguard.server.dto.PresetLockListItemViewDTO;
 import eden.sun.childrenguard.server.dto.PresetLockViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.exception.ServiceException;
@@ -258,5 +259,24 @@ public class PresetLockServiceImpl implements IPresetLockService {
 		return null;
 	}*/
 	
+	
+	@Override
+	public ViewDTO<List<PresetLockListItemViewDTO>> listScheduleLock(
+			Integer childId) throws ServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ViewDTO<Boolean> batchDelete(Integer[] ids) throws ServiceException {
+		if( ids == null ){
+			throw new ServiceException("Parameter ids can not be null.");
+		}
+		
+		for(Integer id:ids){
+			
+		}
+		return null;
+	}
 	
 }

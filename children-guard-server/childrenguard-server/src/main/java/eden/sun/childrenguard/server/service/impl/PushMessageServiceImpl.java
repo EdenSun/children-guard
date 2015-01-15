@@ -128,6 +128,12 @@ public class PushMessageServiceImpl extends BaseServiceImpl implements IPushMess
 	private PushMessage getById(Integer pushMessageId) {
 		return pushMessageMapper.selectByPrimaryKey(pushMessageId);
 	}
-	
+
+	@Override
+	public ViewDTO<Boolean> batchdelete(String accessToken, Integer[] ids)
+			throws ServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

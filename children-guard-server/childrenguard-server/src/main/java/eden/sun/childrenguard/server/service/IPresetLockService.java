@@ -1,6 +1,9 @@
 package eden.sun.childrenguard.server.service;
 
+import java.util.List;
+
 import eden.sun.childrenguard.server.dto.PresetLockViewDTO;
+import eden.sun.childrenguard.server.dto.PresetLockListItemViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.exception.ServiceException;
 import eden.sun.childrenguard.server.model.generated.PresetLock;
@@ -16,5 +19,9 @@ public interface IPresetLockService {
 	PresetLock createIfNotExists(Integer presetLockId)throws ServiceException;
 
 	ViewDTO<PresetLockViewDTO> retrievePresetLockData(String imei)throws ServiceException;
+	
+	ViewDTO<List<PresetLockListItemViewDTO>> listScheduleLock(Integer childId)throws ServiceException;
+
+	ViewDTO<Boolean> batchDelete(Integer[] ids)throws ServiceException;
 	
 }

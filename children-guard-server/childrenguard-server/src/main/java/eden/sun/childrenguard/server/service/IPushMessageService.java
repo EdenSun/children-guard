@@ -12,4 +12,6 @@ public interface IPushMessageService {
 
 	ViewDTO<PushMessageViewDTO> delete(String accessToken, Integer pushMessageId)throws ServiceException;
 
+	ViewDTO<Boolean> batchdelete(String accessToken, Integer[] ids)throws ServiceException;
+
 }

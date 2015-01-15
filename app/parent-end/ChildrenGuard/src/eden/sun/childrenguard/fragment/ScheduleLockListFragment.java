@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
@@ -34,6 +35,7 @@ import eden.sun.childrenguard.util.UIUtil;
 
 public class ScheduleLockListFragment extends CommonFragment{
 	private static final String TAG = "ScheduleLockListFragment";
+	private Integer childId;
 	private ListView list;
 	private ScheduleLockListAdapter scheduleLockListAdapter;
 	
@@ -41,7 +43,10 @@ public class ScheduleLockListFragment extends CommonFragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View vi = inflater.inflate(R.layout.fragment_schedule_lock_list, container, false);
-
+		
+		Intent intent = this.getActivity().getIntent();
+		childId = intent.getIntExtra("childId",0);
+		
 		ArrayList<ScheduleLockListItemView> pushMsgList = new ArrayList<ScheduleLockListItemView>();
 	    
 	    initList(vi);

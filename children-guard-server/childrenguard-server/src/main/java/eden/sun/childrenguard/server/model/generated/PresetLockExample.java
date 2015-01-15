@@ -851,6 +851,66 @@ public class PresetLockExample {
             addCriterion("LOCK_CALL_STATUS not between", value1, value2, "lockCallStatus");
             return (Criteria) this;
         }
+
+        public Criteria andChildIdIsNull() {
+            addCriterion("CHILD_ID is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildIdIsNotNull() {
+            addCriterion("CHILD_ID is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildIdEqualTo(Integer value) {
+            addCriterion("CHILD_ID =", value, "childId");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildIdNotEqualTo(Integer value) {
+            addCriterion("CHILD_ID <>", value, "childId");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildIdGreaterThan(Integer value) {
+            addCriterion("CHILD_ID >", value, "childId");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("CHILD_ID >=", value, "childId");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildIdLessThan(Integer value) {
+            addCriterion("CHILD_ID <", value, "childId");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildIdLessThanOrEqualTo(Integer value) {
+            addCriterion("CHILD_ID <=", value, "childId");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildIdIn(List<Integer> values) {
+            addCriterion("CHILD_ID in", values, "childId");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildIdNotIn(List<Integer> values) {
+            addCriterion("CHILD_ID not in", values, "childId");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildIdBetween(Integer value1, Integer value2) {
+            addCriterion("CHILD_ID between", value1, value2, "childId");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("CHILD_ID not between", value1, value2, "childId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

@@ -40,4 +40,8 @@ public class RequestURLConstants {
 	public static final String URL_LIST_PUSH_MESSAGE = "/parent/pushmsg/list";
 	public static final String URL_DELETE_PUSH_MESSAGE = "/parent/pushmsg/delete";
 	/******************************/
+	/***** Schedule Lock ***********/
+	public static final String URL_LIST_SCHEDULE_LOCK = "/parent/schedulelock/list";
+	public static final String URL_BATCH_DELETE_SCHEDULE_LOCK = "/parent/schedulelock/batchdelete";
+	
 }
