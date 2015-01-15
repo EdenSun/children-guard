@@ -17,6 +17,8 @@ import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.exception.ServiceException;
 import eden.sun.childrenguard.server.model.generated.Child;
 import eden.sun.childrenguard.server.model.generated.PresetLock;
+import eden.sun.childrenguard.server.model.generated.PresetLockExample;
+import eden.sun.childrenguard.server.model.generated.PresetLockExample.Criteria;
 import eden.sun.childrenguard.server.service.IChildService;
 import eden.sun.childrenguard.server.service.IPresetLockAppService;
 import eden.sun.childrenguard.server.service.IPresetLockService;
@@ -263,8 +265,60 @@ public class PresetLockServiceImpl implements IPresetLockService {
 	@Override
 	public ViewDTO<List<PresetLockListItemViewDTO>> listScheduleLock(
 			Integer childId) throws ServiceException {
-		// TODO Auto-generated method stub
-		return null;
+		if( childId == null ){
+			throw new ServiceException("Parameter childId can not be null.");
+		}
+		
+		List<PresetLock> presetLockList = listByChildId(childId);
+		List<PresetLockListItemViewDTO> itemViewDtoList = trans2PresetLockListItemViewDtoList(presetLockList);
+		
+		ViewDTO<List<PresetLockListItemViewDTO>> view = new ViewDTO<List<PresetLockListItemViewDTO>>();
+		view.setData(itemViewDtoList);
+		return view;
+	}
+
+	private List<PresetLockListItemViewDTO> trans2PresetLockListItemViewDtoList(
+			List<PresetLock> presetLockList) {
+		if( presetLockList == null ){
+			return null;
+		}
+		
+		List<PresetLockListItemViewDTO> viewList = new ArrayList<PresetLockListItemViewDTO>();
+		
+		for(PresetLock presetLock: presetLockList){
+			PresetLockListItemViewDTO viewDto = trans2PresetLockListItemViewDto(presetLock);
+			if( viewDto != null ){
+				viewList.add(viewDto);
+			}
+		}
+		
+		return viewList;
+	}
+
+	private PresetLockListItemViewDTO trans2PresetLockListItemViewDto(
+			PresetLock presetLock) {
+		if( presetLock == null ){
+			return null;
+		}
+		
+		PresetLockListItemViewDTO view = new PresetLockListItemViewDTO();
+		view.setId(presetLock.getId());
+		view.setStartTime(presetLock.getStartTime());
+		view.setEndTime(presetLock.getEndTime());
+		view.setPresetOnOff(presetLock.getPresetOnOff());
+		
+		List<Boolean> repeatList = getRepeatList(presetLock); 
+		String repeatSummary = getRepeatSummary(repeatList); 
+		view.setRepeatSummary(repeatSummary);
+		return view;
+	}
+
+	private List<PresetLock> listByChildId(Integer childId) {
+		PresetLockExample example = new PresetLockExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andChildIdEqualTo(childId);
+		
+		return presetLockMapper.selectByExample(example);
 	}
 
 	@Override
@@ -274,9 +328,38 @@ public class PresetLockServiceImpl implements IPresetLockService {
 		}
 		
 		for(Integer id:ids){
-			
+			presetLockMapper.deleteByPrimaryKey(id);
 		}
-		return null;
+		
+		ViewDTO<Boolean> view = new ViewDTO<Boolean>();
+		view.setData(true);
+		return view;
 	}
+
+	@Override
+	public ViewDTO<PresetLockViewDTO> loadPresetLockById(Integer presetLockId)
+			throws ServiceException {
+		if( presetLockId == null ){
+			throw new ServiceException("Parameter presetLockId can not be null.");
+		}
+		
+		ViewDTO<PresetLockViewDTO> view = new ViewDTO<PresetLockViewDTO>();
+		PresetLock presetLock = this.getById(presetLockId);
+		
+		if( presetLock != null ){
+			List<AppViewDTO> appList = presetLockAppService.listAppListByPresetLockId(presetLock.getId());
+			
+			PresetLockViewDTO presetLockViewDTO = trans2PresetLockViewDTO(presetLock,appList);
+			view.setData(presetLockViewDTO);
+			
+			return view;
+		}else{
+			view.setMsg(ViewDTO.MSG_ERROR);
+			view.setInfo("Schedule lock data is not exists.");
+			view.setData(null);
+			return view;
+		}
+	}
+	
 	
 }

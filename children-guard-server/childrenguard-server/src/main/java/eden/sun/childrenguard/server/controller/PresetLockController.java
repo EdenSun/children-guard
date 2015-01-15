@@ -13,14 +13,14 @@ import eden.sun.childrenguard.server.dto.PresetLockViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.ApplyPresetLockParam;
 import eden.sun.childrenguard.server.service.IChildDetailService;
-import eden.sun.childrenguard.server.service.IScheduleLockService;
+import eden.sun.childrenguard.server.service.IPresetLockService;
 import eden.sun.childrenguard.server.util.JSONUtil;
 
 @Controller
 @RequestMapping("/parent/presetlock")
 public class PresetLockController extends BaseController{
 	@Autowired
-	private IScheduleLockService scheduleLockService;
+	private IPresetLockService presetLockService;
 	
 	@Autowired
 	private IChildDetailService childDetailService;
@@ -30,7 +30,7 @@ public class PresetLockController extends BaseController{
 	public ViewDTO<List<PresetLockListItemViewDTO>> list(Integer childId){
 		logger.info("list called. childId:" + childId );
 		
-		ViewDTO<List<PresetLockListItemViewDTO>> view = scheduleLockService.listScheduleLock(childId);
+		ViewDTO<List<PresetLockListItemViewDTO>> view = presetLockService.listScheduleLock(childId);
 		return view;
 	}
 	
@@ -40,7 +40,7 @@ public class PresetLockController extends BaseController{
 	public ViewDTO<Boolean> batchdelete(Integer[] ids){
 		logger.info("batchdelete called. idList:" + ids );
 		
-		ViewDTO<Boolean> view = scheduleLockService.batchDelete(ids);
+		ViewDTO<Boolean> view = presetLockService.batchDelete(ids);
 		return view;
 	}
 	
@@ -95,4 +95,23 @@ public class PresetLockController extends BaseController{
 		
 		return view;
 	}
+	
+	
+	/**
+	 * /parent/presetlock/loadPresetLockData
+	 * 获取person 预设锁定的数据
+	 * @param childId person id
+	 * @return 返回预设锁定对象 PresetLockViewDTO
+	 */
+	@RequestMapping("/loadPresetLockById")
+	@ResponseBody
+	public ViewDTO<PresetLockViewDTO> loadPresetLockById(Integer presetLockId){
+		logger.info("loadPresetLockById called. presetLockId:" + presetLockId );
+		
+		ViewDTO<PresetLockViewDTO> view = presetLockService.loadPresetLockById(presetLockId);
+		
+		return view;
+		
+	}
+	
 }

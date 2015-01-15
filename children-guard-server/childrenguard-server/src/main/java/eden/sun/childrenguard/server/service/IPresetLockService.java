@@ -23,5 +23,7 @@ public interface IPresetLockService {
 	ViewDTO<List<PresetLockListItemViewDTO>> listScheduleLock(Integer childId)throws ServiceException;
 
 	ViewDTO<Boolean> batchDelete(Integer[] ids)throws ServiceException;
+
+	ViewDTO<PresetLockViewDTO> loadPresetLockById(Integer presetLockId)throws ServiceException;
 	
 }

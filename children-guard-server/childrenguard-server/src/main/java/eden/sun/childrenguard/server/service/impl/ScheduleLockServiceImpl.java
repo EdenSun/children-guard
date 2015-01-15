@@ -20,7 +20,7 @@ public class ScheduleLockServiceImpl extends BaseServiceImpl implements ISchedul
 	@Override
 	public ViewDTO<List<PresetLockListItemViewDTO>> listScheduleLock(
 			Integer childId) throws ServiceException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
