@@ -13,8 +13,19 @@
         android:id="@+id/action_children_list_out"
         android:orderInCategory="100"
         android:title="@string/action_children_list_logout"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="never"/>
     
+    <item
+        android:id="@+id/action_children_list_notifications"
+        android:orderInCategory="100"
+        android:title="@string/action_children_list_notifications"
+        app:showAsAction="never"/>
+    
+    <item
+        android:id="@+id/action_children_list_email_setting"
+        android:orderInCategory="100"
+        android:title="@string/action_children_list_email_setting"
+        app:showAsAction="never"/>
     <!-- <item
         android:id="@+id/action_children_list_messages"
         android:orderInCategory="100"

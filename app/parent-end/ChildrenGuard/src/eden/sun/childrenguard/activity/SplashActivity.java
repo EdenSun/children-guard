@@ -1,13 +1,14 @@
 package eden.sun.childrenguard.activity;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
 import cn.jpush.android.api.JPushInterface;
 
 import com.android.volley.Response;
@@ -25,8 +26,8 @@ import eden.sun.childrenguard.util.UIUtil;
 
 public class SplashActivity extends CommonActivity {
 	private final String TAG = "SplashActivity";
-	private TextView textView;
 	private Timer timer;
+	private boolean isLoginFailDialogShow = false;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +37,7 @@ public class SplashActivity extends CommonActivity {
         
         setContentView(R.layout.activity_splash);
         
-        textView = (TextView)findViewById(R.id.textView);
-        
-        
-        startTimer();
+        //startTimer();
     }
 
     
@@ -63,13 +61,14 @@ public class SplashActivity extends CommonActivity {
     
     public void doLogin(final String account ,final String password){
 		// do login
-		String url = String.format(
-				Config.BASE_URL_MVC + RequestURLConstants.URL_LOGIN + "?mobile=%1$s&password=%2$s",  
-				account,  
-				password);  
-
-		getRequestHelper().doGet(
+		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_LOGIN ;  
+		Map<String,String> param = new HashMap<String,String>();
+		param.put("mobile", account);
+		param.put("password", password);
+		
+		getRequestHelper().doPost(
 			url,
+			param,
 			this.getClass(),
 			new Response.Listener<String>() {
 				@Override
@@ -86,21 +85,54 @@ public class SplashActivity extends CommonActivity {
 						// finish splash activity
 						finish();
 					}else{
-						toLoginActivity();
+						//toLoginActivity();
+						onLoginFail();
 					}
 					
 				}
 
 			}, 
 			new Response.ErrorListener() {
-
 				@Override
 				public void onErrorResponse(VolleyError error) {
-					toLoginActivity();
+					//toLoginActivity();
+					onLoginFail();
 				}
 				
 			}
 		);
+	}
+    
+    private void onLoginFail() {
+    	isLoginFailDialogShow = true;
+    	
+    	String title = "Login";
+    	String msg = "Login failure,please make sure your network is available or try again later.";
+    	String leftBtnText = "Try Again";
+    	String rightBtnText = "Exit";
+		UIUtil.getAlertDialogWithTwoBtn(
+				SplashActivity.this, 
+				title, 
+				msg, 
+				leftBtnText, 
+				rightBtnText, 
+				new DialogInterface.OnClickListener(){
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						processLogin();
+					}
+					
+				}, 
+				new DialogInterface.OnClickListener(){
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						finish();
+						System.exit(0);
+					}
+					
+				}).show();
 	}
     
     private void startTimer() {
@@ -122,7 +154,9 @@ public class SplashActivity extends CommonActivity {
 		super.onResume();
 		JPushInterface.onResume(this);
 		
-		startTimer();
+		if( !isLoginFailDialogShow ){
+			startTimer();
+		}
 	}
 
 

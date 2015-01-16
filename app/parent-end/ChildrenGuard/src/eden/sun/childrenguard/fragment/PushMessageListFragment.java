@@ -7,21 +7,22 @@ import java.util.Map;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.SparseBooleanArray;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.baoyz.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
 
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.adapter.PushMessageListAdapter;
@@ -36,7 +37,7 @@ import eden.sun.childrenguard.util.UIUtil;
 
 public class PushMessageListFragment extends CommonFragment{
 	private static final String TAG = "PushMessageListFragment";
-	private ListView list;
+	private SwipeMenuListView list;
 	private PushMessageListAdapter pushMsgListAdapter;
 	
 	@Override
@@ -61,7 +62,7 @@ public class PushMessageListFragment extends CommonFragment{
 	        	PushMessageListItemView msg = (PushMessageListItemView)pushMsgListAdapter.getItem(position);
 	        	
 	        	String title = msg.getTitle();
-	        	String content = msg.getContent() + "(" + msg.getCreateTime() + ")";
+	        	String content = msg.getContent();
 	        	String leftBtnText = "Close";
 	        	AlertDialog.Builder builder = 
 	        			UIUtil.getAlertDialogWithOneBtn(
@@ -89,65 +90,8 @@ public class PushMessageListFragment extends CommonFragment{
 	
 	
 	private void initList(View vi) {
-		list=(ListView)vi.findViewById(R.id.list);
-		list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-		list.setMultiChoiceModeListener(new MultiChoiceModeListener() {
-			 
-			@Override
-			public void onItemCheckedStateChanged(ActionMode mode,
-					int position, long id, boolean checked) {
-				// Capture total checked items
-				final int checkedCount = list.getCheckedItemCount();
-				// Set the CAB title according to total checked items
-				mode.setTitle(checkedCount + " Selected");
-				// Calls toggleSelection method from ListViewAdapter Class
-				pushMsgListAdapter.toggleSelection(position);
-			}
- 
-			@Override
-			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-				switch (item.getItemId()) {
-				case R.id.delete:
-					// Calls getSelectedIds method from ListViewAdapter Class
-					SparseBooleanArray selected = pushMsgListAdapter
-							.getSelectedIds();
-					// Captures all selected ids with a loop
-					for (int i = (selected.size() - 1); i >= 0; i--) {
-						if (selected.valueAt(i)) {
-							PushMessageListItemView selecteditem = pushMsgListAdapter
-									.getItem(selected.keyAt(i));
-							// Remove selected items following the ids
-							pushMsgListAdapter.remove(selecteditem);
-						}
-					}
-					// Close CAB
-					mode.finish();
-					return true;
-				default:
-					return false;
-				}
-			}
- 
-			@Override
-			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-				mode.getMenuInflater().inflate(R.menu.fragment_push_message_list,menu);
-				return true;
-			}
- 
-			@Override
-			public void onDestroyActionMode(ActionMode mode) {
-				pushMsgListAdapter.removeSelection();
-			}
- 
-			@Override
-			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-				return false;
-			}
-		});
-		
-		
-		
-		/*SwipeMenuCreator creator = new SwipeMenuCreator() {
+		list=(SwipeMenuListView)vi.findViewById(R.id.list);
+		SwipeMenuCreator creator = new SwipeMenuCreator() {
 
 		    @Override
 		    public void create(SwipeMenu menu) {
@@ -164,13 +108,13 @@ public class PushMessageListFragment extends CommonFragment{
 		        // add to menu
 		        menu.addMenuItem(deleteItem);
 		    }
-		};*/
+		};
 
 		// set creator
-		//list.setMenuCreator(creator);
+		list.setMenuCreator(creator);
 		
 		// click event
-		/*list.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+		list.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 		    @Override
 		    public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
 		        switch (index) {
@@ -184,7 +128,7 @@ public class PushMessageListFragment extends CommonFragment{
 		        // false : close the menu; true : not close the menu
 		        return false;
 		    }
-		});*/
+		});
 		    
 	}
 
@@ -250,9 +194,9 @@ public class PushMessageListFragment extends CommonFragment{
 				Config.BASE_URL_MVC + RequestURLConstants.URL_LIST_PUSH_MESSAGE + "?accessToken=%1$s",  
 				getAccessToken());  
 
-	   /* String title = "Message List";
+	    String title = "Message List";
 		String msg = "Loading messages,please wait...";
-		showProgressDialog(title,msg);*/
+		showProgressDialog(title,msg);
 		
 		getRequestHelper().doGet(
 				url,
@@ -260,8 +204,6 @@ public class PushMessageListFragment extends CommonFragment{
 				new Response.Listener<String>() {
 					@Override
 					public void onResponse(String response) {
-						//dismissProgressDialog();
-						
 				    	final ViewDTO<List<PushMessageViewDTO>> view = JSONUtil.getListPushMessageView(response);
 				    	
 				    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
@@ -274,7 +216,8 @@ public class PushMessageListFragment extends CommonFragment{
 				    		
 							dialog.show();
 						}
-						
+				    	
+				    	dismissProgressDialog();
 					}
 				}, 
 				new DefaultVolleyErrorHandler(PushMessageListFragment.this.getActivity())

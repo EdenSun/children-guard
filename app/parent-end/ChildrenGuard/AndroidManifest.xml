@@ -211,13 +211,13 @@
         </activity> -->
         
         <activity
-            android:name=".activity.PushMessageManageActivity"
-            android:label="@string/actionbar_title_messages">
+            android:name=".activity.PersonManageActivity"
+            android:label="@string/app_name">
         </activity>
         
         <activity
-            android:name=".activity.PersonManageActivity"
-            android:label="@string/app_name">
+            android:name=".activity.PushMessageListActivity"
+            android:label="@string/title_notifications">
         </activity>
         
     </application>

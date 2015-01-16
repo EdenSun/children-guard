@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
+import cn.jpush.android.data.s;
 
 import com.android.volley.Response;
 import com.baoyz.swipemenulistview.SwipeMenu;
@@ -30,6 +32,7 @@ import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.adapter.ChildrenListAdapter;
 import eden.sun.childrenguard.dto.ChildrenListItemView;
 import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
+import eden.sun.childrenguard.fragment.EmailSettingDialogFragment;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Config;
@@ -114,7 +117,7 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 		        switch (index) {
 			        case 0:
 			            // delete
-			        	ChildrenListItemView selected = (ChildrenListItemView)childrenListAdapter.getItem(index);
+			        	ChildrenListItemView selected = (ChildrenListItemView)childrenListAdapter.getItem(position);
 			        	
 			        	doDeletePerson(selected.getId());
 			            break;
@@ -292,13 +295,26 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 			startActivity(intent);
 			ChildrenListActivity.this.finish();
 			return true;
-		}/* else if( id == R.id.action_children_list_messages ){
-			Intent intent = new Intent(ChildrenListActivity.this,PushMessageManageActivity.class);
+		} else if( id == R.id.action_children_list_notifications ){
+			Intent intent = new Intent(ChildrenListActivity.this,PushMessageListActivity.class);
 			startActivity(intent);
 			
 			return true;
-		}*/
+		} else if( id == R.id.action_children_list_email_setting ){
+			Toast.makeText(ChildrenListActivity.this,"TTT",Toast.LENGTH_SHORT).show();
+			
+			showEmailSettingDialog();
+			return true;
+		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	private void showEmailSettingDialog() {
+		FragmentTransaction ft = getFragmentManager().beginTransaction();  
+        // Create and show the dialog.  
+		EmailSettingDialogFragment newFragment  = new EmailSettingDialogFragment();
+        
+        newFragment.show(ft, "emailSettingDialog");  		
 	}
 	
 	

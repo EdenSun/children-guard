@@ -168,7 +168,7 @@ public class ChildrenListAddActivity extends CommonActivity {
 	
 					if (view.getMsg().equals(ViewDTO.MSG_SUCCESS)) {
 	
-						new AlertDialog.Builder(ChildrenListAddActivity.this)
+						/*new AlertDialog.Builder(ChildrenListAddActivity.this)
 								.setIcon(android.R.drawable.ic_dialog_alert)
 								.setTitle("Add Child")
 								.setMessage("Add Child Success!")
@@ -188,8 +188,8 @@ public class ChildrenListAddActivity extends CommonActivity {
 														.finish();
 											}
 	
-						}).show();
-	
+						}).show();*/
+						onAddSuccess();
 					}else{
 			    		AlertDialog.Builder dialog = UIUtil.getErrorDialog(ChildrenListAddActivity.this,view.getInfo());
 			    		
@@ -198,12 +198,21 @@ public class ChildrenListAddActivity extends CommonActivity {
 					
 					
 				}
-				
+
 			}, new DefaultVolleyErrorHandler(ChildrenListAddActivity.this));
 		
 		}
 	}
 
+	private void onAddSuccess() {
+		resultIntent = new Intent();
+		resultIntent.putExtra("result", "success");
+		setResult(0,resultIntent);		
+		
+		ChildrenListAddActivity.this
+				.finish();
+	}
+	
 	private boolean doValidation() {
 		String mobile = UIUtil.getEditTextValue(mobileEditText);
 		String name = UIUtil.getEditTextValue(nameEditText);

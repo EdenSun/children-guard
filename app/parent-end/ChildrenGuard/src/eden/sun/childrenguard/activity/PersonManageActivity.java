@@ -7,8 +7,8 @@ import android.support.v4.view.ViewPager;
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.fragment.ChildBasicInfoFragment;
 import eden.sun.childrenguard.fragment.ChildManageMoreFragment;
-import eden.sun.childrenguard.fragment.PushMessageListFragment;
 import eden.sun.childrenguard.fragment.PresetLockListFragment;
+import eden.sun.childrenguard.fragment.PushMessageListFragment;
 
 public class PersonManageActivity extends CommonFragmentActivity {
 	public static final String TAG = "PersonManageActivity";

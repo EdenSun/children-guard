@@ -99,11 +99,11 @@ public class RequestHelper {
                 successlistener,
 		        errorListener) {
 		
-			@Override
+			/*@Override
 			public RetryPolicy getRetryPolicy() {
 				RetryPolicy retryPolicy = new DefaultRetryPolicy(5000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT); 
 		        return retryPolicy; 
-			};
+			};*/
 
 			protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
 				return finalParams;
@@ -132,5 +132,6 @@ public class RequestHelper {
 	public RequestQueue getImageQueue() {
 		return imageQueue;
 	}
-
+	
+	
 }
