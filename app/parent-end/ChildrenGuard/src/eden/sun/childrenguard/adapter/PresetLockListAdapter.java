@@ -20,6 +20,7 @@ import android.widget.TextView;
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.dto.ScheduleLockListItemView;
 import eden.sun.childrenguard.server.dto.PresetLockListItemViewDTO;
+import eden.sun.childrenguard.server.dto.PresetLockViewDTO;
 
 public class PresetLockListAdapter  extends ArrayAdapter<ScheduleLockListItemView> {
     private Activity context;
@@ -100,17 +101,24 @@ public class PresetLockListAdapter  extends ArrayAdapter<ScheduleLockListItemVie
 	}
 
 	private void addScheduleLockListItem(PresetLockListItemViewDTO viewDto) {
+		ScheduleLockListItemView itemView = trans2ScheduleLockListItemView(viewDto);
+		
+		data.add(itemView);
+	}
+
+	
+	
+	private ScheduleLockListItemView trans2ScheduleLockListItemView(
+			PresetLockListItemViewDTO viewDto) {
 		ScheduleLockListItemView itemView = new ScheduleLockListItemView();
 		itemView.setId(viewDto.getId());
 		itemView.setPresetOnOff(viewDto.getPresetOnOff());
 		itemView.setRepeatSummary(viewDto.getRepeatSummary());
 		itemView.setStartTime(viewDto.getStartTime());
 		itemView.setEndTime(viewDto.getEndTime());
-		
-		data.add(itemView);
+		return itemView;
 	}
 
-	
 	public void toggleSelection(int position) {
 		selectView(position, !mSelectedItemsIds.get(position));
 	}
@@ -134,6 +142,22 @@ public class PresetLockListAdapter  extends ArrayAdapter<ScheduleLockListItemVie
  
 	public SparseBooleanArray getSelectedIds() {
 		return mSelectedItemsIds;
+	}
+
+	public void delete(PresetLockViewDTO deleted) {
+		data.remove(trans2ScheduleLockListItemView(deleted));
+		notifyDataSetChanged();
+	}
+
+	private ScheduleLockListItemView trans2ScheduleLockListItemView(PresetLockViewDTO deleted) {
+		ScheduleLockListItemView view = new ScheduleLockListItemView();
+		view.setEndTime(deleted.getEndTime());
+		view.setId(deleted.getId());
+		view.setPresetOnOff(deleted.getPresetOnOff());
+		view.setRepeatSummary(deleted.getRepeatSummary());
+		view.setStartTime(deleted.getStartTime());
+		
+		return view;
 	}
 	
 }

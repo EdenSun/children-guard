@@ -45,6 +45,16 @@ public class PresetLockController extends BaseController{
 	}
 	
 	
+	@RequestMapping("/delete")
+	@ResponseBody
+	public ViewDTO<PresetLockViewDTO> delete(Integer childId,Integer presetLockId){
+		logger.info("delete called. childId:" + childId  + ",presetLockId:" + presetLockId);
+		
+		ViewDTO<PresetLockViewDTO> view = presetLockService.delete(childId,presetLockId);
+		return view;
+	}
+	
+	
 	/**
 	 * /parent/presetlock/loadPresetLockData
 	 * 获取person 预设锁定的数据
@@ -71,11 +81,11 @@ public class PresetLockController extends BaseController{
 	 */
 	@RequestMapping("/applyPresetLock")
 	@ResponseBody
-	public ViewDTO<Boolean> applyPresetLock(Integer childId,String applyPresetLockParamJson){
-		logger.info("applyPresetLock called. childId:" + childId + " ,applyPresetLockParam:" + applyPresetLockParamJson );
+	public ViewDTO<Boolean> applyPresetLock(Integer presetLockId,String applyPresetLockParamJson){
+		logger.info("applyPresetLock called. presetLockId:" + presetLockId + " ,applyPresetLockParam:" + applyPresetLockParamJson );
 		
 		ApplyPresetLockParam applyPresetLockParam = JSONUtil.getApplyPresetLockParam(applyPresetLockParamJson);
-		ViewDTO<Boolean> view = childDetailService.applyPresetLock(childId,applyPresetLockParam);
+		ViewDTO<Boolean> view = presetLockService.applyPresetLock(presetLockId,applyPresetLockParam);
 		
 		return view;
 		

@@ -36,9 +36,6 @@ public interface IChildDetailService {
 
 	ViewDTO<PresetLockViewDTO> loadPresetLockData(Integer childId)throws ServiceException;
 
-	ViewDTO<Boolean> applyPresetLock(Integer childId,
-			ApplyPresetLockParam applyPresetLockParam)throws ServiceException;
-
 	ViewDTO<List<AppViewDTO>> listChildPresetLockApp(Integer childId)throws ServiceException;
 
 

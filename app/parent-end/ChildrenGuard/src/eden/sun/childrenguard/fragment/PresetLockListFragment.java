@@ -32,7 +32,6 @@ import eden.sun.childrenguard.dto.ScheduleLockListItemView;
 import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
 import eden.sun.childrenguard.server.dto.PresetLockListItemViewDTO;
 import eden.sun.childrenguard.server.dto.PresetLockViewDTO;
-import eden.sun.childrenguard.server.dto.PushMessageViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
@@ -183,62 +182,6 @@ public class PresetLockListFragment extends CommonFragment{
 		});*/
 	}
 	
-	private void doDeletePushMessage(Integer messageId) {
-		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_DELETE_PUSH_MESSAGE;  
-
-		String title = "Delete Message";
-		String msg = "Please wait...";
-		showProgressDialog(title,msg);	
-		
-		Map<String, String> params = new HashMap<String,String>();
-		params.put("accessToken", getAccessToken());
-		params.put("pushMessageId", messageId.toString());
-		
-		getRequestHelper().doPost(
-			url,
-			params,
-			PresetLockListFragment.this.getClass(),
-			new Response.Listener<String>() {
-				@Override
-				public void onResponse(String response) {
-					dismissProgressDialog();
-					
-					final ViewDTO<PresetLockViewDTO> view = JSONUtil.getDeletePresetLockView(response);
-							
-					if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
-						Toast.makeText(PresetLockListFragment.this.getActivity(), "Schedule deleted", Toast.LENGTH_SHORT).show();
-						
-						PresetLockViewDTO deletedMsg = view.getData();
-						
-						if( deletedMsg != null ){
-							presetLockListAdapter.delete(deletedMsg);
-						}
-					}else{
-						String title = "Error";
-						String msg = view.getInfo();
-						String btnText = "OK";
-						
-						AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
-								PresetLockListFragment.this.getActivity(),
-							title,
-							msg,
-							btnText,
-							new DialogInterface.OnClickListener() {
-					            @Override
-					            public void onClick(DialogInterface dialog, int which) {
-					            	dialog.dismiss();
-					            }
-					        }
-						);
-						
-						dialog.show();
-					}
-				}
-
-			}, 
-			new DefaultVolleyErrorHandler(getActivity()));
-	}
-	
 	private void loadPresetLockList() {
 	    String url = String.format(
 				Config.BASE_URL_MVC + RequestURLConstants.URL_LIST_PRESET_LOCK + "?childId=%1$s",  
@@ -293,27 +236,27 @@ public class PresetLockListFragment extends CommonFragment{
 		showProgressDialog(title,msg);	
 		
 		Map<String, String> params = new HashMap<String,String>();
-		params.put("accessToken", getAccessToken());
-		params.put("pushMessageId", presetLockId.toString());
+		params.put("childId", childId.toString());
+		params.put("presetLockId", presetLockId.toString());
 		
 		getRequestHelper().doPost(
 			url,
 			params,
-			PushMessageListFragment.this.getClass(),
+			getActivity().getClass(),
 			new Response.Listener<String>() {
 				@Override
 				public void onResponse(String response) {
 					dismissProgressDialog();
 					
-					final ViewDTO<PushMessageViewDTO> view = JSONUtil.getDeletePushMessageView(response);
+					final ViewDTO<PresetLockViewDTO> view = JSONUtil.getDeletePresetLockView(response);
 							
 					if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
-						Toast.makeText(PushMessageListFragment.this.getActivity(), "Message deleted", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getActivity(), "Schedule deleted", Toast.LENGTH_SHORT).show();
 						
-						PushMessageViewDTO deletedMsg = view.getData();
+						PresetLockViewDTO deleted = view.getData();
 						
-						if( deletedMsg != null ){
-							pushMsgListAdapter.delete(deletedMsg);
+						if( deleted != null ){
+							presetLockListAdapter.delete(deleted);
 						}
 					}else{
 						String title = "Error";
@@ -321,7 +264,7 @@ public class PresetLockListFragment extends CommonFragment{
 						String btnText = "OK";
 						
 						AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
-							PushMessageListFragment.this.getActivity(),
+							getActivity(),
 							title,
 							msg,
 							btnText,

@@ -2,6 +2,7 @@ package eden.sun.childrenguard.activity;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -193,12 +194,14 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 
 	private MenuItem lockAllAppMenu;
 	private MenuItem unlockAllAppMenu;
+	private MenuItem addSchedule;
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.children_manage, menu);
 		lockAllAppMenu = menu.getItem(0);
 		unlockAllAppMenu = menu.getItem(1);
+		addSchedule = menu.getItem(2);
 		
 		initMenu();
 		
@@ -209,13 +212,17 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 		if(  mViewPager != null ){
 			lockAllAppMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 			unlockAllAppMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+			addSchedule.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 			
+			lockAllAppMenu.setVisible(false);
+			unlockAllAppMenu.setVisible(false);
+			addSchedule.setVisible(false);
+
 			if( mViewPager.getCurrentItem() == 1 ){
 				lockAllAppMenu.setVisible(true);
 				unlockAllAppMenu.setVisible(true);
-			}else{
-				lockAllAppMenu.setVisible(false);
-				unlockAllAppMenu.setVisible(false);
+			}else if( mViewPager.getCurrentItem() == 2 ){
+				addSchedule.setVisible(true);
 			}
 		}
 	}
@@ -262,13 +269,13 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 			});			
 			
 			return true;
-		}/*else if( id == R.id.presetLock ){
-			Log.d(TAG, "preset lock menu click.");
+		}else if( id == R.id.addSchedule ){
+			Log.d(TAG, "add schedule menu click.");
 			Intent intent = new Intent(this,PresetLockActivity.class);
-			intent.putExtra("childId", childId);
+			
 			startActivity(intent);
 			return true;
-		}*/
+		}
 		
 		return super.onOptionsItemSelected(item);
 	}

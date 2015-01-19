@@ -200,7 +200,7 @@
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity
             android:name="eden.sun.childrenguard.activity.PresetLockActivity"
-            android:label="@string/title_activity_preset_lock" />
+            android:label="@string/title_activity_schedule" />
         <!-- <activity
             android:name=".PresetLockActivity"
             android:label="@string/title_activity_preset_lock"

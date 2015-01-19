@@ -58,7 +58,8 @@ public class PresetLockActivity extends CommonActivity {
 	
 	/******* data *******/
 	private PresetLockViewDTO presetLockView;
-	private Integer presetLockId;
+	private int presetLockId;
+	private boolean isNew;
 	private Date startTime;
 	private Date endTime;
 	private List<Boolean> repeat;
@@ -73,7 +74,11 @@ public class PresetLockActivity extends CommonActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_preset_lock);
 		presetLockId = getIntent().getIntExtra("presetLockId", 0);
-	    
+	    if( presetLockId == 0 ){
+	    	isNew = true;
+	    }else{
+	    	isNew = false;
+	    }
 		initComponent();
 	}
 	
@@ -218,32 +223,36 @@ public class PresetLockActivity extends CommonActivity {
 
 			@Override
 			public void onClick(View arg0) {
-				
-				applyPresetLock(new Callback<ViewDTO<Boolean>>(){
-
-					@Override
-					public void execute(CallbackResult<ViewDTO<Boolean>> result) {
-						if( result.getData().getMsg().equals(ViewDTO.MSG_SUCCESS) ){
-							Toast.makeText(PresetLockActivity.this, "Success to apply preset lock.", Toast.LENGTH_SHORT).show();
-							
-							// TODO: save preset lock setting to local db
-							//..................
-							
-							
-							finish();
+				if( isNew ){
+					Toast.makeText(PresetLockActivity.this, "TODO: save new preset lock" , Toast.LENGTH_SHORT).show();
+				}else{
+					// apply preset lock
+					applyPresetLock(new Callback<ViewDTO<Boolean>>(){
+	
+						@Override
+						public void execute(CallbackResult<ViewDTO<Boolean>> result) {
+							if( result.getData().getMsg().equals(ViewDTO.MSG_SUCCESS) ){
+								Toast.makeText(PresetLockActivity.this, "Success to apply preset lock.", Toast.LENGTH_SHORT).show();
+								
+								// TODO: save preset lock setting to local db
+								//..................
+								
+								
+								finish();
+							}
 						}
-					}
-					
-				},
-				new Callback(){
-					@Override
-					public void execute(CallbackResult result) {
-						Toast.makeText(PresetLockActivity.this, "Sever error,failure to apply preset lock.", Toast.LENGTH_SHORT).show();
 						
-						finish();			
-					}
-					
-				});
+					},
+					new Callback(){
+						@Override
+						public void execute(CallbackResult result) {
+							Toast.makeText(PresetLockActivity.this, "Sever error,failure to apply preset lock.", Toast.LENGTH_SHORT).show();
+							
+							finish();			
+						}
+						
+					});
+				}
 				
 			}
 			
@@ -268,21 +277,22 @@ public class PresetLockActivity extends CommonActivity {
 		
 		presetOnOffSwitch = (Switch)actionView.findViewById(R.id.switchForActionBar);
 		
-		
-		loadPresetLock(new Callback<PresetLockViewDTO>(){
-
-			@Override
-			public void execute(CallbackResult<PresetLockViewDTO> result) {
-				presetLockView = result.getData();
+		if( !isNew ){
+			loadPresetLock(new Callback<PresetLockViewDTO>(){
 				
-				startTime = presetLockView.getStartTime();
-				endTime = presetLockView.getEndTime();
-				repeat = presetLockView.getRepeat();
-				initPresetLock(presetLockView);
-			}
-
-			
-		});
+				@Override
+				public void execute(CallbackResult<PresetLockViewDTO> result) {
+					presetLockView = result.getData();
+					
+					startTime = presetLockView.getStartTime();
+					endTime = presetLockView.getEndTime();
+					repeat = presetLockView.getRepeat();
+					initPresetLock(presetLockView);
+				}
+				
+				
+			});
+		}
 		return true;
 	}
 
@@ -517,7 +527,7 @@ public class PresetLockActivity extends CommonActivity {
 
 	private Map<String, String> getApplyPresetLockParams() {
 		Map<String, String> param = new HashMap<String,String>();
-		param.put("presetLockId", presetLockId.toString());
+		param.put("presetLockId", String.valueOf(presetLockId));
 		
 		ApplyPresetLockParam applyPresetLockParam = new ApplyPresetLockParam();
 		

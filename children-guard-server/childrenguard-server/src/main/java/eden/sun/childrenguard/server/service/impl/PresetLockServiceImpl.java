@@ -4,7 +4,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,18 +16,21 @@ import eden.sun.childrenguard.server.dto.AppViewDTO;
 import eden.sun.childrenguard.server.dto.PresetLockListItemViewDTO;
 import eden.sun.childrenguard.server.dto.PresetLockViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
+import eden.sun.childrenguard.server.dto.param.ApplyPresetLockParam;
 import eden.sun.childrenguard.server.exception.ServiceException;
 import eden.sun.childrenguard.server.model.generated.Child;
 import eden.sun.childrenguard.server.model.generated.PresetLock;
 import eden.sun.childrenguard.server.model.generated.PresetLockExample;
 import eden.sun.childrenguard.server.model.generated.PresetLockExample.Criteria;
 import eden.sun.childrenguard.server.service.IChildService;
+import eden.sun.childrenguard.server.service.IJPushService;
 import eden.sun.childrenguard.server.service.IPresetLockAppService;
 import eden.sun.childrenguard.server.service.IPresetLockService;
 import eden.sun.childrenguard.server.util.DataTypeUtil;
+import eden.sun.childrenguard.server.util.PushConstants;
 
 @Service
-public class PresetLockServiceImpl implements IPresetLockService {
+public class PresetLockServiceImpl extends BaseServiceImpl implements IPresetLockService {
 	@Autowired
 	private PresetLockMapper presetLockMapper;
 	@Autowired
@@ -33,6 +38,9 @@ public class PresetLockServiceImpl implements IPresetLockService {
 	
 	@Autowired
 	private IChildService childService;
+	
+	@Autowired
+	private IJPushService pushService;
 	
 	@Override
 	public ViewDTO<PresetLockViewDTO> loadPresetLockData(Integer childId)
@@ -358,6 +366,99 @@ public class PresetLockServiceImpl implements IPresetLockService {
 			view.setInfo("Schedule lock data is not exists.");
 			view.setData(null);
 			return view;
+		}
+	}
+
+	@Override
+	public ViewDTO<PresetLockViewDTO> delete(Integer childId,
+			Integer presetLockId) throws ServiceException {
+		if( childId == null || presetLockId == null ){
+			throw new ServiceException("Parameter childId or presetLockId can not be null.");
+		}
+		
+		PresetLock presetLock = presetLockMapper.selectByPrimaryKey(presetLockId);
+		
+		if( presetLock == null ){
+			throw new ServiceException("Preset Lock is not exists.");
+		}
+		
+		if( presetLock.getChildId() == null || !presetLock.getChildId().equals(childId) ){
+			
+		}
+		
+		// create view
+		ViewDTO<PresetLockViewDTO> view = new ViewDTO<PresetLockViewDTO>();
+		List<AppViewDTO> appList = presetLockAppService.listAppListByPresetLockId(presetLock.getId());
+		view.setData(trans2PresetLockViewDTO(presetLock, appList));
+		
+		// do delete
+		presetLockMapper.deleteByPrimaryKey(presetLockId);
+		return view;
+	}
+	
+	@Override
+	public ViewDTO<Boolean> applyPresetLock(Integer presetLockId,
+			ApplyPresetLockParam applyPresetLockParam) throws ServiceException {
+		if( presetLockId == null || applyPresetLockParam == null ){
+			throw new ServiceException("Parameter presetLockId or applyPresetLockParam can not be null.");
+		}
+		
+		ViewDTO<Boolean> view = new ViewDTO<Boolean>();
+		
+		try {
+			PresetLock presetLock = this.getById(presetLockId);
+			
+			fillData(presetLock,applyPresetLockParam);
+			saveOrUpdate(presetLock);
+			
+			// update locked app
+			presetLockAppService.updatePresetLockApp(presetLock.getId(),applyPresetLockParam.getAppIdList());
+			
+			if( applyPresetLockParam.getPresetOnOff() != null && applyPresetLockParam.getPresetOnOff().booleanValue() == true ){
+				//if preset lock switch is on , send message to child end app 
+				//push message to child
+				Child child = childService.getById(presetLock.getChildId());
+
+				if( child != null ){
+					String registionId = child.getRegistionId();
+					if( registionId != null ){
+						Map<String,String> extra = new HashMap<String,String>();
+						pushService.pushMessageToChildByRegistionId(registionId, PushConstants.MSG_CONTENT_PRESET_LOCK_SWITCH_ON, extra);
+					}
+				}
+			}
+			
+			
+			view.setData(true);
+			return view;
+		} catch (Exception e) {
+			logger.error("apply preset lock error.",e);
+			view.setData(false);
+			view.setMsg(ViewDTO.MSG_ERROR);
+			return view;
+		}
+	}
+	
+	private void fillData(PresetLock presetLock,
+			ApplyPresetLockParam applyPresetLockParam)throws ServiceException {
+		if( presetLock == null || applyPresetLockParam == null ){
+			return ;
+		}
+		
+		presetLock.setStartTime(applyPresetLockParam.getStartTime());
+		presetLock.setEndTime(applyPresetLockParam.getEndTime());
+		presetLock.setLockCallStatus(applyPresetLockParam.getLockCallStatus());
+		presetLock.setPresetOnOff(applyPresetLockParam.getPresetOnOff());
+		
+		List<Boolean> repeatList = applyPresetLockParam.getReapeat();
+		if( repeatList != null && repeatList.size() == 7 ){
+			presetLock.setRepeatMonday(repeatList.get(0));
+			presetLock.setRepeatTuesday(repeatList.get(1));
+			presetLock.setRepeatWednesday(repeatList.get(2));
+			presetLock.setRepeatThurday(repeatList.get(3));
+			presetLock.setRepeatFriday(repeatList.get(4));
+			presetLock.setRepeatSaturday(repeatList.get(5));
+			presetLock.setRepeatSunday(repeatList.get(6));
 		}
 	}
 	

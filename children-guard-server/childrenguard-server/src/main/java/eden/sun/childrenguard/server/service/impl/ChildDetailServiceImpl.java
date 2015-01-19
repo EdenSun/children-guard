@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import eden.sun.childrenguard.server.dao.generated.PresetLockMapper;
 import eden.sun.childrenguard.server.dto.AppViewDTO;
 import eden.sun.childrenguard.server.dto.ChildBasicInfoViewDTO;
 import eden.sun.childrenguard.server.dto.ChildExtraInfoViewDTO;
@@ -269,72 +270,6 @@ public class ChildDetailServiceImpl extends BaseServiceImpl implements IChildDet
 		return view;
 	}
 
-	@Override
-	public ViewDTO<Boolean> applyPresetLock(Integer childId,
-			ApplyPresetLockParam applyPresetLockParam) throws ServiceException {
-		if( childId == null || applyPresetLockParam == null ){
-			throw new ServiceException("Parameter childId or applyPresetLockParam can not be null.");
-		}
-		
-		ViewDTO<Boolean> view = new ViewDTO<Boolean>();
-		
-		try {
-			Integer presetLockId = childId;
-			
-			PresetLock presetLock = new PresetLock();
-			presetLock.setId(presetLockId);
-			fillData(presetLock,applyPresetLockParam);
-			presetLockService.saveOrUpdate(presetLock);
-			
-			// update locked app
-			presetLockAppService.updatePresetLockApp(presetLock.getId(),applyPresetLockParam.getAppIdList());
-			
-			if( applyPresetLockParam.getPresetOnOff() != null && applyPresetLockParam.getPresetOnOff().booleanValue() == true ){
-				//if preset lock switch is on , send message to child end app 
-				//push message to child
-				Child child = childService.getById(childId);
-				if( child != null ){
-					String registionId = child.getRegistionId();
-					if( registionId != null ){
-						Map<String,String> extra = new HashMap<String,String>();
-						pushService.pushMessageToChildByRegistionId(registionId, PushConstants.MSG_CONTENT_PRESET_LOCK_SWITCH_ON, extra);
-					}
-				}
-			}
-			
-			
-			view.setData(true);
-			return view;
-		} catch (Exception e) {
-			logger.error("apply preset lock error.",e);
-			view.setData(false);
-			view.setMsg(ViewDTO.MSG_ERROR);
-			return view;
-		}
-	}
-
-	private void fillData(PresetLock presetLock,
-			ApplyPresetLockParam applyPresetLockParam)throws ServiceException {
-		if( presetLock == null || applyPresetLockParam == null ){
-			return ;
-		}
-		
-		presetLock.setStartTime(applyPresetLockParam.getStartTime());
-		presetLock.setEndTime(applyPresetLockParam.getEndTime());
-		presetLock.setLockCallStatus(applyPresetLockParam.getLockCallStatus());
-		presetLock.setPresetOnOff(applyPresetLockParam.getPresetOnOff());
-		
-		List<Boolean> repeatList = applyPresetLockParam.getReapeat();
-		if( repeatList != null && repeatList.size() == 7 ){
-			presetLock.setRepeatMonday(repeatList.get(0));
-			presetLock.setRepeatTuesday(repeatList.get(1));
-			presetLock.setRepeatWednesday(repeatList.get(2));
-			presetLock.setRepeatThurday(repeatList.get(3));
-			presetLock.setRepeatFriday(repeatList.get(4));
-			presetLock.setRepeatSaturday(repeatList.get(5));
-			presetLock.setRepeatSunday(repeatList.get(6));
-		}
-	}
 	
 	
 	
