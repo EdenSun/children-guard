@@ -4,20 +4,6 @@
     tools:context="eden.sun.childrenguard.ChildrenManageActivity" >
 
     <item
-        android:id="@+id/apply"
-        android:orderInCategory="100"
-        android:title="@string/action_apply"
-        app:showAsAction="ifRoom"
-        />
-    
-     <item
-        android:id="@+id/deletePerson"
-        android:orderInCategory="100"
-        android:title="@string/action_delete_person"
-        app:showAsAction="ifRoom"
-        />
-     
-    <item
         android:id="@+id/lockAllApp"
         android:orderInCategory="100"
         android:title="@string/action_lock_all_app"
@@ -31,11 +17,4 @@
         app:showAsAction="ifRoom"
         />
 
-    <item
-        android:id="@+id/presetLock"
-        android:orderInCategory="100"
-        android:title="@string/action_preset_lock"
-        app:showAsAction="ifRoom"
-        />
-    
 </menu>

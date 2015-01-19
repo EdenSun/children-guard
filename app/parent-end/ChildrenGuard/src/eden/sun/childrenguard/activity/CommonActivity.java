@@ -10,7 +10,7 @@ import eden.sun.childrenguard.util.ShareDataKey;
 public class CommonActivity extends Activity implements DialogHolder{
 	protected ProgressDialog progress;
 	protected Runtime runtime;
-	private static final String PREFS_NAME = "share-data";
+	private static final String PREFS_NAME = ShareDataKey.PREFS_NAME;
 	private SharedPreferences settings ;  
 	protected RequestHelper requestHelper;
 	

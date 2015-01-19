@@ -40,7 +40,7 @@ import eden.sun.childrenguard.util.RequestURLConstants;
 import eden.sun.childrenguard.util.ShareDataKey;
 import eden.sun.childrenguard.util.UIUtil;
 
-public class ChildrenListActivity extends CommonActionBarActivity {
+public class ChildrenListActivityBak extends CommonActionBarActivity {
 	private static final String TAG = "ChildrenListActivity";
 	private SwipeMenuListView list;
 	private ChildrenListAdapter childrenListAdapter;
@@ -67,7 +67,7 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 	        @Override
 	        public void onItemClick(AdapterView<?> parent, View view,
 	                int position, long id) {
-	        	Intent intent = new Intent(ChildrenListActivity.this,ChildrenManageActivity.class);
+	        	Intent intent = new Intent(ChildrenListActivityBak.this,ChildrenManageActivity.class);
 	        	
 	        	ChildrenListItemView child = (ChildrenListItemView)childrenListAdapter.getItem(position);
 	        	
@@ -141,7 +141,7 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 		getRequestHelper().doPost(
 			url,
 			params,
-			ChildrenListActivity.this.getClass(),
+			ChildrenListActivityBak.this.getClass(),
 			new Response.Listener<String>() {
 				@Override
 				public void onResponse(String response) {
@@ -150,7 +150,7 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 					final ViewDTO<ChildViewDTO> view = JSONUtil.getDeletePersonView(response);
 							
 					if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
-						Toast.makeText(ChildrenListActivity.this, "Person deleted", Toast.LENGTH_SHORT).show();
+						Toast.makeText(ChildrenListActivityBak.this, "Person deleted", Toast.LENGTH_SHORT).show();
 						
 						loadChildrenList();
 						/*String title = "Register";
@@ -177,7 +177,7 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 						String btnText = "OK";
 						
 						AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
-								ChildrenListActivity.this,
+								ChildrenListActivityBak.this,
 							title,
 							msg,
 							btnText,
@@ -193,7 +193,7 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 					}
 				}
 			}, 
-			new DefaultVolleyErrorHandler(ChildrenListActivity.this));
+			new DefaultVolleyErrorHandler(ChildrenListActivityBak.this));
 	}
 	
 	@Override
@@ -213,7 +213,7 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 		
 		getRequestHelper().doGet(
 			url,
-			ChildrenListActivity.class,
+			ChildrenListActivityBak.class,
 			new Response.Listener<String>() {
 				@Override
 				public void onResponse(String response) {
@@ -223,22 +223,22 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 			    	final ViewDTO<List<ChildViewDTO>> view = JSONUtil.getListMyChildrenView(response);
 			    	
 			    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
-						String accessToken = ChildrenListActivity.this.getAccessToken();
+						String accessToken = ChildrenListActivityBak.this.getAccessToken();
 						
 						List<ChildViewDTO> childList = view.getData();
 						
-						ChildrenListAdapter childrenListAdapter = ChildrenListActivity.this.getChildrenListAdapter();
+						ChildrenListAdapter childrenListAdapter = ChildrenListActivityBak.this.getChildrenListAdapter();
 						childrenListAdapter.reloadData(childList);
 						
 					}else{
-						AlertDialog.Builder dialog = UIUtil.getErrorDialog(ChildrenListActivity.this,view.getInfo());
+						AlertDialog.Builder dialog = UIUtil.getErrorDialog(ChildrenListActivityBak.this,view.getInfo());
 			    		
 						dialog.show();
 					}
 					
 				}
 			}, 
-			new DefaultVolleyErrorHandler(ChildrenListActivity.this)
+			new DefaultVolleyErrorHandler(ChildrenListActivityBak.this)
 		);
 		
 	}
@@ -282,25 +282,25 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_children_list_add) {
-			Intent intent = new Intent(ChildrenListActivity.this,ChildrenListAddActivity.class);
+			Intent intent = new Intent(ChildrenListActivityBak.this,ChildrenListAddActivity.class);
 			
 			int requestCode = 0;
 			this.startActivityForResult(intent,requestCode);
 			return true;
 		} else if( id == R.id.action_children_list_out ){
-			Intent intent = new Intent(ChildrenListActivity.this,LoginActivity.class);
+			Intent intent = new Intent(ChildrenListActivityBak.this,LoginActivity.class);
 			removeLoginData();
 			
 			startActivity(intent);
-			ChildrenListActivity.this.finish();
+			ChildrenListActivityBak.this.finish();
 			return true;
 		} else if( id == R.id.action_children_list_notifications ){
-			Intent intent = new Intent(ChildrenListActivity.this,PushMessageListActivity.class);
+			Intent intent = new Intent(ChildrenListActivityBak.this,PushMessageListActivity.class);
 			startActivity(intent);
 			
 			return true;
 		} else if( id == R.id.action_children_list_email_setting ){
-			Toast.makeText(ChildrenListActivity.this,"TTT",Toast.LENGTH_SHORT).show();
+			Toast.makeText(ChildrenListActivityBak.this,"TTT",Toast.LENGTH_SHORT).show();
 			
 			showEmailSettingDialog();
 			return true;

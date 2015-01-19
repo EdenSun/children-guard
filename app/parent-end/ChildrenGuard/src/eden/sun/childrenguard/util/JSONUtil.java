@@ -163,4 +163,13 @@ public class JSONUtil {
 		return gson.fromJson(json, new TypeToken<ViewDTO<List<PresetLockListItemViewDTO>>>(){}.getType());
 	}
 
+	public static ViewDTO<Boolean> getSaveEmailView(String json) {
+		return gson.fromJson(json, new TypeToken<ViewDTO<Boolean>>(){}.getType());
+	}
+
+	public static ViewDTO<PresetLockViewDTO> getDeletePresetLockView(
+			String json) {
+		return gson.fromJson(json, new TypeToken<ViewDTO<PresetLockViewDTO>>(){}.getType());
+	}
+
 }

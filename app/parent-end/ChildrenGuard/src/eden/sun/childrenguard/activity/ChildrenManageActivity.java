@@ -1,14 +1,7 @@
 package eden.sun.childrenguard.activity;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.app.ActionBar;
-import android.app.AlertDialog;
 import android.app.FragmentTransaction;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -19,25 +12,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.android.volley.Response;
-
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.adapter.AppSectionsPagerAdapter;
-import eden.sun.childrenguard.dto.AppManageListItemView;
-import eden.sun.childrenguard.dto.MoreListItemView;
-import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
 import eden.sun.childrenguard.fragment.ChildAppManageFragment;
-import eden.sun.childrenguard.fragment.ChildBasicInfoFragment;
-import eden.sun.childrenguard.fragment.ChildManageMoreFragment;
+import eden.sun.childrenguard.helper.MyViewPager;
 import eden.sun.childrenguard.server.dto.ChildBasicInfoViewDTO;
-import eden.sun.childrenguard.server.dto.ChildViewDTO;
-import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Callback;
-import eden.sun.childrenguard.util.Config;
-import eden.sun.childrenguard.util.JSONUtil;
-import eden.sun.childrenguard.util.RequestURLConstants;
-import eden.sun.childrenguard.util.UIUtil;
 
 public class ChildrenManageActivity extends CommonFragmentActivity implements ActionBar.TabListener,View.OnClickListener{
 	public static final String TAG = "ChildrenManageActivity";
@@ -45,40 +25,37 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 
     private AppSectionsPagerAdapter mAppSectionsPagerAdapter;
 
-    private ViewPager mViewPager;
+    private MyViewPager mViewPager;
     
     private ChildBasicInfoViewDTO childBasicInfo;
     
     /* TABS */
-    View basicInfoTab;
-    View appManageTab ;
-    View moreTab;
-    ImageView basicInfoTabImageView ;
-    ImageView appManageTabImageView;
-    ImageView moreTabImageView ;
-    TextView basicInfoTabText ;
-    TextView appManageTabText;
-    TextView moreTabText ;
+    private View infoTab;
+    private View controlTab ;
+    private View scheduleTab;
+    private View settingTab;
+    private ImageView infoTabImageView ;
+    private ImageView controlTabImageView;
+    private ImageView scheduleTabImageView;
+    private ImageView settingTabImageView ;
+    private TextView infoTabText ;
+    private TextView controlTabText;
+    private TextView scheduleTabText;
+    private TextView settingTabText ;
     
-    private boolean isConfigChanges;
     private Integer childId;
-    private int changesRequestCnt;
-    private boolean saveAndExit;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_children_manage);
-        changesRequestCnt = 2;
         childId = getIntent().getIntExtra("childId", 0);
-        
-        isConfigChanges = false;
         
         mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
 
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager = (MyViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mAppSectionsPagerAdapter);
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
@@ -88,20 +65,25 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
             	if( position == 0 ){
             		//Child Basic Info
             		Log.i(TAG, "basic info show");
-            		basicInfoTabImageView.setImageResource(R.drawable.tab_icon_child_basic_info_selected);
-            		basicInfoTabText.setTextColor(Color.WHITE);
+            		infoTabImageView.setImageResource(R.drawable.tab_icon_child_basic_info_selected);
+            		infoTabText.setTextColor(Color.WHITE);
             		
             	}else if( position == 1 ){
             		//App Manage
             		Log.i(TAG, "app manage show");
-            		appManageTabImageView.setImageResource(R.drawable.tab_icon_child_app_manage_selected);
-            		appManageTabText.setTextColor(Color.WHITE);
+            		controlTabImageView.setImageResource(R.drawable.tab_icon_child_app_manage_selected);
+            		controlTabText.setTextColor(Color.WHITE);
             		
             	}else if( position == 2 ){
             		//More
+            		Log.i(TAG, "schedule show");
+            		scheduleTabImageView.setImageResource(R.drawable.tab_icon_more_selected);
+            		scheduleTabText.setTextColor(Color.WHITE);
+            	}else if( position == 3 ){
+            		//More
             		Log.i(TAG, "more setting show");
-            		moreTabImageView.setImageResource(R.drawable.tab_icon_more_selected);
-            		moreTabText.setTextColor(Color.WHITE);
+            		settingTabImageView.setImageResource(R.drawable.tab_icon_more_selected);
+            		settingTabText.setTextColor(Color.WHITE);
             	}
             	
             	initMenu();
@@ -122,20 +104,24 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 	
 	
 	private void initTab() {
-    	basicInfoTab = findViewById(R.id.basicInfoTab);
-    	basicInfoTab.setOnClickListener(this);
-    	appManageTab = findViewById(R.id.appManageTab);
-    	appManageTab.setOnClickListener(this);
-    	moreTab = findViewById(R.id.moreTab);
-    	moreTab.setOnClickListener(this);
+    	infoTab = findViewById(R.id.infoTab);
+    	infoTab.setOnClickListener(this);
+    	controlTab = findViewById(R.id.controlTab);
+    	controlTab.setOnClickListener(this);
+    	scheduleTab = findViewById(R.id.scheduleTab);
+    	scheduleTab.setOnClickListener(this);
+    	settingTab = findViewById(R.id.settingTab);
+    	settingTab.setOnClickListener(this);
     	
-    	basicInfoTabImageView = (ImageView)basicInfoTab.findViewById(R.id.basicInfoTabImageView);
-        appManageTabImageView = (ImageView)appManageTab.findViewById(R.id.appManageTabImageView);
-        moreTabImageView = (ImageView)moreTab.findViewById(R.id.moreTabImageView);
+    	infoTabImageView = (ImageView)infoTab.findViewById(R.id.infoTabImageView);
+    	controlTabImageView = (ImageView)controlTab.findViewById(R.id.controlTabImageView);
+    	scheduleTabImageView = (ImageView)scheduleTab.findViewById(R.id.scheduleTabImageView);
+        settingTabImageView = (ImageView)settingTab.findViewById(R.id.settingTabImageView);
         
-        basicInfoTabText = (TextView)findViewById(R.id.basicInfoTabText);
-        appManageTabText = (TextView)findViewById(R.id.appManageTabText);
-        moreTabText = (TextView)findViewById(R.id.moreTabText);
+        infoTabText = (TextView)findViewById(R.id.infoTabText);
+        controlTabText = (TextView)findViewById(R.id.controlTabText);
+        scheduleTabText = (TextView)findViewById(R.id.scheduleTabText);
+        settingTabText = (TextView)findViewById(R.id.settingTabText);
         
 	}
 	
@@ -157,13 +143,15 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
      * »Ö¸´tabÕý³£×´Ì¬
      */
     private void clearTabStatus() {
-		basicInfoTabImageView.setImageResource(R.drawable.tab_icon_child_basic_info_normal);
-		appManageTabImageView.setImageResource(R.drawable.tab_icon_child_app_manage_normal);
-		moreTabImageView.setImageResource(R.drawable.tab_icon_more_normal);
+		infoTabImageView.setImageResource(R.drawable.tab_icon_child_basic_info_normal);
+		controlTabImageView.setImageResource(R.drawable.tab_icon_child_app_manage_normal);
+		scheduleTabImageView.setImageResource(R.drawable.tab_icon_child_app_manage_normal);
+		settingTabImageView.setImageResource(R.drawable.tab_icon_more_normal);
 		
-		basicInfoTabText.setTextColor(getResources().getColor(R.color.tab_text));
-		appManageTabText.setTextColor(getResources().getColor(R.color.tab_text));
-		moreTabText.setTextColor(getResources().getColor(R.color.tab_text));
+		infoTabText.setTextColor(getResources().getColor(R.color.tab_text));
+		controlTabText.setTextColor(getResources().getColor(R.color.tab_text));
+		scheduleTabText.setTextColor(getResources().getColor(R.color.tab_text));
+		settingTabText.setTextColor(getResources().getColor(R.color.tab_text));
 	}
     
     /**
@@ -171,19 +159,23 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
      */
 	@Override
 	public void onClick(View v) {
-		if( v.getId() == R.id.basicInfoTab){
+		if( v.getId() == R.id.infoTab){
 			/*homeImageView.setImageResource(R.drawable.home_selected);
 			homeTabText.setTextColor(getResources().getColor(R.color.tab_text_selected));*/
 			mViewPager.setCurrentItem(0);
-		}else if( v.getId() == R.id.appManageTab ){
+		}else if( v.getId() == R.id.controlTab ){
 			/*userHomeImageView.setImageResource(R.drawable.user_home_selected);
 			userHomeTabText.setTextColor(getResources().getColor(R.color.tab_text_selected));*/
 			mViewPager.setCurrentItem(1);
-		}else if( v.getId() == R.id.moreTab ){
+		}else if( v.getId() == R.id.scheduleTab ){
+			/*userHomeImageView.setImageResource(R.drawable.user_home_selected);
+			userHomeTabText.setTextColor(getResources().getColor(R.color.tab_text_selected));*/
+			mViewPager.setCurrentItem(2);
+		}else if( v.getId() == R.id.settingTab ){
 			//ÉèÖÃ
 			/*settingImageView.setImageResource(R.drawable.setting_selected);
 			settingTabText.setTextColor(R.color.tab_text_selected);*/
-			mViewPager.setCurrentItem(2);
+			mViewPager.setCurrentItem(3);
 		}
 		
 	}
@@ -199,25 +191,14 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 		return childBasicInfo;
 	}
 
-	private MenuItem applyChangeMenu;
-	private MenuItem deletePersonMenu;
 	private MenuItem lockAllAppMenu;
 	private MenuItem unlockAllAppMenu;
-	private MenuItem presetLockMenu;
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.children_manage, menu);
-		applyChangeMenu = menu.getItem(0);
-		deletePersonMenu = menu.getItem(1);
-		lockAllAppMenu = menu.getItem(2);
-		unlockAllAppMenu = menu.getItem(3);
-		presetLockMenu = menu.getItem(4);
-		
-		if( applyChangeMenu != null ){
-			applyChangeMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-			applyChangeMenu.setEnabled(false);
-		}
+		lockAllAppMenu = menu.getItem(0);
+		unlockAllAppMenu = menu.getItem(1);
 		
 		initMenu();
 		
@@ -226,16 +207,8 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 	
 	private void initMenu() {
 		if(  mViewPager != null ){
-			deletePersonMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-			lockAllAppMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-			unlockAllAppMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-			presetLockMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-			
-			if( mViewPager.getCurrentItem() == 0 ){
-				deletePersonMenu.setVisible(true);
-			}else{
-				deletePersonMenu.setVisible(false);
-			}
+			lockAllAppMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+			unlockAllAppMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 			
 			if( mViewPager.getCurrentItem() == 1 ){
 				lockAllAppMenu.setVisible(true);
@@ -243,12 +216,6 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 			}else{
 				lockAllAppMenu.setVisible(false);
 				unlockAllAppMenu.setVisible(false);
-			}
-			
-			if( mViewPager.getCurrentItem() == 2 ){
-				presetLockMenu.setVisible(true);
-			}else{
-				presetLockMenu.setVisible(false);
 			}
 		}
 	}
@@ -261,37 +228,10 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.apply) {
-			Log.d(TAG, "apply person menu click.");
-			
-			saveAndExit = false;
-			this.saveChanges();
-			
-			return true;
-		}else if( id == R.id.deletePerson ){
-			Log.d(TAG, "delete person menu click.");
-			ChildBasicInfoFragment childBasicInfoFragment = (ChildBasicInfoFragment)mAppSectionsPagerAdapter.getItem(AppSectionsPagerAdapter.FRAGMENT_INDEX_BASIC_INFO);
-			childBasicInfoFragment.doDeletePerson(new Callback<ChildViewDTO>(){
-
-				@Override
-				public void execute(CallbackResult<ChildViewDTO> result) {
-					if( result != null && result.isSuccess() ){
-						//delete success
-						ChildViewDTO deletedChild = result.getData();
-						Toast.makeText(ChildrenManageActivity.this, "Person " + deletedChild.getNickname() + " have been deleted." , Toast.LENGTH_LONG).show();
-						
-						ChildrenManageActivity.this.setResult(RESULT_CODE_DELETE_PERSON);
-						ChildrenManageActivity.this.finish();
-					}
-					
-				}
-				
-			});
-			return true;
-		}else if( id == R.id.lockAllApp ){
+		if( id == R.id.lockAllApp ){
 			Log.d(TAG, "lock all app menu click.");
 			
-			ChildAppManageFragment appManageFragment = (ChildAppManageFragment)mAppSectionsPagerAdapter.getItem(AppSectionsPagerAdapter.FRAGMENT_INDEX_APP_MANAGE);
+			ChildAppManageFragment appManageFragment = (ChildAppManageFragment)mAppSectionsPagerAdapter.getItem(AppSectionsPagerAdapter.FRAGMENT_INDEX_CONTROL);
 			
 			appManageFragment.doLockAllApp(new Callback<Boolean>(){
 				@Override
@@ -307,7 +247,7 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 			return true;
 		}else if( id == R.id.unlockAllApp ){
 			Log.d(TAG, "unlock all app menu click.");
-			ChildAppManageFragment appManageFragment = (ChildAppManageFragment)mAppSectionsPagerAdapter.getItem(AppSectionsPagerAdapter.FRAGMENT_INDEX_APP_MANAGE);
+			ChildAppManageFragment appManageFragment = (ChildAppManageFragment)mAppSectionsPagerAdapter.getItem(AppSectionsPagerAdapter.FRAGMENT_INDEX_CONTROL);
 			
 			
 			appManageFragment.doUnlockAllApp(new Callback<Boolean>(){
@@ -322,18 +262,18 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 			});			
 			
 			return true;
-		}else if( id == R.id.presetLock ){
+		}/*else if( id == R.id.presetLock ){
 			Log.d(TAG, "preset lock menu click.");
 			Intent intent = new Intent(this,PresetLockActivity.class);
 			intent.putExtra("childId", childId);
 			startActivity(intent);
 			return true;
-		}
+		}*/
 		
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void applyMoreSettingChanges(Integer childId,
+	/*private void applyMoreSettingChanges(Integer childId,
 			List<MoreListItemView> settingList) {
 		if( childId != null && settingList != null && settingList.size() > 0 ){
 			String url = Config.BASE_URL_MVC + RequestURLConstants.URL_APPLY_SETTING_CHANGES;  
@@ -377,11 +317,11 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 			changesFinish();
 		}
 		
-	}
+	}*/
 
 
 
-	private Map<String, String> getApplySettingChangesParams(Integer childId2,
+/*	private Map<String, String> getApplySettingChangesParams(Integer childId2,
 			List<MoreListItemView> settingList) {
 		Map<String, String> param = new HashMap<String,String>();
 		
@@ -389,11 +329,11 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 		param.put("settingListJson", JSONUtil.transMoreListItemViewList2String(settingList));
 
 		return param;
-	}
+	}*/
 
 
 
-	private void applyAppChanges(Integer childId,List<AppManageListItemView> itemList) {
+	/*private void applyAppChanges(Integer childId,List<AppManageListItemView> itemList) {
 		if( childId != null && itemList != null && itemList.size() > 0 ){
 			String url = Config.BASE_URL_MVC + RequestURLConstants.URL_APPLY_APP_CHANGES;  
 
@@ -435,18 +375,18 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 		}else{
 			changesFinish();
 		}
-	}
+	}*/
 
 
 
-	private Map<String, String> getApplyAppChangesParams(Integer childId, List<AppManageListItemView> appList) {
+/*	private Map<String, String> getApplyAppChangesParams(Integer childId, List<AppManageListItemView> appList) {
 		Map<String, String> param = new HashMap<String,String>();
 		
 		param.put("childId", childId.toString());
 		param.put("appListJson", JSONUtil.transAppManageListItemViewList2String(appList));
 
 		return param;
-	}
+	}*/
 
 
 
@@ -467,7 +407,7 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 		}
 	}*/
 	
-	public void setConfigChanges(boolean isChanges){
+	/*public void setConfigChanges(boolean isChanges){
 		this.isConfigChanges = isChanges;
 		if( isChanges == true ){
 			if( applyChangeMenu != null ){
@@ -482,18 +422,18 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 			clearSettingChangesData();
 		}
 	}
-
-	private void clearSettingChangesData() {
-		ChildManageMoreFragment moreFragment = (ChildManageMoreFragment)mAppSectionsPagerAdapter.getItem(AppSectionsPagerAdapter.FRAGMENT_INDEX_MORE_MANAGE);
+*/
+	/*private void clearSettingChangesData() {
+		ChildManageMoreFragment moreFragment = (ChildManageMoreFragment)mAppSectionsPagerAdapter.getItem(AppSectionsPagerAdapter.FRAGMENT_INDEX_SETTING);
 		moreFragment.clearChangesSetting();
 	}
 
 	private void clearAppChangesData() {
-		ChildAppManageFragment appManageFragment = (ChildAppManageFragment)mAppSectionsPagerAdapter.getItem(AppSectionsPagerAdapter.FRAGMENT_INDEX_APP_MANAGE);
+		ChildAppManageFragment appManageFragment = (ChildAppManageFragment)mAppSectionsPagerAdapter.getItem(AppSectionsPagerAdapter.FRAGMENT_INDEX_CONTROL);
 		appManageFragment.clearChangesApp();
-	}
+	}*/
 
-	private void saveChanges() {
+	/*private void saveChanges() {
 		String title = "Apply Changes";
 		String msg = "Please wait...";
 		showProgressDialog(title,msg);	
@@ -509,50 +449,10 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 		List<MoreListItemView> settingList = moreFragment.getChangesSetting();
 
 		applyMoreSettingChanges(childId,settingList);		
-	}
+	}*/
 
 
-	@Override
-	public void onBackPressed() {
-		if( isConfigChanges == false ){
-			// no changes	
-			super.onBackPressed();
-		}else{
-			String title = "Setting Changes";
-			String msg = "Setting changes, Press Save to save and return, Discard to discard and return.Press back button again to cancel.";
-			String leftBtnText = "Save";
-			String rightBtnText = "Discard";
-			
-			AlertDialog.Builder dialog = UIUtil.getAlertDialogWithTwoBtn(
-				ChildrenManageActivity.this,
-				title,
-				msg,
-				leftBtnText,
-				rightBtnText,
-				new DialogInterface.OnClickListener() {
-		            @Override
-		            public void onClick(DialogInterface dialog, int which) {
-		            	dialog.dismiss();
-		            	saveAndExit = true;
-		            	saveChanges();
-		            }
-
-		        },
-		        new DialogInterface.OnClickListener() {
-		            @Override
-		            public void onClick(DialogInterface dialog, int which) {
-		            	dialog.dismiss();
-		            	ChildrenManageActivity.this.finish();
-		            }
-		        }
-			);
-			
-			dialog.show();
-		}
-	}
-	
-	
-	private synchronized void changesFinish(){
+	/*private synchronized void changesFinish(){
 		changesRequestCnt --;
 		if( changesRequestCnt <= 0 ){
 			changesRequestCnt = 2;
@@ -564,5 +464,5 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 				ChildrenManageActivity.this.finish();
 			}
 		}
-	}
+	}*/
 }

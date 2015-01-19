@@ -8,7 +8,7 @@
         android:paddingBottom="10dp"
         >
         <LinearLayout 
-            android:id="@+id/basicInfoTab"
+            android:id="@+id/infoTab"
             android:layout_width="wrap_content"
 		    android:layout_height="fill_parent"
 		    android:layout_weight="1"
@@ -16,21 +16,21 @@
 		    android:gravity="center"
 		    >
             <ImageView 
-                android:id="@+id/basicInfoTabImageView"
+                android:id="@+id/infoTabImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/tab_icon_child_basic_info_selected"/>
             <TextView 
-                android:id="@+id/basicInfoTabText"
+                android:id="@+id/infoTabText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Basic Info"
+                android:text="Info"
                 android:textColor="@color/tab_text_selected"
                 />
         </LinearLayout>
         
         <LinearLayout 
-            android:id="@+id/appManageTab"
+            android:id="@+id/controlTab"
             android:layout_width="wrap_content"
 		    android:layout_height="fill_parent"
 		    android:layout_weight="1"
@@ -38,21 +38,21 @@
 		    android:gravity="center"
 		    >
             <ImageView 
-                android:id="@+id/appManageTabImageView"
+                android:id="@+id/controlTabImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/tab_icon_child_app_manage_normal"/>
             <TextView 
-                android:id="@+id/appManageTabText"
+                android:id="@+id/controlTabText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="App Manage"
+                android:text="Control"
                 android:textColor="@color/tab_text"
                 />
         </LinearLayout>
         
         <LinearLayout 
-            android:id="@+id/moreTab"
+            android:id="@+id/scheduleTab"
             android:layout_width="wrap_content"
 		    android:layout_height="fill_parent"
 		    android:layout_weight="1"
@@ -60,16 +60,38 @@
 		    android:gravity="center"
 		    >
             <ImageView 
-                android:id="@+id/moreTabImageView"
+                android:id="@+id/scheduleTabImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/tab_icon_child_app_manage_normal"/>
+            <TextView 
+                android:id="@+id/scheduleTabText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Schedule"
+                android:textColor="@color/tab_text"
+                />
+        </LinearLayout>
+        
+        <LinearLayout 
+            android:id="@+id/settingTab"
+            android:layout_width="wrap_content"
+		    android:layout_height="fill_parent"
+		    android:layout_weight="1"
+		    android:orientation="vertical"
+		    android:gravity="center"
+		    >
+            <ImageView 
+                android:id="@+id/settingTabImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/tab_icon_more_normal"
                 />
             <TextView 
-                android:id="@+id/moreTabText"
+                android:id="@+id/settingTabText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="More..."
+                android:text="Setting"
                 android:textColor="@color/tab_text"
                 />
         </LinearLayout>

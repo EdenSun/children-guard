@@ -1,5 +1,9 @@
 package eden.sun.childrenguard.fragment;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -8,11 +12,21 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.android.volley.Response;
+
 import eden.sun.childrenguard.R;
+import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
+import eden.sun.childrenguard.helper.DialogHelper;
+import eden.sun.childrenguard.helper.RequestHelper;
+import eden.sun.childrenguard.helper.SharedPreferencesHelper;
+import eden.sun.childrenguard.server.dto.ViewDTO;
+import eden.sun.childrenguard.util.Config;
+import eden.sun.childrenguard.util.JSONUtil;
 import eden.sun.childrenguard.util.RegexHelper;
+import eden.sun.childrenguard.util.RequestURLConstants;
 import eden.sun.childrenguard.util.StringUtil;
 import eden.sun.childrenguard.util.UIUtil;
 
@@ -41,10 +55,16 @@ public class EmailSettingDialogFragment extends DialogFragment {
                 .setView(v)  
                 .setPositiveButton("Confirm",  
                     new DialogInterface.OnClickListener() {  
-                        public void onClick(DialogInterface dialog, int whichButton) { 
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                        	DialogHelper.preventDialogClose(dialog);
+                            
                         	if( doValidate() ){
-                        		//TODO: save email
-                        		Toast.makeText(getActivity(), "Save email", Toast.LENGTH_SHORT).show();
+                        		// save email
+                        		String email = UIUtil.getEditTextValue(emailEditText);
+                        		doSaveEmail(getAccessToken(),email);
+                        		
+                        		//close dialog
+                        		DialogHelper.closeDialog(dialog);
                         	}
                         }
 
@@ -60,6 +80,59 @@ public class EmailSettingDialogFragment extends DialogFragment {
                 .create();  
         dialog.setCancelable(false);
         return dialog;
+	}
+	
+	
+	private void doSaveEmail(String accessToken,
+			String email) {
+		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_EMAIL_SETTING_SAVE;  
+
+		Map<String,String> params = new HashMap<String,String>();
+		params.put("accessToken", accessToken);
+		params.put("email", email);
+		
+		final Activity context = getActivity();
+		RequestHelper.getInstance(getActivity()).doPost(
+			url,
+			params,
+			getActivity().getClass(),
+			new Response.Listener<String>() {
+				@Override
+				public void onResponse(String response) {
+					final ViewDTO<Boolean> view = JSONUtil.getSaveEmailView(response);
+							
+					if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
+						Toast.makeText(context, "Email saved", Toast.LENGTH_SHORT).show();
+						
+					}else{
+						String title = "Error";
+						String msg = view.getInfo();
+						String btnText = "OK";
+						
+						AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
+							context,
+							title,
+							msg,
+							btnText,
+							new DialogInterface.OnClickListener() {
+					            @Override
+					            public void onClick(DialogInterface dialog, int which) {
+					            	dialog.dismiss();
+					            }
+					        }
+						);
+						
+						dialog.show();
+					}
+				}
+			}, 
+			new DefaultVolleyErrorHandler(context));
+	}
+	
+	
+	private String getAccessToken() {
+		SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance(EmailSettingDialogFragment.this.getActivity());
+		return helper.getAccessToken();
 	}
 	
 	private void initComponent(View v) {

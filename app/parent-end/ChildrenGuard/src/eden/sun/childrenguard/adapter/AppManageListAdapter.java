@@ -63,7 +63,7 @@ public class AppManageListAdapter extends BaseAdapter{
 
 			@Override
 			public void onClick(View v) {
-				((ChildrenManageActivity)context).setConfigChanges(true);
+				//((ChildrenManageActivity)context).setConfigChanges(true);
 				Switch curSwitch = (Switch)v;
 				boolean isChecked = curSwitch.isChecked();
 				AppManageListItemView curApp = data.get(finalPos);

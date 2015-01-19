@@ -39,7 +39,7 @@ public class PersonManageActivity extends CommonFragmentActivity {
 
 	    @Override
 	    public Fragment getItem(int position) {
-	    	switch(position){
+	    	/*switch(position){
 	    	case 0:
 	    		return new ChildBasicInfoFragment();
 	    	case 1:
@@ -50,7 +50,7 @@ public class PersonManageActivity extends CommonFragmentActivity {
 	    		return new ChildManageMoreFragment();
 	    	case 4:
 	    		return new PushMessageListFragment();
-	    	}
+	    	}*/
 	    	
 	    	return null;
 	    }

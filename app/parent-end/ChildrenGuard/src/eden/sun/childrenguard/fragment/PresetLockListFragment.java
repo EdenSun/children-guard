@@ -1,25 +1,29 @@
 package eden.sun.childrenguard.fragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.SparseBooleanArray;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.baoyz.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
 
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.activity.PresetLockActivity;
@@ -27,6 +31,8 @@ import eden.sun.childrenguard.adapter.PresetLockListAdapter;
 import eden.sun.childrenguard.dto.ScheduleLockListItemView;
 import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
 import eden.sun.childrenguard.server.dto.PresetLockListItemViewDTO;
+import eden.sun.childrenguard.server.dto.PresetLockViewDTO;
+import eden.sun.childrenguard.server.dto.PushMessageViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
@@ -36,7 +42,7 @@ import eden.sun.childrenguard.util.UIUtil;
 public class PresetLockListFragment extends CommonFragment{
 	private static final String TAG = "PresetLockListFragment";
 	private Integer childId;
-	private ListView list;
+	private SwipeMenuListView list;
 	private PresetLockListAdapter presetLockListAdapter;
 	
 	@Override
@@ -79,8 +85,49 @@ public class PresetLockListFragment extends CommonFragment{
 	
 	
 	private void initList(View vi) {
-		list=(ListView)vi.findViewById(R.id.list);
-		list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+		list=(SwipeMenuListView)vi.findViewById(R.id.list);
+		
+		SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+		    @Override
+		    public void create(SwipeMenu menu) {
+		        // create "delete" item
+		        SwipeMenuItem deleteItem = new SwipeMenuItem(
+		                getActivity().getApplicationContext());
+		        // set item background
+		        deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+		                0x3F, 0x25)));
+		        // set item width
+		        deleteItem.setWidth(270);
+		        // set a icon
+		        deleteItem.setIcon(R.drawable.ic_delete);
+		        // add to menu
+		        menu.addMenuItem(deleteItem);
+		    }
+		};
+
+		// set creator
+		list.setMenuCreator(creator);
+		
+		// click event
+		list.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+		    @Override
+		    public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+		        switch (index) {
+			        case 0:
+			            // delete
+			        	ScheduleLockListItemView selected = presetLockListAdapter.getItem(position);
+			        	
+			        	doDeletePresetLock(selected.getId());
+			            break;
+		        }
+		        // false : close the menu; true : not close the menu
+		        return false;
+		    }
+		});
+		
+		
+		/*list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 		list.setMultiChoiceModeListener(new MultiChoiceModeListener() {
 			 
 			@Override
@@ -133,9 +180,64 @@ public class PresetLockListFragment extends CommonFragment{
 			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
 				return false;
 			}
-		});
+		});*/
 	}
 	
+	private void doDeletePushMessage(Integer messageId) {
+		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_DELETE_PUSH_MESSAGE;  
+
+		String title = "Delete Message";
+		String msg = "Please wait...";
+		showProgressDialog(title,msg);	
+		
+		Map<String, String> params = new HashMap<String,String>();
+		params.put("accessToken", getAccessToken());
+		params.put("pushMessageId", messageId.toString());
+		
+		getRequestHelper().doPost(
+			url,
+			params,
+			PresetLockListFragment.this.getClass(),
+			new Response.Listener<String>() {
+				@Override
+				public void onResponse(String response) {
+					dismissProgressDialog();
+					
+					final ViewDTO<PresetLockViewDTO> view = JSONUtil.getDeletePresetLockView(response);
+							
+					if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
+						Toast.makeText(PresetLockListFragment.this.getActivity(), "Schedule deleted", Toast.LENGTH_SHORT).show();
+						
+						PresetLockViewDTO deletedMsg = view.getData();
+						
+						if( deletedMsg != null ){
+							presetLockListAdapter.delete(deletedMsg);
+						}
+					}else{
+						String title = "Error";
+						String msg = view.getInfo();
+						String btnText = "OK";
+						
+						AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
+								PresetLockListFragment.this.getActivity(),
+							title,
+							msg,
+							btnText,
+							new DialogInterface.OnClickListener() {
+					            @Override
+					            public void onClick(DialogInterface dialog, int which) {
+					            	dialog.dismiss();
+					            }
+					        }
+						);
+						
+						dialog.show();
+					}
+				}
+
+			}, 
+			new DefaultVolleyErrorHandler(getActivity()));
+	}
 	
 	private void loadPresetLockList() {
 	    String url = String.format(
@@ -177,11 +279,68 @@ public class PresetLockListFragment extends CommonFragment{
 
 	@Override
 	public void onResume() {
-		super.onResume();
 		// load message list
 	    loadPresetLockList();
+	    super.onResume();
 	}
 
+	
+	private void doDeletePresetLock(Integer presetLockId) {
+		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_DELETE_PRESET_LOCK;  
+
+		String title = "Delete Schedule";
+		String msg = "Please wait...";
+		showProgressDialog(title,msg);	
+		
+		Map<String, String> params = new HashMap<String,String>();
+		params.put("accessToken", getAccessToken());
+		params.put("pushMessageId", presetLockId.toString());
+		
+		getRequestHelper().doPost(
+			url,
+			params,
+			PushMessageListFragment.this.getClass(),
+			new Response.Listener<String>() {
+				@Override
+				public void onResponse(String response) {
+					dismissProgressDialog();
+					
+					final ViewDTO<PushMessageViewDTO> view = JSONUtil.getDeletePushMessageView(response);
+							
+					if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
+						Toast.makeText(PushMessageListFragment.this.getActivity(), "Message deleted", Toast.LENGTH_SHORT).show();
+						
+						PushMessageViewDTO deletedMsg = view.getData();
+						
+						if( deletedMsg != null ){
+							pushMsgListAdapter.delete(deletedMsg);
+						}
+					}else{
+						String title = "Error";
+						String msg = view.getInfo();
+						String btnText = "OK";
+						
+						AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
+							PushMessageListFragment.this.getActivity(),
+							title,
+							msg,
+							btnText,
+							new DialogInterface.OnClickListener() {
+					            @Override
+					            public void onClick(DialogInterface dialog, int which) {
+					            	dialog.dismiss();
+					            }
+					        }
+						);
+						
+						dialog.show();
+					}
+				}
+
+			}, 
+			new DefaultVolleyErrorHandler(getActivity()));
+	}
+	
 	
 	
 }

@@ -94,7 +94,7 @@ public class MoreListAdapter extends BaseAdapter{
 
 					@Override
 					public void onClick(View v) {
-						((ChildrenManageActivity)context).setConfigChanges(true);
+						//((ChildrenManageActivity)context).setConfigChanges(true);
 						Switch curSwitch = (Switch)v;
 						boolean isChecked = curSwitch.isChecked();
 						MoreListItemView curSetting = data.get(finalPos);
@@ -121,7 +121,7 @@ public class MoreListAdapter extends BaseAdapter{
 					public void onFocusChange(View v, boolean hasFocus) {
 						if( hasFocus == false){
 							// when blur 
-							((ChildrenManageActivity)context).setConfigChanges(true);
+							//((ChildrenManageActivity)context).setConfigChanges(true);
 							EditText editText = (EditText)v;
 							MoreListItemView curSetting = data.get(finalPos);
 							curSetting.setInputText(editText.getText().toString());
