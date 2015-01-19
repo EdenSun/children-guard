@@ -45,6 +45,10 @@ public class RequestURLConstants {
 	/***** Schedule Lock ***********/
 	public static final String URL_LIST_PRESET_LOCK = "/parent/presetlock/list";
 	public static final String URL_BATCH_DELETE_SCHEDULE_LOCK = "/parent/presetlock/batchdelete";
+	/******************************/
 	
+	/***** Setting ***********/
+	public static final String URL_EMAIL_SETTING_SAVE = "/parent/setting/saveEmail";
+	/******************************/
 	
 }
