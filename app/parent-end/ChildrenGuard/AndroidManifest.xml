@@ -220,6 +220,11 @@
             android:label="@string/title_notifications">
         </activity>
         
+        <activity
+            android:name=".activity.PersonAppLockManageActivity"
+            android:label="@string/title_app_manage">
+        </activity>
+        
     </application>
 
 </manifest>

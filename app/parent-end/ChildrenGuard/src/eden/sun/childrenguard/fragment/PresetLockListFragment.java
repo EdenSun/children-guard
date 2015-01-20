@@ -71,6 +71,7 @@ public class PresetLockListFragment extends CommonFragment{
 	        	Intent intent = new Intent(getActivity(),PresetLockActivity.class);
 	        	
 	        	intent.putExtra("presetLockId", item.getId());
+	        	intent.putExtra("childId", childId);
 	        	startActivity(intent);
 	        }
 	    });

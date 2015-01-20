@@ -24,7 +24,7 @@ import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.PresetLockViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.AppManageSettingParam;
-import eden.sun.childrenguard.server.dto.param.ApplyPresetLockParam;
+import eden.sun.childrenguard.server.dto.param.PresetLockParam;
 import eden.sun.childrenguard.server.dto.param.ChildAddParam;
 import eden.sun.childrenguard.server.dto.param.MoreSettingParam;
 import eden.sun.childrenguard.server.service.IChildDetailService;

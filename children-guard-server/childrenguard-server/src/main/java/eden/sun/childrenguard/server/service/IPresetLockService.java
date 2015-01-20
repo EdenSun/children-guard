@@ -5,7 +5,7 @@ import java.util.List;
 import eden.sun.childrenguard.server.dto.PresetLockListItemViewDTO;
 import eden.sun.childrenguard.server.dto.PresetLockViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
-import eden.sun.childrenguard.server.dto.param.ApplyPresetLockParam;
+import eden.sun.childrenguard.server.dto.param.PresetLockParam;
 import eden.sun.childrenguard.server.exception.ServiceException;
 import eden.sun.childrenguard.server.model.generated.PresetLock;
 
@@ -30,6 +30,9 @@ public interface IPresetLockService {
 	ViewDTO<PresetLockViewDTO> delete(Integer childId, Integer presetLockId)throws ServiceException;
 
 	ViewDTO<Boolean> applyPresetLock(Integer presetLockId,
-			ApplyPresetLockParam applyPresetLockParam)throws ServiceException;
+			PresetLockParam applyPresetLockParam)throws ServiceException;
+
+	ViewDTO<PresetLockViewDTO> newPresetLock(
+			PresetLockParam applyPresetLockParam)throws ServiceException;
 	
 }

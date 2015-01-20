@@ -273,6 +273,7 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 			Log.d(TAG, "add schedule menu click.");
 			Intent intent = new Intent(this,PresetLockActivity.class);
 			
+			intent.putExtra("childId", childId);
 			startActivity(intent);
 			return true;
 		}

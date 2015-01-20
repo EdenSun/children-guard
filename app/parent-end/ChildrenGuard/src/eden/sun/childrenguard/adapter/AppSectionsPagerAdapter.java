@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import eden.sun.childrenguard.fragment.ChildAppManageFragment;
 import eden.sun.childrenguard.fragment.ChildBasicInfoFragment;
 import eden.sun.childrenguard.fragment.ChildManageMoreFragment;
+import eden.sun.childrenguard.fragment.PersonControlFragment;
 import eden.sun.childrenguard.fragment.PresetLockListFragment;
 import eden.sun.childrenguard.fragment.PushMessageListFragment;
 
@@ -39,7 +40,7 @@ public class AppSectionsPagerAdapter extends FragmentPagerAdapter {
                 // The first section of the app is the most interesting -- it offers
                 // a launchpad into the other demonstrations in this example application.
             	if( fragments[FRAGMENT_INDEX_CONTROL] == null ){
-            		fragments[FRAGMENT_INDEX_CONTROL] = new ChildAppManageFragment();
+            		fragments[FRAGMENT_INDEX_CONTROL] = new PersonControlFragment();
             	}
                 return fragments[FRAGMENT_INDEX_CONTROL];
             case FRAGMENT_INDEX_SCHEDULE:

@@ -20,10 +20,12 @@
     <string name="title_activity_notify_mail_add">Add Notify Mail</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_app_manage">Application Manage</string>
     
     <string name="childBasicInfoFragment.basicInfoTitleHeader">Person Basic Info</string>
     <string name="childAppManageFragment.basicInfoTitleHeader">APP Manage</string>
     <string name="childManageMoreFragment.moreTitleHeader">More</string>
+    <string name="personControlFragment.titleHeader">Control</string>
     <string name="summary_on">The preference is on</string>
     <string name="summary_off">The preference is off</string>
     <string name="switch_lock">LOCK</string>

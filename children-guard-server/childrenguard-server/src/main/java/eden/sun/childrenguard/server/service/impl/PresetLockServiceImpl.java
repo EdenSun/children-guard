@@ -16,7 +16,7 @@ import eden.sun.childrenguard.server.dto.AppViewDTO;
 import eden.sun.childrenguard.server.dto.PresetLockListItemViewDTO;
 import eden.sun.childrenguard.server.dto.PresetLockViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
-import eden.sun.childrenguard.server.dto.param.ApplyPresetLockParam;
+import eden.sun.childrenguard.server.dto.param.PresetLockParam;
 import eden.sun.childrenguard.server.exception.ServiceException;
 import eden.sun.childrenguard.server.model.generated.Child;
 import eden.sun.childrenguard.server.model.generated.PresetLock;
@@ -220,12 +220,11 @@ public class PresetLockServiceImpl extends BaseServiceImpl implements IPresetLoc
 	@Override
 	public PresetLock saveOrUpdate(PresetLock presetLock)
 			throws ServiceException {
-		if( presetLock == null || presetLock.getId() == null ){
+		if( presetLock == null ){
 			throw new ServiceException("Parameter presetLock or presetLock id can not be null.");
 		}
 		
-		PresetLock existsPresetLock = getById(presetLock.getId());
-		if( existsPresetLock == null ){
+		if( presetLock.getId() == null ){
 			//create one
 			presetLockMapper.insert(presetLock);
 		}else{
@@ -398,7 +397,7 @@ public class PresetLockServiceImpl extends BaseServiceImpl implements IPresetLoc
 	
 	@Override
 	public ViewDTO<Boolean> applyPresetLock(Integer presetLockId,
-			ApplyPresetLockParam applyPresetLockParam) throws ServiceException {
+			PresetLockParam applyPresetLockParam) throws ServiceException {
 		if( presetLockId == null || applyPresetLockParam == null ){
 			throw new ServiceException("Parameter presetLockId or applyPresetLockParam can not be null.");
 		}
@@ -440,7 +439,7 @@ public class PresetLockServiceImpl extends BaseServiceImpl implements IPresetLoc
 	}
 	
 	private void fillData(PresetLock presetLock,
-			ApplyPresetLockParam applyPresetLockParam)throws ServiceException {
+			PresetLockParam applyPresetLockParam)throws ServiceException {
 		if( presetLock == null || applyPresetLockParam == null ){
 			return ;
 		}
@@ -449,6 +448,7 @@ public class PresetLockServiceImpl extends BaseServiceImpl implements IPresetLoc
 		presetLock.setEndTime(applyPresetLockParam.getEndTime());
 		presetLock.setLockCallStatus(applyPresetLockParam.getLockCallStatus());
 		presetLock.setPresetOnOff(applyPresetLockParam.getPresetOnOff());
+		presetLock.setChildId(applyPresetLockParam.getChildId());
 		
 		List<Boolean> repeatList = applyPresetLockParam.getReapeat();
 		if( repeatList != null && repeatList.size() == 7 ){
@@ -459,6 +459,51 @@ public class PresetLockServiceImpl extends BaseServiceImpl implements IPresetLoc
 			presetLock.setRepeatFriday(repeatList.get(4));
 			presetLock.setRepeatSaturday(repeatList.get(5));
 			presetLock.setRepeatSunday(repeatList.get(6));
+		}
+	}
+
+	@Override
+	public ViewDTO<PresetLockViewDTO> newPresetLock(
+			PresetLockParam applyPresetLockParam) throws ServiceException {
+		if( applyPresetLockParam == null ){
+			throw new ServiceException("Parameter presetLockId or applyPresetLockParam can not be null.");
+		}
+		
+		ViewDTO<PresetLockViewDTO> view = new ViewDTO<PresetLockViewDTO>();
+		
+		try {
+			PresetLock presetLock = new PresetLock();
+			
+			fillData(presetLock,applyPresetLockParam);
+			presetLock = saveOrUpdate(presetLock);
+			
+			// update locked app
+			presetLockAppService.updatePresetLockApp(presetLock.getId(),applyPresetLockParam.getAppIdList());
+			
+			if( applyPresetLockParam.getPresetOnOff() != null && applyPresetLockParam.getPresetOnOff().booleanValue() == true ){
+				//if preset lock switch is on , send message to child end app 
+				//push message to child
+				Child child = childService.getById(presetLock.getChildId());
+
+				if( child != null ){
+					String registionId = child.getRegistionId();
+					if( registionId != null ){
+						Map<String,String> extra = new HashMap<String,String>();
+						pushService.pushMessageToChildByRegistionId(registionId, PushConstants.MSG_CONTENT_PRESET_LOCK_SWITCH_ON, extra);
+					}
+				}
+			}
+			
+			List<AppViewDTO> appList = presetLockAppService.listAppListByPresetLockId(presetLock.getId());
+			PresetLockViewDTO presetLockViewDTO = trans2PresetLockViewDTO(presetLock,appList);
+			view.setData(presetLockViewDTO);
+			
+			return view;
+		} catch (Exception e) {
+			logger.error("apply preset lock error.",e);
+			view.setData(null);
+			view.setMsg(ViewDTO.MSG_ERROR);
+			return view;
 		}
 	}
 	

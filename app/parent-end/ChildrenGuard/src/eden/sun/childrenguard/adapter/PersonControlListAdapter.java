@@ -16,14 +16,13 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 import eden.sun.childrenguard.R;
-import eden.sun.childrenguard.activity.EmergencyContactManageActivity;
-import eden.sun.childrenguard.activity.ModifyLockPasswordActivity;
+import eden.sun.childrenguard.activity.PersonAppLockManageActivity;
 import eden.sun.childrenguard.dto.MoreListItemView;
 import eden.sun.childrenguard.server.dto.ChildSettingViewDTO;
 import eden.sun.childrenguard.util.Constants;
 import eden.sun.childrenguard.util.DataTypeUtil;
 
-public class MoreListAdapter extends BaseAdapter{
+public class PersonControlListAdapter extends BaseAdapter{
 	 
     private Activity context;
     private List<MoreListItemView> data;
@@ -31,7 +30,7 @@ public class MoreListAdapter extends BaseAdapter{
     //public ImageLoader imageLoader; 
     private List<MoreListItemView> changesData;
  
-    public MoreListAdapter(Activity context) {
+    public PersonControlListAdapter(Activity context) {
 		super();
 		this.context = context;
 		this.data = new ArrayList<MoreListItemView>();
@@ -39,7 +38,7 @@ public class MoreListAdapter extends BaseAdapter{
 		changesData = new ArrayList<MoreListItemView>();
 	}
 
-	public MoreListAdapter(Activity context, ArrayList<MoreListItemView> data) {
+	public PersonControlListAdapter(Activity context, ArrayList<MoreListItemView> data) {
         this.context = context;
         this.data=data;
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -205,79 +204,75 @@ public class MoreListAdapter extends BaseAdapter{
 		Boolean switchOn = null;
 		String inputText = null;
 		
-		title = Constants.TITLE_MODITY_LOCK_PASSWORD;
+		/*title = MoreListItemView.TITLE_MODITY_LOCK_PASSWORD;
 		type = MoreListItemView.TYPE_ARROW_ITEM;
 		switchOn = null;
 		view = new MoreListItemView(title,type,ModifyLockPasswordActivity.class, switchOn);
 		list.add(view);
 		
-		title = Constants.TITLE_EMERGENCY_CONTACTS;
+		title = MoreListItemView.TITLE_EMERGENCY_CONTACTS;
 		type = MoreListItemView.TYPE_ARROW_ITEM;
 		switchOn = null;
 		view = new MoreListItemView(title,type,EmergencyContactManageActivity.class,switchOn);
-		list.add(view);
+		list.add(view);*/
 
-		/*title = MoreListItemView.TITLE_LOCK_CALLS;
+		title = Constants.TITLE_LOCK_CALLS;
 		type = MoreListItemView.TYPE_SWITCH_ITEM;
 		settingType = 1;
 		switchOn = DataTypeUtil.getNonNullBoolean(setting.getLockCallsSwitch());
 		view = new MoreListItemView(title,type,settingType,switchOn);
-		list.add(view);*/
+		list.add(view);
 		
-		/*title = MoreListItemView.TITLE_LOCK_TEXT_MESSAGING;
-		type = MoreListItemView.TYPE_SWITCH_ITEM;
-		switchOn = DataTypeUtil.getNonNullBoolean();
-		view = new MoreListItemView(title,type,null,switchOn);
-		list.add(view);*/
 		
-		/*title = MoreListItemView.TITLE_WIFI_ONLY;
+		title = Constants.TITLE_APP_LOCK_MANAGE;
+		type = MoreListItemView.TYPE_ARROW_ITEM;
+		switchOn = null;
+		view = new MoreListItemView(title,type,PersonAppLockManageActivity.class, switchOn);
+		list.add(view);
+		
+		
+		title = Constants.TITLE_WIFI_ONLY;
 		type = MoreListItemView.TYPE_SWITCH_ITEM;
 		settingType = 3;
 		switchOn = DataTypeUtil.getNonNullBoolean(setting.getWifiOnlySwitch());
 		view = new MoreListItemView(title,type,settingType,switchOn);
-		list.add(view);*/
+		list.add(view);
 		
-		title = Constants.TITLE_NEW_APP_NOTIFICATION;
+		/*title = MoreListItemView.TITLE_NEW_APP_NOTIFICATION;
 		type = MoreListItemView.TYPE_SWITCH_ITEM;
 		settingType = 4;
 		switchOn = DataTypeUtil.getNonNullBoolean(setting.getNewAppNotificationSwitch());
 		view = new MoreListItemView(title,type,settingType,switchOn);
 		list.add(view);
 
-		title = Constants.TITLE_UNINSTALL_APP_NOTIFICATION;
+		title = MoreListItemView.TITLE_UNINSTALL_APP_NOTIFICATION;
 		type = MoreListItemView.TYPE_SWITCH_ITEM;
 		settingType = 5;
 		switchOn = DataTypeUtil.getNonNullBoolean(setting.getUninstallAppNotificationSwitch());
 		view = new MoreListItemView(title,type,settingType,switchOn);
 		list.add(view);
 		
-		/*title = "Exceed Monthly Data Usage Notification";
-		type = MoreListItemView.TYPE_ARROW_ITEM;
-		switchOn = null;
-		view = new MoreListItemView(title,type,NotifyMailManageActivity.class,switchOn);
-		list.add(view);*/
-		
-		title = Constants.TITLE_LOCK_UNLOCK_NOTIFICATION;
+		title = MoreListItemView.TITLE_LOCK_UNLOCK_NOTIFICATION;
 		type = MoreListItemView.TYPE_SWITCH_ITEM;
 		settingType = 8;
 		switchOn = DataTypeUtil.getNonNullBoolean(setting.getAppLockUnlockNotificationSwitch());
 		view = new MoreListItemView(title,type,settingType,switchOn);
 		list.add(view);
 		
-		title = Constants.TITLE_SPEEDING_NOTIFICATION;
+		title = MoreListItemView.TITLE_SPEEDING_NOTIFICATION;
 		type = MoreListItemView.TYPE_SWITCH_ITEM;
 		settingType = 6;
 		switchOn = DataTypeUtil.getNonNullBoolean(setting.getSpeedingNotificationSwitch());
 		view = new MoreListItemView(title,type,settingType,switchOn);
-		list.add(view);
+		list.add(view);*/
 		
-		/*title = MoreListItemView.TITLE_SPEEDING_LIMIT;
+		title = Constants.TITLE_SPEEDING_LIMIT;
 		type = MoreListItemView.TYPE_EDITTEXT_ITEM;
 		settingType = 7;
 		switchOn = null;
 		inputText = DataTypeUtil.int2String(setting.getSpeedingLimit(),"");
 		view = new MoreListItemView(title,type,settingType,inputText);
-		list.add(view);*/
+		list.add(view);
 
 		this.reloadData(list);
 	}

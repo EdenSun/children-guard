@@ -11,7 +11,7 @@ import eden.sun.childrenguard.server.dto.AppViewDTO;
 import eden.sun.childrenguard.server.dto.PresetLockListItemViewDTO;
 import eden.sun.childrenguard.server.dto.PresetLockViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
-import eden.sun.childrenguard.server.dto.param.ApplyPresetLockParam;
+import eden.sun.childrenguard.server.dto.param.PresetLockParam;
 import eden.sun.childrenguard.server.service.IChildDetailService;
 import eden.sun.childrenguard.server.service.IPresetLockService;
 import eden.sun.childrenguard.server.util.JSONUtil;
@@ -84,7 +84,7 @@ public class PresetLockController extends BaseController{
 	public ViewDTO<Boolean> applyPresetLock(Integer presetLockId,String applyPresetLockParamJson){
 		logger.info("applyPresetLock called. presetLockId:" + presetLockId + " ,applyPresetLockParam:" + applyPresetLockParamJson );
 		
-		ApplyPresetLockParam applyPresetLockParam = JSONUtil.getApplyPresetLockParam(applyPresetLockParamJson);
+		PresetLockParam applyPresetLockParam = JSONUtil.getApplyPresetLockParam(applyPresetLockParamJson);
 		ViewDTO<Boolean> view = presetLockService.applyPresetLock(presetLockId,applyPresetLockParam);
 		
 		return view;
@@ -123,5 +123,19 @@ public class PresetLockController extends BaseController{
 		return view;
 		
 	}
+	
+	
+	@RequestMapping("/newPresetLock")
+	@ResponseBody
+	public ViewDTO<PresetLockViewDTO> newPresetLock(String applyPresetLockParamJson){
+		logger.info("newPresetLock called. applyPresetLockParam:" + applyPresetLockParamJson );
+		
+		PresetLockParam applyPresetLockParam = JSONUtil.getApplyPresetLockParam(applyPresetLockParamJson);
+		ViewDTO<PresetLockViewDTO> view = presetLockService.newPresetLock(applyPresetLockParam);
+		
+		return view;
+		
+	}
+	
 	
 }

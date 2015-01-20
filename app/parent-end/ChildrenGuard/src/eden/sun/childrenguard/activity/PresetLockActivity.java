@@ -30,7 +30,7 @@ import eden.sun.childrenguard.fragment.WeekdayChooserDialogFragment;
 import eden.sun.childrenguard.server.dto.AppViewDTO;
 import eden.sun.childrenguard.server.dto.PresetLockViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
-import eden.sun.childrenguard.server.dto.param.ApplyPresetLockParam;
+import eden.sun.childrenguard.server.dto.param.PresetLockParam;
 import eden.sun.childrenguard.util.Callback;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
@@ -59,6 +59,7 @@ public class PresetLockActivity extends CommonActivity {
 	/******* data *******/
 	private PresetLockViewDTO presetLockView;
 	private int presetLockId;
+	private int childId;
 	private boolean isNew;
 	private Date startTime;
 	private Date endTime;
@@ -74,11 +75,14 @@ public class PresetLockActivity extends CommonActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_preset_lock);
 		presetLockId = getIntent().getIntExtra("presetLockId", 0);
-	    if( presetLockId == 0 ){
+		if( presetLockId == 0 ){
 	    	isNew = true;
 	    }else{
 	    	isNew = false;
 	    }
+		
+		childId = getIntent().getIntExtra("childId",0);
+		
 		initComponent();
 	}
 	
@@ -224,7 +228,17 @@ public class PresetLockActivity extends CommonActivity {
 			@Override
 			public void onClick(View arg0) {
 				if( isNew ){
-					Toast.makeText(PresetLockActivity.this, "TODO: save new preset lock" , Toast.LENGTH_SHORT).show();
+					Toast.makeText(PresetLockActivity.this, "saving..." , Toast.LENGTH_SHORT).show();
+					
+					doCreatePresetLock(new Callback<ViewDTO<PresetLockViewDTO>>(){
+
+						@Override
+						public void execute(CallbackResult<ViewDTO<PresetLockViewDTO>> result) {
+							finish();										
+						}
+						
+					});
+				
 				}else{
 					// apply preset lock
 					applyPresetLock(new Callback<ViewDTO<Boolean>>(){
@@ -233,15 +247,14 @@ public class PresetLockActivity extends CommonActivity {
 						public void execute(CallbackResult<ViewDTO<Boolean>> result) {
 							if( result.getData().getMsg().equals(ViewDTO.MSG_SUCCESS) ){
 								Toast.makeText(PresetLockActivity.this, "Success to apply preset lock.", Toast.LENGTH_SHORT).show();
-								
+
 								// TODO: save preset lock setting to local db
-								//..................
+								finish();										
 								
 								
-								finish();
 							}
 						}
-						
+
 					},
 					new Callback(){
 						@Override
@@ -269,6 +282,33 @@ public class PresetLockActivity extends CommonActivity {
 		});
 	}
 
+	
+	private void doCreatePresetLock(final Callback<ViewDTO<PresetLockViewDTO>> successCallback) {
+		String title = "Preset Lock";
+		String msg = "Please wait...";
+		showProgressDialog(title,msg);
+		
+		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_NEW_PRESET_LOCK;  
+
+		Map<String,String> params = this.getPresetLockParams();
+		getRequestHelper().doPost(
+			url,
+			params,
+			PresetLockActivity.this.getClass(),
+			new Response.Listener<String>() {
+				@Override
+				public void onResponse(String response) {
+					final ViewDTO<PresetLockViewDTO> view = JSONUtil.getNewPresetLockView(response);
+					
+					Callback.CallbackResult<ViewDTO<PresetLockViewDTO>> result = new Callback.CallbackResult<ViewDTO<PresetLockViewDTO>>();
+					result.setData(view);
+					successCallback.execute(result);
+				}
+			}, 
+			new DefaultVolleyErrorHandler(PresetLockActivity.this));	
+		
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -494,7 +534,7 @@ public class PresetLockActivity extends CommonActivity {
 		
 		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_APPLY_PRESET_LOCK;  
 
-		Map<String,String> params = this.getApplyPresetLockParams();
+		Map<String,String> params = this.getPresetLockParams();
 		getRequestHelper().doPost(
 			url,
 			params,
@@ -525,24 +565,28 @@ public class PresetLockActivity extends CommonActivity {
 	}
 
 
-	private Map<String, String> getApplyPresetLockParams() {
+	private Map<String, String> getPresetLockParams() {
 		Map<String, String> param = new HashMap<String,String>();
-		param.put("presetLockId", String.valueOf(presetLockId));
 		
-		ApplyPresetLockParam applyPresetLockParam = new ApplyPresetLockParam();
+		if( !isNew ){
+			param.put("presetLockId", String.valueOf(presetLockId));
+		}
+		
+		PresetLockParam PresetLockParam = new PresetLockParam();
 		
 		boolean lockCallStatus = UIUtil.getSwitchValue( lockCallSwitch );
-		applyPresetLockParam.setLockCallStatus(lockCallStatus);
+		PresetLockParam.setLockCallStatus(lockCallStatus);
 		
 		boolean presetOnOff = UIUtil.getSwitchValue( presetOnOffSwitch );
-		applyPresetLockParam.setPresetOnOff(presetOnOff);
+		PresetLockParam.setPresetOnOff(presetOnOff);
 		
-		applyPresetLockParam.setAppIdList(checkedAppIdList);
-		applyPresetLockParam.setEndTime(endTime);
-		applyPresetLockParam.setReapeat(repeat);
-		applyPresetLockParam.setStartTime(startTime);
+		PresetLockParam.setAppIdList(checkedAppIdList);
+		PresetLockParam.setEndTime(endTime);
+		PresetLockParam.setReapeat(repeat);
+		PresetLockParam.setStartTime(startTime);
+		PresetLockParam.setChildId(childId);
 		
-		String applyPresetLockParamJson = JSONUtil.transApplyPresetLockParam2String(applyPresetLockParam);
+		String applyPresetLockParamJson = JSONUtil.transApplyPresetLockParam2String(PresetLockParam);
 		param.put("applyPresetLockParamJson", applyPresetLockParamJson);
 		return param;
 	}
