@@ -54,4 +54,6 @@ public class RequestURLConstants {
 	public static final String URL_EMAIL_SETTING_SAVE = "/parent/setting/saveEmail";
 	/******************************/
 	
+	public static final String URL_GET_CHILD_APP_DOWNLOAD_LINK = "/parent/childrenManage/getChildAppDownloadLink";
+	
 }

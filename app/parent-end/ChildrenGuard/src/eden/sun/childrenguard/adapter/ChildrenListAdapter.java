@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +14,13 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
-import com.android.volley.toolbox.Volley;
 
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.dto.ChildrenListItemView;
+import eden.sun.childrenguard.helper.BitmapHelper;
 import eden.sun.childrenguard.helper.RequestHelper;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.util.BitmapCache;
@@ -58,7 +60,7 @@ public class ChildrenListAdapter extends BaseAdapter {
         TextView childNameTextView = (TextView)vi.findViewById(R.id.childName);
         TextView mobileTextView = (TextView)vi.findViewById(R.id.mobile);
         TextView emailTextView = (TextView)vi.findViewById(R.id.email);
-        NetworkImageView photoImageView = (NetworkImageView)vi.findViewById(R.id.list_image);
+        final NetworkImageView photoImageView = (NetworkImageView)vi.findViewById(R.id.list_image);
         
         ChildrenListItemView child = data.get(position);
  
@@ -70,13 +72,29 @@ public class ChildrenListAdapter extends BaseAdapter {
         RequestQueue mQueue = RequestHelper.getInstance(context).getImageQueue();
         ImageLoader imageLoader = new ImageLoader(mQueue, new BitmapCache());
     	if( child.getPhotoImage() != null ){
-    		photoImageView.setImageUrl(Config.BASE_URL + child.getPhotoImage(),imageLoader);
+    		imageLoader.get(Config.BASE_URL + child.getPhotoImage(), new ImageLoader.ImageListener() {
+    	        @Override
+    	        public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+    	        	if( response != null && response.getBitmap() != null ){
+    	        		Bitmap bm = BitmapHelper.toGrayscale(response.getBitmap());
+    	        		photoImageView.setImageBitmap(bm);
+    	        	}
+    	        }
+
+    	        @Override
+    	        public void onErrorResponse(VolleyError error) {
+
+    	        }
+    	    });
+    		
+    		//photoImageView.setImageUrl(Config.BASE_URL + child.getPhotoImage(),imageLoader);
+    		
     	}else{
     		photoImageView.setImageUrl(null,imageLoader);
     	}
     	
-    	photoImageView.setDefaultImageResId(R.drawable.default_head);
-    	photoImageView.setErrorImageResId(R.drawable.default_head);
+    	/*photoImageView.setDefaultImageResId(R.drawable.default_head);
+    	photoImageView.setErrorImageResId(R.drawable.default_head);*/
         
         return vi;
     }

@@ -324,4 +324,15 @@ public class ChildrenManageController extends BaseController{
 		return view;
 	}
 	
+	@RequestMapping("/getChildAppDownloadLink")
+	@ResponseBody
+	public ViewDTO<String> getChildAppDownloadLink() {
+		logger.info("getChildAppDownloadLink called. " );
+		
+		ViewDTO<String> view = new ViewDTO<String>();
+		view.setData("http://xxx/xxx.apk");
+		
+		return view;
+	}
+	
 }

@@ -2,6 +2,7 @@ package eden.sun.childrenguard.activity;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import android.app.AlertDialog;
@@ -15,6 +16,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -189,7 +191,7 @@ public class ChildrenListAddActivity extends CommonActivity {
 											}
 	
 						}).show();*/
-						onAddSuccess();
+						onAddSuccess(view.getData());
 					}else{
 			    		AlertDialog.Builder dialog = UIUtil.getErrorDialog(ChildrenListAddActivity.this,view.getInfo());
 			    		
@@ -204,13 +206,50 @@ public class ChildrenListAddActivity extends CommonActivity {
 		}
 	}
 
-	private void onAddSuccess() {
+	private void onAddSuccess(ChildViewDTO child) {
+		if( child != null && child.getMobile() != null ){
+			sendDownloadLinkToChild(child.getMobile());
+		}
+		
 		resultIntent = new Intent();
 		resultIntent.putExtra("result", "success");
 		setResult(0,resultIntent);		
 		
 		ChildrenListAddActivity.this
 				.finish();
+	}
+	
+	private void sendDownloadLinkToChild(final String childMobile) {
+		
+		String url = String.format(Config.BASE_URL_MVC
+				+ RequestURLConstants.URL_GET_CHILD_APP_DOWNLOAD_LINK);
+
+		
+		getRequestHelper().doGet(url,this.getClass(), new Response.Listener<String>() {
+			@Override
+			public void onResponse(String response) {
+				dismissProgressDialog();
+				ViewDTO<String> view = JSONUtil
+						.getGetChildAppDownloadLinkViewDTO(response);
+
+				if (view.getMsg().equals(ViewDTO.MSG_SUCCESS)) {
+					String content = "Click to download person end app:" + view.getData();
+					sendSms(childMobile,content);
+				}
+
+			}
+
+		}, new DefaultVolleyErrorHandler(ChildrenListAddActivity.this));		
+		
+			
+	}
+
+	private void sendSms(String mobile, String content) {
+		SmsManager smsManager = SmsManager.getDefault();  
+		List<String> divideContents = smsManager.divideMessage(content);    
+		for (String text : divideContents) {    
+		    smsManager.sendTextMessage(mobile, null, text, null, null);    
+		}				
 	}
 	
 	private boolean doValidation() {
