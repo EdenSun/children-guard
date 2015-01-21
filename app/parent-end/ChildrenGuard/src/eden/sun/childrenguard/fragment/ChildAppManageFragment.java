@@ -39,7 +39,7 @@ public class ChildAppManageFragment extends CommonFragment{
 	
 	private ListView appList;
 	private AppManageListAdapter appListAdapter;
-	private TextView nicknameTextView;
+	//private TextView nicknameTextView;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,14 +65,14 @@ public class ChildAppManageFragment extends CommonFragment{
 		
 		loadAppList();
 		
-		nicknameTextView.setText(getStringShareData( ShareDataKey.CHILD_NICKNAME ));
+		//nicknameTextView.setText(getStringShareData( ShareDataKey.CHILD_NICKNAME ));
 		return v;
     }
 
 	
 	private void initComponent(View v) {
 		appList = (ListView)v.findViewById(R.id.list);		
-		nicknameTextView = (TextView)v.findViewById(R.id.nicknameTextView);
+		//nicknameTextView = (TextView)v.findViewById(R.id.nicknameTextView);
 	}
 
 	private void loadAppList() {

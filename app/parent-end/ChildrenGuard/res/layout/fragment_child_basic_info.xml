@@ -22,112 +22,128 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:layout_weight="1">
-	    
 	    <LinearLayout 
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical">
-	        <LinearLayout 
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal"
-	        style="@style/childBasicInfoItemStyle">
-	        <TextView 
-	            android:layout_width="100dp"
-	            android:layout_height="wrap_content"
-	            android:layout_weight="0"
-	            android:text="Mobile:"
-	            style="@style/label"/>
-	        <TextView 
-	            android:id="@+id/mobileTextView"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_weight="1"
-	            android:text="N/A"
-	            android:textColor="@color/text_gray"/>
+		    <!-- <LinearLayout 
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="vertical">
+		        <LinearLayout 
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="horizontal"
+		        style="@style/childBasicInfoItemStyle">
+		        <TextView 
+		            android:layout_width="100dp"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="0"
+		            android:text="Mobile:"
+		            style="@style/label"/>
+		        <TextView 
+		            android:id="@+id/mobileTextView"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="1"
+		            android:text="N/A"
+		            android:textColor="@color/text_gray"/>
+		    </LinearLayout> -->
+		    
+		    <!-- <LinearLayout 
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="horizontal"
+		        style="@style/childBasicInfoItemStyle">
+		        <TextView 
+		            android:layout_width="100dp"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="0"
+		            android:text="Full Name:"
+		            style="@style/label"/>
+		        <TextView 
+		            android:id="@+id/fullNameTextView"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="1"
+		            android:text="N/A"
+		            android:textColor="@color/text_gray"/>
+		    </LinearLayout> -->
+		    
+		    <!-- <LinearLayout 
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="horizontal"
+		        style="@style/childBasicInfoItemStyle">
+		        <TextView 
+		            android:layout_width="100dp"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="0"
+		            android:text="Monthly Data Usage:"
+		            style="@style/label"/>
+		        <TextView 
+		            android:id="@+id/networkTrafficTextView"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="1"
+		            android:text="N/A"
+		            android:textColor="@color/text_gray"/>
+		    </LinearLayout> -->
+		    
+		    <LinearLayout 
+		        android:layout_width="match_parent"
+		        android:layout_height="250dp"
+		        android:orientation="horizontal"
+		        style="@style/childBasicInfoItemStyle">
+		        <TextView 
+		            android:layout_width="100dp"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="0"
+		            android:text="Location:"
+		            style="@style/label"/>
+		        <!-- <TextView 
+		            android:id="@+id/locationTextView"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="1"
+		            android:text="N/A"
+		            android:textColor="@color/text_gray"/> -->
+		            
+		            <com.android.volley.toolbox.NetworkImageView
+		                android:id="@+id/locationMapImage"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:layout_weight="1"
+		                />
+		                
+	              <!--   <ImageView
+		                android:id="@+id/locationMapImage"
+			            android:layout_width="wrap_content"
+			            android:layout_height="match_parent"
+			            android:scaleType="fitXY"
+			            android:layout_weight="1"
+		                /> -->
+		    </LinearLayout>
+		    
+		     <LinearLayout 
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="horizontal"
+		        style="@style/childBasicInfoItemStyle">
+		        <TextView 
+		            android:layout_width="100dp"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="0"
+		            android:text="Speed:"
+		            style="@style/label"/>
+		        <TextView 
+		            android:id="@+id/speedTextView"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="1"
+		            android:text="N/A"
+		            android:textColor="@color/text_gray"/>
+		    </LinearLayout>
 	    </LinearLayout>
-	    
-	    <LinearLayout 
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal"
-	        style="@style/childBasicInfoItemStyle">
-	        <TextView 
-	            android:layout_width="100dp"
-	            android:layout_height="wrap_content"
-	            android:layout_weight="0"
-	            android:text="Full Name:"
-	            style="@style/label"/>
-	        <TextView 
-	            android:id="@+id/fullNameTextView"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_weight="1"
-	            android:text="N/A"
-	            android:textColor="@color/text_gray"/>
-	    </LinearLayout>
-	    
-	    <LinearLayout 
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal"
-	        style="@style/childBasicInfoItemStyle">
-	        <TextView 
-	            android:layout_width="100dp"
-	            android:layout_height="wrap_content"
-	            android:layout_weight="0"
-	            android:text="Monthly Data Usage:"
-	            style="@style/label"/>
-	        <TextView 
-	            android:id="@+id/networkTrafficTextView"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_weight="1"
-	            android:text="N/A"
-	            android:textColor="@color/text_gray"/>
-	    </LinearLayout>
-	    
-	    <LinearLayout 
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal"
-	        style="@style/childBasicInfoItemStyle">
-	        <TextView 
-	            android:layout_width="100dp"
-	            android:layout_height="wrap_content"
-	            android:layout_weight="0"
-	            android:text="Location:"
-	            style="@style/label"/>
-	        <TextView 
-	            android:id="@+id/locationTextView"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_weight="1"
-	            android:text="N/A"
-	            android:textColor="@color/text_gray"/>
-	    </LinearLayout>
-	    
-	     <LinearLayout 
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal"
-	        style="@style/childBasicInfoItemStyle">
-	        <TextView 
-	            android:layout_width="100dp"
-	            android:layout_height="wrap_content"
-	            android:layout_weight="0"
-	            android:text="Speed:"
-	            style="@style/label"/>
-	        <TextView 
-	            android:id="@+id/speedTextView"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_weight="1"
-	            android:text="N/A"
-	            android:textColor="@color/text_gray"/>
-	    </LinearLayout>
-	    </LinearLayout>
-	    
-	    
 	</ScrollView>
 </LinearLayout>

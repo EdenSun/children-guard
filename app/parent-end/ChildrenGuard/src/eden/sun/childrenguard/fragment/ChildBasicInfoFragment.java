@@ -7,23 +7,25 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 
 import eden.sun.childrenguard.R;
-import eden.sun.childrenguard.activity.ChildrenManageActivity;
 import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
+import eden.sun.childrenguard.helper.MapHelper;
 import eden.sun.childrenguard.helper.RequestHelper;
 import eden.sun.childrenguard.server.dto.ChildBasicInfoViewDTO;
 import eden.sun.childrenguard.server.dto.ChildExtraInfoViewDTO;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
+import eden.sun.childrenguard.util.BitmapCache;
 import eden.sun.childrenguard.util.Callback;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
@@ -34,12 +36,13 @@ import eden.sun.childrenguard.util.UIUtil;
 public class ChildBasicInfoFragment extends CommonFragment{
 	private final String TAG = "ChildBasicInfoFragment";
 	private Integer childId;
-	private TextView mobileTextView;
+	/*private TextView mobileTextView;
 	private TextView fullNameTextView;
-	private TextView networkTrafficTextView;
-	private TextView locationTextView;
+	private TextView networkTrafficTextView;*/
+	//private TextView locationTextView;
 	private TextView speedTextView;
 	private TextView nicknameTextView;
+	private NetworkImageView locationMapImage;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,14 +57,38 @@ public class ChildBasicInfoFragment extends CommonFragment{
     }
 	
 	private void initComponent(View vi) {
-		mobileTextView = (TextView)vi.findViewById(R.id.mobileTextView);
+		//mobileTextView = (TextView)vi.findViewById(R.id.mobileTextView);
 		nicknameTextView = (TextView)vi.findViewById(R.id.nicknameTextView);
-		fullNameTextView = (TextView)vi.findViewById(R.id.fullNameTextView);
-		networkTrafficTextView = (TextView)vi.findViewById(R.id.networkTrafficTextView);
-		locationTextView = (TextView)vi.findViewById(R.id.locationTextView);
+		//fullNameTextView = (TextView)vi.findViewById(R.id.fullNameTextView);
+		//networkTrafficTextView = (TextView)vi.findViewById(R.id.networkTrafficTextView);
+		//locationTextView = (TextView)vi.findViewById(R.id.locationTextView);
+		
+		locationMapImage = (NetworkImageView)vi.findViewById(R.id.locationMapImage);
+		
+		RequestQueue mQueue = RequestHelper.getInstance(getActivity()).getImageQueue();
+        ImageLoader imageLoader = new ImageLoader(mQueue, new BitmapCache());
+        locationMapImage.setImageUrl(MapHelper.getMapboxStaticMapUrl() , imageLoader);
+        
+		
+        /*locationTextView.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				showMapViewDialog();
+			}
+		});*/
 		speedTextView = (TextView)vi.findViewById(R.id.speedTextView);
 	}
+	
+	/*private void showMapViewDialog() {
+		FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();  
+        // Create and show the dialog.  
+		MapViewDialogFragment newFragment  = new MapViewDialogFragment(0,0);
+        
+        newFragment.show(ft, "mapViewDialog");  		
+	}*/
+	
 
+	
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -94,29 +121,29 @@ public class ChildBasicInfoFragment extends CommonFragment{
 			    		
 			    		if( child != null ){
 			    			String text = UIUtil.formatTextForView(child.getMobile());
-			    			mobileTextView.setText(text);
+			    			//mobileTextView.setText(text);
 			    			
 			    			text = UIUtil.formatTextForView(child.getNickname());
 			    			nicknameTextView.setText(text);
 			    			
-			    			String firstName = UIUtil.formatTextForView(child.getFirstName());
+			    			/*String firstName = UIUtil.formatTextForView(child.getFirstName());
 			    			String lastName = UIUtil.formatTextForView( child.getLastName());
 			    			text = firstName + "," + lastName;
-			    			fullNameTextView.setText(text);
+			    			fullNameTextView.setText(text);*/
 			    		}
 			    		
 			    		if( childExtra != null ){
-			    			String text = UIUtil.formatTextForView(childExtra.getNetworkTrafficUsed());
-		    				networkTrafficTextView.setText(text + "Used");
+			    			/*String text = UIUtil.formatTextForView(childExtra.getNetworkTrafficUsed());
+		    				networkTrafficTextView.setText(text + "Used");*/
 			    			
-		    				text = UIUtil.formatTextForView(childExtra.getLocation());
-		    				locationTextView.setText(text);
+		    				/*String text = UIUtil.formatTextForView(childExtra.getLocation());
+		    				locationTextView.setText(text);*/
 			    			
-		    				text = UIUtil.formatTextForView(childExtra.getSpeed());
+		    				String text = UIUtil.formatTextForView(childExtra.getSpeed());
 		    				speedTextView.setText(text + "km/s");
 			    		}else{
-		    				networkTrafficTextView.setText("N/A Used");
-		    				locationTextView.setText("N/A");
+		    				//networkTrafficTextView.setText("N/A Used");
+		    				//locationTextView.setText("N/A");
 		    				speedTextView.setText("N/A km/s");
 			    		}
 			    	}else{

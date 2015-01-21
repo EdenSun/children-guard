@@ -221,7 +221,7 @@
         </activity>
         
         <activity
-            android:name=".activity.PersonAppLockManageActivity"
+            android:name=".activity.PersonAppManageActivity"
             android:label="@string/title_app_manage">
         </activity>
         

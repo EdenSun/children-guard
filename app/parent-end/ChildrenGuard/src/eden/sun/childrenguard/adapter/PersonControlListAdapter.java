@@ -16,7 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 import eden.sun.childrenguard.R;
-import eden.sun.childrenguard.activity.PersonAppLockManageActivity;
+import eden.sun.childrenguard.activity.PersonAppManageActivity;
 import eden.sun.childrenguard.dto.MoreListItemView;
 import eden.sun.childrenguard.server.dto.ChildSettingViewDTO;
 import eden.sun.childrenguard.util.Constants;
@@ -227,7 +227,7 @@ public class PersonControlListAdapter extends BaseAdapter{
 		title = Constants.TITLE_APP_LOCK_MANAGE;
 		type = MoreListItemView.TYPE_ARROW_ITEM;
 		switchOn = null;
-		view = new MoreListItemView(title,type,PersonAppLockManageActivity.class, switchOn);
+		view = new MoreListItemView(title,type,PersonAppManageActivity.class, switchOn);
 		list.add(view);
 		
 		

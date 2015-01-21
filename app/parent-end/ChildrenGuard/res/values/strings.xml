@@ -61,6 +61,7 @@
 	<string name="action_lock_all_app">Lock All App</string>
 	<string name="action_unlock_all_app">Unlock All app</string>
 	<string name="action_add_schedule">Add</string>
+	<string name="action_update_basic_info">Update</string>
 	<string name="action_preset_lock">Preset Lock</string>
 	<string name="title_activity_schedule">Schedule</string>
 	

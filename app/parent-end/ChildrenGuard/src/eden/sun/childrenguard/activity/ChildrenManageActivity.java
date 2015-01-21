@@ -195,6 +195,7 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 	private MenuItem lockAllAppMenu;
 	private MenuItem unlockAllAppMenu;
 	private MenuItem addSchedule;
+	private MenuItem updateBasicInfo;
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -202,6 +203,7 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 		lockAllAppMenu = menu.getItem(0);
 		unlockAllAppMenu = menu.getItem(1);
 		addSchedule = menu.getItem(2);
+		updateBasicInfo = menu.getItem(3);
 		
 		initMenu();
 		
@@ -213,17 +215,22 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 			lockAllAppMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 			unlockAllAppMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 			addSchedule.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+			updateBasicInfo.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 			
 			lockAllAppMenu.setVisible(false);
 			unlockAllAppMenu.setVisible(false);
 			addSchedule.setVisible(false);
-
-			if( mViewPager.getCurrentItem() == 1 ){
+			updateBasicInfo.setVisible(false);
+			
+			if( mViewPager.getCurrentItem() == 0 ){
+				updateBasicInfo.setVisible(true);
+			}else if( mViewPager.getCurrentItem() == 1 ){
 				lockAllAppMenu.setVisible(true);
 				unlockAllAppMenu.setVisible(true);
 			}else if( mViewPager.getCurrentItem() == 2 ){
 				addSchedule.setVisible(true);
 			}
+			
 		}
 	}
 
@@ -235,7 +242,11 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if( id == R.id.lockAllApp ){
+		
+		if( id == R.id.updateBasicInfo ){
+			Toast.makeText(this, "Refreshing...", Toast.LENGTH_LONG).show();
+			
+		}else if( id == R.id.lockAllApp ){
 			Log.d(TAG, "lock all app menu click.");
 			
 			ChildAppManageFragment appManageFragment = (ChildAppManageFragment)mAppSectionsPagerAdapter.getItem(AppSectionsPagerAdapter.FRAGMENT_INDEX_CONTROL);

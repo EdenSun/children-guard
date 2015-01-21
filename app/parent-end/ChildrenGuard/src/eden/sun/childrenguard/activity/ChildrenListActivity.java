@@ -300,8 +300,6 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 			
 			return true;
 		} else if( id == R.id.action_children_list_email_setting ){
-			Toast.makeText(ChildrenListActivity.this,"TTT",Toast.LENGTH_SHORT).show();
-			
 			showEmailSettingDialog();
 			return true;
 		}
