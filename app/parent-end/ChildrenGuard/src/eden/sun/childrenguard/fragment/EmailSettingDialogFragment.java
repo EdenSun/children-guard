@@ -73,7 +73,7 @@ public class EmailSettingDialogFragment extends DialogFragment {
                 .setNegativeButton("Cancel",  
                     new DialogInterface.OnClickListener() {  
                         public void onClick(DialogInterface dialog, int whichButton) {
-                        	dialog.dismiss();
+                        	DialogHelper.closeDialog(dialog);
                         }
                     }
                 )  

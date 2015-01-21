@@ -4,8 +4,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.jraf.android.backport.switchwidget.Switch;
 
@@ -17,10 +19,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Response;
+
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.dto.ScheduleLockListItemView;
+import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
+import eden.sun.childrenguard.helper.RequestHelper;
 import eden.sun.childrenguard.server.dto.PresetLockListItemViewDTO;
 import eden.sun.childrenguard.server.dto.PresetLockViewDTO;
+import eden.sun.childrenguard.server.dto.ViewDTO;
+import eden.sun.childrenguard.util.Config;
+import eden.sun.childrenguard.util.JSONUtil;
+import eden.sun.childrenguard.util.RequestURLConstants;
 
 public class PresetLockListAdapter  extends ArrayAdapter<ScheduleLockListItemView> {
     private Activity context;
@@ -68,15 +80,63 @@ public class PresetLockListAdapter  extends ArrayAdapter<ScheduleLockListItemVie
 			holder = (ViewHolder) view.getTag();
 		}
  
-        ScheduleLockListItemView item = data.get(position);
+        final ScheduleLockListItemView item = data.get(position);
  
         holder.periodTv.setText(getPeriodTimeSummary(item.getStartTime(),item.getEndTime()));
         holder.repeatTv.setText(item.getRepeatSummary());
         holder.switchBtn.setChecked(item.getPresetOnOff());
         
+        
+        holder.switchBtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Switch curSwitch = (Switch)v;
+				boolean isChecked = curSwitch.isChecked();
+				Toast.makeText(context, String.valueOf(isChecked), Toast.LENGTH_SHORT).show();
+				
+				doSwitchSchedule(item.getId(),isChecked);
+			}
+
+		});
         return view;
     }
 
+    
+    private void doSwitchSchedule(Integer presetLockId, boolean isChecked) {
+    	String url = Config.BASE_URL_MVC + RequestURLConstants.URL_SWITCH_PRESET_LOCK;  
+
+		/*String title = "Delete Schedule";
+		String msg = "Please wait...";
+		showProgressDialog(title,msg);*/	
+		
+		Map<String, String> params = new HashMap<String,String>();
+		params.put("presetLockId", presetLockId.toString());
+		params.put("isChecked", String.valueOf(isChecked));
+		
+		RequestHelper.getInstance(context).doPost(
+			url,
+			params,
+			context.getClass(),
+			new Response.Listener<String>() {
+				@Override
+				public void onResponse(String response) {
+					//dismissProgressDialog();
+					
+					final ViewDTO<Boolean> view = JSONUtil.getSwitchPresetLockView(response);
+							
+					if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
+						Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
+						
+					}else{
+						Toast.makeText(context, "failure", Toast.LENGTH_SHORT).show();
+					}
+				}
+
+			}, 
+			new DefaultVolleyErrorHandler(context));
+	}
+    
 	private CharSequence getPeriodTimeSummary(Date startTime, Date endTime) {
 		if( startTime == null || endTime == null ){
 			return "";

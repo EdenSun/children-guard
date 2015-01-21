@@ -138,4 +138,15 @@ public class PresetLockController extends BaseController{
 	}
 	
 	
+	@RequestMapping("/switchPresetLock")
+	@ResponseBody
+	public ViewDTO<Boolean> switchPresetLock(Integer presetLockId,boolean isChecked){
+		logger.info("switchPresetLock called. presetLockId:" + presetLockId + ",isChecked:" + isChecked );
+		
+		ViewDTO<Boolean> view = presetLockService.switchPresetLock(presetLockId,isChecked);
+		
+		return view;
+		
+	}
+	
 }

@@ -47,6 +47,7 @@ public class RequestURLConstants {
 	public static final String URL_LIST_PRESET_LOCK = "/parent/presetlock/list";
 	public static final String URL_BATCH_DELETE_SCHEDULE_LOCK = "/parent/presetlock/batchdelete";
 	public static final String URL_DELETE_PRESET_LOCK = "/parent/presetlock/delete";
+	public static final String URL_SWITCH_PRESET_LOCK = "/parent/presetlock/switchPresetLock";
 	/******************************/
 	
 	/***** Setting ***********/

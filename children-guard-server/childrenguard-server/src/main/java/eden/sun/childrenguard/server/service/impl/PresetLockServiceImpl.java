@@ -480,19 +480,7 @@ public class PresetLockServiceImpl extends BaseServiceImpl implements IPresetLoc
 			// update locked app
 			presetLockAppService.updatePresetLockApp(presetLock.getId(),applyPresetLockParam.getAppIdList());
 			
-			if( applyPresetLockParam.getPresetOnOff() != null && applyPresetLockParam.getPresetOnOff().booleanValue() == true ){
-				//if preset lock switch is on , send message to child end app 
-				//push message to child
-				Child child = childService.getById(presetLock.getChildId());
-
-				if( child != null ){
-					String registionId = child.getRegistionId();
-					if( registionId != null ){
-						Map<String,String> extra = new HashMap<String,String>();
-						pushService.pushMessageToChildByRegistionId(registionId, PushConstants.MSG_CONTENT_PRESET_LOCK_SWITCH_ON, extra);
-					}
-				}
-			}
+			onPresetLockSwithChange( presetLock );
 			
 			List<AppViewDTO> appList = presetLockAppService.listAppListByPresetLockId(presetLock.getId());
 			PresetLockViewDTO presetLockViewDTO = trans2PresetLockViewDTO(presetLock,appList);
@@ -506,6 +494,44 @@ public class PresetLockServiceImpl extends BaseServiceImpl implements IPresetLoc
 			return view;
 		}
 	}
-	
+
+	private void onPresetLockSwithChange(PresetLock presetLock) {
+		if( presetLock.getPresetOnOff() != null && presetLock.getPresetOnOff().booleanValue() == true ){
+			//if preset lock switch is on , send message to child end app 
+			//push message to child
+			
+			Child child = childService.getById(presetLock.getChildId());
+
+			if( child != null ){
+				String registionId = child.getRegistionId();
+				if( registionId != null ){
+					Map<String,String> extra = new HashMap<String,String>();
+					pushService.pushMessageToChildByRegistionId(registionId, PushConstants.MSG_CONTENT_PRESET_LOCK_SWITCH_ON, extra);
+				}
+			}
+		}		
+	}
+
+	@Override
+	public ViewDTO<Boolean> switchPresetLock(Integer presetLockId,
+			boolean isChecked) throws ServiceException {
+		if( presetLockId == null ){
+			throw new ServiceException("Parameter preset lock id can not be null.");
+		}
+		
+		PresetLock presetLock = this.getById(presetLockId);
+		if( presetLock == null ){
+			throw new ServiceException("Preset Lock is not exists.");
+		}
+		
+		presetLock.setPresetOnOff(isChecked);
+		this.saveOrUpdate(presetLock);
+		
+		onPresetLockSwithChange(presetLock);
+		
+		ViewDTO<Boolean> view = new ViewDTO<Boolean>();
+		view.setData(true);
+		return view;
+	}
 	
 }

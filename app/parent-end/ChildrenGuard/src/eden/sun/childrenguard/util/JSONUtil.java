@@ -177,4 +177,8 @@ public class JSONUtil {
 		return gson.fromJson(json, new TypeToken<ViewDTO<PresetLockViewDTO>>(){}.getType());
 	}
 
+	public static ViewDTO<Boolean> getSwitchPresetLockView(String json) {
+		return gson.fromJson(json, new TypeToken<ViewDTO<Boolean>>(){}.getType());
+	}
+
 }
