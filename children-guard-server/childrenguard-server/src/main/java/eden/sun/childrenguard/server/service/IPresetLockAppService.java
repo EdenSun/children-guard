@@ -10,8 +10,10 @@ public interface IPresetLockAppService {
 
 	List<AppViewDTO> listAppListByPresetLockId(Integer presetLockId)throws ServiceException;
 
-	List<PresetLockApp> listPresetLock(Integer presetLockId)throws ServiceException;
+	List<PresetLockApp> listPresetLockApp(Integer presetLockId)throws ServiceException;
 
 	void updatePresetLockApp(Integer presetId, List<Integer> appIdList)throws ServiceException;
+
+	boolean hasAppLocked(Integer presetLockId)throws ServiceException;
 	
 }

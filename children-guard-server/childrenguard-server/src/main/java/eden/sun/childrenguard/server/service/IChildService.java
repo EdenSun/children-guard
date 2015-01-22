@@ -47,4 +47,8 @@ public interface IChildService {
 
 	ViewDTO<ChildSettingViewDTO> getChildSetting(String imei)throws ServiceException;
 
+	boolean isInLockState(Integer childId)throws ServiceException;
+
+	boolean isOnline(Integer childId)throws ServiceException;
+
 }

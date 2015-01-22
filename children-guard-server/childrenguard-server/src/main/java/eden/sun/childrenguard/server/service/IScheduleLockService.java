@@ -12,4 +12,6 @@ public interface IScheduleLockService {
 
 	ViewDTO<Boolean> batchDelete(Integer[] ids)throws ServiceException;
 
+	boolean isChildScheduleLock(Integer childId)throws ServiceException;
+
 }

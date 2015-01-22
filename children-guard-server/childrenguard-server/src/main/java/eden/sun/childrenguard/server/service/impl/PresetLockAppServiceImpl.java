@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import eden.sun.childrenguard.server.dao.generated.PresetLockAppMapper;
 import eden.sun.childrenguard.server.dto.AppViewDTO;
 import eden.sun.childrenguard.server.exception.ServiceException;
+import eden.sun.childrenguard.server.model.generated.App;
 import eden.sun.childrenguard.server.model.generated.PresetLockApp;
 import eden.sun.childrenguard.server.model.generated.PresetLockAppExample;
 import eden.sun.childrenguard.server.model.generated.PresetLockAppExample.Criteria;
@@ -31,7 +32,7 @@ public class PresetLockAppServiceImpl implements IPresetLockAppService {
 			throw new ServiceException("Parameter preset lock id can not be null.");
 		}
 		
-		List<PresetLockApp> presetLockAppList = listPresetLock(presetLockId);
+		List<PresetLockApp> presetLockAppList = listPresetLockApp(presetLockId);
 		
 		List<AppViewDTO> appViewDTOList = trans2AppViewDTOList(presetLockAppList);
 		
@@ -56,7 +57,7 @@ public class PresetLockAppServiceImpl implements IPresetLockAppService {
 	}
 
 	@Override
-	public List<PresetLockApp> listPresetLock(Integer presetLockId) throws ServiceException{
+	public List<PresetLockApp> listPresetLockApp(Integer presetLockId) throws ServiceException{
 		PresetLockAppExample example = new PresetLockAppExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andPresetLockIdEqualTo(presetLockId);
@@ -96,6 +97,23 @@ public class PresetLockAppServiceImpl implements IPresetLockAppService {
 		criteria.andPresetLockIdEqualTo(presetId);
 		
 		presetLockAppMapper.deleteByExample(example);
+	}
+
+	@Override
+	public boolean hasAppLocked(Integer presetLockId) throws ServiceException {
+		List<PresetLockApp> appList = this.listPresetLockApp(presetLockId);
+		if( appList != null ){
+			for(PresetLockApp presetLockApp : appList ){
+				if( presetLockApp.getAppId() != null ){
+					App app = appService.getById(presetLockApp.getAppId());
+					if( app.getLockStatus() != null && app.getLockStatus().booleanValue() == true) {
+						return true;
+					}
+				}
+			}
+		}
+		
+		return false;
 	}
 
 }

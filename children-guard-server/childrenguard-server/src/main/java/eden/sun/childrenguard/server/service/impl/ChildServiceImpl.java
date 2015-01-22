@@ -18,16 +18,19 @@ import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.ChildAddParam;
 import eden.sun.childrenguard.server.exception.ServiceException;
 import eden.sun.childrenguard.server.model.ChildOfParents;
+import eden.sun.childrenguard.server.model.generated.App;
 import eden.sun.childrenguard.server.model.generated.Child;
 import eden.sun.childrenguard.server.model.generated.ChildExample;
 import eden.sun.childrenguard.server.model.generated.ChildExample.Criteria;
 import eden.sun.childrenguard.server.model.generated.ChildExtraInfo;
 import eden.sun.childrenguard.server.model.generated.ChildSetting;
 import eden.sun.childrenguard.server.model.generated.Parent;
+import eden.sun.childrenguard.server.service.IAppService;
 import eden.sun.childrenguard.server.service.IChildExtraInfoService;
 import eden.sun.childrenguard.server.service.IChildService;
 import eden.sun.childrenguard.server.service.IChildSettingService;
 import eden.sun.childrenguard.server.service.IParentChildService;
+import eden.sun.childrenguard.server.service.IScheduleLockService;
 
 @Service
 public class ChildServiceImpl extends BaseServiceImpl implements IChildService {
@@ -41,6 +44,11 @@ public class ChildServiceImpl extends BaseServiceImpl implements IChildService {
 	private IChildExtraInfoService childExtraInfoService;
 	@Autowired
 	private IChildSettingService childSettingService;
+	
+	@Autowired
+	private IAppService appService;
+	@Autowired
+	private IScheduleLockService scheduleService;
 	
 	@Override
 	public ViewDTO<List<ChildViewDTO>> listAllViewByParentId(Integer parentId)
@@ -389,6 +397,50 @@ public class ChildServiceImpl extends BaseServiceImpl implements IChildService {
 		
 		return view;
 		
+	}
+
+	@Override
+	public boolean isInLockState(Integer childId) throws ServiceException {
+		if( childId == null ){
+			throw new ServiceException("Parameter child id can not be null.");
+		}
+		
+		Integer settingId = childId;
+		ChildSetting setting = childSettingService.getById(settingId);
+		
+		Boolean outgoingCallLock = setting.getLockCallsSwitch();
+		if( outgoingCallLock != null && outgoingCallLock ){
+			return true;
+		}
+		
+		Boolean wifiOnlyLock = setting.getWifiOnlySwitch();
+		if( wifiOnlyLock != null && wifiOnlyLock ){
+			return true;
+		}
+		
+		// test app
+		List<App> appList = appService.listByChildId(childId);
+		if( appList != null ){
+			for(App app:appList){
+				if( app.getLockStatus().equals(true) ){
+					return true;
+				}
+			}
+		}
+		
+		// test schedule
+		boolean isScheduleLock = scheduleService.isChildScheduleLock(childId);
+		if( isScheduleLock ){
+			return true;
+		}
+		
+		return false;
+	}
+
+	@Override
+	public boolean isOnline(Integer childId) throws ServiceException {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

@@ -12,14 +12,17 @@ import eden.sun.childrenguard.server.dao.ChildOfParentsMapper;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.exception.ServiceException;
 import eden.sun.childrenguard.server.model.ChildOfParents;
-import eden.sun.childrenguard.server.model.generated.Parent;
 import eden.sun.childrenguard.server.service.IChildOfParentsService;
+import eden.sun.childrenguard.server.service.IChildService;
 
 @Service
 public class ChildOfParentsServiceImpl extends BaseServiceImpl implements IChildOfParentsService{
 
 	@Autowired
 	private ChildOfParentsMapper childOfParentsMapper;
+	
+	@Autowired
+	private IChildService childService;
 	
 	@Override
 	public List<ChildViewDTO> listChildrenViewByParentId(Integer parentId)
@@ -32,6 +35,7 @@ public class ChildOfParentsServiceImpl extends BaseServiceImpl implements IChild
 		List<ChildOfParents> childOfParentsList = childOfParentsMapper.selectAllByParentId(parentId);
 		
 		List<ChildViewDTO> childViewDTOList = trans2ChildViewDTOList(childOfParentsList);
+		
 		return childViewDTOList;
 	}
 
@@ -59,6 +63,15 @@ public class ChildOfParentsServiceImpl extends BaseServiceImpl implements IChild
 		}
 		ChildViewDTO chldViewDTO = new ChildViewDTO();
 		BeanUtils.copyProperties(childOfParents, chldViewDTO);
+		
+		// set lock state
+		boolean isInLockState = childService.isInLockState(childOfParents.getId());
+		chldViewDTO.setInLockState(isInLockState);
+		
+		// set online state
+		boolean isOnline = childService.isOnline(childOfParents.getId());
+		chldViewDTO.setOnline(isOnline);
+		
 		return chldViewDTO;
 	}
 

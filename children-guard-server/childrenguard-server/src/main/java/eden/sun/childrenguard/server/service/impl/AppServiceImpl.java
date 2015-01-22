@@ -33,7 +33,8 @@ public class AppServiceImpl extends BaseServiceImpl implements IAppService{
 		return appViewList;
 	}
 
-	private List<App> listByChildId(Integer childId) {
+	@Override
+	public List<App> listByChildId(Integer childId) {
 		AppExample example = new AppExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andChildIdEqualTo(childId);
@@ -280,8 +281,10 @@ public class AppServiceImpl extends BaseServiceImpl implements IAppService{
 		return trans2AppViewDTO(app);
 	}
 
-	private App getById(Integer appId) {
+	@Override
+	public App getById(Integer appId) throws ServiceException {
 		return appMapper.selectByPrimaryKey(appId);
 	}
+
 	
 }

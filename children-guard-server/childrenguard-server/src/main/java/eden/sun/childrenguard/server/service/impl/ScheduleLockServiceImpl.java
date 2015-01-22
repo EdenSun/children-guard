@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import eden.sun.childrenguard.server.dto.PresetLockListItemViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.exception.ServiceException;
+import eden.sun.childrenguard.server.model.generated.PresetLock;
+import eden.sun.childrenguard.server.service.IPresetLockAppService;
 import eden.sun.childrenguard.server.service.IPresetLockService;
 import eden.sun.childrenguard.server.service.IScheduleLockService;
 
@@ -17,6 +19,8 @@ public class ScheduleLockServiceImpl extends BaseServiceImpl implements ISchedul
 	@Autowired
 	private IPresetLockService presetLockService;
 	
+	@Autowired
+	private IPresetLockAppService presetLockAppService;
 	@Override
 	public ViewDTO<List<PresetLockListItemViewDTO>> listScheduleLock(
 			Integer childId) throws ServiceException {
@@ -36,4 +40,46 @@ public class ScheduleLockServiceImpl extends BaseServiceImpl implements ISchedul
 		return null;
 	}
 
+	@Override
+	public boolean isChildScheduleLock(Integer childId) throws ServiceException {
+		if( childId == null ){
+			throw new ServiceException("Parameter child id can not be null");
+		}
+		
+		List<PresetLock> presetLockList = presetLockService.listByChildId(childId);
+		
+		if( presetLockList != null ){
+			for(PresetLock presetLock:presetLockList){
+				if( presetLock.getPresetOnOff() != null && presetLock.getPresetOnOff().booleanValue() == true ){
+					// preset lock is on
+					if( inLockTime(presetLock) ){
+						// is in lock time period
+						if( presetLock.getLockCallStatus() != null && presetLock.getLockCallStatus().booleanValue() == true ){
+							return true;
+						}
+						
+						boolean hasAppLocked = presetLockAppService.hasAppLocked(presetLock.getId());
+						if( hasAppLocked ){
+							return true;
+						}
+					}
+				}
+				
+			}
+		}
+		
+		return false;
+	}
+
+	private boolean inLockTime(PresetLock presetLock) {
+		if( presetLock == null || presetLock.getStartTime() == null || presetLock.getEndTime() == null ){
+			throw new ServiceException("Parameter presetLock , startTime , endTime can not be null.");
+		}
+		
+		//TODO:
+		
+		return false;
+	}
+
+	
 }

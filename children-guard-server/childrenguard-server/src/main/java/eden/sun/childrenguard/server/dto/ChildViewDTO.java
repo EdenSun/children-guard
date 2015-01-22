@@ -38,7 +38,17 @@ public class ChildViewDTO {
      * 用户头像
      */
     private String photoImage;
+    
+    /**
+     * 是否锁定状态
+     */
+    private boolean isInLockState;
 
+    /**
+     * 是否可控
+     */
+    private boolean isOnline;
+    
 	public Integer getId() {
 		return id;
 	}
@@ -95,4 +105,19 @@ public class ChildViewDTO {
 		this.photoImage = photoImage;
 	}
 
+	public boolean isInLockState() {
+		return isInLockState;
+	}
+
+	public void setInLockState(boolean isInLockState) {
+		this.isInLockState = isInLockState;
+	}
+
+	public boolean isOnline() {
+		return isOnline;
+	}
+
+	public void setOnline(boolean isOnline) {
+		this.isOnline = isOnline;
+	}
 }

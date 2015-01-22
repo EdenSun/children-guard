@@ -6,6 +6,7 @@ import eden.sun.childrenguard.server.dto.AppViewDTO;
 import eden.sun.childrenguard.server.dto.param.AppManageSettingParam;
 import eden.sun.childrenguard.server.dto.param.UploadApplicationInfoParam;
 import eden.sun.childrenguard.server.exception.ServiceException;
+import eden.sun.childrenguard.server.model.generated.App;
 
 public interface IAppService {
 
@@ -29,5 +30,9 @@ public interface IAppService {
 	boolean unlockAllAppByChild(Integer childId)throws ServiceException;
 
 	List<AppViewDTO> getApps(List<Integer> appIdList)throws ServiceException;
+
+	List<App> listByChildId(Integer childId)throws ServiceException;
+
+	App getById(Integer appId)throws ServiceException;
 
 }
