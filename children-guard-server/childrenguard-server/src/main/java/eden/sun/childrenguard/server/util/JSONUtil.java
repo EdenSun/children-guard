@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.AppManageSettingParam;
+import eden.sun.childrenguard.server.dto.param.ControlSettingApplyParam;
 import eden.sun.childrenguard.server.dto.param.MoreSettingParam;
 import eden.sun.childrenguard.server.dto.param.PresetLockParam;
 import eden.sun.childrenguard.server.dto.param.SettingApplyParam;
@@ -67,6 +68,10 @@ public class JSONUtil {
 	}
 	public static SettingApplyParam getApplyPersonSettingParam(String json) {
 		return gson.fromJson(json, new TypeToken<SettingApplyParam>(){}.getType());
+	}
+	public static ControlSettingApplyParam getApplyPersonControlParam(
+			String json) {
+		return gson.fromJson(json, new TypeToken<ControlSettingApplyParam>(){}.getType());
 	}
 	
 }

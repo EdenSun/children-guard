@@ -58,6 +58,7 @@ public class RequestURLConstants {
 	
 	/***** Person Setting ***********/
 	public static final String URL_APPLY_SETTING = "/parent/personSetting/applySetting";
+	public static final String URL_APPLY_CONTROL_SETTING = "/parent/personControl/applySetting";
 	/******************************/
 	
 }

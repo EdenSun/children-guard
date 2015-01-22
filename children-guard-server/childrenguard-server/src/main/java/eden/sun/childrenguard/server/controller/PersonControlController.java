@@ -6,13 +6,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import eden.sun.childrenguard.server.dto.ViewDTO;
-import eden.sun.childrenguard.server.dto.param.SettingApplyParam;
+import eden.sun.childrenguard.server.dto.param.ControlSettingApplyParam;
 import eden.sun.childrenguard.server.service.IPersonSettingService;
 import eden.sun.childrenguard.server.util.JSONUtil;
 
 @Controller
-@RequestMapping("/parent/personSetting")
-public class PersonSettingController extends BaseController{
+@RequestMapping("/parent/personControl")
+public class PersonControlController extends BaseController{
 
 	@Autowired
 	private IPersonSettingService personSettingService;
@@ -22,9 +22,9 @@ public class PersonSettingController extends BaseController{
 	public ViewDTO<Boolean> applySetting(String settingJson){
 		logger.info("applySetting called. settingJson:" + settingJson );
 		
-		SettingApplyParam applyParam = JSONUtil.getApplyPersonSettingParam(settingJson);
+		ControlSettingApplyParam applyParam = JSONUtil.getApplyPersonControlParam(settingJson);
 		
-		ViewDTO<Boolean> view = personSettingService.doApply(applyParam);
+		ViewDTO<Boolean> view = personSettingService.doApplyControlSetting(applyParam);
 		return view;
 	}
 }

@@ -1,5 +1,8 @@
 package eden.sun.childrenguard.fragment;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +28,7 @@ import eden.sun.childrenguard.server.dto.ChildSettingViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.ControlSettingApplyParam;
 import eden.sun.childrenguard.server.dto.param.IParamObject;
+import eden.sun.childrenguard.server.dto.param.SettingApplyParam;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
 import eden.sun.childrenguard.util.RequestURLConstants;
@@ -142,6 +146,29 @@ public class PersonControlFragment extends CommonFragment implements IApplyInter
 	@Override
 	public void doApply(IParamObject param) {
 		ControlSettingApplyParam controlSettingApplyParam = (ControlSettingApplyParam)param;
-		Toast.makeText(getActivity(), "do apply", Toast.LENGTH_SHORT).show();
+		
+		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_APPLY_CONTROL_SETTING;  
+
+		Map<String,String> params = new HashMap<String,String>();
+		params.put("settingJson", JSONUtil.transControlSettingApplyParam2String(controlSettingApplyParam));
+		
+		getRequestHelper().doPost(
+			url,
+			params,
+			getActivity().getClass(),
+			new Response.Listener<String>() {
+				@Override
+				public void onResponse(String response) {
+					final ViewDTO<Boolean> view = JSONUtil.getApplySettingView(response);
+							
+					if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
+						Toast.makeText(getActivity(), "done", Toast.LENGTH_SHORT).show();
+					}else{
+						Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
+					}
+				}
+			}, 
+			new DefaultVolleyErrorHandler(getActivity()));
+		
 	}
 }

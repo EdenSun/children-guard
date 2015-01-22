@@ -149,7 +149,7 @@ public class ChildManageMoreFragment extends CommonFragment implements IApplyInt
 		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_APPLY_SETTING;  
 
 		Map<String,String> params = new HashMap<String,String>();
-		params.put("setting", JSONUtil.transSettingApplyParam2String(settingApplyParam));
+		params.put("settingJson", JSONUtil.transSettingApplyParam2String(settingApplyParam));
 		
 		getRequestHelper().doPost(
 			url,
@@ -161,9 +161,9 @@ public class ChildManageMoreFragment extends CommonFragment implements IApplyInt
 					final ViewDTO<Boolean> view = JSONUtil.getApplySettingView(response);
 							
 					if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
-						Toast.makeText(getActivity(), "do apply- done", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getActivity(), "done", Toast.LENGTH_SHORT).show();
 					}else{
-						Toast.makeText(getActivity(), "do apply- error", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
 					}
 				}
 			}, 

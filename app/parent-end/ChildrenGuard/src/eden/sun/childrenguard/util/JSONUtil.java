@@ -21,6 +21,7 @@ import eden.sun.childrenguard.server.dto.PushMessageViewDTO;
 import eden.sun.childrenguard.server.dto.RegisterViewDTO;
 import eden.sun.childrenguard.server.dto.RelationshipViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
+import eden.sun.childrenguard.server.dto.param.ControlSettingApplyParam;
 import eden.sun.childrenguard.server.dto.param.PresetLockParam;
 import eden.sun.childrenguard.server.dto.param.SettingApplyParam;
 
@@ -194,6 +195,11 @@ public class JSONUtil {
 
 	public static ViewDTO<Boolean> getApplySettingView(String json) {
 		return gson.fromJson(json, new TypeToken<ViewDTO<Boolean>>(){}.getType());
+	}
+
+	public static String transControlSettingApplyParam2String(
+			ControlSettingApplyParam controlSettingApplyParam) {
+		return gson.toJson(controlSettingApplyParam);
 	}
 
 }
