@@ -1,6 +1,7 @@
 package eden.sun.childrenguard.fragment;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 
@@ -21,15 +23,19 @@ import eden.sun.childrenguard.activity.ChildrenListActivity;
 import eden.sun.childrenguard.adapter.MoreListAdapter;
 import eden.sun.childrenguard.dto.MoreListItemView;
 import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
+import eden.sun.childrenguard.helper.IApplyInterface;
 import eden.sun.childrenguard.server.dto.ChildSettingViewDTO;
+import eden.sun.childrenguard.server.dto.RegisterViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
+import eden.sun.childrenguard.server.dto.param.IParamObject;
+import eden.sun.childrenguard.server.dto.param.SettingApplyParam;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
 import eden.sun.childrenguard.util.RequestURLConstants;
 import eden.sun.childrenguard.util.ShareDataKey;
 import eden.sun.childrenguard.util.UIUtil;
 
-public class ChildManageMoreFragment extends CommonFragment{
+public class ChildManageMoreFragment extends CommonFragment implements IApplyInterface{
 	private Integer childId;
 	protected static final String TAG = "ChildManageMoreFragment";
 
@@ -49,7 +55,7 @@ public class ChildManageMoreFragment extends CommonFragment{
 		
         moreList = (ListView)v.findViewById(R.id.list);
         
-        moreListAdapter = new MoreListAdapter(this.getActivity());
+        moreListAdapter = new MoreListAdapter(this.getActivity(),this,childId);
         moreList.setAdapter(moreListAdapter);
         moreList.setOnItemClickListener(new OnItemClickListener() {
 
@@ -125,19 +131,6 @@ public class ChildManageMoreFragment extends CommonFragment{
 		
 	}
 
-	public List<MoreListItemView> getChangesSetting() {
-		if( moreListAdapter != null ){
-			return moreListAdapter.getChangesData();
-		}
-		return null;
-	}
-
-	public void clearChangesSetting() {
-		if( moreListAdapter != null ){
-			moreListAdapter.clearChangesData();
-		}
-	}
-
 	public MoreListAdapter getMoreListAdapter() {
 		return moreListAdapter;
 	}
@@ -148,6 +141,34 @@ public class ChildManageMoreFragment extends CommonFragment{
         loadSettingData();
 		super.onResume();
 	}
-	
-	
+
+	@Override
+	public void doApply(IParamObject param) {
+		SettingApplyParam settingApplyParam = (SettingApplyParam)param;
+		
+		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_APPLY_SETTING;  
+
+		Map<String,String> params = new HashMap<String,String>();
+		params.put("setting", JSONUtil.transSettingApplyParam2String(settingApplyParam));
+		
+		getRequestHelper().doPost(
+			url,
+			params,
+			getActivity().getClass(),
+			new Response.Listener<String>() {
+				@Override
+				public void onResponse(String response) {
+					final ViewDTO<Boolean> view = JSONUtil.getApplySettingView(response);
+							
+					if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
+						Toast.makeText(getActivity(), "do apply- done", Toast.LENGTH_SHORT).show();
+					}else{
+						Toast.makeText(getActivity(), "do apply- error", Toast.LENGTH_SHORT).show();
+					}
+				}
+			}, 
+			new DefaultVolleyErrorHandler(getActivity()));
+		
+	}
+
 }

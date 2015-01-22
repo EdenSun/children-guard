@@ -93,7 +93,6 @@ public class PresetLockListAdapter  extends ArrayAdapter<ScheduleLockListItemVie
 			public void onClick(View v) {
 				Switch curSwitch = (Switch)v;
 				boolean isChecked = curSwitch.isChecked();
-				Toast.makeText(context, String.valueOf(isChecked), Toast.LENGTH_SHORT).show();
 				
 				doSwitchSchedule(item.getId(),isChecked);
 			}

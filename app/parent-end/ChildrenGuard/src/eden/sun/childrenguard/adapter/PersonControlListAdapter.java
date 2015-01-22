@@ -7,6 +7,7 @@ import org.jraf.android.backport.switchwidget.Switch;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,32 +19,36 @@ import android.widget.TextView;
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.activity.PersonAppManageActivity;
 import eden.sun.childrenguard.dto.MoreListItemView;
+import eden.sun.childrenguard.helper.IApplyInterface;
 import eden.sun.childrenguard.server.dto.ChildSettingViewDTO;
+import eden.sun.childrenguard.server.dto.param.ControlSettingApplyParam;
 import eden.sun.childrenguard.util.Constants;
 import eden.sun.childrenguard.util.DataTypeUtil;
 
 public class PersonControlListAdapter extends BaseAdapter{
 	 
-    private Activity context;
+    private static final String TAG = "PersonControlListAdapter";
+	private Activity context;
+    private IApplyInterface applyControlSettingInterface;
     private List<MoreListItemView> data;
     private static LayoutInflater inflater=null;
+    private Integer childId;
     //public ImageLoader imageLoader; 
-    private List<MoreListItemView> changesData;
  
-    public PersonControlListAdapter(Activity context) {
+    public PersonControlListAdapter(Activity context,IApplyInterface applyControlSettingInterface,Integer childId) {
 		super();
 		this.context = context;
+		this.applyControlSettingInterface = applyControlSettingInterface;
 		this.data = new ArrayList<MoreListItemView>();
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		changesData = new ArrayList<MoreListItemView>();
+		this.childId = childId;
 	}
 
-	public PersonControlListAdapter(Activity context, ArrayList<MoreListItemView> data) {
+	/*public PersonControlListAdapter(Activity context, ArrayList<MoreListItemView> data) {
         this.context = context;
         this.data=data;
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        changesData = new ArrayList<MoreListItemView>();
-    }
+    }*/
  
     public int getCount() {
         return data.size();
@@ -99,12 +104,12 @@ public class PersonControlListAdapter extends BaseAdapter{
 						MoreListItemView curSetting = data.get(finalPos);
 						curSetting.setSwitchOn(isChecked);
 						
-						if( changesData.contains(curSetting) ){
-							changesData.remove(curSetting);
-						}
-						changesData.add(curSetting);
+						// apply setting
+						ControlSettingApplyParam settingApplyParam = getControlSettingApplyParam(curSetting);
+						
+						applyControlSettingInterface.doApply(settingApplyParam);
 					}
-        			
+
         		});
         		
         		vi.setTag(switchViewHolder);
@@ -125,10 +130,10 @@ public class PersonControlListAdapter extends BaseAdapter{
 							MoreListItemView curSetting = data.get(finalPos);
 							curSetting.setInputText(editText.getText().toString());
 							
-							if( changesData.contains(curSetting) ){
-								changesData.remove(curSetting);
-							}
-							changesData.add(curSetting);
+							// apply setting
+							ControlSettingApplyParam settingApplyParam = getControlSettingApplyParam(curSetting);
+							
+							applyControlSettingInterface.doApply(settingApplyParam);
 						}
 					}
         			
@@ -160,6 +165,31 @@ public class PersonControlListAdapter extends BaseAdapter{
         return vi;
     }
     
+    private ControlSettingApplyParam getControlSettingApplyParam(
+			MoreListItemView curSetting) {
+    	if( curSetting == null ){
+    		return null;
+    	}
+    	
+    	ControlSettingApplyParam param = new ControlSettingApplyParam();
+    	param.setChildId(childId);
+    	
+    	if( curSetting.getTitle().equals(Constants.TITLE_LOCK_CALLS) ){
+    		param.setLockCallsSwitch(curSetting.getSwitchOn());
+    	}else if( curSetting.getTitle().equals(Constants.TITLE_WIFI_ONLY) ){
+    		param.setWifiOnlySwitch(curSetting.getSwitchOn());
+    	}else if( curSetting.getTitle().equals(Constants.TITLE_SPEEDING_LIMIT) ){
+    		try {
+				Integer speedingLimit = Integer.parseInt(curSetting.getInputText());
+				param.setSpeedingLimit(speedingLimit);
+			} catch (NumberFormatException e) {
+				Log.e(TAG,e.getMessage());
+			}
+    	}
+    	
+		return param;
+	}
+    
     static class ArrowViewHolder {
     	TextView titleTextView;
     }
@@ -182,16 +212,6 @@ public class PersonControlListAdapter extends BaseAdapter{
 	public void removeItem(MoreListItemView speedingLimitItem) {
 		data.remove(speedingLimitItem);
 		this.notifyDataSetChanged();
-	}
-
-	public List<MoreListItemView> getChangesData() {
-		return changesData;
-	}
-
-	public void clearChangesData() {
-		if( changesData != null ){
-			changesData.clear();
-		}
 	}
 
 	public void initData(ChildSettingViewDTO setting) {

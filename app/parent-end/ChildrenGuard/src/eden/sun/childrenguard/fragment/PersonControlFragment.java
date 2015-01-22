@@ -1,7 +1,5 @@
 package eden.sun.childrenguard.fragment;
 
-import java.util.List;
-
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 
@@ -21,15 +20,18 @@ import eden.sun.childrenguard.activity.ChildrenListActivity;
 import eden.sun.childrenguard.adapter.PersonControlListAdapter;
 import eden.sun.childrenguard.dto.MoreListItemView;
 import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
+import eden.sun.childrenguard.helper.IApplyInterface;
 import eden.sun.childrenguard.server.dto.ChildSettingViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
+import eden.sun.childrenguard.server.dto.param.ControlSettingApplyParam;
+import eden.sun.childrenguard.server.dto.param.IParamObject;
 import eden.sun.childrenguard.util.Config;
 import eden.sun.childrenguard.util.JSONUtil;
 import eden.sun.childrenguard.util.RequestURLConstants;
 import eden.sun.childrenguard.util.ShareDataKey;
 import eden.sun.childrenguard.util.UIUtil;
 
-public class PersonControlFragment extends CommonFragment{
+public class PersonControlFragment extends CommonFragment implements IApplyInterface{
 	private final String TAG = "PersonControlFragment";
 	private Integer childId;
 	
@@ -87,7 +89,7 @@ public class PersonControlFragment extends CommonFragment{
 		});
 		
 		
-        personControlListAdapter = new PersonControlListAdapter(this.getActivity());
+        personControlListAdapter = new PersonControlListAdapter(this.getActivity(),this,childId);
         moreList.setAdapter(personControlListAdapter);
         
 		return v;
@@ -125,19 +127,6 @@ public class PersonControlFragment extends CommonFragment{
 		
 	}
 	
-	public List<MoreListItemView> getChangesSetting() {
-		if( personControlListAdapter != null ){
-			return personControlListAdapter.getChangesData();
-		}
-		return null;
-	}
-
-	public void clearChangesSetting() {
-		if( personControlListAdapter != null ){
-			personControlListAdapter.clearChangesData();
-		}
-	}
-
 	public PersonControlListAdapter getMoreListAdapter() {
 		return personControlListAdapter;
 	}
@@ -147,5 +136,12 @@ public class PersonControlFragment extends CommonFragment{
 		// load setting data
         loadSettingData();
 		super.onResume();
+	}
+
+
+	@Override
+	public void doApply(IParamObject param) {
+		ControlSettingApplyParam controlSettingApplyParam = (ControlSettingApplyParam)param;
+		Toast.makeText(getActivity(), "do apply", Toast.LENGTH_SHORT).show();
 	}
 }

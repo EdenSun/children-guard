@@ -22,6 +22,7 @@ import eden.sun.childrenguard.server.dto.RegisterViewDTO;
 import eden.sun.childrenguard.server.dto.RelationshipViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.PresetLockParam;
+import eden.sun.childrenguard.server.dto.param.SettingApplyParam;
 
 
 public class JSONUtil {
@@ -184,6 +185,15 @@ public class JSONUtil {
 	public static ViewDTO<String> getGetChildAppDownloadLinkViewDTO(
 			String json) {
 		return gson.fromJson(json, new TypeToken<ViewDTO<String>>(){}.getType());
+	}
+
+	public static String transSettingApplyParam2String(
+			SettingApplyParam settingApplyParam) {
+		return gson.toJson(settingApplyParam);
+	}
+
+	public static ViewDTO<Boolean> getApplySettingView(String json) {
+		return gson.fromJson(json, new TypeToken<ViewDTO<Boolean>>(){}.getType());
 	}
 
 }

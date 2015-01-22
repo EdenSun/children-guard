@@ -56,4 +56,8 @@ public class RequestURLConstants {
 	
 	public static final String URL_GET_CHILD_APP_DOWNLOAD_LINK = "/parent/childrenManage/getChildAppDownloadLink";
 	
+	/***** Person Setting ***********/
+	public static final String URL_APPLY_SETTING = "/parent/personSetting/applySetting";
+	/******************************/
+	
 }

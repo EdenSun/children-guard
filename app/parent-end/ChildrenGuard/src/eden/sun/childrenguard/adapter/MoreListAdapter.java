@@ -19,7 +19,9 @@ import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.activity.EmergencyContactManageActivity;
 import eden.sun.childrenguard.activity.ModifyLockPasswordActivity;
 import eden.sun.childrenguard.dto.MoreListItemView;
+import eden.sun.childrenguard.helper.IApplyInterface;
 import eden.sun.childrenguard.server.dto.ChildSettingViewDTO;
+import eden.sun.childrenguard.server.dto.param.SettingApplyParam;
 import eden.sun.childrenguard.util.Constants;
 import eden.sun.childrenguard.util.DataTypeUtil;
 
@@ -29,22 +31,24 @@ public class MoreListAdapter extends BaseAdapter{
     private List<MoreListItemView> data;
     private static LayoutInflater inflater=null;
     //public ImageLoader imageLoader; 
-    private List<MoreListItemView> changesData;
- 
-    public MoreListAdapter(Activity context) {
+    private IApplyInterface applyInterface;
+    private Integer childId;
+    
+    public MoreListAdapter(Activity context, IApplyInterface applyInterface,Integer childId) {
 		super();
 		this.context = context;
 		this.data = new ArrayList<MoreListItemView>();
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		changesData = new ArrayList<MoreListItemView>();
+		this.applyInterface = applyInterface;
+		this.childId = childId;
 	}
 
-	public MoreListAdapter(Activity context, ArrayList<MoreListItemView> data) {
+	/*public MoreListAdapter(Activity context, ArrayList<MoreListItemView> data) {
         this.context = context;
         this.data=data;
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         changesData = new ArrayList<MoreListItemView>();
-    }
+    }*/
  
     public int getCount() {
         return data.size();
@@ -100,12 +104,11 @@ public class MoreListAdapter extends BaseAdapter{
 						MoreListItemView curSetting = data.get(finalPos);
 						curSetting.setSwitchOn(isChecked);
 						
-						if( changesData.contains(curSetting) ){
-							changesData.remove(curSetting);
-						}
-						changesData.add(curSetting);
+						SettingApplyParam settingApplyParam = getSettingApplyParam(curSetting);
+						
+						applyInterface.doApply(settingApplyParam);
 					}
-        			
+
         		});
         		
         		vi.setTag(switchViewHolder);
@@ -125,11 +128,6 @@ public class MoreListAdapter extends BaseAdapter{
 							EditText editText = (EditText)v;
 							MoreListItemView curSetting = data.get(finalPos);
 							curSetting.setInputText(editText.getText().toString());
-							
-							if( changesData.contains(curSetting) ){
-								changesData.remove(curSetting);
-							}
-							changesData.add(curSetting);
 						}
 					}
         			
@@ -161,6 +159,37 @@ public class MoreListAdapter extends BaseAdapter{
         return vi;
     }
     
+    
+    private SettingApplyParam getSettingApplyParam(
+    		MoreListItemView item) {
+    	if( item == null ){
+    		return null;
+    	}
+    	
+    	SettingApplyParam param = new SettingApplyParam();
+    	param.setChildId(childId);
+    	
+    	if( item.getTitle().equals(Constants.TITLE_NEW_APP_NOTIFICATION) ){
+    		
+    		param.setNewAppNotificationSwitch(item.getSwitchOn());
+    		
+    	}else if( item.getTitle().equals(Constants.TITLE_UNINSTALL_APP_NOTIFICATION) ){
+    		
+    		param.setUninstallAppNotificationSwitch(item.getSwitchOn());
+    		
+    	}else if( item.getTitle().equals(Constants.TITLE_LOCK_UNLOCK_NOTIFICATION) ){
+    		
+    		param.setAppLockUnlockNotificationSwitch(item.getSwitchOn());
+    		
+    	}else if( item.getTitle().equals(Constants.TITLE_SPEEDING_NOTIFICATION) ){
+    		
+    		param.setSpeedingNotificationSwitch(item.getSwitchOn());
+    		
+    	}
+    	
+		return param;
+	}
+    
     static class ArrowViewHolder {
     	TextView titleTextView;
     }
@@ -183,16 +212,6 @@ public class MoreListAdapter extends BaseAdapter{
 	public void removeItem(MoreListItemView speedingLimitItem) {
 		data.remove(speedingLimitItem);
 		this.notifyDataSetChanged();
-	}
-
-	public List<MoreListItemView> getChangesData() {
-		return changesData;
-	}
-
-	public void clearChangesData() {
-		if( changesData != null ){
-			changesData.clear();
-		}
 	}
 
 	public void initData(ChildSettingViewDTO setting) {

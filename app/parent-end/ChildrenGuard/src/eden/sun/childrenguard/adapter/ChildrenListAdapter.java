@@ -72,29 +72,14 @@ public class ChildrenListAdapter extends BaseAdapter {
         RequestQueue mQueue = RequestHelper.getInstance(context).getImageQueue();
         ImageLoader imageLoader = new ImageLoader(mQueue, new BitmapCache());
     	if( child.getPhotoImage() != null ){
-    		imageLoader.get(Config.BASE_URL + child.getPhotoImage(), new ImageLoader.ImageListener() {
-    	        @Override
-    	        public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-    	        	if( response != null && response.getBitmap() != null ){
-    	        		Bitmap bm = BitmapHelper.toGrayscale(response.getBitmap());
-    	        		photoImageView.setImageBitmap(bm);
-    	        	}
-    	        }
-
-    	        @Override
-    	        public void onErrorResponse(VolleyError error) {
-
-    	        }
-    	    });
-    		
-    		//photoImageView.setImageUrl(Config.BASE_URL + child.getPhotoImage(),imageLoader);
+    		photoImageView.setImageUrl(Config.BASE_URL + child.getPhotoImage(),imageLoader);
     		
     	}else{
     		photoImageView.setImageUrl(null,imageLoader);
     	}
     	
-    	/*photoImageView.setDefaultImageResId(R.drawable.default_head);
-    	photoImageView.setErrorImageResId(R.drawable.default_head);*/
+    	photoImageView.setDefaultImageResId(R.drawable.default_head);
+    	photoImageView.setErrorImageResId(R.drawable.default_head);
         
         return vi;
     }
