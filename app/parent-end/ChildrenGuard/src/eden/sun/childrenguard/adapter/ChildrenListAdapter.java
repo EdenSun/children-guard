@@ -22,6 +22,7 @@ import eden.sun.childrenguard.helper.RequestHelper;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.util.BitmapCache;
 import eden.sun.childrenguard.util.Config;
+import eden.sun.childrenguard.util.Constants;
 
 public class ChildrenListAdapter extends BaseAdapter {
     private Activity context;
@@ -105,15 +106,15 @@ public class ChildrenListAdapter extends BaseAdapter {
 		view.setMobile(child.getMobile());
 		view.setNickname(child.getNickname());
 		if( child.isInLockState() == true ){
-			view.setLockState("Locked");
+			view.setLockState(Constants.TEXT_LOCK);
 		}else{
-			view.setLockState("Unlocked");
+			view.setLockState(Constants.TEXT_UNLOCK);
 		}
 		
 		if( child.isOnline() == true ){
-			view.setOnlineState("Online");
+			view.setOnlineState(Constants.TEXT_ONLINE);
 		}else{
-			view.setOnlineState("Offline");
+			view.setOnlineState(Constants.TEXT_OFFLINE);
 		}
 		
 		view.setPhotoImage(child.getPhotoImage());

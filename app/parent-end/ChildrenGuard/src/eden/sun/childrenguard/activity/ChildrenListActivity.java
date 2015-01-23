@@ -8,6 +8,7 @@ import java.util.Map;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -32,9 +33,11 @@ import eden.sun.childrenguard.adapter.ChildrenListAdapter;
 import eden.sun.childrenguard.dto.ChildrenListItemView;
 import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
 import eden.sun.childrenguard.fragment.EmailSettingDialogFragment;
+import eden.sun.childrenguard.helper.SMSHelper;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Config;
+import eden.sun.childrenguard.util.Constants;
 import eden.sun.childrenguard.util.JSONUtil;
 import eden.sun.childrenguard.util.RequestURLConstants;
 import eden.sun.childrenguard.util.ShareDataKey;
@@ -67,12 +70,48 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 	        @Override
 	        public void onItemClick(AdapterView<?> parent, View view,
 	                int position, long id) {
-	        	Intent intent = new Intent(ChildrenListActivity.this,ChildrenManageActivity.class);
-	        	
-	        	ChildrenListItemView child = (ChildrenListItemView)childrenListAdapter.getItem(position);
-	        	
-	        	intent.putExtra("childId", child.getId());
-	        	startActivityForResult(intent, 1);
+	        	final ChildrenListItemView child = (ChildrenListItemView)childrenListAdapter.getItem(position);
+	        	final String childMobile = child.getMobile();
+	        	if( child != null ){
+	        		if( child.getOnlineState().equals(Constants.TEXT_OFFLINE) ){
+	        			String title = "Person off-line";
+	        			String msg = "Person is off-line.Click resend button to resend download link to person mobile.";
+	        			String leftBtnText = "Resend";
+	        			String rightBtnText = "Go person manage";
+	        			UIUtil.getAlertDialogWithTwoBtn(
+	        				ChildrenListActivity.this, 
+	        				title, msg, leftBtnText, rightBtnText, 
+	        				new OnClickListener(){
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int arg1) {
+									doResendDownloadLink(childMobile);
+									
+								}
+	        					
+	        				}, 
+	        				new OnClickListener(){
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int arg1) {
+									Intent intent = new Intent(ChildrenListActivity.this,ChildrenManageActivity.class);
+				    	        	
+				    	        	intent.putExtra("childId", child.getId());
+				    	        	startActivityForResult(intent, 1);
+								}
+	        					
+	        				}).show();
+	        			
+	        			
+	        		}else{
+	        			Intent intent = new Intent(ChildrenListActivity.this,ChildrenManageActivity.class);
+	    	        	
+	    	        	intent.putExtra("childId", child.getId());
+	    	        	startActivityForResult(intent, 1);
+	        		}
+	        	}
 	        }
 	    });
 	    
@@ -83,6 +122,32 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 		Map<String, Object> data = getLoadMyChildrenParam();
 		task.execute(data);*/
 	}
+	
+	
+	private void doResendDownloadLink(final String childMobile) {
+		
+		String url = String.format(Config.BASE_URL_MVC
+				+ RequestURLConstants.URL_GET_CHILD_APP_DOWNLOAD_LINK);
+
+		
+		getRequestHelper().doGet(url,this.getClass(), new Response.Listener<String>() {
+			@Override
+			public void onResponse(String response) {
+				dismissProgressDialog();
+				ViewDTO<String> view = JSONUtil
+						.getGetChildAppDownloadLinkViewDTO(response);
+
+				if (view.getMsg().equals(ViewDTO.MSG_SUCCESS)) {
+					String content = "Click to download person end app:" + view.getData();
+					SMSHelper.sendSms(childMobile,content);
+				}
+
+			}
+
+		}, new DefaultVolleyErrorHandler(ChildrenListActivity.this));		
+		
+	}
+
 	
 	private void initSwipeList() {
 		list=(SwipeMenuListView)findViewById(R.id.list);

@@ -2,6 +2,8 @@ package eden.sun.childrenguard.fragment;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -11,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -43,7 +46,17 @@ public class ChildBasicInfoFragment extends CommonFragment{
 	private TextView speedTextView;
 	private TextView nicknameTextView;
 	private NetworkImageView locationMapImage;
-	
+	private RequestQueue mQueue;
+    private ImageLoader imageLoader ;
+    private Timer timer;
+    
+    
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		startTimer();
+	}
+
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -51,6 +64,9 @@ public class ChildBasicInfoFragment extends CommonFragment{
 		Intent intent = this.getActivity().getIntent();
 		childId = intent.getIntExtra("childId",0);
 		
+		mQueue = RequestHelper.getInstance(getActivity()).getImageQueue();
+	    imageLoader = new ImageLoader(mQueue, new BitmapCache());
+	    
 		initComponent(vi);
         
 		return vi;
@@ -64,11 +80,6 @@ public class ChildBasicInfoFragment extends CommonFragment{
 		//locationTextView = (TextView)vi.findViewById(R.id.locationTextView);
 		
 		locationMapImage = (NetworkImageView)vi.findViewById(R.id.locationMapImage);
-		
-		RequestQueue mQueue = RequestHelper.getInstance(getActivity()).getImageQueue();
-        ImageLoader imageLoader = new ImageLoader(mQueue, new BitmapCache());
-        locationMapImage.setImageUrl(MapHelper.getMapboxStaticMapUrl() , imageLoader);
-        
 		
         /*locationTextView.setOnClickListener(new OnClickListener(){
 			@Override
@@ -139,6 +150,8 @@ public class ChildBasicInfoFragment extends CommonFragment{
 		    				/*String text = UIUtil.formatTextForView(childExtra.getLocation());
 		    				locationTextView.setText(text);*/
 			    			
+			    			locationMapImage.setImageUrl(MapHelper.getMapboxStaticMapUrl() , imageLoader);
+			    			 
 		    				String text = UIUtil.formatTextForView(childExtra.getSpeed());
 		    				speedTextView.setText(text + "km/s");
 			    		}else{
@@ -204,4 +217,30 @@ public class ChildBasicInfoFragment extends CommonFragment{
 			new DefaultVolleyErrorHandler(getActivity()));
 	}
 
+	
+	private void startTimer() {
+    	if( timer == null ){
+    		timer = new Timer();
+    	}
+        timer.schedule(new RefreshTask(), 3*1000);
+    }
+    
+    private void cancelTimer() {
+    	if( timer != null ){
+    		timer.cancel();
+    		timer = null;
+    	}
+    }
+    
+	
+	class RefreshTask extends TimerTask {
+
+		@Override
+		public void run() {
+			Toast.makeText(getActivity(), "Rrrrrrrr......", Toast.LENGTH_SHORT).show();;
+			//loadChildBasicInfo();
+		}
+		
+	}
+	
 }

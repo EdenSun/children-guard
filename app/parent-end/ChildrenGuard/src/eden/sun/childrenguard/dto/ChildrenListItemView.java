@@ -10,7 +10,7 @@ public class ChildrenListItemView {
     
     private String onlineState;
     private String lockState;
-
+    
 	public Integer getId() {
 		return id;
 	}

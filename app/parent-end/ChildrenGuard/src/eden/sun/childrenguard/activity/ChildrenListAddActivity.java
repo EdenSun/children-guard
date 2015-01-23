@@ -2,7 +2,6 @@ package eden.sun.childrenguard.activity;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import android.app.AlertDialog;
@@ -16,7 +15,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,6 +29,7 @@ import com.soundcloud.android.crop.Crop;
 
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
+import eden.sun.childrenguard.helper.SMSHelper;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.BitmapUtil;
@@ -234,7 +233,7 @@ public class ChildrenListAddActivity extends CommonActivity {
 
 				if (view.getMsg().equals(ViewDTO.MSG_SUCCESS)) {
 					String content = "Click to download person end app:" + view.getData();
-					sendSms(childMobile,content);
+					SMSHelper.sendSms(childMobile,content);
 				}
 
 			}
@@ -244,14 +243,6 @@ public class ChildrenListAddActivity extends CommonActivity {
 			
 	}
 
-	private void sendSms(String mobile, String content) {
-		SmsManager smsManager = SmsManager.getDefault();  
-		List<String> divideContents = smsManager.divideMessage(content);    
-		for (String text : divideContents) {    
-		    smsManager.sendTextMessage(mobile, null, text, null, null);    
-		}				
-	}
-	
 	private boolean doValidation() {
 		String mobile = UIUtil.getEditTextValue(mobileEditText);
 		String name = UIUtil.getEditTextValue(nameEditText);

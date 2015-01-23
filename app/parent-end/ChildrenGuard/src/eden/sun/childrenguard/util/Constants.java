@@ -14,6 +14,11 @@ public class Constants {
 	public static final String TITLE_SPEEDING_LIMIT = "Speeding Limit";
 	public static final String TITLE_APP_LOCK_MANAGE = "App Lock/Unlock Manage";
 	
+	public static final String TEXT_ONLINE = "online";
+	public static final String TEXT_OFFLINE = "off-line";
+	public static final String TEXT_LOCK = "lock";
+	public static final String TEXT_UNLOCK = "unlock";
+	
 	
 	
 }

@@ -60,7 +60,7 @@ public class UIUtil {
 	        .setMessage(msg)
 	        .setPositiveButton(leftBtnText, leftBtnListener)
 	        .setNegativeButton(rightBtnText, rightBtnListener)
-	        .setCancelable(true);
+	        .setCancelable(false);
 	}
 
 
