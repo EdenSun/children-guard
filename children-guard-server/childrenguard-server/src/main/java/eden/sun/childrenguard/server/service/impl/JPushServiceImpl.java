@@ -126,4 +126,32 @@ public class JPushServiceImpl extends BaseServiceImpl implements IJPushService {
         }
 	}
 
+	@Override
+	public PushResult pushToChild(String registionId, String msgContent,
+			Map<String, String> extra) throws ServiceException {
+		try {
+			List<String> registionIds = new ArrayList<String>();
+			registionIds.add(registionId);
+			
+			PushPayload payload = buildAndroidMessageWithExtras(registionIds,msgContent,extra);
+			
+            PushResult result = childJPushClient.sendPush(payload);
+            logger.info("Push done,Got result - " + result);
+            return result;
+            
+        } catch (APIConnectionException e) {
+            // Connection error, should retry later
+        	logger.error("Connection error, should retry later", e);
+        	return null;
+        } catch (APIRequestException e) {
+            // Should review the error, and fix the request
+        	logger.error("Should review the error, and fix the request", e);
+        	logger.info("HTTP Status: " + e.getStatus());
+        	logger.info("Error Code: " + e.getErrorCode());
+        	logger.info("Error Message: " + e.getErrorMessage());
+        	return null;
+        }
+	}
+	
+
 }

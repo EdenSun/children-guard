@@ -6,7 +6,6 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +13,11 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.dto.ChildrenListItemView;
-import eden.sun.childrenguard.helper.BitmapHelper;
 import eden.sun.childrenguard.helper.RequestHelper;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.util.BitmapCache;
@@ -59,7 +56,8 @@ public class ChildrenListAdapter extends BaseAdapter {
  
         TextView childNameTextView = (TextView)vi.findViewById(R.id.childName);
         TextView mobileTextView = (TextView)vi.findViewById(R.id.mobile);
-        TextView emailTextView = (TextView)vi.findViewById(R.id.email);
+        TextView onlineState = (TextView)vi.findViewById(R.id.onlineState);
+        TextView lockState = (TextView)vi.findViewById(R.id.lockState);
         final NetworkImageView photoImageView = (NetworkImageView)vi.findViewById(R.id.list_image);
         
         ChildrenListItemView child = data.get(position);
@@ -67,7 +65,9 @@ public class ChildrenListAdapter extends BaseAdapter {
         // Setting all values in listview
         childNameTextView.setText(child.getNickname());
         mobileTextView.setText(child.getMobile());
-        emailTextView.setText("");
+        onlineState.setText(child.getOnlineState());
+        lockState.setText(child.getLockState());
+        
         
         RequestQueue mQueue = RequestHelper.getInstance(context).getImageQueue();
         ImageLoader imageLoader = new ImageLoader(mQueue, new BitmapCache());
@@ -104,7 +104,18 @@ public class ChildrenListAdapter extends BaseAdapter {
 		view.setLastName(child.getLastName());
 		view.setMobile(child.getMobile());
 		view.setNickname(child.getNickname());
-		view.setOnlineStatus("Online");
+		if( child.isInLockState() == true ){
+			view.setLockState("Locked");
+		}else{
+			view.setLockState("Unlocked");
+		}
+		
+		if( child.isOnline() == true ){
+			view.setOnlineState("Online");
+		}else{
+			view.setOnlineState("Offline");
+		}
+		
 		view.setPhotoImage(child.getPhotoImage());
 		
 		data.add(view);

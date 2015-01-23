@@ -2,13 +2,16 @@ package eden.sun.childrenguard.server.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.jpush.api.push.PushResult;
 import eden.sun.childrenguard.server.dao.ChildOfParentsMapper;
 import eden.sun.childrenguard.server.dao.generated.ChildMapper;
 import eden.sun.childrenguard.server.dto.ChildInfoViewDTO;
@@ -29,6 +32,7 @@ import eden.sun.childrenguard.server.service.IAppService;
 import eden.sun.childrenguard.server.service.IChildExtraInfoService;
 import eden.sun.childrenguard.server.service.IChildService;
 import eden.sun.childrenguard.server.service.IChildSettingService;
+import eden.sun.childrenguard.server.service.IJPushService;
 import eden.sun.childrenguard.server.service.IParentChildService;
 import eden.sun.childrenguard.server.service.IScheduleLockService;
 
@@ -44,7 +48,8 @@ public class ChildServiceImpl extends BaseServiceImpl implements IChildService {
 	private IChildExtraInfoService childExtraInfoService;
 	@Autowired
 	private IChildSettingService childSettingService;
-	
+	@Autowired
+	private IJPushService jpushService;
 	@Autowired
 	private IAppService appService;
 	@Autowired
@@ -439,7 +444,26 @@ public class ChildServiceImpl extends BaseServiceImpl implements IChildService {
 
 	@Override
 	public boolean isOnline(Integer childId) throws ServiceException {
-		// TODO Auto-generated method stub
+		Child child = this.getById(childId);
+		if( child == null ){
+			throw new ServiceException("Child is not exists");
+		}
+		
+		String registionId = child.getRegistionId();
+		if( registionId == null ){
+			// no registion id , child is offline
+			return false;
+		}
+		
+		String msgContent = "test_online";
+		Map<String,String> extra = new HashMap<String,String>();
+		
+		PushResult pushResult = jpushService.pushToChild(registionId, msgContent, extra);
+
+		if( pushResult != null && pushResult.getOriginalContent()!=null && pushResult.getOriginalContent().equals("true") ){
+			return true;
+		}
+
 		return false;
 	}
 	

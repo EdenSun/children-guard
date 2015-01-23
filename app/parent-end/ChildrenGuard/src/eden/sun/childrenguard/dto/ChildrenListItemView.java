@@ -8,7 +8,8 @@ public class ChildrenListItemView {
     private String lastName;
     private String photoImage;
     
-    private String onlineStatus;
+    private String onlineState;
+    private String lockState;
 
 	public Integer getId() {
 		return id;
@@ -50,14 +51,6 @@ public class ChildrenListItemView {
 		this.lastName = lastName;
 	}
 
-	public String getOnlineStatus() {
-		return onlineStatus;
-	}
-
-	public void setOnlineStatus(String onlineStatus) {
-		this.onlineStatus = onlineStatus;
-	}
-
 	public String getPhotoImage() {
 		return photoImage;
 	}
@@ -65,5 +58,20 @@ public class ChildrenListItemView {
 	public void setPhotoImage(String photoImage) {
 		this.photoImage = photoImage;
 	}
-    
+
+	public String getOnlineState() {
+		return onlineState;
+	}
+
+	public void setOnlineState(String onlineState) {
+		this.onlineState = onlineState;
+	}
+
+	public String getLockState() {
+		return lockState;
+	}
+
+	public void setLockState(String lockState) {
+		this.lockState = lockState;
+	}
 }

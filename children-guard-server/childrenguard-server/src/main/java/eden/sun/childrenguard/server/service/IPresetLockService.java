@@ -36,5 +36,7 @@ public interface IPresetLockService {
 			PresetLockParam applyPresetLockParam)throws ServiceException;
 
 	ViewDTO<Boolean> switchPresetLock(Integer presetLockId, boolean isChecked)throws ServiceException;
+
+	List<PresetLock> listByChildId(Integer childId)throws ServiceException;
 	
 }

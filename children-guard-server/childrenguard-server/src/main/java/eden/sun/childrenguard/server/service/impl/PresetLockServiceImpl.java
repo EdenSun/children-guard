@@ -320,7 +320,8 @@ public class PresetLockServiceImpl extends BaseServiceImpl implements IPresetLoc
 		return view;
 	}
 
-	private List<PresetLock> listByChildId(Integer childId) {
+	@Override
+	public List<PresetLock> listByChildId(Integer childId) {
 		PresetLockExample example = new PresetLockExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andChildIdEqualTo(childId);

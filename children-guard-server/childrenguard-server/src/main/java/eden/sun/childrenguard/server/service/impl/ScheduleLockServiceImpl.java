@@ -1,5 +1,7 @@
 package eden.sun.childrenguard.server.service.impl;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,9 +77,40 @@ public class ScheduleLockServiceImpl extends BaseServiceImpl implements ISchedul
 		if( presetLock == null || presetLock.getStartTime() == null || presetLock.getEndTime() == null ){
 			throw new ServiceException("Parameter presetLock , startTime , endTime can not be null.");
 		}
+		Calendar cal = Calendar.getInstance();
 		
-		//TODO:
+		Date startDateTime = presetLock.getStartTime();
+		Date endDateTime = presetLock.getEndTime();
+		Date now = new Date();
+		cal.setTime(now);
+		int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+		if( inLockDayOfWeek(presetLock,dayOfWeek) ){
+			if( now.after(startDateTime) && now.before(endDateTime) ){
+				return true;
+			}
+		}
 		
+		return false;
+	}
+
+	private boolean inLockDayOfWeek(PresetLock presetLock, int dayOfWeek) {
+		if( presetLock != null ){
+			if( dayOfWeek == Calendar.MONDAY && presetLock.getRepeatMonday() != null && presetLock.getRepeatMonday().booleanValue() == true  ){
+				return true;
+			}else if( dayOfWeek == Calendar.TUESDAY && presetLock.getRepeatTuesday() != null && presetLock.getRepeatTuesday().booleanValue() == true  ){
+				return true;
+			}else if( dayOfWeek == Calendar.WEDNESDAY && presetLock.getRepeatWednesday() != null && presetLock.getRepeatWednesday().booleanValue() == true  ){
+				return true;
+			}else if( dayOfWeek == Calendar.THURSDAY && presetLock.getRepeatThurday() != null && presetLock.getRepeatThurday().booleanValue() == true  ){
+				return true;
+			}else if( dayOfWeek == Calendar.FRIDAY && presetLock.getRepeatFriday() != null && presetLock.getRepeatFriday().booleanValue() == true  ){
+				return true;
+			}else if( dayOfWeek == Calendar.SATURDAY && presetLock.getRepeatSaturday() != null && presetLock.getRepeatSaturday().booleanValue() == true  ){
+				return true;
+			}else if( dayOfWeek == Calendar.SUNDAY && presetLock.getRepeatSunday() != null && presetLock.getRepeatSunday().booleanValue() == true  ){
+				return true;
+			}
+		}
 		return false;
 	}
 
