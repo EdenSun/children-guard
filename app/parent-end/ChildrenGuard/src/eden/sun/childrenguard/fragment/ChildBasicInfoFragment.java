@@ -222,10 +222,11 @@ public class ChildBasicInfoFragment extends CommonFragment{
     	if( timer == null ){
     		timer = new Timer();
     	}
-        timer.schedule(new RefreshTask(), 3*1000);
+        //timer.schedule(new RefreshTask(), 0 ,15*60*1000);
+    	timer.schedule(new RefreshTask(), 0 ,3*1000);
     }
     
-    private void cancelTimer() {
+    public void cancelTimer() {
     	if( timer != null ){
     		timer.cancel();
     		timer = null;
@@ -233,11 +234,24 @@ public class ChildBasicInfoFragment extends CommonFragment{
     }
     
 	
-	class RefreshTask extends TimerTask {
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		cancelTimer();
+	}
 
+
+	class RefreshTask extends TimerTask {
 		@Override
 		public void run() {
-			Toast.makeText(getActivity(), "Rrrrrrrr......", Toast.LENGTH_SHORT).show();;
+			getActivity().runOnUiThread(new Runnable(){
+
+				@Override
+				public void run() {
+					Toast.makeText(getActivity(), "Rrrrrrrr......", Toast.LENGTH_SHORT).show();
+				}
+				
+			});
 			//loadChildBasicInfo();
 		}
 		

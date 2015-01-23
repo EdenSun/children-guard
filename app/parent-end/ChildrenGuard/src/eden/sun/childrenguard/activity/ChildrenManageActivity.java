@@ -16,6 +16,7 @@ import android.widget.Toast;
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.adapter.AppSectionsPagerAdapter;
 import eden.sun.childrenguard.fragment.ChildAppManageFragment;
+import eden.sun.childrenguard.fragment.ChildBasicInfoFragment;
 import eden.sun.childrenguard.helper.MyViewPager;
 import eden.sun.childrenguard.server.dto.ChildBasicInfoViewDTO;
 import eden.sun.childrenguard.util.Callback;
@@ -292,6 +293,8 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 		return super.onOptionsItemSelected(item);
 	}
 
+
+
 	/*private void applyMoreSettingChanges(Integer childId,
 			List<MoreListItemView> settingList) {
 		if( childId != null && settingList != null && settingList.size() > 0 ){
@@ -484,4 +487,6 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 			}
 		}
 	}*/
+	
+	
 }
