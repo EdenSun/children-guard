@@ -3,7 +3,7 @@ package eden.sun.childrenguard.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import eden.sun.childrenguard.fragment.ChildAppManageFragment;
+import eden.sun.childrenguard.fragment.PersonAppManageFragment;
 import eden.sun.childrenguard.fragment.ChildBasicInfoFragment;
 import eden.sun.childrenguard.fragment.ChildManageMoreFragment;
 import eden.sun.childrenguard.fragment.PersonControlFragment;

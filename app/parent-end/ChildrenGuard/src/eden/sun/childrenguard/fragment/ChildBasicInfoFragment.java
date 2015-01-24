@@ -110,7 +110,6 @@ public class ChildBasicInfoFragment extends CommonFragment{
 		/*String title = "Loading Data";
 		String msg = "Please wait...";
 		showProgressDialog(title,msg);*/
-		
 		String url = String.format(
 				Config.BASE_URL_MVC + RequestURLConstants.URL_GET_CHILD_BASIC_INFO + "?childId=%1$s",  
 				childId
@@ -143,15 +142,15 @@ public class ChildBasicInfoFragment extends CommonFragment{
 			    			fullNameTextView.setText(text);*/
 			    		}
 			    		
-			    		if( childExtra != null ){
+			    		if( childExtra != null && ( (childExtra.getLongitude()!=null && childExtra.getLatitude() !=null) || childExtra.getSpeed() != null ) ){
 			    			/*String text = UIUtil.formatTextForView(childExtra.getNetworkTrafficUsed());
 		    				networkTrafficTextView.setText(text + "Used");*/
 			    			
 		    				/*String text = UIUtil.formatTextForView(childExtra.getLocation());
 		    				locationTextView.setText(text);*/
 			    			
-			    			locationMapImage.setImageUrl(MapHelper.getMapboxStaticMapUrl() , imageLoader);
-			    			 
+			    			locationMapImage.setImageUrl(MapHelper.getMapboxStaticMapUrl(childExtra.getLongitude(),childExtra.getLatitude()) , imageLoader);
+			    			
 		    				String text = UIUtil.formatTextForView(childExtra.getSpeed());
 		    				speedTextView.setText(text + "km/s");
 			    		}else{
@@ -222,8 +221,8 @@ public class ChildBasicInfoFragment extends CommonFragment{
     	if( timer == null ){
     		timer = new Timer();
     	}
-        //timer.schedule(new RefreshTask(), 0 ,15*60*1000);
-    	timer.schedule(new RefreshTask(), 0 ,3*1000);
+
+    	timer.schedule(new RefreshTask(), 15*60*1000 ,15*60*1000);
     }
     
     public void cancelTimer() {
@@ -244,15 +243,15 @@ public class ChildBasicInfoFragment extends CommonFragment{
 	class RefreshTask extends TimerTask {
 		@Override
 		public void run() {
-			getActivity().runOnUiThread(new Runnable(){
+			/*getActivity().runOnUiThread(new Runnable(){
 
 				@Override
 				public void run() {
 					Toast.makeText(getActivity(), "Rrrrrrrr......", Toast.LENGTH_SHORT).show();
 				}
 				
-			});
-			//loadChildBasicInfo();
+			});*/
+			loadChildBasicInfo();
 		}
 		
 	}
