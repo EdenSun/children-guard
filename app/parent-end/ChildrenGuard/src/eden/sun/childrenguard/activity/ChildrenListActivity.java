@@ -1,5 +1,6 @@
 package eden.sun.childrenguard.activity;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
@@ -117,6 +119,8 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 	    
 	    // load person list
 	    loadChildrenList();
+	    
+	    forceShowOverflowMenu();
 	    
 	    /*AsyncTask<Map<String, Object>,Integer,String> task = new LoadMyChildrenTask(ChildrenListActivity.this);
 		Map<String, Object> data = getLoadMyChildrenParam();
@@ -337,6 +341,7 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.menu_children_list, menu);
+		
 		return true;
 	}
 
@@ -475,4 +480,18 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 	        }
 	    }, 2000);
 	} */
+	
+	private void forceShowOverflowMenu() {
+		try {
+			ViewConfiguration config = ViewConfiguration.get(this);
+			Field menuKeyField = ViewConfiguration.class
+					.getDeclaredField("sHasPermanentMenuKey");
+			if (menuKeyField != null) {
+				menuKeyField.setAccessible(true);
+				menuKeyField.setBoolean(config, false);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

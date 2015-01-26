@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.adapter.AppSectionsPagerAdapter;
+import eden.sun.childrenguard.helper.IPersonControlFragmentInterface;
 import eden.sun.childrenguard.helper.MyViewPager;
 import eden.sun.childrenguard.server.dto.ChildBasicInfoViewDTO;
 
@@ -43,6 +44,8 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
     private TextView settingTabText ;
     
     private Integer childId;
+    
+    private IPersonControlFragmentInterface personControlFragmentInterface;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -73,6 +76,7 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
             		controlTabImageView.setImageResource(R.drawable.tab_icon_child_app_manage_selected);
             		controlTabText.setTextColor(Color.WHITE);
             		
+            		personControlFragmentInterface.loadSettingData();
             	}else if( position == 2 ){
             		//More
             		Log.i(TAG, "schedule show");
@@ -284,6 +288,13 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 		}
 		
 		return super.onOptionsItemSelected(item);
+	}
+
+
+
+	public void setPersonControlFragmentInterface(
+			IPersonControlFragmentInterface personControlFragmentInterface) {
+		this.personControlFragmentInterface = personControlFragmentInterface;
 	}
 
 

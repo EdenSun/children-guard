@@ -9,6 +9,7 @@ import eden.sun.childrenguard.fragment.ChildManageMoreFragment;
 import eden.sun.childrenguard.fragment.PersonControlFragment;
 import eden.sun.childrenguard.fragment.PresetLockListFragment;
 import eden.sun.childrenguard.fragment.PushMessageListFragment;
+import eden.sun.childrenguard.helper.IPersonControlFragmentInterface;
 
 public class AppSectionsPagerAdapter extends FragmentPagerAdapter {
 	public static final int FRAGMENT_INDEX_INFO = 0;

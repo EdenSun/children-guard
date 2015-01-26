@@ -96,7 +96,6 @@ public class ChildManageMoreFragment extends CommonFragment implements IApplyInt
         
         // load setting data
         //loadSettingData();
-        
 		return v;
     }
 
