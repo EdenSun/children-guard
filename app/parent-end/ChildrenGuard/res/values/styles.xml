@@ -24,7 +24,10 @@
         <item name="android:background">#647b97</item>  
         <item name="android:titleTextStyle">@style/ActionBarTitleStyle</item> 
         <item name="android:backgroundStacked">#4A708B</item> 
-        <item name="android:backgroundSplit">#ff0000</item>  
+        <item name="android:backgroundSplit">#ff0000</item> 
+        <item name="android:icon">@android:color/transparent</item>
+        <!-- <item name="android:displayOptions">showHome|homeAsUp|showTitle</item>
+		<item name="displayOptions">showHome|homeAsUp|showTitle</item>  -->
     </style>
     
     <style name="ActionBarTitleStyle">    
