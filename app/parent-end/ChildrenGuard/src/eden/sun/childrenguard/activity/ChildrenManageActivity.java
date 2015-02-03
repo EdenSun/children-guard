@@ -209,9 +209,12 @@ public class ChildrenManageActivity extends CommonFragmentActivity implements Ac
 	}
 	
 	private void initMenu() {
-		if(  mViewPager != null ){
+		if(  mViewPager != null ){ 
 			/*lockAllAppMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 			unlockAllAppMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);*/
+			if( addSchedule == null || addSchedule == null ){
+				return ;
+			}
 			addSchedule.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 			updateBasicInfo.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 			
