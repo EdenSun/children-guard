@@ -19,7 +19,7 @@ public interface IPresetLockService {
 	
 	PresetLock createIfNotExists(Integer presetLockId)throws ServiceException;
 
-	ViewDTO<PresetLockViewDTO> retrievePresetLockData(String imei)throws ServiceException;
+	//ViewDTO<List<PresetLockViewDTO>> listAllByImei(String imei)throws ServiceException;
 	
 	ViewDTO<List<PresetLockListItemViewDTO>> listScheduleLock(Integer childId)throws ServiceException;
 
@@ -38,5 +38,7 @@ public interface IPresetLockService {
 	ViewDTO<Boolean> switchPresetLock(Integer presetLockId, boolean isChecked)throws ServiceException;
 
 	List<PresetLock> listByChildId(Integer childId)throws ServiceException;
+
+	List<PresetLock> listByChildImei(String imei)throws ServiceException;
 	
 }

@@ -26,8 +26,8 @@ import eden.sun.childrenguard.server.service.IChildService;
 import eden.sun.childrenguard.server.service.IJPushService;
 import eden.sun.childrenguard.server.service.IPresetLockAppService;
 import eden.sun.childrenguard.server.service.IPresetLockService;
-import eden.sun.childrenguard.server.util.DataTypeUtil;
 import eden.sun.childrenguard.server.util.PushConstants;
+import eden.sun.childrenguard.server.util.ScheduleLockHelper;
 
 @Service
 public class PresetLockServiceImpl extends BaseServiceImpl implements IPresetLockService {
@@ -93,9 +93,9 @@ public class PresetLockServiceImpl extends BaseServiceImpl implements IPresetLoc
 		dto.setLockCallStatus(presetLock.getLockCallStatus());
 		dto.setPresetOnOff(presetLock.getPresetOnOff());
 		
-		List<Boolean> repeatList = getRepeatList(presetLock); 
+		List<Boolean> repeatList = ScheduleLockHelper.getRepeatList(presetLock); 
 		dto.setRepeat(repeatList);
-		String repeatSummary = getRepeatSummary(repeatList); 
+		String repeatSummary = ScheduleLockHelper.getRepeatSummary(repeatList); 
 		dto.setRepeatSummary(repeatSummary);
 		
 		dto.setAppList(appList);
@@ -105,7 +105,7 @@ public class PresetLockServiceImpl extends BaseServiceImpl implements IPresetLoc
 		return dto;
 	}
 
-	private String getRepeatSummary(List<Boolean> repeatList)throws ServiceException {
+	/*private String getRepeatSummary(List<Boolean> repeatList)throws ServiceException {
 		if( repeatList == null || repeatList.size() == 0 ){
 			return "";
 		}
@@ -150,9 +150,9 @@ public class PresetLockServiceImpl extends BaseServiceImpl implements IPresetLoc
 			sb.append("Sun.").append(" ");
 		}
 		return sb.toString().trim();
-	}
+	}*/
 
-	private List<Boolean> getRepeatList(PresetLock presetLock)throws ServiceException {
+	/*private List<Boolean> getRepeatList(PresetLock presetLock)throws ServiceException {
 		if( presetLock == null){
 			return null;
 		}
@@ -175,7 +175,7 @@ public class PresetLockServiceImpl extends BaseServiceImpl implements IPresetLoc
 		repeatList.add(sunday);
 		
 		return repeatList;
-	}
+	}*/
 
 	@Override
 	public PresetLock createIfNotExists(Integer presetLockId)throws ServiceException {
@@ -235,8 +235,8 @@ public class PresetLockServiceImpl extends BaseServiceImpl implements IPresetLoc
 		return getById(presetLock.getId());
 	}
 
-	@Override
-	public ViewDTO<PresetLockViewDTO> retrievePresetLockData(String imei)
+	/*@Override
+	public ViewDTO<PresetLockViewDTO> listAllByImei(String imei)
 			throws ServiceException {
 		if(imei == null ){
 			throw new ServiceException("Parameter imei can not be null.");
@@ -247,7 +247,7 @@ public class PresetLockServiceImpl extends BaseServiceImpl implements IPresetLoc
 		}
 		
 		return this.loadPresetLockData(child.getId());
-	}
+	}*/
 
 	
 	/*private PresetLock getById(Integer presetLockId) {
@@ -314,8 +314,8 @@ public class PresetLockServiceImpl extends BaseServiceImpl implements IPresetLoc
 		view.setEndTime(presetLock.getEndTime());
 		view.setPresetOnOff(presetLock.getPresetOnOff());
 		
-		List<Boolean> repeatList = getRepeatList(presetLock); 
-		String repeatSummary = getRepeatSummary(repeatList); 
+		List<Boolean> repeatList = ScheduleLockHelper.getRepeatList(presetLock); 
+		String repeatSummary = ScheduleLockHelper.getRepeatSummary(repeatList); 
 		view.setRepeatSummary(repeatSummary);
 		return view;
 	}
@@ -327,6 +327,17 @@ public class PresetLockServiceImpl extends BaseServiceImpl implements IPresetLoc
 		criteria.andChildIdEqualTo(childId);
 		
 		return presetLockMapper.selectByExample(example);
+	}
+	
+	@Override
+	public List<PresetLock> listByChildImei(String imei)
+			throws ServiceException {
+		Child child = childService.getChildByImei(imei);
+		if( child == null ){
+			throw new ServiceException("Child is not exists.imei:" + imei);
+		}
+		
+		return this.listByChildId(child.getId());
 	}
 
 	@Override
