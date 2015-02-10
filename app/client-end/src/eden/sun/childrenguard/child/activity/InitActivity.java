@@ -35,6 +35,8 @@ public class InitActivity extends CommonBindServiceActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//initJPush();
+		
 		setContentView(R.layout.activity_init);
 		timer = new Timer(true);
 
@@ -42,13 +44,12 @@ public class InitActivity extends CommonBindServiceActivity {
 		
 		initService();
 		
-		isActivate();
 	}
 	
-	/*private void initJPush() {
+	private void initJPush() {
 		JPushInterface.setDebugMode(true);
         JPushInterface.init(this);		
-	}*/
+	}
 	
 	@Override
 	protected void onPause() {
@@ -69,8 +70,14 @@ public class InitActivity extends CommonBindServiceActivity {
 	protected void onResume() {
 		super.onResume();
 	}
-
 	
+	@Override
+	public void onStart() {
+		super.onStart();
+		
+		isActivate();
+	}
+
 	private void isActivate() {
 		String imei = DeviceHelper.getIMEI(this);
 		if( imei != null ){

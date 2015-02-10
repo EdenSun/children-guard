@@ -8,7 +8,7 @@ public interface IChildAccountService {
 
 	ViewDTO<ChildViewDTO> isActivate(String imei)throws ServiceException;
 
-	ViewDTO<Boolean> doActivate(String parentEmail, String childMobile,
+	ViewDTO<Boolean> doActivate(String parentMobile, String childMobile,
 			String imei)throws ServiceException;
 
 }

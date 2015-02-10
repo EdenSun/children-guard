@@ -27,9 +27,9 @@ public class ChildAccountController  extends BaseController{
 	
 	@RequestMapping("/doActivate")
 	@ResponseBody
-	public ViewDTO<Boolean> doActivate(String parentEmail ,String childMobile,String imei){
-		logger.info("doActivate called.parentEmail:" + parentEmail + " childMobile:"+ childMobile + " imei:" + imei);
-		ViewDTO<Boolean> view = childAccountService.doActivate(parentEmail,childMobile,imei);
+	public ViewDTO<Boolean> doActivate(String parentMobile ,String childMobile,String imei){
+		logger.info("doActivate called.parentMobile:" + parentMobile + " childMobile:"+ childMobile + " imei:" + imei);
+		ViewDTO<Boolean> view = childAccountService.doActivate(parentMobile,childMobile,imei);
 		
 		return view;
 	}

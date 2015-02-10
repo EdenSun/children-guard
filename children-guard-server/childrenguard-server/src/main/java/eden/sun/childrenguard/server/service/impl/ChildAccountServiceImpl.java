@@ -37,10 +37,10 @@ public class ChildAccountServiceImpl implements IChildAccountService {
 	}
 
 	@Override
-	public ViewDTO<Boolean> doActivate(String parentEmail,
+	public ViewDTO<Boolean> doActivate(String parentMobile,
 			String childMobile, String imei) throws ServiceException {
-		if( parentEmail == null || childMobile == null || imei == null ){
-			throw new ServiceException("Parameter parentAccount or childMobile or imei can not be null.");
+		if( parentMobile == null || childMobile == null || imei == null ){
+			throw new ServiceException("Parameter parentMobile or childMobile or imei can not be null.");
 		}
 		ViewDTO<Boolean> view = new ViewDTO<Boolean>();
 		
@@ -52,7 +52,7 @@ public class ChildAccountServiceImpl implements IChildAccountService {
 			return view;
 		}
 		
-		Parent parent = parentService.getByEmail(parentEmail);
+		Parent parent = parentService.getByMobile(parentMobile);
 		if( parent == null ){
 			view.setData(false);
 			view.setMsg(ViewDTO.MSG_ERROR);

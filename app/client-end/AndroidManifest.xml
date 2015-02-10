@@ -189,7 +189,6 @@
         <receiver
             android:name="eden.sun.childrenguard.child.receiver.JPushCustomMsgReceiver"
             android:enabled="true"
-            tools:ignore="ExportedReceiver"
              >
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.REGISTRATION" />

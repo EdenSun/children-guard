@@ -30,7 +30,7 @@ import eden.sun.childrenguard.server.dto.ViewDTO;
 
 public class ActivationActivity extends CommonActivity {
 	private Button activateBtn;
-	private EditText parentEmailEditText;
+	private EditText parentMobileEditText;
 	private EditText childMobileEditText;
 	private Handler handler;
 	
@@ -53,7 +53,7 @@ public class ActivationActivity extends CommonActivity {
 
 	private void initComponent() {
 		activateBtn = (Button)this.findViewById(R.id.activateBtn);
-		parentEmailEditText = (EditText)this.findViewById(R.id.parentEmailEditText);
+		parentMobileEditText = (EditText)this.findViewById(R.id.parentMobileEditText);
 		childMobileEditText = (EditText)this.findViewById(R.id.childMobileEditText);
 	}
 
@@ -65,11 +65,11 @@ public class ActivationActivity extends CommonActivity {
 		RequestHelper helper = getRequestHelper();
 		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_ACTIVATE_ACCOUNT;
 
-		String parentEmail = UIUtil.getEditTextValue(parentEmailEditText);
+		String parentMobile = UIUtil.getEditTextValue(parentMobileEditText);
 		String childMobile = UIUtil.getEditTextValue(childMobileEditText);
 		String imei = DeviceHelper.getIMEI(this);
 		Map<String,String> params = new HashMap<String,String>();
-		params.put("parentEmail", parentEmail);
+		params.put("parentMobile", parentMobile);
 		params.put("childMobile", childMobile);
 		params.put("imei", imei);
 		

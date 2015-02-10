@@ -16,8 +16,9 @@
         android:layout_weight="1"></LinearLayout>
     
     <EditText 
-        android:id="@+id/parentEmailEditText"
-        android:hint="Input guardian's email"
+        android:id="@+id/parentMobileEditText"
+        android:inputType="phone"
+        android:hint="Input guardian's mobile"
         style="@style/commonInputStyle"
         android:layout_weight="0"
         android:layout_marginBottom="5dp"
@@ -26,6 +27,7 @@
     
     <EditText 
         android:id="@+id/childMobileEditText"
+        android:inputType="phone"
         android:hint="Input person's mobile"
         style="@style/commonInputStyle"
         android:layout_weight="0"
