@@ -28,7 +28,7 @@ import eden.sun.childrenguard.child.util.gps.GPSHelper;
 
 public class LocationMonitorService extends Service {
 	public static final String TAG = "LocationMonitorService";
-	private static final long LOCATION_UPLOAD_PERIOD = 10000;
+	private static final long LOCATION_UPLOAD_PERIOD = 30000;
 	private LocalBinder binder = new LocalBinder();
 	private Handler handler;
 	private GPSHelper gpsHelper;
