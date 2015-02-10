@@ -490,7 +490,7 @@ public class PresetLockActivity extends CommonActivity {
 
 
 	@Override
-	protected void onStop() {
+	public void onStop() {
 		super.onStop();
 	}
 

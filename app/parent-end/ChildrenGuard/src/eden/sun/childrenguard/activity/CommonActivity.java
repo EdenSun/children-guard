@@ -3,11 +3,12 @@ package eden.sun.childrenguard.activity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
+import cn.jpush.android.api.InstrumentedActivity;
 import eden.sun.childrenguard.helper.DialogHolder;
 import eden.sun.childrenguard.helper.RequestHelper;
 import eden.sun.childrenguard.util.ShareDataKey;
 
-public class CommonActivity extends Activity implements DialogHolder{
+public class CommonActivity extends InstrumentedActivity implements DialogHolder{
 	protected ProgressDialog progress;
 	protected Runtime runtime;
 	private static final String PREFS_NAME = ShareDataKey.PREFS_NAME;
@@ -20,7 +21,7 @@ public class CommonActivity extends Activity implements DialogHolder{
 	
 	
 	@Override
-	protected void onStart() {
+	public void onStart() {
 		super.onStart();
 		requestHelper = this.getRequestHelper();
 	}
@@ -69,13 +70,13 @@ public class CommonActivity extends Activity implements DialogHolder{
 		return requestHelper;	
 	}
 
+
 	@Override
-	protected void onStop() {
+	public void onStop() {
 		super.onStop();
 		if( requestHelper != null ){
 			requestHelper.cancelAll(this.getClass());
 		}
 	}
-	
-	
+
 }

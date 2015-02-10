@@ -15,6 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import eden.sun.childrenguard.R;
+import eden.sun.childrenguard.runnable.JPushRegistionIdUploadRunnable;
 import eden.sun.childrenguard.server.dto.LoginViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Config;
@@ -32,8 +33,8 @@ public class SplashActivity extends CommonActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        JPushInterface.setDebugMode(false);
-        JPushInterface.init(this);
+        
+        initJPush();
         
         setContentView(R.layout.activity_splash);
         
@@ -41,7 +42,16 @@ public class SplashActivity extends CommonActivity {
     }
 
     
-    private void processLogin() {
+    private void initJPush() {
+    	JPushInterface.setDebugMode(true);
+    	JPushInterface.init(this);
+		
+    	JPushRegistionIdUploadRunnable runnable = new JPushRegistionIdUploadRunnable(this);
+    	new Thread(runnable).start();
+	}
+
+
+	private void processLogin() {
 		String loginAccount = this.getStringShareData(ShareDataKey.LOGIN_ACCOUNT);
 		String loginPassword = this.getStringShareData(ShareDataKey.LOGIN_PASSWORD);
 		
@@ -150,22 +160,19 @@ public class SplashActivity extends CommonActivity {
     }
     
 	@Override
-	protected void onResume() {
+	public void onResume() {
 		super.onResume();
-		JPushInterface.onResume(this);
+		//JPushInterface.onResume(this);
 		
 		if( !isLoginFailDialogShow ){
 			startTimer();
 		}
 	}
 
-
-
-
 	@Override
-	protected void onPause() {
+	public void onPause() {
 		super.onPause();
-		JPushInterface.onPause(this);
+		//JPushInterface.onPause(this);
 		
 		cancelTimer();
 	}

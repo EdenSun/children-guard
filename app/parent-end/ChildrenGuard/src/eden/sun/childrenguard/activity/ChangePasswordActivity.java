@@ -81,7 +81,7 @@ public class ChangePasswordActivity extends CommonActivity  {
 	}
 	
 	@Override
-	protected void onStart() {
+	public void onStart() {
 		super.onStart();
 	}
 	
