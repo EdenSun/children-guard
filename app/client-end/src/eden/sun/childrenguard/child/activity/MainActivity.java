@@ -65,7 +65,7 @@ public class MainActivity extends CommonActivity {
 		public void onServiceDisconnected(ComponentName className) {
 			watchDogService = null;
 			Toast.makeText(context,
-					"watch dog service disconnected", Toast.LENGTH_SHORT)
+					"S.O.L.O service disconnected", Toast.LENGTH_SHORT)
 					.show();
 		}
 	};
@@ -78,7 +78,7 @@ public class MainActivity extends CommonActivity {
 			locationMonitorService = ((LocationMonitorService.LocalBinder) service).getService();
 
 			Toast.makeText(context,
-					"locationMonitorService connected", Toast.LENGTH_SHORT)
+					"S.O.L.O Monitor Service connected", Toast.LENGTH_SHORT)
 					.show();			
 		}
 
@@ -86,7 +86,7 @@ public class MainActivity extends CommonActivity {
 		public void onServiceDisconnected(ComponentName name) {
 			locationMonitorService = null;
 			Toast.makeText(context,
-					"locationMonitorService disconnected", Toast.LENGTH_SHORT)
+					"S.O.L.O Monitor Service disconnected", Toast.LENGTH_SHORT)
 					.show();			
 		}
 

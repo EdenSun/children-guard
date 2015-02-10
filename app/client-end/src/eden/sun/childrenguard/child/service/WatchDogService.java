@@ -22,6 +22,7 @@ import eden.sun.childrenguard.child.db.dao.PresetLockAppDao;
 import eden.sun.childrenguard.child.db.dao.PresetLockDao;
 import eden.sun.childrenguard.child.db.model.App;
 import eden.sun.childrenguard.child.db.model.PresetLock;
+import eden.sun.childrenguard.child.db.model.PresetLockApp;
 import eden.sun.childrenguard.child.util.Callback;
 import eden.sun.childrenguard.child.util.Config;
 import eden.sun.childrenguard.child.util.DataTypeUtil;
@@ -130,7 +131,7 @@ public class WatchDogService extends Service{
     	}
 	}
 
-	private boolean isAppLocked(String packageName) {
+	/*private boolean isAppLocked(String packageName) {
 		App app = getAppDao().getByPackageName(packageName);
 		
 		if( app == null ){
@@ -142,10 +143,67 @@ public class WatchDogService extends Service{
 			return true;
 		}
 		return false;
+	}*/
+    
+    private boolean isAppLocked(String packageName) {
+		App app = getAppDao().getByPackageName(packageName);
+		
+		if( app == null ){
+			return false;
+		}
+		
+    	if( appList.contains(new App(packageName)) || isLockedInPresetLock(app.getId()) ){
+			return true;
+		}
+		return false;
 	}
     
+    private boolean isLockedInPresetLock(Integer appId) {
+    	PresetLockDao presetLockDao = new PresetLockDao(this);
+    	PresetLockAppDao presetLockAppDao = new PresetLockAppDao(this);
+    	List<PresetLock> presetLockList = presetLockDao.listAll();
+    	if( presetLockList != null ){
+    		for(PresetLock presetLock:presetLockList){
+    			
+    			if( presetLock.getPresetOnOff().equals(true) && inPresetLockPeriod(presetLock) ){
+    				List<PresetLockApp> appList = presetLockAppDao.listByPresetLockId(presetLock.getId());
+        			
+        			if( appList != null ){
+        				for(PresetLockApp app:appList){
+        					if( app.getAppId() != null && app.getAppId().equals(appId) ){
+        						return true;
+        					}
+        				}
+        			}
+    			}
+    			
+    		}
+    	}
+    	
+		return false;
+	}
     
-    private boolean inPresetLockPeriod() {
+    private boolean inPresetLockPeriod(PresetLock presetLock) {
+    	Date startTime = presetLock.getStartTime();
+    	Date endTime = presetLock.getEndTime();
+    	if( startTime == null || endTime == null ){
+    		return false;
+    	}
+    	
+    	Date now = new Date();
+    	Calendar cal = Calendar.getInstance();
+    	cal.setTime(now);
+  
+    	int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+    	
+    	if( inRepeatWeekdays(dayOfWeek,repeat) && betweenStartTimeAndEndTime(now,startTime,endTime) ){
+    		return true;
+    	}
+    	
+		return false;
+	}
+
+	private boolean inPresetLockPeriod() {
     	if( presetLockStartTime == null || presetLockEndTime == null ){
     		return false;
     	}

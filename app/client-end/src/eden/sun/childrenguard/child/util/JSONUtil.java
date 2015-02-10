@@ -71,9 +71,9 @@ public class JSONUtil {
 		return gson.fromJson(json, new TypeToken<ViewDTO<ChildSettingViewDTO>>(){}.getType());
 	}
 
-	public static ViewDTO<PresetLockViewDTO> getRetrievePresetLockDataView(
-			String json ) {
-		return gson.fromJson(json, new TypeToken<ViewDTO<PresetLockViewDTO>>(){}.getType());
+	public static ViewDTO<List<PresetLockViewDTO>> getListAllScheduleLockByImeiDataView(
+			String json) {
+		return gson.fromJson(json, new TypeToken<ViewDTO<List<PresetLockViewDTO>>>(){}.getType());
 	}
 	
 	

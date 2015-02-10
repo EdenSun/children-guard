@@ -7,10 +7,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-import eden.sun.childrenguard.child.db.model.App;
 import eden.sun.childrenguard.child.db.model.PresetLockApp;
-import eden.sun.childrenguard.server.dto.AppViewDTO;
 
 public class PresetLockAppDao extends BaseDao{
 
@@ -178,6 +175,34 @@ public class PresetLockAppDao extends BaseDao{
 			}
 			
 			return appIdList;
+		}
+		return null;
+	}
+
+	public List<PresetLockApp> listByPresetLockId(Integer _presetLockId) {
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		if ( db != null && db.isOpen() ) {
+			PresetLockApp app = null;
+			Cursor cursor = db.rawQuery(
+					"select ID,PRESET_LOCK_ID,APP_ID from " + TABLE_NAME + " where PRESET_LOCK_ID=?",
+					new String[]{_presetLockId.toString()});
+			List<PresetLockApp> appList = new ArrayList<PresetLockApp>();
+			
+			while(cursor.moveToNext()) { 
+				app = new PresetLockApp();
+			    int id = cursor.getInt(0);
+			    int presetLockId = cursor.getInt(1);
+			    int appId = cursor.getInt(2);
+			
+			    app.setId(id);
+			    app.setPresetLockId(presetLockId);
+			    app.setAppId(appId);
+			    appList.add(app);
+			} 
+			
+			cursor.close();
+			db.close();
+			return appList;
 		}
 		return null;
 	}

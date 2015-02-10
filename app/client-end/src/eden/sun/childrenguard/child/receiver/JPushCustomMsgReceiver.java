@@ -60,10 +60,10 @@ public class JPushCustomMsgReceiver extends BroadcastReceiver {
 					// reload settings
 					
 					syncChildSettingFromServer(context);
-				}else if( message.equals("Preset Lock Switch On")){
-					// reload preset lock setting
+				}else if( message.equals("Re-sync Schedule Lock Request")){
+					// re-sync schedule lock setting
 					
-					syncPresetLockSettingFromServer(context);
+					syncScheduleLockSettingFromServer(context);
 				}
 			}
 			
@@ -85,11 +85,11 @@ public class JPushCustomMsgReceiver extends BroadcastReceiver {
 		}
 	}
 
-	private void syncPresetLockSettingFromServer(final Context context) {
+	private void syncScheduleLockSettingFromServer(final Context context) {
 		RequestHelper helper = RequestHelper.getInstance(context);
 		String imei = DeviceHelper.getIMEI(context);
 		String url = String.format(
-				Config.BASE_URL_MVC + RequestURLConstants.URL_RETRIEVE_PRESET_LOCK_DATA + "?imei=%1$s",  
+				Config.BASE_URL_MVC + RequestURLConstants.URL_LIST_ALL_SCHEDULE_LOCK_BY_IMEI + "?imei=%1$s",  
 				imei);  
 
 		helper.doGet(
@@ -98,11 +98,48 @@ public class JPushCustomMsgReceiver extends BroadcastReceiver {
 				@Override
 				public void onResponse(String response) {
 					Log.d(TAG, response);
-					ViewDTO<PresetLockViewDTO> view = JSONUtil.getRetrievePresetLockDataView(response);
+					ViewDTO<List<PresetLockViewDTO>> view = JSONUtil.getListAllScheduleLockByImeiDataView(response);
 			    	
 			    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS)){
 			    		if( view.getData() != null ){
-			    			PresetLockViewDTO presetLockData = view.getData();
+			    			List<PresetLockViewDTO> presetLockViewList = view.getData();
+			    			
+			    			if( presetLockViewList != null ){
+			    				PresetLockDao presetLockDao = new PresetLockDao(context);
+			    				PresetLockAppDao presetLockAppDao = new PresetLockAppDao(context);
+			    				presetLockDao.clearAll();
+			    				presetLockAppDao.clearAll();
+
+			    				for(PresetLockViewDTO presetLockData:presetLockViewList){
+			    					// save preset lock
+					    			presetLockDao.add(presetLockData);
+					    			
+					    			// save preset lock app
+					    			List<AppViewDTO> appList = presetLockData.getAppList();
+					    			
+					    			if( appList != null ){
+					    				List<PresetLockApp> presetLockAppList = new ArrayList<PresetLockApp>();
+					    				
+					    				
+					    				int id = 1;
+					    				for( AppViewDTO appViewDTO: appList){
+					    					PresetLockApp presetLockApp = new PresetLockApp();
+					    					presetLockApp.setAppId(appViewDTO.getId());
+					    					presetLockApp.setId(id++);
+					    					presetLockApp.setPresetLockId(presetLockData.getId());
+					    					presetLockAppList.add(presetLockApp);
+					    				}
+					    				presetLockAppDao.batchAdd(presetLockAppList);
+					    			}
+			    				}
+			    				
+			    				
+			    				Intent intent = new Intent();
+				    			intent.setAction(BroadcastActionConstants.INIT_SERVICE_PRESET_LOCK_APP_DATA);
+				    			context.sendBroadcast(intent);
+			    			}
+			    			
+			    			/*PresetLockViewDTO presetLockData = view.getData();
 			    			
 			    			// save preset lock
 			    			PresetLockDao presetLockDao = new PresetLockDao(context);
@@ -130,7 +167,7 @@ public class JPushCustomMsgReceiver extends BroadcastReceiver {
 			    			
 			    			Intent intent = new Intent();
 			    			intent.setAction(BroadcastActionConstants.INIT_SERVICE_PRESET_LOCK_APP_DATA);
-			    			context.sendBroadcast(intent);
+			    			context.sendBroadcast(intent);*/
 			    		}
 			    		
 			    	}else{
