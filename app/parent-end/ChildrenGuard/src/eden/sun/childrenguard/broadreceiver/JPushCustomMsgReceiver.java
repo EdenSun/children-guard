@@ -1,8 +1,5 @@
 package eden.sun.childrenguard.broadreceiver;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,16 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 import cn.jpush.android.api.JPushInterface;
-
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-
-import eden.sun.childrenguard.helper.DeviceHelper;
-import eden.sun.childrenguard.helper.RequestHelper;
-import eden.sun.childrenguard.server.dto.ViewDTO;
-import eden.sun.childrenguard.util.Config;
-import eden.sun.childrenguard.util.JSONUtil;
-import eden.sun.childrenguard.util.RequestURLConstants;
 
 public class JPushCustomMsgReceiver extends BroadcastReceiver {
 	private static final String TAG = "JPushCustomMsgReceiver";
@@ -29,11 +16,11 @@ public class JPushCustomMsgReceiver extends BroadcastReceiver {
 		Log.d(TAG, "onReceive - " + intent.getAction());
 
 		if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
-			String registionId = JPushInterface.getRegistrationID(context);
+			/*String registionId = JPushInterface.getRegistrationID(context);
 			if( registionId != null ){
 				String imei = DeviceHelper.getIMEI(context);
 				saveRegistionId(context,imei,registionId);
-			}
+			}*/
 		} else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent
 				.getAction())) {
 			Log.d(TAG, "收到了自定义消息。消息内容是："
@@ -58,7 +45,7 @@ public class JPushCustomMsgReceiver extends BroadcastReceiver {
 		}
 	}
 
-	private void saveRegistionId(Context context, String imei,
+	/*private void saveRegistionId(Context context, String imei,
 			String registionId) {
 		RequestHelper helper = RequestHelper.getInstance(context);	
 		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_SAVE_REGISTION_ID;
@@ -89,5 +76,5 @@ public class JPushCustomMsgReceiver extends BroadcastReceiver {
 			}
 		});
 		
-	}
+	}*/
 }

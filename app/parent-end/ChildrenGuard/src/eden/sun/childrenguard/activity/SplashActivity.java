@@ -34,23 +34,12 @@ public class SplashActivity extends CommonActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        initJPush();
-        
         setContentView(R.layout.activity_splash);
         
         //startTimer();
     }
 
     
-    private void initJPush() {
-    	JPushInterface.setDebugMode(true);
-    	JPushInterface.init(this);
-		
-    	JPushRegistionIdUploadRunnable runnable = new JPushRegistionIdUploadRunnable(this);
-    	new Thread(runnable).start();
-	}
-
-
 	private void processLogin() {
 		String loginAccount = this.getStringShareData(ShareDataKey.LOGIN_ACCOUNT);
 		String loginPassword = this.getStringShareData(ShareDataKey.LOGIN_PASSWORD);

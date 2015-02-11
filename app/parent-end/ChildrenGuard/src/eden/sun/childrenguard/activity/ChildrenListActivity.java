@@ -22,6 +22,7 @@ import android.view.ViewConfiguration;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
+import cn.jpush.android.api.JPushInterface;
 
 import com.android.volley.Response;
 import com.baoyz.swipemenulistview.SwipeMenu;
@@ -36,6 +37,7 @@ import eden.sun.childrenguard.dto.ChildrenListItemView;
 import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
 import eden.sun.childrenguard.fragment.EmailSettingDialogFragment;
 import eden.sun.childrenguard.helper.SMSHelper;
+import eden.sun.childrenguard.runnable.JPushRegistionIdUploadRunnable;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Config;
@@ -55,6 +57,7 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_children_list);
+		initJPush();
 		
 		doubleBackToExitPressedOnce = false;
 		
@@ -493,5 +496,14 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	private void initJPush() {
+    	JPushInterface.setDebugMode(true);
+    	JPushInterface.init(this);
+		
+    	JPushRegistionIdUploadRunnable runnable = new JPushRegistionIdUploadRunnable(this,getAccessToken());
+    	new Thread(runnable).start();
 	}
 }

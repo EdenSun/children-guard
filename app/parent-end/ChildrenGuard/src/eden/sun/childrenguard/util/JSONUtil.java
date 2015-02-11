@@ -202,4 +202,8 @@ public class JSONUtil {
 		return gson.toJson(controlSettingApplyParam);
 	}
 
+	public static ViewDTO<Boolean> getUpdateRegistrationIdView(String json) {
+		return gson.fromJson(json, new TypeToken<ViewDTO<Boolean>>(){}.getType());
+	}
+
 }

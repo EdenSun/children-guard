@@ -198,13 +198,13 @@ public class ParentServiceImpl implements IParentService {
 
 
 	@Override
-	public ViewDTO<Boolean> saveOrUpdateRegistionId(String imei,
+	public ViewDTO<Boolean> saveOrUpdateRegistionId(String accessToken,
 			String registionId) throws ServiceException {
-		if( imei == null || registionId == null ){
+		if( accessToken == null || registionId == null ){
 			throw new ServiceException("Parameter can not be null.");
 		}
 		
-		Parent parent = this.getByImei(imei);
+		Parent parent = this.getByAccessToken(accessToken);
 		
 		if( parent == null ){
 			throw new ServiceException("Guardian is not exists.");

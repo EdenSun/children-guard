@@ -21,12 +21,22 @@ public class PushController extends BaseController{
 	 * @param registionId jpush 的 registion id
 	 * @return 成功返回true，否则返回false
 	 */
-	@RequestMapping("/saveRegistionId")
+	/*@RequestMapping("/saveRegistionId")
 	@ResponseBody
 	public ViewDTO<Boolean> saveRegistionId(String imei ,String registionId){
 		logger.info("parent saveRegistionId. imei:" + imei + ",registionId:"  + registionId);
 		ViewDTO<Boolean> view = parentService.saveOrUpdateRegistionId(imei,registionId);
 		
 		return view;
+	}*/
+	
+	@RequestMapping("/updateRegistrationId")
+	@ResponseBody
+	public ViewDTO<Boolean> updateRegistrationId(String accessToken ,String registrationId){
+		logger.info("parent updateRegistrationId. accessToken:" + accessToken + ",registrationId:"  + registrationId);
+		ViewDTO<Boolean> view = parentService.saveOrUpdateRegistionId(accessToken,registrationId);
+		
+		return view;
 	}
+	
 }
