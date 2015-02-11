@@ -46,16 +46,41 @@ public class OutgoingCallReceiver extends BroadcastReceiver {
 		ChildSettingDao settingDao = new ChildSettingDao(context);
 		PresetLockDao presetLockDao = new PresetLockDao(context);
 		
-		PresetLock presetLock = presetLockDao.getPresetLock();
+		//PresetLock presetLock = presetLockDao.getPresetLock();
+		List<PresetLock> presetLockList = presetLockDao.listAll();
 		Boolean lockCallSwitch = settingDao.getLockCallSwitch();
-		if( ( lockCallSwitch != null && lockCallSwitch.booleanValue() == true ) 
-				|| ( DataTypeUtil.getNonNullBoolean(presetLock.getPresetOnOff()) == true && inPresetLockPeriod(presetLock) && DataTypeUtil.getNonNullBoolean(presetLock.getLockCallStatus()) == true) ){
+		
+		if( isOutgoingCallAllowed(lockCallSwitch,presetLockList) ){
 			return false;
 		}
+		/*if( ( lockCallSwitch != null && lockCallSwitch.booleanValue() == true ) 
+				|| ( DataTypeUtil.getNonNullBoolean(presetLock.getPresetOnOff()) == true && inPresetLockPeriod(presetLock) && DataTypeUtil.getNonNullBoolean(presetLock.getLockCallStatus()) == true) ){
+			return false;
+		}*/
 		
 		return true;
 	}
 	
+	private boolean isOutgoingCallAllowed(Boolean lockCallSwitch,
+			List<PresetLock> presetLockList) {
+		boolean isOutgoingCallBlockInPresetLock = false;
+		for(PresetLock presetLock : presetLockList){
+			if( presetLock.getPresetOnOff() != null && presetLock.getPresetOnOff().equals(true) && inPresetLockPeriod(presetLock) ){
+				if( presetLock.getLockCallStatus() != null && presetLock.getLockCallStatus().equals(true) ){
+					isOutgoingCallBlockInPresetLock = true;
+					break;
+				}
+			}
+		}
+		
+		if( ( lockCallSwitch != null && lockCallSwitch.booleanValue() == true ) 
+				|| isOutgoingCallBlockInPresetLock ){
+			return false;
+		}
+		
+		return false;
+	}
+
 	private boolean inPresetLockPeriod(PresetLock presetLock) {
     	if( presetLock.getStartTime() == null || presetLock.getEndTime() == null ){
     		return false;
