@@ -99,6 +99,8 @@ public class MainActivity extends CommonActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		initJPush();
+		
 		IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BroadcastActionConstants.INIT_SERVICE_APP_DATA);
         initServiceAppDataReceiver = new BroadcastReceiver() {
@@ -125,8 +127,6 @@ public class MainActivity extends CommonActivity {
         registerReceiver( initServicePresetLockAppDataReceiver, presetLockAppIntentFilter);
         
         
-		
-		initJPush();
 		
 		startServices();
 		

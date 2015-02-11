@@ -329,19 +329,19 @@ public class ChildServiceImpl extends BaseServiceImpl implements IChildService {
 	}
 
 	@Override
-	public ViewDTO<Boolean> saveOrUpdateRegistionId(String imei,
-			String registionId) throws ServiceException {
-		if( imei == null || registionId == null ){
+	public ViewDTO<Boolean> saveOrUpdateRegistionId(Integer childId,
+			String registrationId) throws ServiceException {
+		if( childId == null || registrationId == null ){
 			throw new ServiceException("Parameter can not be null.");
 		}
 		
-		Child child = this.getChildByImei(imei);
+		Child child = this.getById(childId);
 		
 		if( child == null ){
 			throw new ServiceException("Child is not exists.");
 		}
 		
-		child.setRegistionId(registionId);
+		child.setRegistionId(registrationId);
 		childMapper.updateByPrimaryKey(child);
 		
 		ViewDTO<Boolean> view = new ViewDTO<Boolean>();

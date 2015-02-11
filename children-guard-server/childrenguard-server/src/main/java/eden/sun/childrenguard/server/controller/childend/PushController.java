@@ -22,12 +22,24 @@ public class PushController extends BaseController{
 	 * @param registionId
 	 * @return
 	 */
-	@RequestMapping("/saveRegistionId")
+	/*@RequestMapping("/saveRegistionId")
 	@ResponseBody
 	public ViewDTO<Boolean> saveRegistionId(String imei ,String registionId){
 		logger.info("child saveRegistionId. imei:" + imei + ",registionId:"  + registionId);
 		ViewDTO<Boolean> view = childService.saveOrUpdateRegistionId(imei,registionId);
 		
 		return view;
+	}*/
+	
+	
+	@RequestMapping("/updateRegistrationId")
+	@ResponseBody
+	public ViewDTO<Boolean> updateRegistrationId(Integer childId ,String registrationId){
+		logger.info("child updateRegistrationId. childId:" + childId + ",registrationId:"  + registrationId);
+		ViewDTO<Boolean> view = childService.saveOrUpdateRegistionId(childId,registrationId);
+		
+		return view;
 	}
+	
+	
 }

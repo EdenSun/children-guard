@@ -46,10 +46,10 @@ public class InitActivity extends CommonBindServiceActivity {
 		
 	}
 	
-	private void initJPush() {
+	/*private void initJPush() {
 		JPushInterface.setDebugMode(true);
         JPushInterface.init(this);		
-	}
+	}*/
 	
 	@Override
 	protected void onPause() {

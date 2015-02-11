@@ -75,7 +75,9 @@ public class JSONUtil {
 			String json) {
 		return gson.fromJson(json, new TypeToken<ViewDTO<List<PresetLockViewDTO>>>(){}.getType());
 	}
-	
-	
+
+	public static ViewDTO<Boolean> getUpdateRegistrationIdView(String json) {
+		return gson.fromJson(json, new TypeToken<ViewDTO<Boolean>>(){}.getType());
+	}
 
 }

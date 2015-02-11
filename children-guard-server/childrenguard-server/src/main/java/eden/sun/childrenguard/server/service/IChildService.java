@@ -41,7 +41,7 @@ public interface IChildService {
 
 	List<Parent> getParentsByChildId(Integer childId)throws ServiceException;
 
-	ViewDTO<Boolean> saveOrUpdateRegistionId(String imei, String registionId)throws ServiceException;
+	ViewDTO<Boolean> saveOrUpdateRegistionId(Integer childId, String registrationId)throws ServiceException;
 
 	ViewDTO<ChildInfoViewDTO> getChildInfo(String imei)throws ServiceException;
 
