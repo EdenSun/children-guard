@@ -59,9 +59,9 @@ public class EmergencyContactController extends BaseController{
 	 */
 	@RequestMapping("/delete")
 	@ResponseBody
-	public ViewDTO<Boolean> delete(Integer childId,String phone){
-		logger.info("add. Child ID:" + childId + ",phone:" + phone );
-		ViewDTO<Boolean> view = emergencyContactsService.delete(childId,phone);
+	public ViewDTO<Boolean> delete(Integer emergencyContactId){
+		logger.info("/parent/emergencyContact/delete. emergencyContactId:" + emergencyContactId  );
+		ViewDTO<Boolean> view = emergencyContactsService.deleteById(emergencyContactId);
 		
 		return view;
 	}

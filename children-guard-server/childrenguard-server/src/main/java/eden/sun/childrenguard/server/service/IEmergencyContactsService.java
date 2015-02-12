@@ -14,9 +14,11 @@ public interface IEmergencyContactsService {
 	ViewDTO<EmergencyContactViewDTO> add(Integer childId, String name,
 			String phone)throws ServiceException;
 
-	ViewDTO<Boolean> delete(Integer childId, String phone)throws ServiceException;
+	//ViewDTO<Boolean> delete(Integer childId, String phone)throws ServiceException;
 
 	EmergencyContacts getByPhone(String phone) throws ServiceException;
 	
 	List<EmergencyContacts> listByChild(Integer childId)throws ServiceException;
+
+	ViewDTO<Boolean> deleteById(Integer emergencyContactId)throws ServiceException;
 }

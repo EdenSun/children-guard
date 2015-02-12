@@ -20,8 +20,6 @@ public class RequestURLConstants {
 	public static final String URL_CHANGE_LOCK_PASSWORD = "parent/childrenManage/modifyLockPassword";
 	
 	//public static final String URL_SAVE_REGISTION_ID = "parent/push/saveRegistionId";
-	public static final String URL_LIST_EMERGENCY_CONTACT_BY_CHILD = "parent/emergencyContact/listByChild";
-	public static final String URL_ADD_EMERGENCY_CONTACT = "parent/emergencyContact/add";
 	public static final String URL_APPLY_APP_CHANGES = "parent/childrenManage/applyAppChanges";
 	public static final String URL_APPLY_SETTING_CHANGES = "parent/childrenManage/applySettingChanges";
 	public static final String URL_LOAD_CHILD_SETTING = "parent/childrenManage/loadChildSetting";
@@ -63,5 +61,10 @@ public class RequestURLConstants {
 	
 	/***** update jpush registration id *****/
 	public static final String URL_UPDATE_REGISTRATION_ID = "/parent/push/updateRegistrationId";
+	
+	/**** emergency contacts *****/
+	public static final String URL_LIST_EMERGENCY_CONTACT_BY_CHILD = "parent/emergencyContact/listByChild";
+	public static final String URL_ADD_EMERGENCY_CONTACT = "parent/emergencyContact/add";
+	public static final String URL_DELETE_EMERGENCY_CONTACT = "parent/emergencyContact/delete";
 	
 }

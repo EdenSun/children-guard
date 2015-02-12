@@ -16,6 +16,7 @@
     	android:orientation="vertical">
 	    <EditText
 	        android:id="@+id/phoneEditText"
+	        android:inputType="phone"
 	        android:hint="@string/exceptionPhoneAdd.phoneEditTextHint"
 	        style="@style/textOnLeftInputStyle"
 	        />

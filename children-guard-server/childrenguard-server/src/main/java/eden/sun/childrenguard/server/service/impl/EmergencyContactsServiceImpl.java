@@ -99,7 +99,7 @@ public class EmergencyContactsServiceImpl implements IEmergencyContactsService {
 	}
 
 
-	@Override
+	/*@Override
 	public ViewDTO<Boolean> delete(Integer childId, String phone)
 			throws ServiceException {
 		if( childId == null ||  phone == null ){
@@ -118,7 +118,7 @@ public class EmergencyContactsServiceImpl implements IEmergencyContactsService {
 		
 		view.setData(false);
 		return view;
-	}
+	}*/
 
 	@Override
 	public EmergencyContacts getByPhone(String phone) throws ServiceException {
@@ -145,5 +145,19 @@ public class EmergencyContactsServiceImpl implements IEmergencyContactsService {
 		
 		return contactsList;
 	}
+
+	@Override
+	public ViewDTO<Boolean> deleteById(Integer emergencyContactId)
+			throws ServiceException {
+		if( emergencyContactId == null ){
+			throw new ServiceException("Parameter emergencyContactId can not be null.");
+		}
+		
+		emergencyContactsMapper.deleteByPrimaryKey(emergencyContactId);
+		ViewDTO<Boolean> view = new ViewDTO<Boolean>();
+		view.setData(true);
+		return view;
+	}
+	
 	
 }

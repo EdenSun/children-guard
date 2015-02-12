@@ -1,10 +1,14 @@
 package eden.sun.childrenguard.activity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -12,15 +16,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.VolleyError;
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.baoyz.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
 
 import eden.sun.childrenguard.R;
 import eden.sun.childrenguard.adapter.ExceptionPhoneListAdapter;
-import eden.sun.childrenguard.dto.ExceptionPahoneListItemView;
+import eden.sun.childrenguard.dto.ExceptionPhoneListItemView;
 import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
-import eden.sun.childrenguard.helper.RequestHelper;
 import eden.sun.childrenguard.server.dto.EmergencyContactViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Config;
@@ -31,7 +41,8 @@ import eden.sun.childrenguard.util.UIUtil;
 public class EmergencyContactManageActivity extends CommonActionBarActivity {
 	private static final String TAG = "EmergencyContactManageActivity";
 	
-	private ListView list;
+	private SwipeMenuListView list;
+	//private ListView list;
 	private ExceptionPhoneListAdapter adapter;
 	private Integer childId;
 
@@ -44,10 +55,10 @@ public class EmergencyContactManageActivity extends CommonActionBarActivity {
 		
 		retrievePhoneData();
 
-		list=(ListView)findViewById(R.id.list);
-
+		initComponent();
+				
 	    // Getting adapter by passing xml data ArrayList
-	    adapter = new ExceptionPhoneListAdapter(this, new ArrayList<ExceptionPahoneListItemView>());
+	    adapter = new ExceptionPhoneListAdapter(this,R.layout.list_row_exception_phone_list, new ArrayList<ExceptionPhoneListItemView>());
 	    list.setAdapter(adapter);
 
 	    // Click event for single list row
@@ -59,8 +70,50 @@ public class EmergencyContactManageActivity extends CommonActionBarActivity {
 	        }
 	    });
 	    
+	    
+	    // click event
+		list.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+		    @Override
+		    public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+		        switch (index) {
+			        case 0:
+			            // delete
+			        	ExceptionPhoneListItemView selected = adapter.getItem(position);
+			        	
+			        	doDeleteEmergencyContact(selected.getId());
+			            break;
+		        }
+		        // false : close the menu; true : not close the menu
+		        return false;
+		    }
+		});
+	    
 	}
 	
+	private void initComponent() {
+		list=(SwipeMenuListView)findViewById(R.id.list);
+		SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+		    @Override
+		    public void create(SwipeMenu menu) {
+		        // create "delete" item
+		        SwipeMenuItem deleteItem = new SwipeMenuItem(
+		                EmergencyContactManageActivity.this.getApplicationContext());
+		        // set item background
+		        deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+		                0x3F, 0x25)));
+		        // set item width
+		        deleteItem.setWidth(270);
+		        // set a icon
+		        deleteItem.setIcon(R.drawable.ic_delete);
+		        // add to menu
+		        menu.addMenuItem(deleteItem);
+		    }
+		};
+		// set creator
+		list.setMenuCreator(creator);		
+	}
+
 	private void retrievePhoneData() {
 		String title = "Emergency Contacts";
 		String msg = "Please wait...";
@@ -136,5 +189,44 @@ public class EmergencyContactManageActivity extends CommonActionBarActivity {
         }  
 	}
 	
+	
+	
+	
+	private void doDeleteEmergencyContact(final Integer emergencyContactId) {
+		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_DELETE_EMERGENCY_CONTACT;  
+
+		Map<String, String> params = new HashMap<String,String>();
+		params.put("emergencyContactId", emergencyContactId.toString());
+		
+		getRequestHelper().doPost(
+			url,
+			params,
+			this.getClass(),
+			new Response.Listener<String>() {
+				@Override
+				public void onResponse(String response) {
+					final ViewDTO<Boolean> view = JSONUtil.getDeleteEmergencyContactView(response);
+							
+					if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
+						
+						if( view.getData() != null && view.getData().booleanValue()==true){
+							Toast.makeText(EmergencyContactManageActivity.this, "Emergency contacts deleted", Toast.LENGTH_SHORT).show();
+							adapter.deleteById(emergencyContactId);
+						}
+					}else{
+						Log.e(TAG,"delete emergency contact fail.");
+					}
+				}
+
+			}, 
+			new ErrorListener(){
+
+				@Override
+				public void onErrorResponse(VolleyError arg0) {
+					Log.e(TAG,"delete emergency contact error.");
+				}
+				
+			});
+	}
 	
 }

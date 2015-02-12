@@ -1,6 +1,6 @@
 package eden.sun.childrenguard.dto;
 
-public class ExceptionPahoneListItemView {
+public class ExceptionPhoneListItemView {
 	private Integer id;
 	private String name;
 	private String phone;

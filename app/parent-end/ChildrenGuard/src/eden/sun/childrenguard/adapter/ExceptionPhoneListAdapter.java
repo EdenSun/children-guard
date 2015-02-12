@@ -1,5 +1,6 @@
 package eden.sun.childrenguard.adapter;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -8,29 +9,31 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import eden.sun.childrenguard.R;
-import eden.sun.childrenguard.dto.ExceptionPahoneListItemView;
+import eden.sun.childrenguard.dto.ExceptionPhoneListItemView;
 import eden.sun.childrenguard.server.dto.EmergencyContactViewDTO;
 
-public class ExceptionPhoneListAdapter extends BaseAdapter{
+public class ExceptionPhoneListAdapter extends ArrayAdapter<ExceptionPhoneListItemView>{
 	private Activity context;
-    private List<ExceptionPahoneListItemView> data;
+    private List<ExceptionPhoneListItemView> data;
     private static LayoutInflater inflater=null;
     //public ImageLoader imageLoader; 
- 
-    public ExceptionPhoneListAdapter(Activity context, List<ExceptionPahoneListItemView> data) {
+    
+    public ExceptionPhoneListAdapter(Activity context, int resourceId,ArrayList<ExceptionPhoneListItemView> data) {
+    	super(context, resourceId, data);
         this.context = context;
         this.data=data;
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
+    
  
     public int getCount() {
         return data.size();
     }
  
-    public Object getItem(int position) {
+    public ExceptionPhoneListItemView getItem(int position) {
         return data.get(position);
     }
  
@@ -39,7 +42,7 @@ public class ExceptionPhoneListAdapter extends BaseAdapter{
     }
     
     public View getView(int position, View convertView, ViewGroup parent) {
-    	ExceptionPahoneListItemView item = data.get(position);
+    	ExceptionPhoneListItemView item = data.get(position);
         View vi = convertView;
         ViewHolder viewHolder = new ViewHolder();
         if( convertView == null ){
@@ -77,11 +80,25 @@ public class ExceptionPhoneListAdapter extends BaseAdapter{
 	}
 
     private void addItem(EmergencyContactViewDTO contact) {
-    	ExceptionPahoneListItemView item = new ExceptionPahoneListItemView();
+    	ExceptionPhoneListItemView item = new ExceptionPhoneListItemView();
 		item.setId(contact.getId());
 		item.setName(contact.getName());
 		item.setPhone(contact.getPhone());
 		
 		data.add(item);
 	}
+
+
+	public void deleteById(Integer emergencyContactId) {
+		if( data != null ){
+			for(Iterator<ExceptionPhoneListItemView> it = data.iterator();it.hasNext();){
+				ExceptionPhoneListItemView item = it.next();
+				if(item.getId() != null && item.getId().equals(emergencyContactId) ){
+					it.remove();
+				}
+			}
+		}
+		this.notifyDataSetChanged();
+	}
+	
 }
