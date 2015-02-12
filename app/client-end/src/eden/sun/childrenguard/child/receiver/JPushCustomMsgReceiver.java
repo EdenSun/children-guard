@@ -40,11 +40,11 @@ public class JPushCustomMsgReceiver extends BroadcastReceiver {
 
 		if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
 			Log.d(TAG, "JPush register returned - " + intent.getAction());
-			String registionId = JPushInterface.getRegistrationID(context);
+			/*String registionId = JPushInterface.getRegistrationID(context);
 			if( registionId != null ){
 				String imei = DeviceHelper.getIMEI(context);
 				saveRegistionId(context,imei,registionId);
-			}
+			}*/
 		} else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent
 				.getAction())) {
 			Log.d(TAG, "收到了自定义消息。消息内容是："
@@ -186,7 +186,7 @@ public class JPushCustomMsgReceiver extends BroadcastReceiver {
 		
 	}
 
-	private void saveRegistionId(Context context,String imei, String registionId) {
+	/*private void saveRegistionId(Context context,String imei, String registionId) {
 		RequestHelper helper = RequestHelper.getInstance(context);	
 		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_SAVE_REGISTION_ID;
 
@@ -214,7 +214,7 @@ public class JPushCustomMsgReceiver extends BroadcastReceiver {
 					Log.e(TAG, error.getMessage(), error);
 			}
 		});
-	}
+	}*/
 	
 	private void syncAppFromServer(final Context context) {
 		RequestHelper helper = RequestHelper.getInstance(context);

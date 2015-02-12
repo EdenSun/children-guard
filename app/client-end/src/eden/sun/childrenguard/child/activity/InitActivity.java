@@ -5,13 +5,14 @@ import java.util.Map;
 import java.util.Timer;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
-import cn.jpush.android.api.JPushInterface;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -31,11 +32,13 @@ public class InitActivity extends CommonBindServiceActivity {
 	private static final String TAG = "InitActivity";
 	private TextView text;
 	private Timer timer;
+	private SharedPreferences sharedPref;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//initJPush();
+		sharedPref = getSharedPreferences( getString(R.string.preference_file_key_common),Context.MODE_PRIVATE);
 		
 		setContentView(R.layout.activity_init);
 		timer = new Timer(true);
@@ -184,6 +187,8 @@ public class InitActivity extends CommonBindServiceActivity {
 					ViewDTO<ChildViewDTO> view = JSONUtil.getDoLoginView(response);
 			    	
 			    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS)){
+			    		saveChildIdToSharedPreferences(view.getData().getId());
+			    		
 			    		successCallback.callback();
 			    		
 			    	}else{
@@ -205,5 +210,12 @@ public class InitActivity extends CommonBindServiceActivity {
 					dialog.show();
 			}
 		});
+	}
+	
+	
+	private void saveChildIdToSharedPreferences(Integer childId) {
+		SharedPreferences.Editor editor = sharedPref.edit();
+		editor.putInt(getString(R.string.sp_key_login_child_id) ,childId);
+		editor.commit();					
 	}
 }

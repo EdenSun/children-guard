@@ -10,4 +10,7 @@
     <string name="title_activity_activation">MainActivity</string>
     <string name="title_activity_abort_call">AbortCallActivity</string>
 
+    <string name="preference_file_key_common">eden.sun.childrenguard.child.spfile.common</string>
+    <string name="sp_key_login_child_id">loginChildId</string>
+    
 </resources>

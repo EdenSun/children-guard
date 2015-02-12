@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -23,6 +24,7 @@ import eden.sun.childrenguard.child.db.dao.ChildInfoDao;
 import eden.sun.childrenguard.child.db.dao.ChildSettingDao;
 import eden.sun.childrenguard.child.service.LocationMonitorService;
 import eden.sun.childrenguard.child.service.WatchDogService;
+import eden.sun.childrenguard.child.task.JPushRegistionIdUploadRunnable;
 import eden.sun.childrenguard.child.util.BroadcastActionConstants;
 import eden.sun.childrenguard.child.util.Callback;
 import eden.sun.childrenguard.child.util.Config;
@@ -44,6 +46,7 @@ public class MainActivity extends CommonActivity {
 	private int syncFinishCnt;
 	private WatchDogService watchDogService;
 	private LocationMonitorService locationMonitorService;
+	private SharedPreferences sharedPref;
 	
 	private ServiceConnection watchDogServiceConnection = new ServiceConnection() {
 		Context context = MainActivity.this;
@@ -95,10 +98,15 @@ public class MainActivity extends CommonActivity {
 	private BroadcastReceiver initServiceAppDataReceiver;
 	private BroadcastReceiver initServicePresetLockAppDataReceiver;
 	
+	private Integer childId;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		sharedPref = getSharedPreferences( getString(R.string.preference_file_key_common),Context.MODE_PRIVATE);
+		childId = sharedPref.getInt(getString(R.string.sp_key_login_child_id), 0);
+		Log.d(TAG, "**login child id : **** " + childId);
+		
 		initJPush();
 		
 		IntentFilter intentFilter = new IntentFilter();
@@ -145,6 +153,9 @@ public class MainActivity extends CommonActivity {
 	private void initJPush() {
 		JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
+        
+        JPushRegistionIdUploadRunnable runnable = new JPushRegistionIdUploadRunnable(this,childId);
+        new Thread(runnable).start();
 	}
 	
 
