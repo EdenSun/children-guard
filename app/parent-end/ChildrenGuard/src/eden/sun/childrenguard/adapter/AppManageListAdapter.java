@@ -1,23 +1,39 @@
 package eden.sun.childrenguard.adapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.jraf.android.backport.switchwidget.Switch;
 
+import com.android.volley.Response;
+
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
+import android.widget.Toast;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 import eden.sun.childrenguard.R;
-import eden.sun.childrenguard.activity.ChildrenManageActivity;
 import eden.sun.childrenguard.dto.AppManageListItemView;
+import eden.sun.childrenguard.errhandler.DefaultVolleyErrorHandler;
+import eden.sun.childrenguard.fragment.PushMessageListFragment;
+import eden.sun.childrenguard.helper.RequestHelper;
 import eden.sun.childrenguard.server.dto.AppViewDTO;
+import eden.sun.childrenguard.server.dto.PushMessageViewDTO;
+import eden.sun.childrenguard.server.dto.ViewDTO;
+import eden.sun.childrenguard.util.Config;
+import eden.sun.childrenguard.util.JSONUtil;
+import eden.sun.childrenguard.util.RequestURLConstants;
+import eden.sun.childrenguard.util.UIUtil;
 
 public class AppManageListAdapter extends BaseAdapter{
 	private Activity context;
@@ -59,23 +75,21 @@ public class AppManageListAdapter extends BaseAdapter{
         switchBtn.setChecked(app.isLock());
         
         final int finalPos = position;
-        switchBtn.setOnClickListener(new OnClickListener() {
+        switchBtn.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
-			@Override
-			public void onClick(View v) {
-				//((ChildrenManageActivity)context).setConfigChanges(true);
-				Switch curSwitch = (Switch)v;
-				boolean isChecked = curSwitch.isChecked();
+        	@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				Switch curSwitch = (Switch)buttonView;
 				AppManageListItemView curApp = data.get(finalPos);
-				curApp.setLock(isChecked);
 				
-				if( changesData.contains(curApp) ){
-					changesData.remove(curApp);
-				}
-				changesData.add(curApp);
+				boolean lockStatus = isChecked;
+				curApp.setLock(lockStatus);
+				
+				//do update lock status of clicked app
+				updateAppLockStatus(curApp.getAppId(),curApp.getAppName(),lockStatus);
 			}
-			
-		
+
 		});
        /* switchBtn.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 
@@ -132,6 +146,40 @@ public class AppManageListAdapter extends BaseAdapter{
 		if( changesData != null ){
 			changesData.clear();
 		}
+	}
+	
+	
+	private void updateAppLockStatus(Integer appId, final String appName, final boolean lockStatus) {
+		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_UPDATE_APP_LOCK_STATUS;  
+
+		Map<String, String> params = new HashMap<String,String>();
+		params.put("appId", appId.toString());
+		params.put("lockStatus", String.valueOf(lockStatus));
+		
+		RequestHelper.getInstance(context).doPost(
+			url,
+			params,
+			this.getClass(),
+			new Response.Listener<String>() {
+				@Override
+				public void onResponse(String response) {
+					final ViewDTO<Boolean> view = JSONUtil.getUpdateAppLockStatusView(response);
+							
+					if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
+						String msg = null;
+						if( lockStatus == true ){
+							msg = "App " + appName + " locked";
+						}else{
+							msg = "App " + appName + " unlocked";
+						}
+						Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+					}else{
+						Toast.makeText(context, "fail", Toast.LENGTH_SHORT).show();
+					}
+				}
+
+			}, 
+			new DefaultVolleyErrorHandler(context));		
 	}
 
 }
