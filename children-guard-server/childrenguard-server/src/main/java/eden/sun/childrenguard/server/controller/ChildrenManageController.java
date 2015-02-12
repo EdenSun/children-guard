@@ -21,16 +21,14 @@ import eden.sun.childrenguard.server.dto.AppViewDTO;
 import eden.sun.childrenguard.server.dto.ChildBasicInfoViewDTO;
 import eden.sun.childrenguard.server.dto.ChildSettingViewDTO;
 import eden.sun.childrenguard.server.dto.ChildViewDTO;
-import eden.sun.childrenguard.server.dto.PresetLockViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.AppManageSettingParam;
-import eden.sun.childrenguard.server.dto.param.PresetLockParam;
 import eden.sun.childrenguard.server.dto.param.ChildAddParam;
 import eden.sun.childrenguard.server.dto.param.MoreSettingParam;
+import eden.sun.childrenguard.server.service.IAppService;
 import eden.sun.childrenguard.server.service.IChildDetailService;
 import eden.sun.childrenguard.server.service.IChildrenManageService;
 import eden.sun.childrenguard.server.util.JSONUtil;
-import eden.sun.childrenguard.server.util.NumberUtil;
 
 @Controller
 @RequestMapping("/parent/childrenManage")
@@ -40,7 +38,8 @@ public class ChildrenManageController extends BaseController{
 	private IChildrenManageService childrenManageService;
 	@Autowired
 	private IChildDetailService childDetailService;
-	
+	@Autowired
+	private IAppService appService;
 	/**
 	 * /parent/childrenManage/listMyChildren
 	 * ≤È—Ø Person ¡–±Ì
@@ -55,7 +54,6 @@ public class ChildrenManageController extends BaseController{
 		
 		return view;
 	}
-	
 	
 	/**
 	 * /parent/childrenManage/addChild
@@ -335,4 +333,13 @@ public class ChildrenManageController extends BaseController{
 		return view;
 	}
 	
+	
+	@RequestMapping("/updateAppLockStatus")
+	@ResponseBody
+	public ViewDTO<Boolean> updateAppLockStatus(Integer appId,Boolean lockStatus){
+		logger.info("updateAppLockStatus called. appId:" + appId + ", lockStatus:" + lockStatus);
+		ViewDTO<Boolean> view = appService.updateAppLockStatus(appId,lockStatus);
+		
+		return view;
+	}
 }

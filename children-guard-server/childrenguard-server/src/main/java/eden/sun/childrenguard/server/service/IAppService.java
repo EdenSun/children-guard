@@ -3,6 +3,7 @@ package eden.sun.childrenguard.server.service;
 import java.util.List;
 
 import eden.sun.childrenguard.server.dto.AppViewDTO;
+import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.AppManageSettingParam;
 import eden.sun.childrenguard.server.dto.param.UploadApplicationInfoParam;
 import eden.sun.childrenguard.server.exception.ServiceException;
@@ -34,5 +35,7 @@ public interface IAppService {
 	List<App> listByChildId(Integer childId)throws ServiceException;
 
 	App getById(Integer appId)throws ServiceException;
+
+	ViewDTO<Boolean> updateAppLockStatus(Integer appId, Boolean lockStatus)throws ServiceException;
 
 }

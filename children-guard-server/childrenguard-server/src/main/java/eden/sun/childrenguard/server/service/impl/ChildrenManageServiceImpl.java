@@ -108,6 +108,5 @@ public class ChildrenManageServiceImpl implements IChildrenManageService{
 		view.setData(viewDTO);
 		return view;
 	}
-	
-	
+
 }

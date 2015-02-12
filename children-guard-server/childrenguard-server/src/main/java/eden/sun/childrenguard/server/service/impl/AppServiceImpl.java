@@ -2,8 +2,10 @@ package eden.sun.childrenguard.server.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,18 +13,29 @@ import org.springframework.stereotype.Service;
 
 import eden.sun.childrenguard.server.dao.generated.AppMapper;
 import eden.sun.childrenguard.server.dto.AppViewDTO;
+import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.AppManageSettingParam;
 import eden.sun.childrenguard.server.dto.param.UploadApplicationInfoParam;
 import eden.sun.childrenguard.server.exception.ServiceException;
 import eden.sun.childrenguard.server.model.generated.App;
 import eden.sun.childrenguard.server.model.generated.AppExample;
 import eden.sun.childrenguard.server.model.generated.AppExample.Criteria;
+import eden.sun.childrenguard.server.model.generated.Child;
 import eden.sun.childrenguard.server.service.IAppService;
+import eden.sun.childrenguard.server.service.IChildService;
+import eden.sun.childrenguard.server.service.IJPushService;
+import eden.sun.childrenguard.server.util.PushConstants;
 
 @Service
 public class AppServiceImpl extends BaseServiceImpl implements IAppService{
 	@Autowired
 	private AppMapper appMapper;
+	
+	@Autowired
+	private IJPushService pushService;
+	
+	@Autowired
+	private IChildService childService;
 	
 	@Override
 	public List<AppViewDTO> listViewByChildId(Integer childId)
@@ -285,6 +298,36 @@ public class AppServiceImpl extends BaseServiceImpl implements IAppService{
 	public App getById(Integer appId) throws ServiceException {
 		return appMapper.selectByPrimaryKey(appId);
 	}
-
+	
+	@Override
+	public ViewDTO<Boolean> updateAppLockStatus(Integer appId,
+			Boolean lockStatus) throws ServiceException {
+		if( appId == null || lockStatus == null ){
+			throw new ServiceException("Parameter appId or lockStatus can not be null.");
+		}
+		
+		App app = this.getById(appId);
+		if( app == null ){
+			throw new ServiceException("Application is not exists.appId:" + appId);
+		}
+		
+		
+		app.setLockStatus(lockStatus);
+		appMapper.updateByPrimaryKey(app);
+		
+		//push message to child
+		Child child = childService.getById(app.getChildId());
+		if( child != null ){
+			String registionId = child.getRegistionId();
+			if( registionId != null ){
+				Map<String,String> extra = new HashMap<String,String>();
+				pushService.pushMessageToChildByRegistionId(registionId, PushConstants.MSG_CONTENT_APPLY_APP_CHANGES, extra);
+			}
+		}
+		
+		ViewDTO<Boolean> view = new ViewDTO<Boolean>();
+		view.setData(true);
+		return view;
+	}
 	
 }

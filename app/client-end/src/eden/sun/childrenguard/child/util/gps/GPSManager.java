@@ -10,7 +10,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 
 public class GPSManager {
-	private static final int gpsMinTime = 5000;
+	private static final int gpsMinTime = 15000;
 	private static final int gpsMinDistance = 2;
 
 	private static LocationManager locationManager = null;

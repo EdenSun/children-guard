@@ -51,14 +51,14 @@ public class OutgoingCallReceiver extends BroadcastReceiver {
 		Boolean lockCallSwitch = settingDao.getLockCallSwitch();
 		
 		if( isOutgoingCallAllowed(lockCallSwitch,presetLockList) ){
-			return false;
+			return true;
 		}
 		/*if( ( lockCallSwitch != null && lockCallSwitch.booleanValue() == true ) 
 				|| ( DataTypeUtil.getNonNullBoolean(presetLock.getPresetOnOff()) == true && inPresetLockPeriod(presetLock) && DataTypeUtil.getNonNullBoolean(presetLock.getLockCallStatus()) == true) ){
 			return false;
 		}*/
 		
-		return true;
+		return false;
 	}
 	
 	private boolean isOutgoingCallAllowed(Boolean lockCallSwitch,
@@ -76,9 +76,9 @@ public class OutgoingCallReceiver extends BroadcastReceiver {
 		if( ( lockCallSwitch != null && lockCallSwitch.booleanValue() == true ) 
 				|| isOutgoingCallBlockInPresetLock ){
 			return false;
+		}else{
+			return true;
 		}
-		
-		return false;
 	}
 
 	private boolean inPresetLockPeriod(PresetLock presetLock) {

@@ -284,7 +284,7 @@ public class JPushCustomMsgReceiver extends BroadcastReceiver {
 			    			
 			    			childSettingDao.addOrUpdate(childSettingView);
 			    			
-			    			Log.e(TAG, "update setting success." + childSettingDao.getLockCallSwitch());
+			    			Log.d(TAG, "update setting success." + childSettingDao.getLockCallSwitch());
 			    		}
 			    		
 			    	}else{

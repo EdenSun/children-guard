@@ -210,4 +210,8 @@ public class JSONUtil {
 		return gson.fromJson(json, new TypeToken<ViewDTO<Boolean>>(){}.getType());
 	}
 
+	public static ViewDTO<Boolean> getUpdateAppLockStatusView(String json) {
+		return gson.fromJson(json, new TypeToken<ViewDTO<Boolean>>(){}.getType());
+	}
+
 }

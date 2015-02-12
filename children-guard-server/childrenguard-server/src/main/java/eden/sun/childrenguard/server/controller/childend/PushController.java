@@ -10,7 +10,7 @@ import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.service.IChildService;
 
 @Controller("childPushController")
-@RequestMapping("/child/push")
+@RequestMapping("app/child/push")
 public class PushController extends BaseController{
 	@Autowired
 	private IChildService childService;

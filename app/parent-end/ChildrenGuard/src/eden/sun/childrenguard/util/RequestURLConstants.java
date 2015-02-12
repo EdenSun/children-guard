@@ -67,4 +67,7 @@ public class RequestURLConstants {
 	public static final String URL_ADD_EMERGENCY_CONTACT = "parent/emergencyContact/add";
 	public static final String URL_DELETE_EMERGENCY_CONTACT = "parent/emergencyContact/delete";
 	
+	/**** Person Application Manage ****/
+	public static final String URL_UPDATE_APP_LOCK_STATUS = "parent/childrenManage/updateAppLockStatus";
+	
 }

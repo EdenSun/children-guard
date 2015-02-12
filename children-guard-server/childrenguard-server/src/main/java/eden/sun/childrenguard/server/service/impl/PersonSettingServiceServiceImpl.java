@@ -1,5 +1,8 @@
 package eden.sun.childrenguard.server.service.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -7,15 +10,24 @@ import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.server.dto.param.ControlSettingApplyParam;
 import eden.sun.childrenguard.server.dto.param.SettingApplyParam;
 import eden.sun.childrenguard.server.exception.ServiceException;
+import eden.sun.childrenguard.server.model.generated.Child;
 import eden.sun.childrenguard.server.model.generated.ChildSetting;
+import eden.sun.childrenguard.server.service.IChildService;
 import eden.sun.childrenguard.server.service.IChildSettingService;
+import eden.sun.childrenguard.server.service.IJPushService;
 import eden.sun.childrenguard.server.service.IPersonSettingService;
+import eden.sun.childrenguard.server.util.PushConstants;
 
 @Service
 public class PersonSettingServiceServiceImpl implements IPersonSettingService {
 	@Autowired
 	private IChildSettingService childSettingService;
 	
+	@Autowired
+	private IChildService childService;
+	
+	@Autowired
+	private IJPushService pushService;
 	
 	@Override
 	public ViewDTO<Boolean> doApply(SettingApplyParam applyParam)
@@ -48,6 +60,17 @@ public class PersonSettingServiceServiceImpl implements IPersonSettingService {
 	
 		childSettingService.update(setting);
 		
+		
+		//push message to child
+		Child child = childService.getById(childId);
+		if( child != null ){
+			String registionId = child.getRegistionId();
+			if( registionId != null ){
+				Map<String,String> extra = new HashMap<String,String>();
+				pushService.pushMessageToChildByRegistionId(registionId, PushConstants.MSG_CONTENT_APPLY_SETTING_CHANGES, extra);
+			}
+		}
+				
 		ViewDTO<Boolean> view = new ViewDTO<Boolean>();
 		view.setData(true);
 		return view;
@@ -81,6 +104,16 @@ public class PersonSettingServiceServiceImpl implements IPersonSettingService {
 		
 		childSettingService.update(setting);
 		
+		//push message to child
+		Child child = childService.getById(childId);
+		if( child != null ){
+			String registionId = child.getRegistionId();
+			if( registionId != null ){
+				Map<String,String> extra = new HashMap<String,String>();
+				pushService.pushMessageToChildByRegistionId(registionId, PushConstants.MSG_CONTENT_APPLY_SETTING_CHANGES, extra);
+			}
+		}
+				
 		ViewDTO<Boolean> view = new ViewDTO<Boolean>();
 		view.setData(true);
 		return view;
