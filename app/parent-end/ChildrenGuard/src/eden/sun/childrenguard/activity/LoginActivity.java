@@ -4,16 +4,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,12 +46,25 @@ public class LoginActivity extends CommonActivity {
 	private EditText mobileEditText;
 	private EditText passwordEditText;
 	
+	private LinearLayout layout;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.activity_login);
 
+        layout = (LinearLayout)findViewById(android.R.id.content);
+        layout.setOnTouchListener(new OnTouchListener(){
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				hideKeyboard(v);
+		        return false;
+			}
+        	
+        });
+        
         mobileEditText = (EditText)findViewById(R.id.mobileEditText);
         passwordEditText = (EditText)findViewById(R.id.passwordEditText);
 
@@ -297,5 +315,12 @@ public class LoginActivity extends CommonActivity {
 		);
 	}
 
-
+	/**
+	* Hides virtual keyboard
+	*/
+	protected void hideKeyboard(View view)
+	{
+	    InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+	    in.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+	}
 }

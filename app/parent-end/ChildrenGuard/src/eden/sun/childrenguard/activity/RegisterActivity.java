@@ -6,6 +6,8 @@ import java.util.Map;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 
@@ -38,7 +41,7 @@ public class RegisterActivity extends CommonActivity {
 	private EditText mobileEditText;
 	private EditText passwordEditText;
 	private EditText confirmPasswordEditText;
-	
+	private TextView agreementTextView;
 	/* END - ui components */
 	
 	@Override
@@ -46,6 +49,10 @@ public class RegisterActivity extends CommonActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
 		
+		agreementTextView = (TextView)findViewById(R.id.agreementTextView);
+		agreementTextView.setText(Html.fromHtml("By clicking \"Sign Up\" you are indicating that you have read and agree to the <a href='http://www.ifeng.com'>Terms of Service</a> and <a href='http://www.baidu.com'>Privacy Policy</a>."));
+		agreementTextView.setMovementMethod(LinkMovementMethod.getInstance());
+
 		mobileEditText = (EditText)findViewById(R.id.mobileEditText);
 		passwordEditText = (EditText)findViewById(R.id.passwordEditText);
 		confirmPasswordEditText = (EditText)findViewById(R.id.confirmPasswordEditText);

@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     style="@style/commonPageStyle"
-    tools:context="eden.sun.childrenguard.activity.LoginActivity" >
+    tools:context="eden.sun.childrenguard.activity.LoginActivity">
 
     <TextView
         android:id="@+id/registerLinkBtn"
@@ -12,13 +12,6 @@
         style="@style/rightLinkStyle"
         android:text="Register"/>
     
-    <!-- <TextView
-        android:id="@+id/titleTextView"
-        style="@style/commonPageTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Welcome to The Guardian App" /> -->
-
 	<LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
@@ -40,43 +33,15 @@
         android:layout_height="wrap_content" 
         android:orientation="vertical"
         android:layout_weight="0">
-        <!--
-	    <LinearLayout
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content" >
-	
-	       <TextView
-	            android:id="@+id/passwordTextView"
-	            android:layout_width="80dp"
-	            android:layout_height="40dp"
-	            android:layout_weight="0"
-	            android:gravity="center_vertical"
-	            android:text="Email"
-	            android:textColor="#fff"
-	            android:textSize="15dp" /> -->
 	
 	        <EditText
 	            android:id="@+id/mobileEditText"
 	            android:inputType="phone"
+	            android:maxLength="10"
 	            android:layout_weight="1"
 	            android:hint="Mobile"
 	            android:layout_marginBottom="5dp"
 	            style="@style/commonInputStyle" />
-	    <!-- </LinearLayout> -->
-	
-	    <!-- <LinearLayout
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content" >
-	
-	        <TextView
-	            android:id="@+id/passwordConfirmTextView"
-	            android:layout_width="80dp"
-	            android:layout_height="40dp"
-	            android:layout_weight="0"
-	            android:gravity="center_vertical"
-	            android:text="Password"
-	            android:textColor="#fff"
-	            android:textSize="15dp" /> -->
 	
 	        <EditText
 	            android:id="@+id/passwordEditText"
@@ -103,35 +68,4 @@
     	    android:layout_marginBottom="35dp"
     	    android:text="Login" />
     	
-	    <!-- <LinearLayout
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="10dp" >
-	
-	        <Button
-	            android:id="@+id/registerBtn"
-	            android:layout_width="wrap_content"
-	            android:layout_height="40dp"
-	            android:layout_weight="1"
-	            android:text="Register"
-	            android:textColor="#000000"
-	            android:textSize="13dp" />
-	
-	        <Button
-	            android:id="@+id/loginBtn"
-	            android:layout_width="wrap_content"
-	            android:layout_height="40dp"
-	            android:layout_weight="1"
-	            android:text="Login"
-	            android:textColor="#000000"
-	            android:textSize="13dp" />
-	    </LinearLayout>
-	
-	    <Button
-	        android:id="@+id/forgetPasswordBtn"
-	        android:layout_width="match_parent"
-	        android:layout_height="40dp"
-	        android:text="Forgot Password"
-	        android:textColor="#000000"
-	        android:textSize="13dp" /> -->
 </LinearLayout>
