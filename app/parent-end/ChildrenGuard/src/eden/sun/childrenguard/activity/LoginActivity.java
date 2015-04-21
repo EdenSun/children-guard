@@ -18,7 +18,7 @@ import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +46,7 @@ public class LoginActivity extends CommonActivity {
 	private EditText mobileEditText;
 	private EditText passwordEditText;
 	
-	private LinearLayout layout;
+	private FrameLayout layout;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +54,7 @@ public class LoginActivity extends CommonActivity {
         
         setContentView(R.layout.activity_login);
 
-        layout = (LinearLayout)findViewById(android.R.id.content);
+        layout = (FrameLayout)findViewById(android.R.id.content);
         layout.setOnTouchListener(new OnTouchListener(){
 
 			@Override
@@ -216,9 +216,53 @@ public class LoginActivity extends CommonActivity {
 			return false;
 		}
 		
+		if( mobile.length() != 10 ){
+			String title = "Login";
+			String msg = "10-digit phone number is required.";
+			String btnText = "OK";
+			
+			AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
+				LoginActivity.this,
+				title,
+				msg,
+				btnText,
+				new DialogInterface.OnClickListener() {
+		            @Override
+		            public void onClick(DialogInterface dialog, int which) {
+		            	dialog.dismiss();
+		            }
+		        }
+			);
+			
+			dialog.show();
+			return false;
+		}
+		
 		if( StringUtil.isBlank(password) ){
 			String title = "Login";
 			String msg = "Password can not be blank.";
+			String btnText = "OK";
+			
+			AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
+				LoginActivity.this,
+				title,
+				msg,
+				btnText,
+				new DialogInterface.OnClickListener() {
+		            @Override
+		            public void onClick(DialogInterface dialog, int which) {
+		            	dialog.dismiss();
+		            }
+		        }
+			);
+			
+			dialog.show();
+			return false;
+		}
+		
+		if( password.length() != 4 ){
+			String title = "Login";
+			String msg = "4-digit number password is required.";
 			String btnText = "OK";
 			
 			AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(

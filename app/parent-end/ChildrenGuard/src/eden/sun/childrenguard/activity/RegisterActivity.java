@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Html;
@@ -11,10 +12,14 @@ import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -35,6 +40,7 @@ public class RegisterActivity extends CommonActivity {
 	private static final String TAG = "RegisterActivity";
 	
 	/* ui components */
+	private FrameLayout layout;
 	private Button registerBtn;
 	private Button backBtn;
 	
@@ -42,6 +48,7 @@ public class RegisterActivity extends CommonActivity {
 	private EditText passwordEditText;
 	private EditText confirmPasswordEditText;
 	private TextView agreementTextView;
+	
 	/* END - ui components */
 	
 	@Override
@@ -49,8 +56,19 @@ public class RegisterActivity extends CommonActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
 		
+		layout = (FrameLayout)findViewById(android.R.id.content);
+        layout.setOnTouchListener(new OnTouchListener(){
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				hideKeyboard(v);
+		        return false;
+			}
+        	
+        });
+        
 		agreementTextView = (TextView)findViewById(R.id.agreementTextView);
-		agreementTextView.setText(Html.fromHtml("By clicking \"Sign Up\" you are indicating that you have read and agree to the <a href='http://www.ifeng.com'>Terms of Service</a> and <a href='http://www.baidu.com'>Privacy Policy</a>."));
+		agreementTextView.setText(Html.fromHtml("By clicking \"Sign Up\" you are indicating that you have read and agree to the <a href='"+ Config.BASE_URL +"terms-of-service.html'>Terms of Service</a> and <a href='"+ Config.BASE_URL +"privacy-policy.html'>Privacy Policy</a>."));
 		agreementTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
 		mobileEditText = (EditText)findViewById(R.id.mobileEditText);
@@ -202,6 +220,29 @@ public class RegisterActivity extends CommonActivity {
 			dialog.show();
 			return false;
 		}
+		
+		if( mobile.length() != 10 ){
+			String title = "Login";
+			String msg = "10-digit phone number is required.";
+			String btnText = "OK";
+			
+			AlertDialog.Builder dialog = UIUtil.getAlertDialogWithOneBtn(
+				RegisterActivity.this,
+				title,
+				msg,
+				btnText,
+				new DialogInterface.OnClickListener() {
+		            @Override
+		            public void onClick(DialogInterface dialog, int which) {
+		            	dialog.dismiss();
+		            }
+		        }
+			);
+			
+			dialog.show();
+			return false;
+		}
+		
 		
 		if( StringUtil.isBlank(password) ){
 			String title = "Register";
@@ -369,4 +410,13 @@ public class RegisterActivity extends CommonActivity {
 		}
 		
 	}*/
+	
+	/**
+	* Hides virtual keyboard
+	*/
+	protected void hideKeyboard(View view)
+	{
+	    InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+	    in.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+	}
 }

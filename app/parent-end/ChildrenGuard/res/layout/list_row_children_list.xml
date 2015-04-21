@@ -2,13 +2,13 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="5dip" 
+    android:padding="10dip" 
     android:background="@drawable/list_selector">
  
     <LinearLayout android:id="@+id/thumbnail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="3dip"
+        android:padding="5dip"
         android:background="@drawable/image_bg"
         android:layout_weight="0"
         >
@@ -21,8 +21,8 @@
  
  		<com.android.volley.toolbox.NetworkImageView 
 		    android:id="@+id/list_image"
-		    android:layout_width="50dp"
-		    android:layout_height="50dp"
+		    android:layout_width="70dp"
+		    android:layout_height="70dp"
 		    android:layout_gravity="center_horizontal"
 		    />
     </LinearLayout>
@@ -42,7 +42,7 @@
 	        android:text="Eden Sun"
 	        android:textColor="#040404"
 	        android:typeface="sans"
-	        android:textSize="15dip"
+	        android:textSize="18dip"
 	        android:textStyle="bold"
 	        android:layout_weight="1" />
         
@@ -51,7 +51,7 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:textColor="#343434"
-	        android:textSize="10dip"
+	        android:textSize="12dip"
 	        android:text="129933229928"
 	        android:layout_weight="1" />
         
@@ -65,7 +65,7 @@
 		        android:layout_width="wrap_content"
 		        android:layout_height="match_parent"
 		        android:textColor="#343434"
-		        android:textSize="10dip"
+		        android:textSize="12dip"
 		        android:text="Online" 
 		        android:paddingLeft="0dp"
 		        android:paddingRight="10dp"/>
@@ -75,7 +75,7 @@
 		        android:layout_width="wrap_content"
 		        android:layout_height="match_parent"
 		        android:textColor="#343434"
-		        android:textSize="10dip"
+		        android:textSize="12dip"
 		        android:text="Locked" 
 			/>
 	    </LinearLayout>

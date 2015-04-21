@@ -73,11 +73,11 @@ public class RequestHelper {
 			errListener
 			){
 			
-				@Override
+				/*@Override
 				public RetryPolicy getRetryPolicy() {
 					RetryPolicy retryPolicy = new DefaultRetryPolicy(5000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT); 
 			        return retryPolicy; 
-				};
+				};*/
 			
 		};
 		

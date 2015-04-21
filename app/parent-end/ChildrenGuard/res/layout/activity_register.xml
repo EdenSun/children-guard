@@ -19,6 +19,7 @@
 		            android:id="@+id/mobileEditText"
 		            android:inputType="phone"
 		            android:hint="Mobile"
+		            android:maxLength="10"
 		            style="@style/textOnLeftInputStyle"
 		            />
 		
@@ -70,9 +71,8 @@
 	        android:layout_height="wrap_content"
 	        android:gravity="top"
 	        android:paddingTop="10dp"
-	        android:textColor="#777777"
+	        android:textColor="#EEEEEE"
 	        android:layout_marginTop="5dp"
-	        android:layout_weight="1"
 	        android:textSize="14sp"
 	        />
 </LinearLayout>

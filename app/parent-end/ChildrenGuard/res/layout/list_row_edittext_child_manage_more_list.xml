@@ -24,6 +24,6 @@
         android:layout_height="match_parent"
         android:layout_weight="0"
         android:gravity="center_vertical"
-        android:text="km/h" />
+        android:text="miles/hour" />
 
 </LinearLayout>

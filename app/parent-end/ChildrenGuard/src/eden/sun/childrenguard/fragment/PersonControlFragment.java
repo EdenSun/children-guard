@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -147,6 +148,10 @@ public class PersonControlFragment extends CommonFragment implements IApplyInter
 
 	@Override
 	public void doApply(IParamObject param) {
+		Toast t = Toast.makeText(getActivity(), "updating...", 0);
+		t.setGravity(Gravity.FILL_HORIZONTAL|Gravity.BOTTOM, 0, 0);
+		t.show();
+		
 		ControlSettingApplyParam controlSettingApplyParam = (ControlSettingApplyParam)param;
 		
 		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_APPLY_CONTROL_SETTING;  
@@ -164,9 +169,13 @@ public class PersonControlFragment extends CommonFragment implements IApplyInter
 					final ViewDTO<Boolean> view = JSONUtil.getApplySettingView(response);
 							
 					if( view.getMsg().equals(ViewDTO.MSG_SUCCESS) ){
-						Toast.makeText(getActivity(), "done", Toast.LENGTH_SHORT).show();
+						Toast t = Toast.makeText(getActivity(), "done", Toast.LENGTH_SHORT);
+						t.setGravity(Gravity.FILL_HORIZONTAL|Gravity.BOTTOM, 0, 0);
+						t.show();
 					}else{
-						Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
+						Toast t = Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT);
+						t.setGravity(Gravity.FILL_HORIZONTAL|Gravity.BOTTOM, 0, 0);
+						t.show();
 					}
 				}
 			}, 
