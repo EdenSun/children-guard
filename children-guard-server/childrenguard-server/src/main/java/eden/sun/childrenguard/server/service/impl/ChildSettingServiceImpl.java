@@ -51,6 +51,8 @@ public class ChildSettingServiceImpl extends BaseServiceImpl implements IChildSe
 		childSetting.setUninstallAppNotificationSwitch(false);
 		childSetting.setWifiOnlySwitch(false);
 		childSetting.setAppLockPassword(Constants.APP_LOCK_DEFAULT_PASSWORD);
+		// default speeding limit
+		childSetting.setSpeedingLimit(60);
 		return childSetting;
 	}
 
