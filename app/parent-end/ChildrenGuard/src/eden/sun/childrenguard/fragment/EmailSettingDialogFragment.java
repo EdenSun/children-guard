@@ -85,7 +85,7 @@ public class EmailSettingDialogFragment extends DialogFragment {
 	
 	private void doSaveEmail(String accessToken,
 			String email) {
-		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_EMAIL_SETTING_SAVE;  
+		String url = Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_EMAIL_SETTING_SAVE;  
 
 		Map<String,String> params = new HashMap<String,String>();
 		params.put("accessToken", accessToken);

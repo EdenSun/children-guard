@@ -185,7 +185,7 @@ public class PresetLockListFragment extends CommonFragment{
 	
 	private void loadPresetLockList() {
 	    String url = String.format(
-				Config.BASE_URL_MVC + RequestURLConstants.URL_LIST_PRESET_LOCK + "?childId=%1$s",  
+	    		Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_LIST_PRESET_LOCK + "?childId=%1$s",  
 				childId);  
 
 	   /* String title = "Message List";
@@ -230,7 +230,7 @@ public class PresetLockListFragment extends CommonFragment{
 
 	
 	private void doDeletePresetLock(Integer presetLockId) {
-		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_DELETE_PRESET_LOCK;  
+		String url = Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_DELETE_PRESET_LOCK;  
 
 		String title = "Delete Schedule";
 		String msg = "Please wait...";

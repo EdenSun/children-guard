@@ -59,7 +59,7 @@ public class JPushRegistionIdUploadRunnable implements Runnable{
 
 
 	private void doUpdateRegistionId(String accessToken,String registionId) {
-		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_UPDATE_REGISTRATION_ID ;  
+		String url = Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_UPDATE_REGISTRATION_ID ;  
 		Map<String,String> param = new HashMap<String,String>();
 		param.put("accessToken", accessToken);
 		param.put("registrationId", registionId);

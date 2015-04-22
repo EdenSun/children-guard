@@ -133,7 +133,7 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 	
 	private void doResendDownloadLink(final String childMobile) {
 		
-		String url = String.format(Config.BASE_URL_MVC
+		String url = String.format(Config.getInstance().BASE_URL_MVC
 				+ RequestURLConstants.URL_GET_CHILD_APP_DOWNLOAD_LINK);
 
 		
@@ -201,7 +201,7 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 	}
 
 	private void doDeletePerson(Integer childId) {
-		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_DELETE_CHILD;  
+		String url = Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_DELETE_CHILD;  
 
 		String title = "Delete Person";
 		String msg = "Please wait...";
@@ -276,7 +276,7 @@ public class ChildrenListActivity extends CommonActionBarActivity {
 
 	private void loadChildrenList() {
 	    String url = String.format(
-				Config.BASE_URL_MVC + RequestURLConstants.URL_LIST_MY_CHILDREN + "?accessToken=%1$s",  
+	    		Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_LIST_MY_CHILDREN + "?accessToken=%1$s",  
 				getAccessToken());  
 
 	    String title = "Person List";

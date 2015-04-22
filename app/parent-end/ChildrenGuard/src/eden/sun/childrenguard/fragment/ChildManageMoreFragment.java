@@ -101,7 +101,7 @@ public class ChildManageMoreFragment extends CommonFragment implements IApplyInt
 
 	private void loadSettingData() {
 		String url = String.format(
-				Config.BASE_URL_MVC + RequestURLConstants.URL_LOAD_CHILD_SETTING + "?childId=%1$s",  
+				Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_LOAD_CHILD_SETTING + "?childId=%1$s",  
 				childId);  
 
 		getRequestHelper().doGet(
@@ -145,7 +145,7 @@ public class ChildManageMoreFragment extends CommonFragment implements IApplyInt
 	public void doApply(IParamObject param) {
 		SettingApplyParam settingApplyParam = (SettingApplyParam)param;
 		
-		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_APPLY_SETTING;  
+		String url = Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_APPLY_SETTING;  
 
 		Map<String,String> params = new HashMap<String,String>();
 		params.put("settingJson", JSONUtil.transSettingApplyParam2String(settingApplyParam));

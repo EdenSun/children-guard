@@ -152,7 +152,7 @@ public class ChildrenListAddActivity extends CommonActivity {
 		boolean isPassed = doValidation();
 		
 		if( isPassed ){
-			String url = Config.BASE_URL_MVC
+			String url = Config.getInstance().BASE_URL_MVC
 					+ RequestURLConstants.URL_LIST_ADD_CHILD;
 	
 			String title = "Add Person";
@@ -220,7 +220,7 @@ public class ChildrenListAddActivity extends CommonActivity {
 	
 	private void sendDownloadLinkToChild(final String childMobile) {
 		
-		String url = String.format(Config.BASE_URL_MVC
+		String url = String.format(Config.getInstance().BASE_URL_MVC
 				+ RequestURLConstants.URL_GET_CHILD_APP_DOWNLOAD_LINK);
 
 		
@@ -512,7 +512,7 @@ public class ChildrenListAddActivity extends CommonActivity {
             final File file = new File(picPath);
 
             if (file != null) {
-            	final String uploadUrl = Config.BASE_URL_MVC + RequestURLConstants.URL_UPLOAD_PHOTO;
+            	final String uploadUrl = Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_UPLOAD_PHOTO;
             	
             	String title = "Uploading photo";
         		String msg = "Please wait...";

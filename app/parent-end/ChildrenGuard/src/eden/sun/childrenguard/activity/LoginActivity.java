@@ -93,7 +93,7 @@ public class LoginActivity extends CommonActivity {
 					final String finalMobile = mobileEditText.getText().toString();
 					final String finalPassword = passwordEditText.getText().toString();
 					String url = String.format(
-							Config.BASE_URL_MVC + RequestURLConstants.URL_IS_FIRST_LOGIN + "?mobile=%1$s&password=%2$s",  
+							Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_IS_FIRST_LOGIN + "?mobile=%1$s&password=%2$s",  
 							finalMobile,  
 							finalPassword);  
 	  
@@ -320,7 +320,7 @@ public class LoginActivity extends CommonActivity {
 		// do login
     	//runtime.publish(getLoginParam(), CometdConfig.LOGIN_CHANNEL,new LoginListener(LoginActivity.this));
 		String url = String.format(
-				Config.BASE_URL_MVC + RequestURLConstants.URL_LOGIN + "?mobile=%1$s&password=%2$s",  
+				Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_LOGIN + "?mobile=%1$s&password=%2$s",  
 				account,  
 				password);  
 

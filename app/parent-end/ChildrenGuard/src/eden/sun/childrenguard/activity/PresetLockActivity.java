@@ -142,7 +142,7 @@ public class PresetLockActivity extends CommonActivity {
 		showProgressDialog(title,msg);
 		
 		String url = String.format(
-				Config.BASE_URL_MVC + RequestURLConstants.URL_LOAD_PRESET_LOCK_BY_ID + "?presetLockId=%1$s",  
+				Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_LOAD_PRESET_LOCK_BY_ID + "?presetLockId=%1$s",  
 				presetLockId);
 
 		getRequestHelper().doGet(
@@ -288,7 +288,7 @@ public class PresetLockActivity extends CommonActivity {
 		String msg = "Please wait...";
 		showProgressDialog(title,msg);
 		
-		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_NEW_PRESET_LOCK;  
+		String url = Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_NEW_PRESET_LOCK;  
 
 		Map<String,String> params = this.getPresetLockParams();
 		getRequestHelper().doPost(
@@ -532,7 +532,7 @@ public class PresetLockActivity extends CommonActivity {
 		String msg = "Please wait...";
 		showProgressDialog(title,msg);
 		
-		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_APPLY_PRESET_LOCK;  
+		String url = Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_APPLY_PRESET_LOCK;  
 
 		Map<String,String> params = this.getPresetLockParams();
 		getRequestHelper().doPost(
@@ -598,7 +598,7 @@ public class PresetLockActivity extends CommonActivity {
 		showProgressDialog(title,msg);
 		
 		String url = String.format(
-				Config.BASE_URL_MVC + RequestURLConstants.URL_LIST_CHILD_PRESET_LOCK_APP + "?presetLockId=%1$s",  
+				Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_LIST_CHILD_PRESET_LOCK_APP + "?presetLockId=%1$s",  
 				presetLockId
 				);  
 		

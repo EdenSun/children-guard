@@ -127,7 +127,7 @@ public class EmergencyContactAddActivity extends CommonActivity {
 	}
 	
 	private void doAddEmergencyContact() {
-		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_ADD_EMERGENCY_CONTACT;  
+		String url = Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_ADD_EMERGENCY_CONTACT;  
 
 		String title = "Add Emergency Contacts";
 		String msg = "Please wait...";

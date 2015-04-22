@@ -133,7 +133,7 @@ public class PushMessageListFragment extends CommonFragment{
 	}
 
 	private void doDeletePushMessage(Integer messageId) {
-		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_DELETE_PUSH_MESSAGE;  
+		String url = Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_DELETE_PUSH_MESSAGE;  
 
 		String title = "Delete Message";
 		String msg = "Please wait...";
@@ -191,7 +191,7 @@ public class PushMessageListFragment extends CommonFragment{
 	
 	private void loadPushMessageList() {
 	    String url = String.format(
-				Config.BASE_URL_MVC + RequestURLConstants.URL_LIST_PUSH_MESSAGE + "?accessToken=%1$s",  
+	    		Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_LIST_PUSH_MESSAGE + "?accessToken=%1$s",  
 				getAccessToken());  
 
 	    String title = "Message List";

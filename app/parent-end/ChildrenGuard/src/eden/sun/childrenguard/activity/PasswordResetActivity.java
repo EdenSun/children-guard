@@ -55,7 +55,7 @@ public class PasswordResetActivity extends CommonActivity {
 					/*AsyncTask<Map<String, Object>,Integer,Boolean> task = new PasswordResetTask(PasswordResetActivity.this);
 					task.execute(data);*/
 					
-					String url = Config.BASE_URL_MVC + RequestURLConstants.URL_RESET_PASSWORD;
+					String url = Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_RESET_PASSWORD;
 	  
 					String title = "Reset Password";
 					String msg = "Please wait...";

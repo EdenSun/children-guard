@@ -162,7 +162,7 @@ public class AppManageListAdapter extends BaseAdapter{
 	
 	
 	private void updateAppLockStatus(Integer appId, final String appName, final boolean lockStatus) {
-		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_UPDATE_APP_LOCK_STATUS;  
+		String url = Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_UPDATE_APP_LOCK_STATUS;  
 
 		Map<String, String> params = new HashMap<String,String>();
 		params.put("appId", appId.toString());

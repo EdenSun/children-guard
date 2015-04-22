@@ -184,7 +184,7 @@ public class ModifyLockPasswordActivity extends CommonActivity {
 		String confirmPassword = UIUtil.getEditTextValue(confirmPasswordEditText);
 		
 		String url = String.format(
-				Config.BASE_URL_MVC + RequestURLConstants.URL_CHANGE_LOCK_PASSWORD + "?childId=%1$s&password=%2$s",  
+				Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_CHANGE_LOCK_PASSWORD + "?childId=%1$s&password=%2$s",  
 				childId,
 				password);  
 

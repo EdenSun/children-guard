@@ -73,7 +73,7 @@ public class ChildrenListAdapter extends BaseAdapter {
         RequestQueue mQueue = RequestHelper.getInstance(context).getImageQueue();
         ImageLoader imageLoader = new ImageLoader(mQueue, new BitmapCache());
     	if( child.getPhotoImage() != null ){
-    		photoImageView.setImageUrl(Config.BASE_URL + child.getPhotoImage(),imageLoader);
+    		photoImageView.setImageUrl(Config.getInstance().BASE_URL + child.getPhotoImage(),imageLoader);
     		
     	}else{
     		photoImageView.setImageUrl(null,imageLoader);

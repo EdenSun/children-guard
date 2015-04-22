@@ -111,7 +111,7 @@ public class ChildBasicInfoFragment extends CommonFragment{
 		String msg = "Please wait...";
 		showProgressDialog(title,msg);*/
 		String url = String.format(
-				Config.BASE_URL_MVC + RequestURLConstants.URL_GET_CHILD_BASIC_INFO + "?childId=%1$s",  
+				Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_GET_CHILD_BASIC_INFO + "?childId=%1$s",  
 				childId
 				);  
 
@@ -172,7 +172,7 @@ public class ChildBasicInfoFragment extends CommonFragment{
 	
 	
 	public void doDeletePerson(final Callback successCallback) {
-		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_DELETE_CHILD;  
+		String url = Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_DELETE_CHILD;  
 
 		Map<String,String> params = new HashMap<String,String>();
 		params.put("childId", childId.toString());

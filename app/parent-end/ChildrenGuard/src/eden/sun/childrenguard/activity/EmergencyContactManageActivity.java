@@ -120,7 +120,7 @@ public class EmergencyContactManageActivity extends CommonActionBarActivity {
 		showProgressDialog(title,msg);
 		
 		String url = String.format(
-				Config.BASE_URL_MVC + RequestURLConstants.URL_LIST_EMERGENCY_CONTACT_BY_CHILD + "?childId=%1$s",  
+				Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_LIST_EMERGENCY_CONTACT_BY_CHILD + "?childId=%1$s",  
 				childId);
 
 		getRequestHelper().doGet(
@@ -193,7 +193,7 @@ public class EmergencyContactManageActivity extends CommonActionBarActivity {
 	
 	
 	private void doDeleteEmergencyContact(final Integer emergencyContactId) {
-		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_DELETE_EMERGENCY_CONTACT;  
+		String url = Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_DELETE_EMERGENCY_CONTACT;  
 
 		Map<String, String> params = new HashMap<String,String>();
 		params.put("emergencyContactId", emergencyContactId.toString());

@@ -68,7 +68,7 @@ public class RegisterActivity extends CommonActivity {
         });
         
 		agreementTextView = (TextView)findViewById(R.id.agreementTextView);
-		agreementTextView.setText(Html.fromHtml("By clicking \"Sign Up\" you are indicating that you have read and agree to the <a href='"+ Config.BASE_URL +"terms-of-service.html'>Terms of Service</a> and <a href='"+ Config.BASE_URL +"privacy-policy.html'>Privacy Policy</a>."));
+		agreementTextView.setText(Html.fromHtml("By clicking \"Sign Up\" you are indicating that you have read and agree to the <a href='"+ Config.getInstance().BASE_URL + Config.getInstance().TERMS_OF_SERVICE_PATH + "'>Terms of Service</a> and <a href='"+ Config.getInstance().BASE_URL + Config.getInstance().PRIVACY_POLICY_PATH + "'>Privacy Policy</a>."));
 		agreementTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
 		mobileEditText = (EditText)findViewById(R.id.mobileEditText);
@@ -118,7 +118,7 @@ public class RegisterActivity extends CommonActivity {
 	}
 
 	private void doRegister() {
-		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_REGISTER;  
+		String url = Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_REGISTER;  
 
 		String title = "Register";
 		String msg = "Please wait...";

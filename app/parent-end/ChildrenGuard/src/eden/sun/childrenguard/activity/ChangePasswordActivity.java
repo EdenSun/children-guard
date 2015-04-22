@@ -95,7 +95,7 @@ public class ChangePasswordActivity extends CommonActivity  {
 		params.put("resetCode", resetCode);
 		params.put("password", password);
 		
-		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_DO_CHANGE_PASSWORD;
+		String url = Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_DO_CHANGE_PASSWORD;
 
 		String title = "Change Password";
 		String msg = "Please wait...";

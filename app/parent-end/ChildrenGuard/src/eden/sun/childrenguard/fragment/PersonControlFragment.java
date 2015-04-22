@@ -105,7 +105,7 @@ public class PersonControlFragment extends CommonFragment implements IApplyInter
 	@Override
 	public void loadSettingData() {
 		String url = String.format(
-				Config.BASE_URL_MVC + RequestURLConstants.URL_LOAD_CHILD_SETTING + "?childId=%1$s",  
+				Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_LOAD_CHILD_SETTING + "?childId=%1$s",  
 				childId);  
 
 		getRequestHelper().doGet(
@@ -154,7 +154,7 @@ public class PersonControlFragment extends CommonFragment implements IApplyInter
 		
 		ControlSettingApplyParam controlSettingApplyParam = (ControlSettingApplyParam)param;
 		
-		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_APPLY_CONTROL_SETTING;  
+		String url = Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_APPLY_CONTROL_SETTING;  
 
 		Map<String,String> params = new HashMap<String,String>();
 		params.put("settingJson", JSONUtil.transControlSettingApplyParam2String(controlSettingApplyParam));

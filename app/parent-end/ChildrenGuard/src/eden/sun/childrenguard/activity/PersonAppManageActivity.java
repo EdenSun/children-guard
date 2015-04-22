@@ -96,7 +96,7 @@ public class PersonAppManageActivity extends CommonFragmentActivity{
 	
 	
 	public void doLockAllApp(final Callback<Boolean> successCallback) {
-		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_LOCK_ALL_APP;  
+		String url = Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_LOCK_ALL_APP;  
 
 		Map<String,String> params = new HashMap<String,String>();
 		params.put("childId", childId.toString());
@@ -144,7 +144,7 @@ public class PersonAppManageActivity extends CommonFragmentActivity{
 
 
 	public void doUnlockAllApp(final Callback<Boolean> successCallback) {
-		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_UNLOCK_ALL_APP;  
+		String url = Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_UNLOCK_ALL_APP;  
 
 		Map<String,String> params = new HashMap<String,String>();
 		params.put("childId", childId.toString());

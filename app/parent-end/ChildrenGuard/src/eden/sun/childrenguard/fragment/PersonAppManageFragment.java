@@ -84,7 +84,7 @@ public class PersonAppManageFragment extends CommonFragment implements IPersonAp
 		showProgressDialog(title,msg);
 		
 		String url = String.format(
-				Config.BASE_URL_MVC + RequestURLConstants.URL_LIST_CHILD_APP + "?childId=%1$s",  
+				Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_LIST_CHILD_APP + "?childId=%1$s",  
 				childId
 				);  
 

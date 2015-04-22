@@ -103,7 +103,7 @@ public class PresetLockListAdapter  extends ArrayAdapter<ScheduleLockListItemVie
 
     
     private void doSwitchSchedule(Integer presetLockId, boolean isChecked) {
-    	String url = Config.BASE_URL_MVC + RequestURLConstants.URL_SWITCH_PRESET_LOCK;  
+    	String url = Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_SWITCH_PRESET_LOCK;  
 
 		/*String title = "Delete Schedule";
 		String msg = "Please wait...";

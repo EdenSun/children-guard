@@ -1,21 +1,24 @@
 package eden.sun.childrenguard.activity;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
-import cn.jpush.android.api.JPushInterface;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import eden.sun.childrenguard.R;
-import eden.sun.childrenguard.runnable.JPushRegistionIdUploadRunnable;
 import eden.sun.childrenguard.server.dto.LoginViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 import eden.sun.childrenguard.util.Config;
@@ -36,10 +39,33 @@ public class SplashActivity extends CommonActivity {
         
         setContentView(R.layout.activity_splash);
         
+        readConfig();
         //startTimer();
     }
 
     
+	private void readConfig() {
+		try {
+			AssetManager assetManager = this.getAssets();
+		    InputStream inputStream = assetManager.open("config.properties");
+		    Properties properties = new Properties();
+		    properties.load(inputStream);
+		    Config config = Config.getInstance();
+		    
+		    Log.i(TAG,"Loading config...");
+		    config.BASE_URL = properties.get("baseUrl").toString();
+		    config.BASE_URL_MVC = config.BASE_URL + properties.get("baseUrlMvcContext");
+		    config.TERMS_OF_SERVICE_PATH = properties.get("termsOfServicePath").toString();
+		    config.PRIVACY_POLICY_PATH = properties.get("privacyPolicyPath").toString();
+
+		    Log.i(TAG,"Load config finish. ----> " + config.toString());
+		} catch (IOException e) {
+		    Log.e(TAG,"Failed to open config property file");
+		    return ;
+		}
+	}
+
+
 	private void processLogin() {
 		String loginAccount = this.getStringShareData(ShareDataKey.LOGIN_ACCOUNT);
 		String loginPassword = this.getStringShareData(ShareDataKey.LOGIN_PASSWORD);
@@ -60,7 +86,7 @@ public class SplashActivity extends CommonActivity {
     
     public void doLogin(final String account ,final String password){
 		// do login
-		String url = Config.BASE_URL_MVC + RequestURLConstants.URL_LOGIN ;  
+		String url = Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_LOGIN ;  
 		Map<String,String> param = new HashMap<String,String>();
 		param.put("mobile", account);
 		param.put("password", password);
