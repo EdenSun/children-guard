@@ -459,8 +459,8 @@ public class ChildServiceImpl extends BaseServiceImpl implements IChildService {
 		Map<String,String> extra = new HashMap<String,String>();
 		
 		PushResult pushResult = jpushService.pushToChild(registionId, msgContent, extra);
-
-		if( pushResult != null && pushResult.getOriginalContent()!=null && pushResult.getOriginalContent().equals("true") ){
+		logger.info("test online result" + pushResult.isResultOK());
+		if( pushResult != null && pushResult.isResultOK() ){
 			return true;
 		}
 

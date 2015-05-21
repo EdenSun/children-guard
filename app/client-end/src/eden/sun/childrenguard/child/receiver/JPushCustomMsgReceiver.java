@@ -64,6 +64,9 @@ public class JPushCustomMsgReceiver extends BroadcastReceiver {
 					// re-sync schedule lock setting
 					
 					syncScheduleLockSettingFromServer(context);
+				}else if( message.equals("test_online") ){
+					// online test
+					
 				}
 			}
 			

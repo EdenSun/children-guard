@@ -1,15 +1,20 @@
 package eden.sun.childrenguard.child.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -77,22 +82,44 @@ public class WatchDogService extends Service{
                 {  
                     try  
                     {  
-                        List<RunningTaskInfo> runningTaskInfos = activityManager  
-                                .getRunningTasks(1);  
-                        RunningTaskInfo runningTaskInfo = runningTaskInfos  
-                                .get(0);  
-                        String packageName = runningTaskInfo.topActivity  
-                                .getPackageName();
-                        
-                        if( isAppLocked(packageName) && !unlockedAppList.contains(new App(packageName)) )  
-                        {  
-                            intent.putExtra("packageName", packageName);  
-                            startActivity(intent);  
-                        }  
-                        else  
-                        {  
-  
-                        }  
+                    	String packageName = null;
+						/*if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+							final Set<String> activePackages = new HashSet<String>();
+							final List<ActivityManager.RunningAppProcessInfo> processInfos = activityManager
+									.getRunningAppProcesses();
+							for (ActivityManager.RunningAppProcessInfo processInfo : processInfos) {
+								if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+									activePackages.addAll(Arrays.asList(processInfo.pkgList));
+								}
+							}
+							activePackages.toArray(new String[activePackages.size()]);
+							
+						} else {
+							List<RunningTaskInfo> runningTaskInfos = activityManager  
+	                                .getRunningTasks(1);  
+	                        RunningTaskInfo runningTaskInfo = runningTaskInfos  
+	                                .get(0);  
+	                        packageName = runningTaskInfo.topActivity  
+	                                .getPackageName();
+						}*/
+                    	String[] activePackages = null;
+						if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+							activePackages = getActivePackages();
+						} else {
+							activePackages = getActivePackagesCompat();
+						}
+                    	if(activePackages != null && activePackages.length > 0 ){
+                    		packageName = activePackages[0];
+                    	}
+						if (isAppLocked(packageName)
+								&& !unlockedAppList.contains(new App(
+										packageName))) {
+							intent.putExtra("packageName", packageName);
+							startActivity(intent);
+						} else {
+
+						} 
+						 
                         sleep(1000);  
                     }  
                     catch (InterruptedException e)  
@@ -107,7 +134,6 @@ public class WatchDogService extends Service{
         }.start();  
     }  
   
-    
     public void initPresetlockData() {
     	PresetLockDao presetLockDao = new PresetLockDao(this);
     	PresetLockAppDao presetLockAppDao = new PresetLockAppDao(this);
@@ -370,6 +396,28 @@ public class WatchDogService extends Service{
 			}
 		});	
 		
+	}
+	
+	
+	String[] getActivePackagesCompat() {
+		final List<ActivityManager.RunningTaskInfo> taskInfo = activityManager
+				.getRunningTasks(1);
+		final ComponentName componentName = taskInfo.get(0).topActivity;
+		final String[] activePackages = new String[1];
+		activePackages[0] = componentName.getPackageName();
+		return activePackages;
+	}
+
+	String[] getActivePackages() {
+		final List<String> activePackages = new ArrayList<String>();
+		final List<ActivityManager.RunningAppProcessInfo> processInfos = activityManager
+				.getRunningAppProcesses();
+		for (ActivityManager.RunningAppProcessInfo processInfo : processInfos) {
+			if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+				activePackages.addAll(Arrays.asList(processInfo.pkgList));
+			}
+		}
+		return activePackages.toArray(new String[activePackages.size()]);
 	}
 
 }

@@ -47,7 +47,7 @@ public class ChildViewDTO {
     /**
      * ÊÇ·ñ¿É¿Ø
      */
-    private boolean isOnline;
+    private boolean online;
     
 	public Integer getId() {
 		return id;
@@ -114,10 +114,11 @@ public class ChildViewDTO {
 	}
 
 	public boolean isOnline() {
-		return isOnline;
+		return online;
 	}
 
-	public void setOnline(boolean isOnline) {
-		this.isOnline = isOnline;
+	public void setOnline(boolean online) {
+		this.online = online;
 	}
+
 }
