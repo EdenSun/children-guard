@@ -57,7 +57,8 @@ public class SplashActivity extends CommonActivity {
 		    config.BASE_URL_MVC = config.BASE_URL + properties.get("baseUrlMvcContext");
 		    config.TERMS_OF_SERVICE_PATH = properties.get("termsOfServicePath").toString();
 		    config.PRIVACY_POLICY_PATH = properties.get("privacyPolicyPath").toString();
-
+		    config.IS_TRIAL = properties.get("isTrial")==null? false: Boolean.getBoolean(properties.get("isTrial").toString());
+		    
 		    Log.i(TAG,"Load config finish. ----> " + config.toString());
 		} catch (IOException e) {
 		    Log.e(TAG,"Failed to open config property file");

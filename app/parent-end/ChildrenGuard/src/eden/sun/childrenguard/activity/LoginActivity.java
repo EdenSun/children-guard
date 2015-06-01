@@ -92,60 +92,74 @@ public class LoginActivity extends CommonActivity {
 					
 					final String finalMobile = mobileEditText.getText().toString();
 					final String finalPassword = passwordEditText.getText().toString();
-					String url = String.format(
-							Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_IS_FIRST_LOGIN + "?mobile=%1$s&password=%2$s",  
-							finalMobile,  
-							finalPassword);  
-	  
-					getRequestHelper().doGet(
-						url,
-						this.getClass(),
-						new Response.Listener<String>() {
-							@Override
-							public void onResponse(String response) {
-								dismissProgressDialog();
-								ViewDTO<IsFirstLoginViewDTO> view = JSONUtil.getIsFirstLoginView(response);
-						    	
-						    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS)){
-						    		if( view.getData().isFirstLogin() ){
-						    			
-						    			AlertDialog.Builder dialog = UIUtil.getLegalInfoDialog(
-						    					LoginActivity.this,
-						    					view.getData().getLegalInfo(),
-						    					new Callback(){
 
-													@Override
-													public void execute(
-															CallbackResult result) {
-														String mobile = UIUtil.getEditTextValue(mobileEditText);
-										    			String password = UIUtil.getEditTextValue(passwordEditText);
-										    			
-														doLogin(mobile,password);
-													}
-						    						
-						    					});
-										
+					if( Config.getInstance().IS_TRIAL == true ){
+						// trial version 
+						String url = String.format(
+								Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_IS_IN_TRIAL + "?mobile=%1$s",  
+								finalMobile); 
+						
+						getRequestHelper().doGet(
+							url,
+							this.getClass(),
+							new Response.Listener<String>() {
+								@Override
+								public void onResponse(String response) {
+									dismissProgressDialog();
+									ViewDTO<Boolean> view = JSONUtil.getIsInTrialView(response);
+							    	
+							    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS)){
+							    		if( view.getData().booleanValue() == true ){
+							    			// 在试用期内，可以继续登录
+							    			isFirstLogin(finalMobile,finalPassword);
+							    		}else{
+							    			// TODO: 超过试用期，提示下载付费版本
+							    			
+							    			AlertDialog.Builder dialog = UIUtil.getAlertDialogWithTwoBtn(
+							    					LoginActivity.this,
+							    					"Trial",
+							    					"试用期结婚素，请下载正式版，下载请点击OK，否则点击Cancel",
+							    					"Ok",
+							    					"Cancel",
+							    					new DialogInterface.OnClickListener() {
+							    			            @Override
+							    			            public void onClick(DialogInterface dialog, int which) {
+							    			            	dialog.dismiss();
+							    			            	
+							    			            	//TODO: go to google market to download 
+							    			            	
+							    			            	
+							    			            }
+							    			        },
+							    			        new DialogInterface.OnClickListener() {
+							    			            @Override
+							    			            public void onClick(DialogInterface dialog, int which) {
+							    			            	dialog.dismiss();
+							    			            }
+							    			        }
+							    				);
+							    			
+											dialog.show();
+							    			
+							    		}
+							    	}else{
+							    		AlertDialog.Builder dialog = UIUtil.getErrorDialog(LoginActivity.this,view.getInfo());
+							    		
 										dialog.show();
-						    		}else{
-						    			String mobile = UIUtil.getEditTextValue(mobileEditText);
-						    			String password = UIUtil.getEditTextValue(passwordEditText);
-						    			
-						    			LoginActivity.this.doLogin(mobile,password);
-						    		}
-						    	}else{
-						    		AlertDialog.Builder dialog = UIUtil.getErrorDialog(LoginActivity.this,view.getInfo());
-						    		
-									dialog.show();
-						    	}
-						    	
-							}
-						}, 
-						new DefaultVolleyErrorHandler(LoginActivity.this));
+							    	}
+							    	
+								}
+							}, 
+							new DefaultVolleyErrorHandler(LoginActivity.this));		
+					}else{
+						isFirstLogin(finalMobile,finalPassword);
+					}
 					
 				}
 				
 			}
 
+			
 
         });
         
@@ -174,6 +188,59 @@ public class LoginActivity extends CommonActivity {
         //autoLogin();
     }
 
+    
+    private void isFirstLogin(String finalMobile, String finalPassword) {
+		String url = String.format(
+				Config.getInstance().BASE_URL_MVC + RequestURLConstants.URL_IS_FIRST_LOGIN + "?mobile=%1$s&password=%2$s",  
+				finalMobile,  
+				finalPassword);  
+
+		getRequestHelper().doGet(
+			url,
+			this.getClass(),
+			new Response.Listener<String>() {
+				@Override
+				public void onResponse(String response) {
+					dismissProgressDialog();
+					ViewDTO<IsFirstLoginViewDTO> view = JSONUtil.getIsFirstLoginView(response);
+			    	
+			    	if( view.getMsg().equals(ViewDTO.MSG_SUCCESS)){
+			    		if( view.getData().isFirstLogin() ){
+			    			
+			    			AlertDialog.Builder dialog = UIUtil.getLegalInfoDialog(
+			    					LoginActivity.this,
+			    					view.getData().getLegalInfo(),
+			    					new Callback(){
+
+										@Override
+										public void execute(
+												CallbackResult result) {
+											String mobile = UIUtil.getEditTextValue(mobileEditText);
+							    			String password = UIUtil.getEditTextValue(passwordEditText);
+							    			
+											doLogin(mobile,password);
+										}
+			    						
+			    					});
+							
+							dialog.show();
+			    		}else{
+			    			String mobile = UIUtil.getEditTextValue(mobileEditText);
+			    			String password = UIUtil.getEditTextValue(passwordEditText);
+			    			
+			    			LoginActivity.this.doLogin(mobile,password);
+			    		}
+			    	}else{
+			    		AlertDialog.Builder dialog = UIUtil.getErrorDialog(LoginActivity.this,view.getInfo());
+			    		
+						dialog.show();
+			    	}
+			    	
+				}
+			}, 
+			new DefaultVolleyErrorHandler(LoginActivity.this));				
+	}
+    
 
 	private void autoLogin() {
 		String loginAccount = this.getStringShareData(ShareDataKey.LOGIN_ACCOUNT);

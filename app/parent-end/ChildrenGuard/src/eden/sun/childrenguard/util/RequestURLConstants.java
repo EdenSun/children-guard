@@ -69,5 +69,6 @@ public class RequestURLConstants {
 	
 	/**** Person Application Manage ****/
 	public static final String URL_UPDATE_APP_LOCK_STATUS = "parent/childrenManage/updateAppLockStatus";
+	public static final String URL_IS_IN_TRIAL = "parent/version/isInTrial";
 	
 }
