@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -118,7 +119,7 @@ public class LoginActivity extends CommonActivity {
 							    			AlertDialog.Builder dialog = UIUtil.getAlertDialogWithTwoBtn(
 							    					LoginActivity.this,
 							    					"Trial",
-							    					"试用期结婚素，请下载正式版，下载请点击OK，否则点击Cancel",
+							    					"This is Trial version.Please click Ok to download pay version.",
 							    					"Ok",
 							    					"Cancel",
 							    					new DialogInterface.OnClickListener() {
@@ -126,9 +127,11 @@ public class LoginActivity extends CommonActivity {
 							    			            public void onClick(DialogInterface dialog, int which) {
 							    			            	dialog.dismiss();
 							    			            	
-							    			            	//TODO: go to google market to download 
-							    			            	
-							    			            	
+							    			            	//go to google market to download 
+							    			            	Intent intent = new Intent();
+							    			            	intent.setAction(Intent.ACTION_VIEW);
+							    			            	intent.setData(Uri.parse(Config.getInstance().PAY_VERSION_MARKET_URL));
+							    			            	startActivity(intent);
 							    			            }
 							    			        },
 							    			        new DialogInterface.OnClickListener() {

@@ -11,6 +11,8 @@ public class Config {
 	public String BASE_URL_MVC ;
 	public String TERMS_OF_SERVICE_PATH;
 	public String PRIVACY_POLICY_PATH;
+	public boolean IS_TRIAL;
+	public String PAY_VERSION_MARKET_URL;
 	
 	private Config(){}
 	
@@ -27,7 +29,8 @@ public class Config {
 		return "Config [BASE_URL=" + BASE_URL + ", BASE_URL_MVC="
 				+ BASE_URL_MVC + ", TERMS_OF_SERVICE_PATH="
 				+ TERMS_OF_SERVICE_PATH + ", PRIVACY_POLICY_PATH="
-				+ PRIVACY_POLICY_PATH + "]";
+				+ PRIVACY_POLICY_PATH + ", IS_TRIAL=" + IS_TRIAL
+				+ ", PAY_VERSION_MARKET_URL=" + PAY_VERSION_MARKET_URL + "]";
 	}
 
 }
