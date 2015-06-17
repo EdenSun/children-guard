@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:padding="8dp"
-    tools:context="eden.sun.childrenguard.child.activity.AppStatusActivity" >
+    tools:context="com.soloappinfo.client.activity.AppStatusActivity" >
 
     <TextView
         android:id="@+id/appName"

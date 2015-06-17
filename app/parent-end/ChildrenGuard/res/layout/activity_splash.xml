@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     style="@style/commonPageStyle"
-    tools:context="eden.sun.childrenguard.activity.SplashActivity" >
+    tools:context="com.soloappinfo.activity.SplashActivity" >
 
 	<LinearLayout
 	    android:layout_width="match_parent"

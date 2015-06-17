@@ -7,7 +7,7 @@
     >
 	<fragment
         android:id="@+id/fragment"  
-        android:name="eden.sun.childrenguard.fragment.PersonAppManageFragment"  
+        android:name="com.soloappinfo.fragment.PersonAppManageFragment"  
         android:layout_width="match_parent"  
         android:layout_height="0dp"  
         android:layout_weight="1" />  

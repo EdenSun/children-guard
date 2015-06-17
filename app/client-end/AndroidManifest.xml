@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="eden.sun.childrenguard.child"
-    android:versionCode="2"
-    android:versionName="1.1" >
+    package="com.soloappinfo.client"
+    android:versionCode="3"
+    android:versionName="1.2" >
 
     <uses-sdk
         android:minSdkVersion="11"
         android:targetSdkVersion="21" />
 
     <permission
-        android:name="eden.sun.childrenguard.child.permission.JPUSH_MESSAGE"
+        android:name="com.soloappinfo.client.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="eden.sun.childrenguard.child.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="com.soloappinfo.client.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -104,7 +104,7 @@
             android:permission="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY">
             <intent-filter android:priority="1000" >
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
-                <category android:name="eden.sun.childrenguard.child" />
+                <category android:name="com.soloappinfo.client" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -125,7 +125,7 @@
                 <action android:name="cn.jpush.android.ui.PushActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="eden.sun.childrenguard.child" />
+                <category android:name="com.soloappinfo.client" />
             </intent-filter>
         </activity>
         <!-- Required SDK核心功能 -->
@@ -149,7 +149,7 @@
         <!-- Required. AppKey copied from Portal -->
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="f7196716f406e7911af46e9c" />
+            android:value="42cefda033345252bcdc0275" />
 
         <activity
             android:name=".activity.MainActivity"
@@ -175,7 +175,7 @@
         
 
         <activity
-            android:name="eden.sun.childrenguard.child.activity.AbortCallActivity"
+            android:name="com.soloappinfo.client.activity.AbortCallActivity"
             android:label="@string/title_activity_abort_call"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
@@ -187,7 +187,7 @@
         </receiver>
         
         <receiver
-            android:name="eden.sun.childrenguard.child.receiver.JPushCustomMsgReceiver"
+            android:name="com.soloappinfo.client.receiver.JPushCustomMsgReceiver"
             android:enabled="true"
              >
             <intent-filter>
@@ -196,7 +196,7 @@
 		        <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
 		        <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
         
-                <category android:name="eden.sun.childrenguard.child" />
+                <category android:name="com.soloappinfo.client" />
             </intent-filter>
         </receiver>
         

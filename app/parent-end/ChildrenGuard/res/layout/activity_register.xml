@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     style="@style/commonPageStyle"
-    tools:context="eden.sun.childrenguard.activity.RegisterActivity" >
+    tools:context="com.soloappinfo.activity.RegisterActivity" >
 
     <TextView
         android:id="@+id/titleTextView"

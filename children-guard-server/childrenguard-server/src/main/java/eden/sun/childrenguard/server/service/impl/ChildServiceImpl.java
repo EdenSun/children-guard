@@ -458,10 +458,15 @@ public class ChildServiceImpl extends BaseServiceImpl implements IChildService {
 		String msgContent = "test_online";
 		Map<String,String> extra = new HashMap<String,String>();
 		
-		PushResult pushResult = jpushService.pushToChild(registionId, msgContent, extra);
-		logger.info("test online result" + pushResult.isResultOK());
-		if( pushResult != null && pushResult.isResultOK() ){
-			return true;
+		try {
+			PushResult pushResult = jpushService.pushToChild(registionId, msgContent, extra);
+			logger.info("test online result" + pushResult.isResultOK());
+			if( pushResult != null && pushResult.isResultOK() ){
+				return true;
+			}
+		} catch (Exception e) {
+			logger.info("test online fail,user is offline");
+			return false;
 		}
 
 		return false;

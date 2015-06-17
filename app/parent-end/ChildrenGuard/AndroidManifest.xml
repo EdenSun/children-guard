@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="eden.sun.childrenguard"
-    android:versionCode="3"
-    android:versionName="1.2" >
+    package="com.soloappinfo"
+    android:versionCode="4"
+    android:versionName="1.3" >
 
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="21" />
 
     <permission
-        android:name="eden.sun.childrenguard.permission.JPUSH_MESSAGE"
+        android:name="com.soloappinfo.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="eden.sun.childrenguard.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="com.soloappinfo.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -143,7 +143,7 @@
  <!-- since 1.3.5 -->
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
  <!-- since 1.3.5 -->
-                <category android:name="eden.sun.childrenguard" />
+                <category android:name="com.soloappinfo" />
  <!-- since 1.3.5 -->
             </intent-filter>
  <!-- since 1.3.5 -->
@@ -167,7 +167,7 @@
                 <action android:name="cn.jpush.android.ui.PushActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="eden.sun.childrenguard" />
+                <category android:name="com.soloappinfo" />
             </intent-filter>
         </activity>
         <!-- Required SDK核心功能 -->
@@ -191,7 +191,7 @@
         <!-- Required. AppKey copied from Portal -->
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="02d9281cef406df3d635602a" />
+            android:value="c7cd2e1323d03f078ea2ac8e" />
 
         <receiver
             android:name=".broadreceiver.JPushCustomMsgReceiver"
@@ -202,13 +202,13 @@
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
 
-                <category android:name="eden.sun.childrenguard" />
+                <category android:name="com.soloappinfo" />
             </intent-filter>
         </receiver>
 		
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity
-            android:name="eden.sun.childrenguard.activity.PresetLockActivity"
+            android:name="com.soloappinfo.activity.PresetLockActivity"
             android:label="@string/title_activity_schedule" />
         <!-- <activity
             android:name=".PresetLockActivity"

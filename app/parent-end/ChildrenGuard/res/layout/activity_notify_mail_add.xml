@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:orientation="vertical"
-    tools:context="eden.sun.childrenguard.activity.ChildrenListAddActivity" >
+    tools:context="com.soloappinfo.activity.ChildrenListAddActivity" >
 
     <TextView
  	    android:id="@+id/titleTextView"

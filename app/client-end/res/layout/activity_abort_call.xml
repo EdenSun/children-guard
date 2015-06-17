@@ -2,6 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="eden.sun.childrenguard.child.activity.AbortCallActivity" >
+    tools:context="com.soloappinfo.client.activity.AbortCallActivity" >
 
 </RelativeLayout>

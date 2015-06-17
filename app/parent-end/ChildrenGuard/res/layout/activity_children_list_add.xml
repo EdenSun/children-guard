@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/commonPageStyle"
     android:orientation="vertical"
-    tools:context="eden.sun.childrenguard.activity.ChildrenListAddActivity" >
+    tools:context="com.soloappinfo.activity.ChildrenListAddActivity" >
 
     <Button
         android:id="@+id/addFromContactsBtn"
@@ -94,7 +94,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/commonPageStyle"
     android:orientation="vertical"
-    tools:context="eden.sun.childrenguard.activity.ChildrenListAddActivity" >
+    tools:context="com.soloappinfo.activity.ChildrenListAddActivity" >
 
     <Button
         android:id="@+id/addFromContactsBtn"
