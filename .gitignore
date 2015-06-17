@@ -5,4 +5,10 @@ app/parent-end/ChildrenGuard/bin/*
 children-guard-server/childrenguard-server/target/*
 .classpath
 *.prefs
-*.properties
+*.class
+app/parent-end/ChildrenGuard/project.properties
+app/parent-end/SwipeMenuListView-master/*
+
+app/android-crop/bin/android-crop.jar
+app/android-crop/lint.xml
+app/android-crop/bin/R.txt
