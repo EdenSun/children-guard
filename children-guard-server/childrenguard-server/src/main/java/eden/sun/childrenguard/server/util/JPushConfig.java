@@ -2,10 +2,10 @@ package eden.sun.childrenguard.server.util;
 
 public class JPushConfig {
 
-	public static final String PARENT_END_MASTER_SECRET = "9ab6ba0926a3ebe06a55251a";
-	public static final String PARENT_END_APP_KEY = "02d9281cef406df3d635602a";
+	public static final String PARENT_END_MASTER_SECRET = "df49d2a00535111a25c0fd45";
+	public static final String PARENT_END_APP_KEY = "c7cd2e1323d03f078ea2ac8e";
 	
-	public static final String CHILD_END_MASTER_SECRET = "823ac19c10c425ce4917921b";
-	public static final String CHILD_END_APP_KEY = "f7196716f406e7911af46e9c";
+	public static final String CHILD_END_MASTER_SECRET = "2f32bdfe45b40603c2a4f4f7";
+	public static final String CHILD_END_APP_KEY = "42cefda033345252bcdc0275";
 
 }

@@ -4,16 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
-
-import android.app.ActivityManager;
-import android.app.Service;
-import android.content.ComponentName;
-import android.content.Intent;
-import android.os.Binder;
-import android.os.Build;
-import android.os.IBinder;
-import android.util.Log;
+import java.util.Set;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -32,6 +25,14 @@ import com.soloappinfo.client.util.JSONUtil;
 import com.soloappinfo.client.util.RequestHelper;
 import com.soloappinfo.client.util.RequestURLConstants;
 
+import android.app.ActivityManager;
+import android.app.Service;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.os.Binder;
+import android.os.Build;
+import android.os.IBinder;
+import android.util.Log;
 import eden.sun.childrenguard.server.dto.AppViewDTO;
 import eden.sun.childrenguard.server.dto.ViewDTO;
 
@@ -108,6 +109,14 @@ public class WatchDogService extends Service{
                     	if(activePackages != null && activePackages.length > 0 ){
                     		packageName = activePackages[0];
                     	}
+                    	/*if( packageName == null ){
+                    		ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+                    		List<RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+                    		ComponentName componentInfo = taskInfo.get(0).topActivity;
+                    		packageName = componentInfo.getPackageName();
+                    		Log.d(TAG, "CURRENT Activity ::" + taskInfo.get(0).topActivity.getClassName()+"   Package Name :  "+componentInfo.getPackageName());
+                    	}*/
+                    	  
 						if (isAppLocked(packageName)
 								&& !unlockedAppList.contains(new App(
 										packageName))) {
@@ -397,8 +406,7 @@ public class WatchDogService extends Service{
 	
 	
 	String[] getActivePackagesCompat() {
-		final List<ActivityManager.RunningTaskInfo> taskInfo = activityManager
-				.getRunningTasks(1);
+		final List<ActivityManager.RunningTaskInfo> taskInfo = activityManager.getRunningTasks(1);
 		final ComponentName componentName = taskInfo.get(0).topActivity;
 		final String[] activePackages = new String[1];
 		activePackages[0] = componentName.getPackageName();
@@ -406,15 +414,16 @@ public class WatchDogService extends Service{
 	}
 
 	String[] getActivePackages() {
-		final List<String> activePackages = new ArrayList<String>();
-		final List<ActivityManager.RunningAppProcessInfo> processInfos = activityManager
-				.getRunningAppProcesses();
+		final Set<String> activePackages = new HashSet<String>();
+		final List<ActivityManager.RunningAppProcessInfo> processInfos = activityManager.getRunningAppProcesses();
 		for (ActivityManager.RunningAppProcessInfo processInfo : processInfos) {
 			if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
 				activePackages.addAll(Arrays.asList(processInfo.pkgList));
 			}
 		}
 		return activePackages.toArray(new String[activePackages.size()]);
+
 	}
+	
 
 }
